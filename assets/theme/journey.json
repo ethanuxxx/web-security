@@ -1,0 +1,138 @@
+{
+  "default": "normal",
+  "pace": 1.3,
+  "routes": [
+    {
+      "id": "normal",
+      "title": "一筆 request 的旅程",
+      "packets": [
+        {"id": "req", "label": "GET /profile"},
+        {"id": "sql", "label": "SELECT"},
+        {"id": "file", "label": "read avatar"},
+        {"id": "res", "label": "200 HTML", "tone": "res"}
+      ],
+      "cards": [
+        {"id": "c-req", "kind": "text", "at": [20, 432], "w": 13.5, "title": "瀏覽器組出的 request",
+         "lines": ["GET /profile", "Host: example.test", "Cookie: session=a1b2…"]},
+        {"id": "c-cache", "kind": "flip", "at": [150, 432], "w": 13.2,
+         "front": {"title": "CDN 查 cache", "lines": ["key = GET example.test/profile", "有存過的副本嗎？"]},
+         "back": {"title": "MISS", "tone": "miss", "lines": ["沒有存過的副本", "只好把 request 往後送"]}},
+        {"id": "c-auth", "kind": "text", "at": [236, 84], "w": 13.2, "title": "Auth／Session",
+         "lines": ["收到 Cookie：session=a1b2…", "查 session 紀錄", "結果：這是 alice（id 7）"]},
+        {"id": "c-db", "kind": "table", "at": [222, 22], "w": 9.6, "title": "users 表",
+         "header": ["id", "name"], "rows": [["3", "bob"], ["7", "alice"], ["9", "carol"]],
+         "query": "WHERE id=7"},
+        {"id": "c-store", "kind": "flip", "at": [150, 432], "w": 13.2,
+         "front": {"title": "CDN 看回應標頭", "lines": ["Cache-Control: private", "能存一份給別人用嗎？"]},
+         "back": {"title": "不存", "tone": "ok", "lines": ["標了 private", "不放進共用快取"]}},
+        {"id": "c-page", "kind": "page", "at": [20, 432], "w": 13.5, "title": "HTML 變成頁面",
+         "parts": ["bar", "avatar", "line", "line", "line"],
+         "lines": ["解析 HTML → DOM → 畫出畫面"]}
+      ],
+      "steps": [
+        {
+          "id": "build",
+          "title": "瀏覽器組出 request",
+          "caption": "你在網址列開啟 /profile，瀏覽器組出一筆 request，並自動附上這個網站的 Cookie。",
+          "risk": "Cookie 是瀏覽器替你附上的，伺服器之後靠它認人。",
+          "focus": ["browser"],
+          "edges": [],
+          "chapters": [{"ch": "web-http", "secs": ["web-http/http-session"]}],
+          "actions": [
+            {"type": "show", "packet": "req", "at": [200, 330], "dur": 0.5, "side": "tr"},
+            {"type": "card", "card": "c-req", "with": true}
+          ]
+        },
+        {
+          "id": "cdn",
+          "title": "CDN 先找有沒有現成的副本",
+          "caption": "request 先到 CDN（放在網站前面的快取代理）；CDN 拆開看 cache key，發現沒有存過這一頁（miss），所以才繼續往後送。",
+          "risk": "cache key 用什麼組成，決定兩個人會不會拿到同一份回應。",
+          "focus": ["cdn"],
+          "edges": [0],
+          "chapters": [{"ch": "proxy-cache", "secs": ["proxy-cache/host-cache"]}],
+          "actions": [
+            {"type": "move", "packet": "req", "path": [[200, 330], [290, 330]], "side": "tl"},
+            {"type": "card", "card": "c-cache"},
+            {"type": "open", "packet": "req", "id": "inspect", "details": ["方法：GET", "網址：/profile", "Cookie：有"]},
+            {"type": "flip", "card": "c-cache", "id": "flip"},
+            {"type": "close", "packet": "req"},
+            {"type": "move", "packet": "req", "path": [[290, 330], [440, 330]], "side": "t"}
+          ]
+        },
+        {
+          "id": "auth",
+          "title": "轉給 Web application，先認出你是誰",
+          "caption": "CDN 把 request 轉給 Web application；程式先拿 Cookie 去查 session，確認是哪位使用者。",
+          "risk": "這一步決定「你能看哪些資料」；Cookie 被偷或驗證有漏洞時，就會被當成別人。",
+          "focus": ["app", "identity"],
+          "edges": [1],
+          "chapters": [{"ch": "identity", "secs": ["identity/authentication"]}],
+          "actions": [
+            {"type": "move", "packet": "req", "path": [[440, 330], [530, 330]]},
+            {"type": "move", "packet": "req", "path": [[530, 330], [538, 330], [538, 222], [546, 222]], "id": "to-auth", "side": "l"},
+            {"type": "card", "card": "c-auth"}
+          ]
+        },
+        {
+          "id": "backend",
+          "title": "拆成子 request，向後端要資料",
+          "caption": "Web application 不自己存資料：它把需求拆成兩個子 request，向 Database 下 SQL 查詢，並向 File system 讀出頭像檔。",
+          "risk": "子 request 裡常夾著使用者給的值（這裡的 id 與檔名），這就是注入與路徑穿越類漏洞的入口。",
+          "focus": ["app", "db", "fs"],
+          "edges": [5, 6, 8, 9],
+          "chapters": [{"ch": "server-input", "secs": ["server-input/path-traversal", "server-input/sql-injection"]}],
+          "actions": [
+            {"type": "move", "packet": "req", "path": [[546, 222], [538, 222], [538, 325], [720, 325], [765, 325]], "side": "l", "sideAt": [[0.4, "r"], [0.63, "l"]]},
+            {"type": "burst", "at": [765, 325], "id": "split"},
+            {"type": "hide", "packet": "req", "with": true},
+            {"type": "show", "packet": "sql", "at": [765, 325], "with": true, "dur": 0.2, "side": "r", "labat": [765, 276]},
+            {"type": "show", "packet": "file", "at": [765, 325], "with": true, "dur": 0.2, "side": "r", "labat": [765, 238]},
+            {"type": "move", "packet": "sql", "path": [[765, 325], [765, 118], [810, 118]], "side": "r", "id": "sub"},
+            {"type": "move", "packet": "file", "path": [[765, 325], [765, 48], [810, 48]], "side": "r", "with": true, "delay": 0.35},
+            {"type": "card", "card": "c-db"},
+            {"type": "rows", "card": "c-db", "rows": [1], "id": "rows"},
+            {"type": "relabel", "packet": "sql", "text": "1 列：alice", "with": true, "dur": 0.16, "side": "r"},
+            {"type": "relabel", "packet": "file", "text": "avatar.png", "with": true, "dur": 0.16, "side": "r"}
+          ]
+        },
+        {
+          "id": "assemble",
+          "title": "組成 HTML，沿原路回去",
+          "caption": "兩個結果回到 Web application，被組成一份 HTML 回應，原路經過 CDN；CDN 會看回應標頭，決定能不能存一份副本。",
+          "risk": "含個人資料的頁面若被誤存進共用快取，下一個人就可能看到別人的內容。",
+          "focus": ["app", "cdn"],
+          "edges": [1, 5, 6, 8, 9],
+          "chapters": [{"ch": "proxy-cache", "secs": ["proxy-cache/host-cache"]}],
+          "actions": [
+            {"type": "move", "packet": "sql", "path": [[810, 118], [765, 118], [765, 325]], "side": "r", "id": "back"},
+            {"type": "move", "packet": "file", "path": [[810, 48], [765, 48], [765, 325]], "side": "r", "with": true, "delay": 0.35},
+            {"type": "hide", "packet": "sql"},
+            {"type": "hide", "packet": "file", "with": true},
+            {"type": "show", "packet": "res", "at": [765, 325], "dur": 0.3, "with": true},
+            {"type": "burst", "at": [765, 325], "with": true, "id": "build-html"},
+            {"type": "move", "packet": "res", "path": [[765, 325], [720, 325], [538, 325], [530, 330], [440, 330]], "id": "res-out", "side": "l", "sideAt": [[0.44, "r"], [0.6, "t"]]},
+            {"type": "card", "card": "c-store"},
+            {"type": "flip", "card": "c-store", "id": "store"}
+          ]
+        },
+        {
+          "id": "render",
+          "title": "瀏覽器把 HTML 畫成頁面",
+          "caption": "回應回到瀏覽器；瀏覽器解析 HTML，一層層長出你看到的頁面。",
+          "risk": "瀏覽器會照 HTML 執行裡面的內容，不可信的內容混進 HTML，就是 XSS 的入口。",
+          "focus": ["browser", "rendering"],
+          "edges": [0],
+          "chapters": [{"ch": "browser-output", "secs": ["browser-output/xss-basics"]}],
+          "actions": [
+            {"type": "move", "packet": "res", "path": [[440, 330], [290, 330], [200, 330]], "side": "t", "sideAt": [[0.72, "b"]]},
+            {"type": "move", "packet": "res", "path": [[200, 330], [184, 354]], "side": "b"},
+            {"type": "hide", "packet": "res"},
+            {"type": "card", "card": "c-page"},
+            {"type": "grow", "card": "c-page", "id": "grow"}
+          ]
+        }
+      ]
+    }
+  ]
+}

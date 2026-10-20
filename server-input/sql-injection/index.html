@@ -1,0 +1,355 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>2.3 SQL Injection Basics｜Web 安全</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Crect width='16' height='16' rx='3' fill='%23070c12'/%3E%3Crect x='1.5' y='1.5' width='13' height='13' rx='2.5' fill='none' stroke='%2336e0cc' stroke-width='1.4'/%3E%3Cpath d='M5 8 L11 5 M5 8 L11 11' stroke='%2336e0cc' stroke-width='1.2' fill='none'/%3E%3Ccircle cx='5' cy='8' r='1.6' fill='%2336e0cc'/%3E%3Ccircle cx='11' cy='5' r='1.6' fill='%2336e0cc'/%3E%3Ccircle cx='11' cy='11' r='1.6' fill='%2336e0cc'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="../../assets/style.css?v=d288e31038">
+<link rel="stylesheet" href="../../assets/theme/theme.css?v=d288e31038">
+<script>(function(){var m=null;try{m=localStorage.getItem("web-security:motion")}catch(e){}if(m!=="on"&&m!=="off"){m="on";try{if(matchMedia("(prefers-reduced-motion: reduce)").matches)m="off"}catch(e){}}document.documentElement.setAttribute("data-motion",m)})()</script>
+</head>
+<body class="page-section sm-body">
+<a class="skip" href="#main">跳到正文</a>
+<header class="sm-top"><a class="sm-brand" href="../../index.html"><svg class="sm-logo" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><rect x="1" y="1" width="14" height="14" rx="3" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M5 8 L11 5 M5 8 L11 11" stroke="currentColor" stroke-width="1.3" fill="none"/><circle cx="5" cy="8" r="1.7" fill="currentColor"/><circle cx="11" cy="5" r="1.7" fill="currentColor"/><circle cx="11" cy="11" r="1.7" fill="currentColor"/></svg><span class="sm-brand-t">web-security</span></a><nav class="sm-path" aria-label="目前位置"><ol><li class="sm-p-root"><a href="../../index.html">web-security</a></li><li class="sm-p-ch split"><a href="../../server-input/index.html">2<span class="sm-p-title">&nbsp;伺服器如何處理使用者輸入</span></a></li><li class=""><span aria-current="page">2.3</span></li></ol></nav><a class="sm-toplink" href="../../index.html#map">map</a><a class="sm-toplink" href="../../chapters/index.html">chapters</a><button type="button" class="sm-toplink sm-motion" aria-pressed="true" hidden>動畫：開</button></header>
+<div class="sm-shell">
+<nav class="sm-tree" aria-label="教材瀏覽器"><details class="sm-tree-wrap" open><summary class="sm-tree-sum">EXPLORER／教材目錄</summary><p class="sm-tree-h" aria-hidden="true">EXPLORER</p><details class="sm-partd" open><summary class="sm-part">第一部分：輸入如何穿過網站</summary><details class="sm-folder"><summary><a class="sm-chlink" href="../../web-http/index.html" title="第 1 章 Web 與 HTTP"><span class="num">1</span><span class="sm-fname">Web 與 HTTP</span></a></summary><div class="sm-files"><a class="sm-file" href="../../web-http/web-basics/index.html" title="1.1 Seeing the Web Through the Browser"><span class="num">1.1</span><span class="sm-fname">Seeing the Web Through the Browser</span><span class="sm-st sm-st-ready" aria-hidden="true"></span><span class="sm-sr">（已完成）</span></a><a class="sm-file" href="../../web-http/http-session/index.html" title="1.2 HTTP Requests and Sessions"><span class="num">1.2</span><span class="sm-fname">HTTP Requests and Sessions</span><span class="sm-st sm-st-ready" aria-hidden="true"></span><span class="sm-sr">（已完成）</span></a></div></details><details class="sm-folder" open><summary><a class="sm-chlink" href="../../server-input/index.html" title="第 2 章 伺服器如何處理使用者輸入"><span class="num">2</span><span class="sm-fname">伺服器如何處理使用者輸入</span></a></summary><div class="sm-files"><a class="sm-file" href="../../server-input/path-traversal/index.html" title="2.1 Path Traversal"><span class="num">2.1</span><span class="sm-fname">Path Traversal</span><span class="sm-st sm-st-ready" aria-hidden="true"></span><span class="sm-sr">（已完成）</span></a><a class="sm-file" href="../../server-input/file-upload/index.html" title="2.2 File Upload Vulnerabilities"><span class="num">2.2</span><span class="sm-fname">File Upload Vulnerabilities</span><span class="sm-st sm-st-ready" aria-hidden="true"></span><span class="sm-sr">（已完成）</span></a><a class="sm-file" href="../../server-input/sql-injection/index.html" aria-current="page" title="2.3 SQL Injection Basics"><span class="num">2.3</span><span class="sm-fname">SQL Injection Basics</span><span class="sm-st sm-st-ready" aria-hidden="true"></span><span class="sm-sr">（已完成）</span></a><a class="sm-file" href="../../server-input/sql-injection-observation/index.html" title="2.4 UNION and Blind SQL Injection"><span class="num">2.4</span><span class="sm-fname">UNION and Blind SQL Injection</span><span class="sm-st sm-st-ready" aria-hidden="true"></span><span class="sm-sr">（已完成）</span></a><a class="sm-file" href="../../server-input/command-injection/index.html" title="2.5 OS Command Injection"><span class="num">2.5</span><span class="sm-fname">OS Command Injection</span><span class="sm-st sm-st-ready" aria-hidden="true"></span><span class="sm-sr">（已完成）</span></a></div></details><details class="sm-folder"><summary><a class="sm-chlink" href="../../browser-output/index.html" title="第 3 章 伺服器的輸出如何在瀏覽器中變成程式"><span class="num">3</span><span class="sm-fname">伺服器的輸出如何在瀏覽器中變成程式</span></a></summary><div class="sm-files"><a class="sm-file" href="../../browser-output/xss-basics/index.html" title="3.1 Cross-Site Scripting Basics"><span class="num">3.1</span><span class="sm-fname">Cross-Site Scripting Basics</span><span class="sm-st sm-st-ready" aria-hidden="true"></span><span class="sm-sr">（已完成）</span></a><a class="sm-file" href="../../browser-output/xss-context-dom/index.html" title="3.2 Output Contexts and DOM-Based XSS"><span class="num">3.2</span><span class="sm-fname">Output Contexts and DOM-Based XSS</span><span class="sm-st sm-st-ready" aria-hidden="true"></span><span class="sm-sr">（已完成）</span></a></div></details><details class="sm-folder"><summary><a class="sm-chlink" href="../../identity/index.html" title="第 4 章 網站如何知道你是誰、允許你做什麼"><span class="num">4</span><span class="sm-fname">網站如何知道你是誰、允許你做什麼</span></a></summary><div class="sm-files"><a class="sm-file" href="../../identity/authentication/index.html" title="4.1 Authentication"><span class="num">4.1</span><span class="sm-fname">Authentication</span><span class="sm-st sm-st-ready" aria-hidden="true"></span><span class="sm-sr">（已完成）</span></a><a class="sm-file" href="../../identity/access-control/index.html" title="4.2 Access Control"><span class="num">4.2</span><span class="sm-fname">Access Control</span><span class="sm-st sm-st-ready" aria-hidden="true"></span><span class="sm-sr">（已完成）</span></a></div></details><details class="sm-folder"><summary><a class="sm-chlink" href="../../cross-site/index.html" title="第 5 章 網站之間如何利用瀏覽器的信任"><span class="num">5</span><span class="sm-fname">網站之間如何利用瀏覽器的信任</span></a></summary><div class="sm-files"><a class="sm-file" href="../../cross-site/cross-site-trust/index.html" title="5.1 CSRF, CORS, and Cross-Site Trust"><span class="num">5.1</span><span class="sm-fname">CSRF, CORS, and Cross-Site Trust</span><span class="sm-st sm-st-draft" aria-hidden="true"></span><span class="sm-sr">（草稿）</span></a></div></details><details class="sm-folder"><summary><a class="sm-chlink" href="../../logic-timing/index.html" title="第 6 章 問題藏在流程與時間裡"><span class="num">6</span><span class="sm-fname">問題藏在流程與時間裡</span></a></summary><div class="sm-files"><a class="sm-file" href="../../logic-timing/business-logic/index.html" title="6.1 Business Logic Vulnerabilities"><span class="num">6.1</span><span class="sm-fname">Business Logic Vulnerabilities</span><span class="sm-st sm-st-draft" aria-hidden="true"></span><span class="sm-sr">（草稿）</span></a><a class="sm-file" href="../../logic-timing/race-conditions/index.html" title="6.2 Race Conditions"><span class="num">6.2</span><span class="sm-fname">Race Conditions</span><span class="sm-st sm-st-draft" aria-hidden="true"></span><span class="sm-sr">（草稿）</span></a></div></details></details><details class="sm-partd" open><summary class="sm-part">第二部分：多元件系統的信任邊界</summary><details class="sm-folder"><summary><a class="sm-chlink" href="../../server-actions/index.html" title="第 7 章 伺服器把資料交給其他元件之後"><span class="num">7</span><span class="sm-fname">伺服器把資料交給其他元件之後</span></a></summary><div class="sm-files"><a class="sm-file is-planned" href="../../server-actions/ssrf/index.html" title="7.1 Server-Side Request Forgery"><span class="num">7.1</span><span class="sm-fname">Server-Side Request Forgery</span><span class="sm-st sm-st-planned" aria-hidden="true"></span><span class="sm-sr">（規劃中）</span></a><a class="sm-file is-planned" href="../../server-actions/xxe/index.html" title="7.2 XML External Entity Injection"><span class="num">7.2</span><span class="sm-fname">XML External Entity Injection</span><span class="sm-st sm-st-planned" aria-hidden="true"></span><span class="sm-sr">（規劃中）</span></a><a class="sm-file is-planned" href="../../server-actions/ssti/index.html" title="7.3 Server-Side Template Injection"><span class="num">7.3</span><span class="sm-fname">Server-Side Template Injection</span><span class="sm-st sm-st-planned" aria-hidden="true"></span><span class="sm-sr">（規劃中）</span></a><a class="sm-file is-planned" href="../../server-actions/deserialization/index.html" title="7.4 Insecure Deserialization"><span class="num">7.4</span><span class="sm-fname">Insecure Deserialization</span><span class="sm-st sm-st-planned" aria-hidden="true"></span><span class="sm-sr">（規劃中）</span></a><a class="sm-file is-planned" href="../../server-actions/prototype-pollution/index.html" title="7.5 Prototype Pollution"><span class="num">7.5</span><span class="sm-fname">Prototype Pollution</span><span class="sm-st sm-st-planned" aria-hidden="true"></span><span class="sm-sr">（規劃中）</span></a></div></details><details class="sm-folder"><summary><a class="sm-chlink" href="../../apis/index.html" title="第 8 章 網站變成 API 之後"><span class="num">8</span><span class="sm-fname">網站變成 API 之後</span></a></summary><div class="sm-files"><a class="sm-file is-planned" href="../../apis/api-testing/index.html" title="8.1 API Attack Surface"><span class="num">8.1</span><span class="sm-fname">API Attack Surface</span><span class="sm-st sm-st-planned" aria-hidden="true"></span><span class="sm-sr">（規劃中）</span></a><a class="sm-file is-planned" href="../../apis/graphql-websockets/index.html" title="8.2 GraphQL and WebSockets"><span class="num">8.2</span><span class="sm-fname">GraphQL and WebSockets</span><span class="sm-st sm-st-planned" aria-hidden="true"></span><span class="sm-sr">（規劃中）</span></a></div></details><details class="sm-folder"><summary><a class="sm-chlink" href="../../delegated-identity/index.html" title="第 9 章 身分跨越網站與元件之後"><span class="num">9</span><span class="sm-fname">身分跨越網站與元件之後</span></a></summary><div class="sm-files"><a class="sm-file is-planned" href="../../delegated-identity/jwt/index.html" title="9.1 JSON Web Tokens"><span class="num">9.1</span><span class="sm-fname">JSON Web Tokens</span><span class="sm-st sm-st-planned" aria-hidden="true"></span><span class="sm-sr">（規劃中）</span></a><a class="sm-file is-planned" href="../../delegated-identity/oauth/index.html" title="9.2 OAuth and Third-Party Login"><span class="num">9.2</span><span class="sm-fname">OAuth and Third-Party Login</span><span class="sm-st sm-st-planned" aria-hidden="true"></span><span class="sm-sr">（規劃中）</span></a></div></details><details class="sm-folder"><summary><a class="sm-chlink" href="../../proxy-cache/index.html" title="第 10 章 Proxy、Cache 與後端看到的不一樣"><span class="num">10</span><span class="sm-fname">Proxy、Cache 與後端看到的不一樣</span></a></summary><div class="sm-files"><a class="sm-file is-planned" href="../../proxy-cache/host-cache/index.html" title="10.1 Host Headers and Web Caches"><span class="num">10.1</span><span class="sm-fname">Host Headers and Web Caches</span><span class="sm-st sm-st-planned" aria-hidden="true"></span><span class="sm-sr">（規劃中）</span></a><a class="sm-file is-planned" href="../../proxy-cache/request-smuggling/index.html" title="10.2 HTTP Request Smuggling"><span class="num">10.2</span><span class="sm-fname">HTTP Request Smuggling</span><span class="sm-st sm-st-planned" aria-hidden="true"></span><span class="sm-sr">（規劃中）</span></a></div></details><details class="sm-folder"><summary><a class="sm-chlink" href="../../llm/index.html" title="第 11 章 把信任模型套到新元件：Web LLM"><span class="num">11</span><span class="sm-fname">把信任模型套到新元件：Web LLM</span></a></summary><div class="sm-files"><a class="sm-file is-planned" href="../../llm/llm-attacks/index.html" title="11.1 Web LLM Attacks"><span class="num">11.1</span><span class="sm-fname">Web LLM Attacks</span><span class="sm-st sm-st-planned" aria-hidden="true"></span><span class="sm-sr">（規劃中）</span></a></div></details></details></details></nav>
+<header class="sm-head">
+  <p class="sm-eyebrow">server-input/sql-injection</p>
+  <h1><span class="num">2.3</span> SQL Injection Basics <span class="badge badge-ready">已完成</span></h1>
+  <p class="question sm-q"><span aria-hidden="true">❯</span> 輸入如何改變資料庫查詢？</p>
+</header>
+<aside class="sm-aside" aria-label="本節輔助"><nav class="sm-outline" aria-label="本節內容"><p class="sm-ph">本節內容</p><ol><li><a href="#database-model" title="2.3.1 表、列、欄"><span class="num">2.3.1</span>表、列、欄</a></li><li><a href="#select-where" title="2.3.2 讀懂一句 SELECT"><span class="num">2.3.2</span>讀懂一句 SELECT</a></li><li><a href="#where-it-breaks" title="2.3.3 拼接出來的查詢"><span class="num">2.3.3</span>拼接出來的查詢</a></li><li><a href="#worked-example" title="2.3.4 從網址追到結果"><span class="num">2.3.4</span>從網址追到結果</a></li><li><a href="#limits" title="2.3.5 什麼情況下成立"><span class="num">2.3.5</span>什麼情況下成立</a></li><li><a href="#recognition" title="2.3.6 從現象辨認"><span class="num">2.3.6</span>從現象辨認</a></li><li><a href="#failed-defences" title="2.3.7 擋危險字元為什麼不夠"><span class="num">2.3.7</span>擋危險字元為什麼不夠</a></li><li><a href="#fix" title="2.3.8 修補方法"><span class="num">2.3.8</span>修補方法</a></li><li><a href="#summary" title="2.3.9 小結"><span class="num">2.3.9</span>小結</a></li></ol></nav><section class="sm-locator" aria-label="系統地圖定位"><p class="sm-ph">系統地圖</p><a class="sm-mini-link" href="../../index.html#map-server-input" aria-label="在首頁的系統地圖上看第 2 章的位置"><svg class="sm-map sm-map-mini" viewBox="206 0 794 566" aria-hidden="true" focusable="false" preserveAspectRatio="xMidYMid meet" style="aspect-ratio:794/566"><line class="sm-edge" x1="200" y1="330" x2="290" y2="330"/><line class="sm-edge sm-dash" x1="440" y1="330" x2="530" y2="330"/><line class="sm-edge sm-threat-edge" x1="110" y1="100" x2="110" y2="255"/><line class="sm-edge sm-dash" x1="625" y1="100" x2="625" y2="150"/><line class="sm-edge" x1="625" y1="546" x2="625" y2="570"/><line class="sm-edge" x1="720" y1="325" x2="765" y2="325"/><line class="sm-edge" x1="765" y1="325" x2="765" y2="48"/><line class="sm-edge sm-dash" x1="765" y1="325" x2="765" y2="538"/><line class="sm-edge" x1="765" y1="48" x2="810" y2="48"/><line class="sm-edge" x1="765" y1="118" x2="810" y2="118"/><line class="sm-edge" x1="765" y1="188" x2="810" y2="188"/><line class="sm-edge sm-dash" x1="765" y1="328" x2="810" y2="328"/><line class="sm-edge sm-dash" x1="765" y1="398" x2="810" y2="398"/><line class="sm-edge sm-dash" x1="765" y1="468" x2="810" y2="468"/><line class="sm-edge sm-dash" x1="765" y1="538" x2="810" y2="538"/><g class="sm-n sm-threat off" data-ch="cross-site"><rect class="sm-box" x="20" y="20" width="180" height="80" rx="8"/><text class="sm-mini-t" x="110.0" y="62.0" text-anchor="middle" dominant-baseline="central" font-size="56">5</text></g><g class="sm-n sm-frame off" data-ch="web-http"><rect class="sm-box" x="20" y="255" width="180" height="150" rx="10"/><text class="sm-mini-t" x="50" y="285" text-anchor="middle" dominant-baseline="central" font-size="48">1</text></g><g class="sm-n sm-node off" data-ch="browser-output"><rect class="sm-box" x="36" y="322" width="148" height="64" rx="8"/><text class="sm-mini-t" x="110.0" y="356.0" text-anchor="middle" dominant-baseline="central" font-size="51">3</text></g><g class="sm-n sm-node sm-p2 off" data-ch="proxy-cache"><rect class="sm-box" x="290" y="240" width="150" height="180" rx="8"/><text class="sm-mini-t" x="365.0" y="332.0" text-anchor="middle" dominant-baseline="central" font-size="56">10</text></g><g class="sm-n sm-frame" aria-hidden="true"><rect class="sm-box" x="530" y="150" width="190" height="396" rx="10"/></g><g class="sm-n sm-node off" data-ch="identity"><rect class="sm-box" x="546" y="194" width="158" height="56" rx="8"/><text class="sm-mini-t" x="625.0" y="224.0" text-anchor="middle" dominant-baseline="central" font-size="45">4</text></g><g class="sm-n sm-node sm-p2 off" data-ch="apis"><rect class="sm-box" x="546" y="262" width="158" height="56" rx="8"/><text class="sm-mini-t" x="625.0" y="292.0" text-anchor="middle" dominant-baseline="central" font-size="45">8</text></g><g class="sm-n sm-node sm-p2 off" data-ch="llm"><rect class="sm-box" x="546" y="330" width="158" height="56" rx="8"/><text class="sm-mini-t" x="625.0" y="360.0" text-anchor="middle" dominant-baseline="central" font-size="45">11</text></g><g class="sm-n sm-node off" data-ch="logic-timing"><rect class="sm-box" x="546" y="398" width="158" height="56" rx="8"/><text class="sm-mini-t" x="625.0" y="428.0" text-anchor="middle" dominant-baseline="central" font-size="45">6</text></g><g class="sm-n sm-node sm-p2 off" data-ch="server-actions"><rect class="sm-box" x="546" y="466" width="158" height="56" rx="8"/><text class="sm-mini-t" x="625.0" y="496.0" text-anchor="middle" dominant-baseline="central" font-size="45">7</text></g><g class="sm-n sm-node sm-p2 off" data-ch="delegated-identity"><rect class="sm-box" x="530" y="20" width="190" height="80" rx="8"/><text class="sm-mini-t" x="625.0" y="62.0" text-anchor="middle" dominant-baseline="central" font-size="56">9</text></g><g class="sm-n sm-node off" data-ch="logic-timing"><rect class="sm-box" x="530" y="570" width="190" height="56" rx="8"/><text class="sm-mini-t" x="625.0" y="600.0" text-anchor="middle" dominant-baseline="central" font-size="45">6</text></g><g class="sm-n sm-node on" data-ch="server-input"><rect class="sm-box" x="810" y="20" width="170" height="56" rx="8"/><text class="sm-mini-t" x="895.0" y="50.0" text-anchor="middle" dominant-baseline="central" font-size="45">2</text></g><g class="sm-n sm-node on" data-ch="server-input"><rect class="sm-box" x="810" y="90" width="170" height="56" rx="8"/><text class="sm-mini-t" x="895.0" y="120.0" text-anchor="middle" dominant-baseline="central" font-size="45">2</text></g><g class="sm-n sm-node on" data-ch="server-input"><rect class="sm-box" x="810" y="160" width="170" height="56" rx="8"/><text class="sm-mini-t" x="895.0" y="190.0" text-anchor="middle" dominant-baseline="central" font-size="45">2</text></g><g class="sm-n sm-node sm-p2 off" data-ch="server-actions"><rect class="sm-box" x="810" y="300" width="170" height="56" rx="8"/><text class="sm-mini-t" x="895.0" y="330.0" text-anchor="middle" dominant-baseline="central" font-size="45">7</text></g><g class="sm-n sm-node sm-p2 off" data-ch="server-actions"><rect class="sm-box" x="810" y="370" width="170" height="56" rx="8"/><text class="sm-mini-t" x="895.0" y="400.0" text-anchor="middle" dominant-baseline="central" font-size="45">7</text></g><g class="sm-n sm-node sm-p2 off" data-ch="server-actions"><rect class="sm-box" x="810" y="440" width="170" height="56" rx="8"/><text class="sm-mini-t" x="895.0" y="470.0" text-anchor="middle" dominant-baseline="central" font-size="45">7</text></g><g class="sm-n sm-node sm-p2 off" data-ch="server-actions"><rect class="sm-box" x="810" y="510" width="170" height="56" rx="8"/><text class="sm-mini-t" x="895.0" y="540.0" text-anchor="middle" dominant-baseline="central" font-size="45">7</text></g><g class="sm-n sm-pill off" data-ch="web-http"><rect class="sm-pill-box" x="213" y="306" width="64" height="48" rx="24"/><text class="sm-mini-t" x="245" y="332" text-anchor="middle" dominant-baseline="central" font-size="38">1</text></g><g class="sm-n sm-pill off" data-ch="web-http"><rect class="sm-pill-box" x="453" y="306" width="64" height="48" rx="24"/><text class="sm-mini-t" x="485" y="332" text-anchor="middle" dominant-baseline="central" font-size="38">1</text></g><g class="sm-n sm-pill off" data-ch="cross-site"><rect class="sm-pill-box" x="78" y="153" width="64" height="48" rx="24"/><text class="sm-mini-t" x="110" y="179" text-anchor="middle" dominant-baseline="central" font-size="38">5</text></g><g class="sm-n sm-pill off" data-ch="delegated-identity"><rect class="sm-pill-box" x="593" y="101" width="64" height="48" rx="24"/><text class="sm-mini-t" x="625" y="127" text-anchor="middle" dominant-baseline="central" font-size="38">9</text></g></svg></a><p class="sm-cap">位置：第 2 章　伺服器如何處理使用者輸入</p><ul class="sm-chips sm-comps" aria-label="本章元件"><li>File system</li><li>Database</li><li>Shell</li></ul><p class="sm-mini-hint">點地圖：到首頁地圖看這一章</p></section></aside>
+<main id="main" class="sm-doc" tabindex="-1">
+<article class="content sm-article">
+<p>還是那個購物網站。商品列表頁上有一排分類按鈕：Gifts、Shoes、Toys……點下 Gifts，瀏覽器請求 <code>/filter?category=Gifts</code>，頁面就只列出禮品類的商品。商品資料存在<strong>資料庫</strong>（database）裡，沒有寫死在網頁上；網站收到分類名稱後，要向資料庫問一次：請給我分類是 Gifts 的商品。</p>
+<p>前兩節的輸入都和檔案有關：<code>filename</code> 由檔案系統解讀，上傳的檔案由取回時的處理器決定用途。這裡的 <code>category</code> 是一段文字，交給資料庫解讀。使用者送來的文字若被資料庫當成問題的一部分，而不只當成要查的值，查詢的意思就會跟著改變。</p>
+
+<h2 id="database-model"><span class="num">2.3.1</span> 表、列、欄</h2>
+<p>最常見的資料庫是<strong>關聯式資料庫</strong>（relational database）。你可以把它想成一本有很多張試算表的檔案，每張試算表叫一個<strong>表</strong>（table），有固定的<strong>欄</strong>（column，每欄有名稱，也有固定種類的內容），裡面每一筆資料占一<strong>列</strong>（row）。下面的商品表 <code>products</code> 有三列，是自編的資料。</p>
+<table>
+  <thead>
+    <tr><th>id</th><th>name</th><th>category</th><th>released</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>1</td><td>杯子</td><td>Gifts</td><td>1</td></tr>
+    <tr><td>2</td><td>未上市禮盒</td><td>Gifts</td><td>0</td></tr>
+    <tr><td>3</td><td>鞋子</td><td>Shoes</td><td>1</td></tr>
+  </tbody>
+</table>
+<ul>
+  <li><code>name</code>、<code>category</code> 是<strong>文字值</strong>（字串）；<code>id</code>、<code>released</code> 是<strong>數字值</strong>。文字值在查詢裡要用單引號圍起來，數字值不用。</li>
+  <li><code>released</code> 是網站自己的約定：<code>1</code> 表示已上市、可以給顧客看，<code>0</code> 表示尚未公開。第二列「未上市禮盒」雖然分類是 Gifts，卻不應該出現在頁面上。</li>
+</ul>
+<p>網站和資料庫之間講的語言叫 <strong>SQL</strong>（Structured Query Language，結構化查詢語言）。網站把一句 SQL 文字交給資料庫，資料庫<strong>解析</strong>（parse）這串文字：先判斷它是什麼意思，再照意思執行，把結果列送回來。資料庫和 Path Traversal 裡把 <code>..</code> 解讀成往上一層的檔案系統一樣，都是應用程式下游的<strong>解讀者</strong>（interpreter）；應用程式與下游元件之間的縫隙，見 <a href="../path-traversal/index.html#where-it-breaks">Path Traversal</a>。</p>
+
+<h2 id="select-where"><span class="num">2.3.2</span> 讀懂一句 SELECT</h2>
+<p>要取得分類是 Gifts 而且已上市的商品，網站會送出這句 SQL：</p>
+<pre data-lang="sql"><code>-- 正常的查詢
+SELECT * FROM products WHERE category = 'Gifts' AND released = 1</code></pre>
+<ul>
+  <li><code>SELECT *</code>：要取回什麼。<code>*</code> 表示「每一欄都要」。</li>
+  <li><code>FROM products</code>：從哪張表查。</li>
+  <li><code>WHERE …</code>：篩選條件。資料庫會逐列檢查，只留下條件為真的列。</li>
+  <li><code>category = 'Gifts'</code>：<code>category</code> 欄的值等於文字 <code>Gifts</code>。單引號是文字值的邊界：兩個單引號之間的部分是資料，資料庫不把它當 SQL 語法讀。</li>
+  <li><code>AND</code>：兩邊都要為真；<code>OR</code>：任一邊為真就行。</li>
+</ul>
+<p>拿三列資料逐列驗算：</p>
+<table>
+  <thead>
+    <tr><th>列</th><th><code>category = 'Gifts'</code></th><th><code>released = 1</code></th><th>兩者皆真（AND）</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>1　杯子</td><td>真</td><td>真</td><td>入選</td></tr>
+    <tr><td>2　未上市禮盒</td><td>真</td><td>假</td><td>不入選</td></tr>
+    <tr><td>3　鞋子</td><td>假</td><td>真</td><td>不入選</td></tr>
+  </tbody>
+</table>
+<p>正常情況下，顧客只看得到杯子。擋住未上市商品的，是 WHERE 裡的 <code>AND released = 1</code>。</p>
+
+<h2 id="where-it-breaks"><span class="num">2.3.3</span> 拼接出來的查詢</h2>
+<p>網站的程式不會為每個分類各寫一句 SQL，通常用一個樣板，把使用者送來的分類名稱填進去。最直覺的寫法是把字串接起來（<strong>字串拼接</strong>，string concatenation），例如下面這段程式：</p>
+<pre data-lang="python"><code># 不安全的做法
+category = request.args["category"]   # 使用者送來的文字
+query = ("SELECT * FROM products WHERE category = '"
+         + category
+         + "' AND released = 1")
+rows = db.execute(query).fetchall()   # 整串文字交給資料庫</code></pre>
+<p>這段程式可以讀成三個動作：<code>request.args["category"]</code> 取出使用者送來的輸入；<code>db.execute(…)</code> 把查詢交給資料庫執行；<code>fetchall()</code> 取回所有結果列。</p>
+<p>其中 <code>+</code> 把三段文字接成一長串。拼好之後，資料庫收到的只是一整串文字，分辨不出哪些字是程式設計者寫的、哪些是使用者填的，只會從頭到尾解析。使用者填的文字若含有 SQL 的語法字元（尤其是單引號），資料庫就把它讀成語法。</p>
+
+<figure id="sql-splice">
+  <svg viewBox="0 0 640 282" role="img" aria-labelledby="sql-splice-t" style="color:var(--text)">
+    <title id="sql-splice-t">SQL 查詢由固定前半、使用者可控的值、固定後半三段拼成；修改後的值使後半被註解掉</title>
+    <g font-size="13" font-weight="700" fill="currentColor">
+      <text x="20" y="18">正常：category=Gifts</text>
+      <text x="20" y="168">被操縱：category 的值含有攻擊者加入的語法片段</text>
+    </g>
+    <g font-size="12" fill="currentColor">
+      <text x="20" y="62">固定（程式寫死）</text>
+      <text x="355" y="62">固定</text>
+      <text x="333" y="36" text-anchor="middle">使用者可控</text>
+      <text x="20" y="212">固定（程式寫死）</text>
+      <text x="463" y="212">固定，但可能不再參與</text>
+      <text x="387" y="186" text-anchor="middle">使用者可控</text>
+    </g>
+    <g stroke="currentColor" stroke-width="1.2" opacity=".6">
+      <path d="M333 40 V66"/>
+      <path d="M387 190 V216"/>
+    </g>
+    <g stroke="currentColor" stroke-width="1.2">
+      <rect x="20" y="68" width="295.2" height="26" fill="var(--surface)"/>
+      <rect x="315.2" y="68" width="36" height="26" fill="var(--accent-soft)"/>
+      <rect x="351.2" y="68" width="129.6" height="26" fill="var(--surface)"/>
+      <rect x="20" y="218" width="295.2" height="26" fill="var(--surface)"/>
+      <rect x="315.2" y="218" width="144" height="26" fill="var(--accent-soft)"/>
+      <rect x="459.2" y="218" width="129.6" height="26" fill="var(--surface)" opacity=".5"/>
+    </g>
+    <g style="font-family:var(--font-mono)" font-size="12" fill="currentColor">
+      <text x="20" y="86" textLength="295.2" lengthAdjust="spacingAndGlyphs">SELECT * FROM products WHERE category = '</text>
+      <text x="315.2" y="86" textLength="36" lengthAdjust="spacingAndGlyphs">Gifts</text>
+      <text x="351.2" y="86" textLength="129.6" lengthAdjust="spacingAndGlyphs">' AND released = 1</text>
+      <text x="20" y="236" textLength="295.2" lengthAdjust="spacingAndGlyphs">SELECT * FROM products WHERE category = '</text>
+      <text x="319" y="236" textLength="136" lengthAdjust="spacingAndGlyphs">[攻擊者加入的語法片段]</text>
+      <text x="459.2" y="236" textLength="129.6" lengthAdjust="spacingAndGlyphs" opacity=".55">' AND released = 1</text>
+    </g>
+    <g font-size="12" fill="currentColor">
+      <text x="20" y="112">資料庫讀到：category 等於 Gifts，而且 released 等於 1</text>
+      <text x="20" y="266">資料庫讀到：語法片段改變了條件的結構，後半的限制可能被改寫或忽略</text>
+    </g>
+  </svg>
+  <figcaption><span class="fig-num">圖 2.3.3-1</span> 同一個樣板收到兩種輸入：上方使用者的值只是資料；下方的值含有語法片段，被資料庫讀成語法，使發布條件可能不再參與判斷</figcaption>
+</figure>
+
+<p>應用程式把使用者可控制的文字拼進交給資料庫解析的查詢，資料庫把其中一部分讀成語法，這類問題稱為 <strong>SQL Injection</strong>（SQL 注入）。Path Traversal 越界的是路徑中的 <code>..</code>，這裡是單引號、<code>OR</code>、註解符號這些語法字元。</p>
+
+<h2 id="worked-example"><span class="num">2.3.4</span> 從網址追到結果</h2>
+<p>拿同樣三列資料，跟著一個請求一路走到結果。</p>
+
+<h3>正常情況</h3>
+<ol>
+  <li>瀏覽器請求：<code>GET /filter?category=Gifts</code>。</li>
+  <li>伺服器取出參數 <code>category</code> 的值：<code>Gifts</code>。</li>
+  <li>拼接：固定前半 + <code>Gifts</code> + 固定後半，得到 <code>SELECT * FROM products WHERE category = 'Gifts' AND released = 1</code>。</li>
+  <li>資料庫逐列驗算（見前面的真假表），結果：只有「杯子」入選。</li>
+</ol>
+
+<h3>被操縱的情況</h3>
+<p>其他都不變，只把 <code>category</code> 的值換成一段含有攻擊者語法片段的文字。方括號代表被換掉的那段輸入。同一個值在四個階段長得不一樣：</p>
+<table>
+  <thead>
+    <tr><th>階段</th><th>內容</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>1　網址裡的傳輸表示</td><td><code>/filter?category=[百分比編碼後的內容]</code></td></tr>
+    <tr><td>2　伺服器解碼後的值</td><td><code>[攻擊者加入的語法片段]</code></td></tr>
+    <tr><td>3　拼接後的 SQL</td><td><code>SELECT * FROM products WHERE category = '[攻擊者加入的語法片段]' AND released = 1</code></td></tr>
+    <tr><td>4　資料庫實際讀到的條件</td><td>由片段決定：條件的結構已被改寫，後半的 <code>released = 1</code> 可能不再限制結果</td></tr>
+  </tbody>
+</table>
+<p>階段 1 是網址的百分比編碼（percent-encoding）：參數的值依所用的格式序列化，空白與有特殊作用的字元寫成 <code>%</code> 加兩位十六進位，例如空白是 <code>%20</code>。網址語法本身允許哪些字元，和表單序列化規則是不同層的約定；瀏覽器或工具也常自動處理。編碼只是搬運用的包裝，伺服器收到後先依該格式還原成階段 2 的文字。讓資料庫改變行為的是階段 3、4 裡的語法，<code>%20</code> 這類編碼本身沒有 SQL 的作用。編輯參數時，別把已編碼的字串再編碼一次。</p>
+<p>從階段 3 到階段 4，片段可以扮演三種語法角色：</p>
+<ol>
+  <li>字串邊界：單引號是文字值的邊界。如果值裡有引號字元，字串就可能比設計者預期的更早結束，後面的字被當成語法。</li>
+  <li>條件組合：<code>AND</code> 要求兩邊皆真，<code>OR</code> 只要一邊為真。多加一段用 <code>OR</code> 連接的條件，可以讓篩選對更多列成立。</li>
+  <li>註解：SQL 有註解符號，資料庫會忽略它之後同一行的內容。如果註解出現在樣板的固定後半之前，後半（包含 <code>released = 1</code>）就不再參與判斷。</li>
+</ol>
+<p>假設片段的效果是「條件對每一列都成立，且發布限制失效」，資料庫對三列各驗算一次，結果如下圖：</p>
+
+<figure id="sql-row-matrix">
+  <svg viewBox="0 0 640 230" role="img" aria-labelledby="sql-row-matrix-t" style="color:var(--text)">
+    <title id="sql-row-matrix-t">三列資料在正常輸入、條件被改寫的拼接查詢、參數化查詢三種情況下是否入選</title>
+    <g font-size="13" font-weight="700" text-anchor="middle" fill="currentColor">
+      <text x="300" y="20">正常輸入 Gifts</text>
+      <text x="440" y="20">拼接 + 條件被改寫</text>
+      <text x="574" y="20">參數化 + 同一個值</text>
+    </g>
+    <g fill="var(--surface)" stroke="currentColor" stroke-width="1.2">
+      <rect x="12" y="32" width="180" height="40"/>
+      <rect x="12" y="76" width="180" height="40"/>
+      <rect x="12" y="120" width="180" height="40"/>
+      <rect x="232" y="32" width="136" height="40" fill="var(--accent-soft)"/>
+      <rect x="232" y="76" width="136" height="40"/>
+      <rect x="232" y="120" width="136" height="40"/>
+      <rect x="372" y="32" width="136" height="40" fill="var(--accent-soft)"/>
+      <rect x="372" y="76" width="136" height="40" fill="var(--accent-soft)"/>
+      <rect x="372" y="120" width="136" height="40" fill="var(--accent-soft)"/>
+      <rect x="512" y="32" width="124" height="40"/>
+      <rect x="512" y="76" width="124" height="40"/>
+      <rect x="512" y="120" width="124" height="40"/>
+      <rect x="232" y="170" width="136" height="34"/>
+      <rect x="372" y="170" width="136" height="34"/>
+      <rect x="512" y="170" width="124" height="34"/>
+    </g>
+    <g font-size="13" fill="currentColor">
+      <text x="22" y="57">1　杯子　Gifts　1</text>
+      <text x="22" y="101">2　未上市禮盒　Gifts　0</text>
+      <text x="22" y="145">3　鞋子　Shoes　1</text>
+      <text x="22" y="192" font-weight="700">回傳列數</text>
+    </g>
+    <g font-size="13" text-anchor="middle" fill="currentColor">
+      <text x="300" y="57" font-weight="700">入選</text>
+      <text x="300" y="101" opacity=".7">不入選</text>
+      <text x="300" y="145" opacity=".7">不入選</text>
+      <text x="440" y="57" font-weight="700">入選</text>
+      <text x="440" y="101" font-weight="700">入選（本不該顯示）</text>
+      <text x="440" y="145" font-weight="700">入選</text>
+      <text x="574" y="57" opacity=".7">不入選</text>
+      <text x="574" y="101" opacity=".7">不入選</text>
+      <text x="574" y="145" opacity=".7">不入選</text>
+      <text x="300" y="192" font-weight="700">1</text>
+      <text x="440" y="192" font-weight="700">3</text>
+      <text x="574" y="192" font-weight="700">0（空結果）</text>
+    </g>
+    <text x="12" y="224" font-size="12" fill="currentColor">底色深者為入選的列</text>
+  </svg>
+  <figcaption><span class="fig-num">圖 2.3.4-1</span> 同一份三列資料的三種結果：條件被改寫的拼接查詢連未上市的商品都回傳；參數化查詢把同一串文字當成一個分類名稱，找不到而回傳空結果</figcaption>
+</figure>
+
+<p>三列都入選，包含原本不該公開的「未上市禮盒」。在真實網站上，頁面上商品變多並不能證明多出來的是未發布商品；這裡知道，是因為三列資料是自己定的。片段改動語法的位置不同，受影響的條件也不同。</p>
+
+<h2 id="limits"><span class="num">2.3.5</span> 什麼情況下成立</h2>
+<ul>
+  <li>上面的情況只在輸入被拼進查詢文字時發生。同一個 <code>category</code> 參數若改用參數化查詢（見後面），就不會成立。</li>
+  <li>註解寫法、字串引號規則、跳脫字元都因資料庫（MySQL、PostgreSQL、SQL Server、Oracle、SQLite 等）而異，沒有一套寫法適用所有環境。</li>
+  <li>注入點的位置決定需要什麼語法。購物網站例子裡的 <code>category</code> 放在單引號之間（字串情境）。如果參數是數字、沒有引號圍住，例如 <code>WHERE id = </code> 後面直接接使用者的值，片段不必處理字串邊界，直接就是語法。注入點也可能在 <code>ORDER BY</code>、登入表單或 HTTP 標頭等地方。</li>
+  <li>能做到的事受查詢本身與資料庫帳號限制。前面的例子只改變了 WHERE 的篩選結果；能不能進一步讀其他表、更動資料，要看查詢的位置、回應怎麼呈現，以及資料庫帳號的權限，下一節與縱深防禦那一段會談。</li>
+  <li>SQL 錯誤只是線索，不代表漏洞已被利用。</li>
+</ul>
+
+<h2 id="recognition"><span class="num">2.3.6</span> 從現象辨認</h2>
+<p>你看不到伺服器的程式碼，只能從 request 與 response 的差異推測。做法和 <a href="../../web-http/http-session/index.html">HTTP Requests and Sessions</a> 一樣：先記下正常的 request 與 response 當基準，每次只改一個地方，比較差異，最後恢復原樣。這類觀察只在 Lab 或自己擁有、獲授權的系統上做。</p>
+<ul>
+  <li>哪些參數可能進資料庫：篩選、搜尋、排序、登入帳號、分類、商品 id 等用某個條件查資料的功能都有可能。光看參數名稱無法確定，只能先列為候選。</li>
+  <li>引號的對照：在已知正常的值裡加入一個在 SQL 中有特殊作用的字元（如引號），若回應變成錯誤頁、空白頁或內容明顯不同，改成 SQL 中表示普通字元的寫法後又恢復正常，就暗示該字元在查詢裡有語法作用。這只是線索：出錯也可能來自輸入檢查、另一層過濾，或應用程式處理不了這個字元。</li>
+  <li>錯誤訊息：有些網站會把資料庫的錯誤訊息原樣顯示在頁面上，裡面可能出現 SQL 文字片段，或資料庫的名稱與版本；這既是辨認線索，也是<a href="../../web-http/web-basics/index.html">資訊揭露</a>的一種。沒看到錯誤訊息也不能放心：錯誤可能被隱藏，查詢照樣被改變。</li>
+  <li>條件的對照：拿兩種意義相反的輸入比較，一個讓條件保持成立、一個讓條件不成立。若兩者的回應穩定地不同（例如列數、內容），就支持「輸入影響了查詢邏輯」這個假說。比較時排除頁面上本來就會變動的內容（時間、廣告、推薦商品），以固定的欄位（例如商品列數）判斷。面對未知的網站，你看不到內部資料流，還要排除應用程式的其他分支、輸入驗證、快取等解釋，重複對照能提高可信度；只有在後端規則由自己指定的教學模型裡，才能直接說差異來自查詢條件。</li>
+  <li>空結果與錯誤要分開：合法的查詢可以回傳零列，找不到商品是成功查詢的一種結果。資料庫報錯也不只語法錯誤一類，還有權限不足、資料轉換或執行時的錯誤，看到錯誤時要讀內容。</li>
+</ul>
+
+<h2 id="failed-defences"><span class="num">2.3.7</span> 擋危險字元為什麼不夠</h2>
+<p>把危險字元擋掉是很直覺的反應。這些做法處理的是輸入長什麼樣子，輸入和語法仍然放在同一串文字裡：</p>
+<table>
+  <thead>
+    <tr><th>做法</th><th>為什麼不夠</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>自己跳脫（escape）單引號，例如把 <code>'</code> 換成 <code>''</code></td><td>只在值被單引號圍住的情境有用。數字情境（<code>WHERE id = </code> 後面直接接值）根本沒有引號，沒有東西可跳脫。不同資料庫與設定對跳脫的規則不同：例如 MySQL 8.4 在沒有啟用 NO_BACKSLASH_ESCAPES 時，反斜線在字串裡有跳脫意義（實際規則取決於連線的 SQL mode，詳見 <a href="https://dev.mysql.com/doc/refman/8.4/en/string-literals.html">MySQL 的字串常值說明</a>），單引號替換的邏輯若沒考慮這點就會被繞過；字元編碼的處理也出過問題。要完全正確，得逐個資料庫、逐種情境維護。</td></tr>
+    <tr><td>黑名單：擋 SQL 關鍵字、註解符號、引號等字樣</td><td>「壞樣子」列不完：SQL 對大小寫、空白與寫法有很大彈性，同樣的語意有許多種變形。黑名單還會誤傷正常輸入，例如人名 O'Brien 含有單引號，或一件商品名叫 Select 或 Order。</td></tr>
+    <tr><td>只在瀏覽器端用 JavaScript 檢查輸入</td><td>瀏覽器端的檢查只約束一般使用者的畫面。request 可以用工具直接改，完全不經過那段檢查，伺服器端必須自己負責。</td></tr>
+    <tr><td>隱藏 SQL 錯誤訊息</td><td>能少給攻擊者一些線索，但查詢結構照樣被改動。看不到錯誤時，還有其他方式從回應差異推測，留到 <a href="../sql-injection-observation/index.html">下一節</a>。</td></tr>
+    <tr><td>依賴網站防火牆（WAF）擋可疑輸入</td><td>WAF 是額外的一層，能降低風險，但它同樣靠辨識「壞樣子」，限制和黑名單相同，不能取代把程式改對。</td></tr>
+  </tbody>
+</table>
+
+<h2 id="fix"><span class="num">2.3.8</span> 修補方法</h2>
+<h3>參數化查詢</h3>
+<p><strong>參數化查詢</strong>（parameterized query，也稱 prepared statement）的做法，是把「SQL 的結構」與「要填入的值」分成兩個通道送給資料庫。</p>
+<pre data-lang="python"><code># 較安全的做法
+category = request.args["category"]
+rows = db.execute(
+    # 通道一：固定的 SQL，? 是佔位符
+    "SELECT * FROM products WHERE category = ? AND released = 1",
+    # 通道二：要填進 ? 的值
+    (category,)
+).fetchall()</code></pre>
+<ul>
+  <li><code>?</code> 叫<strong>佔位符</strong>（placeholder），意思是「這裡之後會有一個值」。</li>
+  <li><code>(category,)</code> 是一組值（Python 稱為 tuple），依序對應各個 <code>?</code>；結尾那個逗號是 Python 的語法，用來表示「只有一個元素」。</li>
+  <li>佔位符的寫法依程式語言與資料庫驅動程式（driver）而異，可能是 <code>?</code>、<code>%s</code>、<code>:name</code> 或 <code>$1</code>；不論哪種，SQL 與值都分開傳入。</li>
+</ul>
+
+<figure id="sql-two-channels">
+  <svg viewBox="0 0 640 300" role="img" aria-labelledby="sql-two-channels-t" style="color:var(--text)">
+    <title id="sql-two-channels-t">拼接只有一個通道，整串文字都被當作語法解析；參數化有兩個通道，值只被填入佔位符</title>
+    <defs>
+      <marker id="tc-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+        <path d="M0 0 L10 5 L0 10 z" fill="currentColor"/>
+      </marker>
+    </defs>
+    <g font-size="13" font-weight="700" fill="currentColor">
+      <text x="12" y="18">拼接：只有一個通道</text>
+      <text x="12" y="126">參數化：兩個通道</text>
+    </g>
+    <g fill="var(--surface)" stroke="currentColor" stroke-width="1.5">
+      <rect x="12" y="30" width="130" height="42" rx="8"/>
+      <rect x="230" y="30" width="170" height="42" rx="8"/>
+      <rect x="490" y="30" width="138" height="42" rx="8"/>
+      <rect x="12" y="140" width="220" height="42" rx="8"/>
+      <rect x="290" y="140" width="190" height="42" rx="8"/>
+      <rect x="12" y="206" width="220" height="42" rx="8" fill="var(--accent-soft)"/>
+      <rect x="290" y="206" width="190" height="42" rx="8" fill="var(--accent-soft)"/>
+      <rect x="540" y="160" width="88" height="70" rx="8"/>
+    </g>
+    <g font-size="13" text-anchor="middle" fill="currentColor">
+      <text x="77" y="56">使用者輸入</text>
+      <text x="315" y="56">拼成一整串文字</text>
+      <text x="559" y="56">資料庫解析</text>
+      <text x="122" y="166">固定的 SQL（含 ?）</text>
+      <text x="385" y="166">先解析出查詢結構</text>
+      <text x="122" y="232">值（使用者輸入）</text>
+      <text x="385" y="232">只填入 ?，當作資料</text>
+      <text x="584" y="191">執行</text>
+      <text x="584" y="209">並回傳</text>
+    </g>
+    <g stroke="currentColor" stroke-width="2" fill="none">
+      <path d="M146 51 H226" marker-end="url(#tc-arrow)"/>
+      <path d="M404 51 H486" marker-end="url(#tc-arrow)"/>
+      <path d="M236 161 H286" marker-end="url(#tc-arrow)"/>
+      <path d="M236 227 H286" marker-end="url(#tc-arrow)"/>
+      <path d="M484 161 L536 180" marker-end="url(#tc-arrow)"/>
+      <path d="M484 227 L536 210" marker-end="url(#tc-arrow)"/>
+    </g>
+    <g font-size="12" fill="currentColor">
+      <text x="628" y="94" text-anchor="end">整串都被當成可能的語法來讀</text>
+      <text x="12" y="276">值不經過解析：不論裡面有什麼字元，都只是 ? 位置上的一個值</text>
+    </g>
+  </svg>
+  <figcaption><span class="fig-num">圖 2.3.8-1</span> 上方：輸入與樣板混成一串，資料庫無法分辨界線；下方：結構先確定，值之後才填入，兩者不會混在一起</figcaption>
+</figure>
+
+<h3>為什麼有效</h3>
+<p>資料庫收到帶佔位符的 SQL，會先解析這句固定的文字，這時查詢的結構（<code>WHERE category = ? AND released = 1</code>：兩個條件，用 AND 相連）就決定了。之後送來的值只放進 <code>?</code> 的位置，當作一個值來比較，不再被解析成語法。所以值裡有沒有引號、關鍵字或註解符號，結構都不會變。</p>
+<p>拿前面的例子驗算：把那段攻擊者加入的語法片段當作值，用參數化查詢送出，資料庫要找的是「<code>category</code> 欄的值剛好等於這整串文字」的商品。三列都沒有這個分類，所以回傳 0 列，就是三列結果圖最右欄的空結果。空結果正是預期的：查詢合法地執行了，只是沒有符合的列，而且 <code>released = 1</code> 這個條件還在。</p>
+<aside class="warning">
+  <p>判斷是不是參數化，看的是 SQL 與值有沒有分開傳入。先用字串格式化（例如 f-string、<code>%</code> 或 <code>+</code>）把值組進字串，再把整串交給 <code>execute</code>，仍然是拼接。</p>
+</aside>
+
+<h3>參數化的限制</h3>
+<ul>
+  <li>佔位符只能代表值。表名、欄位名、排序方向（<code>ASC</code>／<code>DESC</code>）這類結構不能用佔位符。如果功能需要使用者選擇排序欄位，應在程式裡建一份允許清單：使用者送來 <code>price</code> 或 <code>name</code> 這樣的代號，程式用固定的對照把它換成事先寫好的欄位名，不在對照表裡的一律拒絕。</li>
+  <li>預存程序（stored procedure，事先存在資料庫裡、可以被呼叫的一段程式）裡再拼接字串，一樣有風險。要檢查的是最後有沒有一段由使用者文字拼出的 SQL，與用了什麼技術名詞無關。</li>
+  <li>程式框架或資料庫工具通常內建參數化；用到它們「直接寫原始 SQL」的出口時，原則相同。</li>
+</ul>
+
+<h3>縱深防禦</h3>
+<p>這些做法不能代替參數化，用途是在仍有漏洞時縮小損害：</p>
+<ul>
+  <li>最小權限（least privilege）：網站連資料庫的帳號只給它需要的權限。例如只讀的功能使用只能 SELECT、且只能碰必要資料表的帳號；不要用資料庫管理員帳號連線。這樣即使某個查詢被改變，可讀寫的範圍也有上限。</li>
+  <li>對使用者顯示一般性的錯誤訊息，詳細的 SQL 錯誤只寫入受保護的內部紀錄。</li>
+  <li>輸入驗證（型別、長度、允許的格式）也要保留。</li>
+</ul>
+
+<h2 id="summary"><span class="num">2.3.9</span> 小結</h2>
+<ul>
+  <li><code>SELECT … FROM … WHERE …</code> 取出條件為真的列；單引號是文字值的邊界。</li>
+  <li>SQL Injection：程式把使用者文字拼進查詢，資料庫整串解析，把其中一部分讀成語法。</li>
+  <li>Gifts 的例子裡條件被改寫，<code>released = 1</code> 這類限制失效；改動的位置不同，後果也不同。</li>
+  <li>手動跳脫與黑名單靠不住。修補用參數化查詢，動態結構用允許清單，最小權限與一般性錯誤訊息當縱深防禦。</li>
+  <li>空結果是合法的查詢結果；SQL 錯誤只是線索。</li>
+</ul>
+<p>PortSwigger Academy 的對應練習（主題頁 <a href="https://portswigger.net/web-security/sql-injection">SQL injection</a>），只在 Lab 或其他獲明確授權的系統上測試：</p>
+<ul>
+  <li><a href="https://portswigger.net/web-security/sql-injection/lab-retrieve-hidden-data">SQL injection vulnerability in WHERE clause allowing retrieval of hidden data</a>：只改分類參數，用回應的商品清單驗算被改寫的 WHERE 條件。</li>
+  <li><a href="https://portswigger.net/web-security/sql-injection/lab-login-bypass">SQL injection vulnerability allowing login bypass</a>（選讀）：同一個機制換到登入檢查的 WHERE 條件。</li>
+</ul>
+<p>Gifts 分類的例子裡，被改過的查詢結果直接顯示在頁面上，許多網站卻不會把查詢結果印出來。下一節 <a href="../sql-injection-observation/index.html">UNION and Blind SQL Injection</a> 談兩種情況：把另一張表的資料併進同一份結果，以及結果不顯示在頁面上時，從回應的內容、長度或時間差異推測資料庫的判斷。</p>
+
+</article>
+<nav class="pager" aria-label="上下節"><a class="prev" href="../../server-input/file-upload/index.html"><small>← prev</small><span class="num">2.2</span> File Upload Vulnerabilities</a><a class="next" href="../../server-input/sql-injection-observation/index.html"><small>next →</small><span class="num">2.4</span> UNION and Blind SQL Injection</a></nav>
+</main>
+</div>
+<footer class="sm-status"><span class="sm-s-main">26 sections</span><span class="sm-s-list"><span class="sm-s-planned">規劃中 12</span> <span class="sm-s-draft">草稿 3</span> <span class="sm-s-ready">已完成 11</span></span><span class="sm-s-end">系統地圖</span></footer>
+<script src="../../assets/theme/theme.js?v=d288e31038"></script>
+</body>
+</html>

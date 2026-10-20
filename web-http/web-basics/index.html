@@ -1,0 +1,365 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>1.1 Seeing the Web Through the Browser｜Web 安全</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Crect width='16' height='16' rx='3' fill='%23070c12'/%3E%3Crect x='1.5' y='1.5' width='13' height='13' rx='2.5' fill='none' stroke='%2336e0cc' stroke-width='1.4'/%3E%3Cpath d='M5 8 L11 5 M5 8 L11 11' stroke='%2336e0cc' stroke-width='1.2' fill='none'/%3E%3Ccircle cx='5' cy='8' r='1.6' fill='%2336e0cc'/%3E%3Ccircle cx='11' cy='5' r='1.6' fill='%2336e0cc'/%3E%3Ccircle cx='11' cy='11' r='1.6' fill='%2336e0cc'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="../../assets/style.css?v=d288e31038">
+<link rel="stylesheet" href="../../assets/theme/theme.css?v=d288e31038">
+<script>(function(){var m=null;try{m=localStorage.getItem("web-security:motion")}catch(e){}if(m!=="on"&&m!=="off"){m="on";try{if(matchMedia("(prefers-reduced-motion: reduce)").matches)m="off"}catch(e){}}document.documentElement.setAttribute("data-motion",m)})()</script>
+</head>
+<body class="page-section sm-body">
+<a class="skip" href="#main">跳到正文</a>
+<header class="sm-top"><a class="sm-brand" href="../../index.html"><svg class="sm-logo" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><rect x="1" y="1" width="14" height="14" rx="3" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M5 8 L11 5 M5 8 L11 11" stroke="currentColor" stroke-width="1.3" fill="none"/><circle cx="5" cy="8" r="1.7" fill="currentColor"/><circle cx="11" cy="5" r="1.7" fill="currentColor"/><circle cx="11" cy="11" r="1.7" fill="currentColor"/></svg><span class="sm-brand-t">web-security</span></a><nav class="sm-path" aria-label="目前位置"><ol><li class="sm-p-root"><a href="../../index.html">web-security</a></li><li class="sm-p-ch split"><a href="../../web-http/index.html">1<span class="sm-p-title">&nbsp;Web 與 HTTP</span></a></li><li class=""><span aria-current="page">1.1</span></li></ol></nav><a class="sm-toplink" href="../../index.html#map">map</a><a class="sm-toplink" href="../../chapters/index.html">chapters</a><button type="button" class="sm-toplink sm-motion" aria-pressed="true" hidden>動畫：開</button></header>
+<div class="sm-shell">
+<nav class="sm-tree" aria-label="教材瀏覽器"><details class="sm-tree-wrap" open><summary class="sm-tree-sum">EXPLORER／教材目錄</summary><p class="sm-tree-h" aria-hidden="true">EXPLORER</p><details class="sm-partd" open><summary class="sm-part">第一部分：輸入如何穿過網站</summary><details class="sm-folder" open><summary><a class="sm-chlink" href="../../web-http/index.html" title="第 1 章 Web 與 HTTP"><span class="num">1</span><span class="sm-fname">Web 與 HTTP</span></a></summary><div class="sm-files"><a class="sm-file" href="../../web-http/web-basics/index.html" aria-current="page" title="1.1 Seeing the Web Through the Browser"><span class="num">1.1</span><span class="sm-fname">Seeing the Web Through the Browser</span><span class="sm-st sm-st-ready" aria-hidden="true"></span><span class="sm-sr">（已完成）</span></a><a class="sm-file" href="../../web-http/http-session/index.html" title="1.2 HTTP Requests and Sessions"><span class="num">1.2</span><span class="sm-fname">HTTP Requests and Sessions</span><span class="sm-st sm-st-ready" aria-hidden="true"></span><span class="sm-sr">（已完成）</span></a></div></details><details class="sm-folder"><summary><a class="sm-chlink" href="../../server-input/index.html" title="第 2 章 伺服器如何處理使用者輸入"><span class="num">2</span><span class="sm-fname">伺服器如何處理使用者輸入</span></a></summary><div class="sm-files"><a class="sm-file" href="../../server-input/path-traversal/index.html" title="2.1 Path Traversal"><span class="num">2.1</span><span class="sm-fname">Path Traversal</span><span class="sm-st sm-st-ready" aria-hidden="true"></span><span class="sm-sr">（已完成）</span></a><a class="sm-file" href="../../server-input/file-upload/index.html" title="2.2 File Upload Vulnerabilities"><span class="num">2.2</span><span class="sm-fname">File Upload Vulnerabilities</span><span class="sm-st sm-st-ready" aria-hidden="true"></span><span class="sm-sr">（已完成）</span></a><a class="sm-file" href="../../server-input/sql-injection/index.html" title="2.3 SQL Injection Basics"><span class="num">2.3</span><span class="sm-fname">SQL Injection Basics</span><span class="sm-st sm-st-ready" aria-hidden="true"></span><span class="sm-sr">（已完成）</span></a><a class="sm-file" href="../../server-input/sql-injection-observation/index.html" title="2.4 UNION and Blind SQL Injection"><span class="num">2.4</span><span class="sm-fname">UNION and Blind SQL Injection</span><span class="sm-st sm-st-ready" aria-hidden="true"></span><span class="sm-sr">（已完成）</span></a><a class="sm-file" href="../../server-input/command-injection/index.html" title="2.5 OS Command Injection"><span class="num">2.5</span><span class="sm-fname">OS Command Injection</span><span class="sm-st sm-st-ready" aria-hidden="true"></span><span class="sm-sr">（已完成）</span></a></div></details><details class="sm-folder"><summary><a class="sm-chlink" href="../../browser-output/index.html" title="第 3 章 伺服器的輸出如何在瀏覽器中變成程式"><span class="num">3</span><span class="sm-fname">伺服器的輸出如何在瀏覽器中變成程式</span></a></summary><div class="sm-files"><a class="sm-file" href="../../browser-output/xss-basics/index.html" title="3.1 Cross-Site Scripting Basics"><span class="num">3.1</span><span class="sm-fname">Cross-Site Scripting Basics</span><span class="sm-st sm-st-ready" aria-hidden="true"></span><span class="sm-sr">（已完成）</span></a><a class="sm-file" href="../../browser-output/xss-context-dom/index.html" title="3.2 Output Contexts and DOM-Based XSS"><span class="num">3.2</span><span class="sm-fname">Output Contexts and DOM-Based XSS</span><span class="sm-st sm-st-ready" aria-hidden="true"></span><span class="sm-sr">（已完成）</span></a></div></details><details class="sm-folder"><summary><a class="sm-chlink" href="../../identity/index.html" title="第 4 章 網站如何知道你是誰、允許你做什麼"><span class="num">4</span><span class="sm-fname">網站如何知道你是誰、允許你做什麼</span></a></summary><div class="sm-files"><a class="sm-file" href="../../identity/authentication/index.html" title="4.1 Authentication"><span class="num">4.1</span><span class="sm-fname">Authentication</span><span class="sm-st sm-st-ready" aria-hidden="true"></span><span class="sm-sr">（已完成）</span></a><a class="sm-file" href="../../identity/access-control/index.html" title="4.2 Access Control"><span class="num">4.2</span><span class="sm-fname">Access Control</span><span class="sm-st sm-st-ready" aria-hidden="true"></span><span class="sm-sr">（已完成）</span></a></div></details><details class="sm-folder"><summary><a class="sm-chlink" href="../../cross-site/index.html" title="第 5 章 網站之間如何利用瀏覽器的信任"><span class="num">5</span><span class="sm-fname">網站之間如何利用瀏覽器的信任</span></a></summary><div class="sm-files"><a class="sm-file" href="../../cross-site/cross-site-trust/index.html" title="5.1 CSRF, CORS, and Cross-Site Trust"><span class="num">5.1</span><span class="sm-fname">CSRF, CORS, and Cross-Site Trust</span><span class="sm-st sm-st-draft" aria-hidden="true"></span><span class="sm-sr">（草稿）</span></a></div></details><details class="sm-folder"><summary><a class="sm-chlink" href="../../logic-timing/index.html" title="第 6 章 問題藏在流程與時間裡"><span class="num">6</span><span class="sm-fname">問題藏在流程與時間裡</span></a></summary><div class="sm-files"><a class="sm-file" href="../../logic-timing/business-logic/index.html" title="6.1 Business Logic Vulnerabilities"><span class="num">6.1</span><span class="sm-fname">Business Logic Vulnerabilities</span><span class="sm-st sm-st-draft" aria-hidden="true"></span><span class="sm-sr">（草稿）</span></a><a class="sm-file" href="../../logic-timing/race-conditions/index.html" title="6.2 Race Conditions"><span class="num">6.2</span><span class="sm-fname">Race Conditions</span><span class="sm-st sm-st-draft" aria-hidden="true"></span><span class="sm-sr">（草稿）</span></a></div></details></details><details class="sm-partd" open><summary class="sm-part">第二部分：多元件系統的信任邊界</summary><details class="sm-folder"><summary><a class="sm-chlink" href="../../server-actions/index.html" title="第 7 章 伺服器把資料交給其他元件之後"><span class="num">7</span><span class="sm-fname">伺服器把資料交給其他元件之後</span></a></summary><div class="sm-files"><a class="sm-file is-planned" href="../../server-actions/ssrf/index.html" title="7.1 Server-Side Request Forgery"><span class="num">7.1</span><span class="sm-fname">Server-Side Request Forgery</span><span class="sm-st sm-st-planned" aria-hidden="true"></span><span class="sm-sr">（規劃中）</span></a><a class="sm-file is-planned" href="../../server-actions/xxe/index.html" title="7.2 XML External Entity Injection"><span class="num">7.2</span><span class="sm-fname">XML External Entity Injection</span><span class="sm-st sm-st-planned" aria-hidden="true"></span><span class="sm-sr">（規劃中）</span></a><a class="sm-file is-planned" href="../../server-actions/ssti/index.html" title="7.3 Server-Side Template Injection"><span class="num">7.3</span><span class="sm-fname">Server-Side Template Injection</span><span class="sm-st sm-st-planned" aria-hidden="true"></span><span class="sm-sr">（規劃中）</span></a><a class="sm-file is-planned" href="../../server-actions/deserialization/index.html" title="7.4 Insecure Deserialization"><span class="num">7.4</span><span class="sm-fname">Insecure Deserialization</span><span class="sm-st sm-st-planned" aria-hidden="true"></span><span class="sm-sr">（規劃中）</span></a><a class="sm-file is-planned" href="../../server-actions/prototype-pollution/index.html" title="7.5 Prototype Pollution"><span class="num">7.5</span><span class="sm-fname">Prototype Pollution</span><span class="sm-st sm-st-planned" aria-hidden="true"></span><span class="sm-sr">（規劃中）</span></a></div></details><details class="sm-folder"><summary><a class="sm-chlink" href="../../apis/index.html" title="第 8 章 網站變成 API 之後"><span class="num">8</span><span class="sm-fname">網站變成 API 之後</span></a></summary><div class="sm-files"><a class="sm-file is-planned" href="../../apis/api-testing/index.html" title="8.1 API Attack Surface"><span class="num">8.1</span><span class="sm-fname">API Attack Surface</span><span class="sm-st sm-st-planned" aria-hidden="true"></span><span class="sm-sr">（規劃中）</span></a><a class="sm-file is-planned" href="../../apis/graphql-websockets/index.html" title="8.2 GraphQL and WebSockets"><span class="num">8.2</span><span class="sm-fname">GraphQL and WebSockets</span><span class="sm-st sm-st-planned" aria-hidden="true"></span><span class="sm-sr">（規劃中）</span></a></div></details><details class="sm-folder"><summary><a class="sm-chlink" href="../../delegated-identity/index.html" title="第 9 章 身分跨越網站與元件之後"><span class="num">9</span><span class="sm-fname">身分跨越網站與元件之後</span></a></summary><div class="sm-files"><a class="sm-file is-planned" href="../../delegated-identity/jwt/index.html" title="9.1 JSON Web Tokens"><span class="num">9.1</span><span class="sm-fname">JSON Web Tokens</span><span class="sm-st sm-st-planned" aria-hidden="true"></span><span class="sm-sr">（規劃中）</span></a><a class="sm-file is-planned" href="../../delegated-identity/oauth/index.html" title="9.2 OAuth and Third-Party Login"><span class="num">9.2</span><span class="sm-fname">OAuth and Third-Party Login</span><span class="sm-st sm-st-planned" aria-hidden="true"></span><span class="sm-sr">（規劃中）</span></a></div></details><details class="sm-folder"><summary><a class="sm-chlink" href="../../proxy-cache/index.html" title="第 10 章 Proxy、Cache 與後端看到的不一樣"><span class="num">10</span><span class="sm-fname">Proxy、Cache 與後端看到的不一樣</span></a></summary><div class="sm-files"><a class="sm-file is-planned" href="../../proxy-cache/host-cache/index.html" title="10.1 Host Headers and Web Caches"><span class="num">10.1</span><span class="sm-fname">Host Headers and Web Caches</span><span class="sm-st sm-st-planned" aria-hidden="true"></span><span class="sm-sr">（規劃中）</span></a><a class="sm-file is-planned" href="../../proxy-cache/request-smuggling/index.html" title="10.2 HTTP Request Smuggling"><span class="num">10.2</span><span class="sm-fname">HTTP Request Smuggling</span><span class="sm-st sm-st-planned" aria-hidden="true"></span><span class="sm-sr">（規劃中）</span></a></div></details><details class="sm-folder"><summary><a class="sm-chlink" href="../../llm/index.html" title="第 11 章 把信任模型套到新元件：Web LLM"><span class="num">11</span><span class="sm-fname">把信任模型套到新元件：Web LLM</span></a></summary><div class="sm-files"><a class="sm-file is-planned" href="../../llm/llm-attacks/index.html" title="11.1 Web LLM Attacks"><span class="num">11.1</span><span class="sm-fname">Web LLM Attacks</span><span class="sm-st sm-st-planned" aria-hidden="true"></span><span class="sm-sr">（規劃中）</span></a></div></details></details></details></nav>
+<header class="sm-head">
+  <p class="sm-eyebrow">web-http/web-basics</p>
+  <h1><span class="num">1.1</span> Seeing the Web Through the Browser <span class="badge badge-ready">已完成</span></h1>
+  <p class="question sm-q"><span aria-hidden="true">❯</span> 打開一個網頁時，瀏覽器和伺服器之間發生了什麼？</p>
+</header>
+<aside class="sm-aside" aria-label="本節輔助"><nav class="sm-outline" aria-label="本節內容"><p class="sm-ph">本節內容</p><ol><li><a href="#web-model" title="1.1.1 瀏覽器、伺服器與一次往返"><span class="num">1.1.1</span>瀏覽器、伺服器與一次往返</a></li><li><a href="#url" title="1.1.2 拆開一個 URL"><span class="num">1.1.2</span>拆開一個 URL</a></li><li><a href="#http-exchange" title="1.1.3 request 與 response"><span class="num">1.1.3</span>request 與 response</a></li><li><a href="#network" title="1.1.4 在 Network 面板看實際的往返"><span class="num">1.1.4</span>在 Network 面板看實際的往返</a></li><li><a href="#dom" title="1.1.5 HTML、DOM 與畫面"><span class="num">1.1.5</span>HTML、DOM 與畫面</a></li><li><a href="#error-disclosure" title="1.1.6 錯誤訊息與資訊揭露"><span class="num">1.1.6</span>錯誤訊息與資訊揭露</a></li><li><a href="#trust" title="1.1.7 常見誤解"><span class="num">1.1.7</span>常見誤解</a></li><li><a href="#summary" title="1.1.8 小結"><span class="num">1.1.8</span>小結</a></li></ol></nav><section class="sm-locator" aria-label="系統地圖定位"><p class="sm-ph">系統地圖</p><a class="sm-mini-link" href="../../index.html#map-web-http" aria-label="在首頁的系統地圖上看第 1 章的位置"><svg class="sm-map sm-map-mini" viewBox="0 137 524 311" aria-hidden="true" focusable="false" preserveAspectRatio="xMidYMid meet" style="aspect-ratio:524/311"><line class="sm-edge" x1="200" y1="330" x2="290" y2="330"/><line class="sm-edge sm-dash" x1="440" y1="330" x2="530" y2="330"/><line class="sm-edge sm-threat-edge" x1="110" y1="100" x2="110" y2="255"/><line class="sm-edge sm-dash" x1="625" y1="100" x2="625" y2="150"/><line class="sm-edge" x1="625" y1="546" x2="625" y2="570"/><line class="sm-edge" x1="720" y1="325" x2="765" y2="325"/><line class="sm-edge" x1="765" y1="325" x2="765" y2="48"/><line class="sm-edge sm-dash" x1="765" y1="325" x2="765" y2="538"/><line class="sm-edge" x1="765" y1="48" x2="810" y2="48"/><line class="sm-edge" x1="765" y1="118" x2="810" y2="118"/><line class="sm-edge" x1="765" y1="188" x2="810" y2="188"/><line class="sm-edge sm-dash" x1="765" y1="328" x2="810" y2="328"/><line class="sm-edge sm-dash" x1="765" y1="398" x2="810" y2="398"/><line class="sm-edge sm-dash" x1="765" y1="468" x2="810" y2="468"/><line class="sm-edge sm-dash" x1="765" y1="538" x2="810" y2="538"/><g class="sm-n sm-threat off" data-ch="cross-site"><rect class="sm-box" x="20" y="20" width="180" height="80" rx="8"/><text class="sm-mini-t" x="110.0" y="62.0" text-anchor="middle" dominant-baseline="central" font-size="37">5</text></g><g class="sm-n sm-frame on" data-ch="web-http"><rect class="sm-box" x="20" y="255" width="180" height="150" rx="10"/><text class="sm-mini-t" x="50" y="285" text-anchor="middle" dominant-baseline="central" font-size="37">1</text></g><g class="sm-n sm-node off" data-ch="browser-output"><rect class="sm-box" x="36" y="322" width="148" height="64" rx="8"/><text class="sm-mini-t" x="110.0" y="356.0" text-anchor="middle" dominant-baseline="central" font-size="37">3</text></g><g class="sm-n sm-node sm-p2 off" data-ch="proxy-cache"><rect class="sm-box" x="290" y="240" width="150" height="180" rx="8"/><text class="sm-mini-t" x="365.0" y="332.0" text-anchor="middle" dominant-baseline="central" font-size="37">10</text></g><g class="sm-n sm-frame" aria-hidden="true"><rect class="sm-box" x="530" y="150" width="190" height="396" rx="10"/></g><g class="sm-n sm-node off" data-ch="identity"><rect class="sm-box" x="546" y="194" width="158" height="56" rx="8"/><text class="sm-mini-t" x="625.0" y="224.0" text-anchor="middle" dominant-baseline="central" font-size="37">4</text></g><g class="sm-n sm-node sm-p2 off" data-ch="apis"><rect class="sm-box" x="546" y="262" width="158" height="56" rx="8"/><text class="sm-mini-t" x="625.0" y="292.0" text-anchor="middle" dominant-baseline="central" font-size="37">8</text></g><g class="sm-n sm-node sm-p2 off" data-ch="llm"><rect class="sm-box" x="546" y="330" width="158" height="56" rx="8"/><text class="sm-mini-t" x="625.0" y="360.0" text-anchor="middle" dominant-baseline="central" font-size="37">11</text></g><g class="sm-n sm-node off" data-ch="logic-timing"><rect class="sm-box" x="546" y="398" width="158" height="56" rx="8"/><text class="sm-mini-t" x="625.0" y="428.0" text-anchor="middle" dominant-baseline="central" font-size="37">6</text></g><g class="sm-n sm-node sm-p2 off" data-ch="server-actions"><rect class="sm-box" x="546" y="466" width="158" height="56" rx="8"/><text class="sm-mini-t" x="625.0" y="496.0" text-anchor="middle" dominant-baseline="central" font-size="37">7</text></g><g class="sm-n sm-node sm-p2 off" data-ch="delegated-identity"><rect class="sm-box" x="530" y="20" width="190" height="80" rx="8"/><text class="sm-mini-t" x="625.0" y="62.0" text-anchor="middle" dominant-baseline="central" font-size="37">9</text></g><g class="sm-n sm-node off" data-ch="logic-timing"><rect class="sm-box" x="530" y="570" width="190" height="56" rx="8"/><text class="sm-mini-t" x="625.0" y="600.0" text-anchor="middle" dominant-baseline="central" font-size="37">6</text></g><g class="sm-n sm-node off" data-ch="server-input"><rect class="sm-box" x="810" y="20" width="170" height="56" rx="8"/><text class="sm-mini-t" x="895.0" y="50.0" text-anchor="middle" dominant-baseline="central" font-size="37">2</text></g><g class="sm-n sm-node off" data-ch="server-input"><rect class="sm-box" x="810" y="90" width="170" height="56" rx="8"/><text class="sm-mini-t" x="895.0" y="120.0" text-anchor="middle" dominant-baseline="central" font-size="37">2</text></g><g class="sm-n sm-node off" data-ch="server-input"><rect class="sm-box" x="810" y="160" width="170" height="56" rx="8"/><text class="sm-mini-t" x="895.0" y="190.0" text-anchor="middle" dominant-baseline="central" font-size="37">2</text></g><g class="sm-n sm-node sm-p2 off" data-ch="server-actions"><rect class="sm-box" x="810" y="300" width="170" height="56" rx="8"/><text class="sm-mini-t" x="895.0" y="330.0" text-anchor="middle" dominant-baseline="central" font-size="37">7</text></g><g class="sm-n sm-node sm-p2 off" data-ch="server-actions"><rect class="sm-box" x="810" y="370" width="170" height="56" rx="8"/><text class="sm-mini-t" x="895.0" y="400.0" text-anchor="middle" dominant-baseline="central" font-size="37">7</text></g><g class="sm-n sm-node sm-p2 off" data-ch="server-actions"><rect class="sm-box" x="810" y="440" width="170" height="56" rx="8"/><text class="sm-mini-t" x="895.0" y="470.0" text-anchor="middle" dominant-baseline="central" font-size="37">7</text></g><g class="sm-n sm-node sm-p2 off" data-ch="server-actions"><rect class="sm-box" x="810" y="510" width="170" height="56" rx="8"/><text class="sm-mini-t" x="895.0" y="540.0" text-anchor="middle" dominant-baseline="central" font-size="37">7</text></g><g class="sm-n sm-pill on" data-ch="web-http"><rect class="sm-pill-box" x="213" y="306" width="64" height="48" rx="24"/><text class="sm-mini-t" x="245" y="332" text-anchor="middle" dominant-baseline="central" font-size="33">1</text></g><g class="sm-n sm-pill on" data-ch="web-http"><rect class="sm-pill-box" x="453" y="306" width="64" height="48" rx="24"/><text class="sm-mini-t" x="485" y="332" text-anchor="middle" dominant-baseline="central" font-size="33">1</text></g><g class="sm-n sm-pill off" data-ch="cross-site"><rect class="sm-pill-box" x="78" y="153" width="64" height="48" rx="24"/><text class="sm-mini-t" x="110" y="179" text-anchor="middle" dominant-baseline="central" font-size="33">5</text></g><g class="sm-n sm-pill off" data-ch="delegated-identity"><rect class="sm-pill-box" x="593" y="101" width="64" height="48" rx="24"/><text class="sm-mini-t" x="625" y="127" text-anchor="middle" dominant-baseline="central" font-size="33">9</text></g></svg></a><p class="sm-cap">位置：第 1 章　Web 與 HTTP</p><ul class="sm-chips sm-comps" aria-label="本章元件"><li>Browser</li><li>HTTP request／response</li></ul><p class="sm-mini-hint">點地圖：到首頁地圖看這一章</p></section></aside>
+<main id="main" class="sm-doc" tabindex="-1">
+<article class="content sm-article">
+<p>你一定打開過網頁：輸入網址或點一個連結，畫面就出現了。但在畫面出現之前，你的瀏覽器和遠端的電腦之間來回交換了好幾次訊息，每一次都是一段文字送出去、一段文字送回來。Web 安全的問題大多出在這些文字裡，尤其是其中由你控制的部分。</p>
+<p>例子都放在商品網站 <code>shop.example.com</code> 上。</p>
+
+<h2 id="web-model"><span class="num">1.1.1</span> 瀏覽器、伺服器與一次往返</h2>
+<p><strong>Web</strong> 是一套讓人透過網址取得資源的系統：資源可以是網頁、圖片、影片，也可以是某個功能的結果。其中有兩個角色：</p>
+<ul>
+  <li><strong>瀏覽器</strong>（browser，更精確地說是 client，客戶端）是提出要求的一方，例如 Chrome、Firefox、Safari。</li>
+  <li><strong>伺服器</strong>（server）是另一台電腦上，負責接收要求並回傳內容的程式。它背後的網站程式（稱為 application，應用程式）可能會去讀檔案、查詢資料庫，或呼叫別的服務，再決定回傳什麼。</li>
+</ul>
+<p>兩者之間講的「語言」叫 <strong>HTTP</strong>（HyperText Transfer Protocol，超文字傳輸協定）。規則是瀏覽器送出一個<strong>請求</strong>（request），伺服器回一個<strong>回應</strong>（response）。一來一往，稱為一次往返。</p>
+<p>一個畫面通常要經過很多次往返。瀏覽器先要「主文件」，主文件是一段 <strong>HTML</strong>（HyperText Markup Language）文字，描述頁面的內容與結構。瀏覽器讀懂 HTML 之後，發現裡面提到圖片、樣式表（CSS，描述外觀）、程式（JavaScript，讓頁面能動態改變），才針對每一項再發出新的請求。</p>
+
+<figure id="two-round-trips">
+  <svg viewBox="0 0 640 310" role="img" aria-labelledby="two-round-trips-t" style="color:var(--text)">
+    <title id="two-round-trips-t">瀏覽器先向伺服器要商品頁的 HTML，解析後發現圖片網址，再發第二次請求取得圖片</title>
+    <defs>
+      <marker id="trt-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+        <path d="M0 0 L10 5 L0 10 z" fill="currentColor"/>
+      </marker>
+    </defs>
+    <g fill="var(--surface)" stroke="currentColor" stroke-width="1.5">
+      <rect x="20" y="10" width="110" height="38" rx="8"/>
+      <rect x="510" y="10" width="110" height="38" rx="8"/>
+    </g>
+    <g font-size="15" font-weight="700" text-anchor="middle" fill="currentColor">
+      <text x="75" y="34">瀏覽器</text><text x="565" y="34">伺服器</text>
+    </g>
+    <g stroke="currentColor" stroke-width="1" opacity=".5" stroke-dasharray="4 4">
+      <path d="M75 48 V300"/><path d="M565 48 V300"/>
+    </g>
+    <rect x="86" y="146" width="200" height="44" rx="6" fill="var(--accent-soft)" stroke="currentColor" stroke-width="1.2"/>
+    <g font-size="13" fill="currentColor">
+      <text x="94" y="164">解析 HTML，發現還需要</text>
+      <text x="94" y="181">一張圖片的網址</text>
+    </g>
+    <g stroke="currentColor" stroke-width="2" fill="none">
+      <path d="M80 92 H558" marker-end="url(#trt-arrow)"/>
+      <path d="M560 128 H82" marker-end="url(#trt-arrow)"/>
+      <path d="M80 232 H558" marker-end="url(#trt-arrow)"/>
+      <path d="M560 270 H82" marker-end="url(#trt-arrow)"/>
+    </g>
+    <g text-anchor="middle" fill="currentColor">
+      <text x="320" y="82" font-size="13" font-weight="700">① 請求主文件</text>
+      <text x="320" y="116" font-size="13" font-weight="700">② 回應：HTML 文字</text>
+      <text x="320" y="222" font-size="13" font-weight="700">③ 請求圖片</text>
+      <text x="320" y="260" font-size="13" font-weight="700">④ 回應：圖片的位元組</text>
+    </g>
+    <g text-anchor="middle" style="font-family:var(--font-mono)" font-size="12" fill="currentColor" opacity=".85">
+      <text x="320" y="68">GET /product?productId=1</text>
+      <text x="320" y="144">Content-Type: text/html</text>
+      <text x="320" y="208">GET /image?filename=42.jpg</text>
+      <text x="320" y="286">Content-Type: image/jpeg</text>
+    </g>
+  </svg>
+  <figcaption><span class="fig-num">圖 1.1.1-1</span> 打開一個商品頁，至少包含兩次往返：先拿 HTML，再依 HTML 裡的引用去拿圖片</figcaption>
+</figure>
+<p>一頁有十張圖，請求數也未必是十一個：有些資源已經在瀏覽器的快取（cache，暫存的副本）裡，不必重新要；頁面也還會引用樣式表、程式等其他資源。</p>
+<p>伺服器看不到你的螢幕，只收到瀏覽器送出的那串文字。這串文字由瀏覽器替你組好，你也可以用工具看見並改動它。</p>
+
+<h2 id="url"><span class="num">1.1.2</span> 拆開一個 URL</h2>
+<p>瀏覽器要去哪裡拿資源，由 <strong>URL</strong>（Uniform Resource Locator，統一資源定位器，即平常說的網址）決定。商品頁的網址可以拆成這幾段：</p>
+<pre data-lang="text"><code>https://shop.example.com/product?productId=1</code></pre>
+<table>
+  <thead>
+    <tr><th>部分</th><th>在這個例子中的意義</th></tr>
+  </thead>
+  <tbody>
+    <tr><td><code>https</code></td><td>scheme（協定）：用 HTTP 溝通，並且加上加密（HTTPS 的 S）。</td></tr>
+    <tr><td><code>shop.example.com</code></td><td>host（主機名稱）：要連到哪一台伺服器。</td></tr>
+    <tr><td><code>/product</code></td><td>path（路徑）：要求伺服器的哪一個功能或資源。</td></tr>
+    <tr><td><code>?</code></td><td>分隔符號，後面是查詢參數。</td></tr>
+    <tr><td><code>productId=1</code></td><td>查詢參數（query parameter）：名稱是 <code>productId</code>，值是 <code>1</code>。多個參數用 <code>&amp;</code> 相接。</td></tr>
+  </tbody>
+</table>
+<p>URL 還可能有埠號（port）、<code>#</code> 後面的片段（fragment）等部分。</p>
+<p>參數的意義由網站自己決定。伺服器看到 <code>productId=1</code>，由它的程式決定拿這個值做什麼；在這個網站裡，是挑選要顯示哪個商品。別的網站未必用同樣的名稱或格式。</p>
+<p>路徑也不必對應伺服器上的檔案位置。<code>/product</code> 只是告訴網站「我要商品這個功能」，磁碟上不一定有叫 <code>product</code> 的資料夾，網站可以用任何方式決定怎麼回應。第 2 章講檔案讀取時會再用到這個區別。</p>
+
+<h3>只改參數的值</h3>
+<p>動手前先猜一猜：點開另一個商品時，網址會改變哪個部分。然後找一個有商品列表的購物網站，或你可以合法操作的練習環境（見<a href="#summary">小結</a>裡的 Academy 練習），自己試試：</p>
+<ol>
+  <li>開啟兩個不同商品，各在一個分頁。</li>
+  <li>比較兩個網址的 host、path、參數名稱、參數值，找出哪些相同、哪些不同。</li>
+  <li>在其中一個分頁，只把參數的值換成另一個商品的編號，按 Enter，看看顯示的商品是否跟著變。</li>
+</ol>
+<p>以這個網站為例，兩個網址只差在值：</p>
+<pre data-lang="text"><code>https://shop.example.com/product?productId=1   → 帆布袋
+https://shop.example.com/product?productId=2   → 保溫杯</code></pre>
+<p>這樣做只是向伺服器要另一個商品的內容，伺服器上的商品資料沒有被改動。把一個正常的商品網址留著，後面看錯誤訊息時要拿它當對照。</p>
+
+<h2 id="http-exchange"><span class="num">1.1.3</span> request 與 response</h2>
+<p>網址只告訴瀏覽器去哪裡，實際送出去的是一段有固定格式的文字。商品頁那次往返簡化後如下，用 HTTP/1.1 的可讀形式寫出起始行與標頭。實際訊息還有更多欄位；現代瀏覽器也常改用 HTTP/2，它用二進位的訊息框架傳送，工具會把它轉成類似的可讀顯示。本體可以是文字，也可以是圖片之類的位元組。</p>
+<pre data-lang="http"><code># 瀏覽器送出的 request（簡化）
+GET /product?productId=1 HTTP/1.1
+Host: shop.example.com</code></pre>
+<pre data-lang="http"><code># 伺服器回傳的 response（簡化）
+HTTP/1.1 200 OK
+Content-Type: text/html
+
+&lt;h1&gt;帆布袋&lt;/h1&gt;</code></pre>
+<ul>
+  <li><code>GET</code> 是 <strong>method</strong>（方法），表示「我想取得這個資源」。瀏覽器網址列輸入網址，通常就是送 GET 請求。方法還有其他種類，下一節介紹。</li>
+  <li><code>/product?productId=1</code> 是路徑加查詢參數。<code>Host</code> 那一行說明要找哪台主機。</li>
+  <li>回應的第一行有<strong>狀態碼</strong>（status code）：<code>200</code> 表示成功，<code>404</code> 表示找不到，<code>500</code> 表示伺服器處理時發生內部錯誤。狀態碼只反映這次請求的處理結果：<code>200</code> 不保證內容正確或安全，<code>500</code> 也不證明有可利用的漏洞。</li>
+  <li><code>Content-Type</code> 是一個<strong>標頭</strong>（header），宣告回應內容的格式：HTML 常是 <code>text/html</code>，JPEG 圖片是 <code>image/jpeg</code>。瀏覽器依此決定怎麼處理內容。</li>
+  <li>空白行之後是 <strong>body</strong>（主體），放內容本身。</li>
+</ul>
+<p><code>Content-Type</code> 只是伺服器的宣告，和 body 可能對不上：一個回應可以在標頭說自己是圖片，body 卻是一段文字。實際收到了什麼，要看 body。</p>
+
+<h2 id="network"><span class="num">1.1.4</span> 在 Network 面板看實際的往返</h2>
+<p>現代瀏覽器內建<strong>開發者工具</strong>（DevTools），其中的 <strong>Network</strong>（網路）面板把每一次往返列成一列：同一列可以看到 request 的 URL 與 method，以及 response 的 status、Content-Type 與 body。在網頁上按右鍵選「檢查（Inspect）」就能開啟 DevTools。這裡用 Chrome 的英文介面名稱，其他瀏覽器的名稱相近，中文介面的譯名會有出入。</p>
+
+<h3>找出 HTML 與圖片各是哪一列</h3>
+<p>先猜猜打開一個商品頁會送出幾筆請求，然後：</p>
+<ol>
+  <li>開啟任一商品頁，開啟 DevTools，切到 Network。</li>
+  <li>確認正在記錄，清掉文字篩選，選 All，然後重新整理頁面（記錄是從開啟面板之後才開始，所以需要重新載入一次）。</li>
+  <li>找出 Type 為 <code>document</code> 的那一列（也可以點 Doc 篩選）。點開它，在 Headers 看 URL、method、status，在 Response 看 HTML 文字。</li>
+  <li>改選 Img 篩選，點一張商品圖片的那一列。看它的 URL 與 Content-Type；內容可在 Preview 直接看圖，不必讀它的位元組。</li>
+  <li>把這張圖片的網址複製到新分頁，看看它是否能單獨顯示。</li>
+</ol>
+<p>做完後，你應該能指出哪一列取得了這一頁的 HTML、哪一列取得了圖片。兩列各有自己的網址、回應格式與內容，對應往返圖裡的兩次往返。</p>
+<p>在這個網站，兩列大概是這樣：</p>
+<table>
+  <thead>
+    <tr><th>資源</th><th>Request URL 的路徑與參數</th><th>Method</th><th>回應格式</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>商品頁</td><td><code>/product?productId=1</code></td><td>GET</td><td><code>text/html</code></td></tr>
+    <tr><td>商品圖片</td><td><code>/image?filename=42.jpg</code></td><td>GET</td><td><code>image/jpeg</code></td></tr>
+  </tbody>
+</table>
+<p>Network 只告訴你：瀏覽器向這個網址要東西，拿到了這份內容。圖片在伺服器上怎麼保存，從這裡看不出來，它可能是磁碟上的檔案，也可能來自資料庫或另一個儲存服務。</p>
+
+<h2 id="dom"><span class="num">1.1.5</span> HTML、DOM 與畫面</h2>
+<p>主文件是 HTML 文字，用<strong>標籤</strong>（tag）標記內容的意義。例如商品頁主文件裡的這一小段：</p>
+<pre data-lang="html"><code>&lt;!-- 商品頁主文件的一小段 --&gt;
+&lt;h1&gt;帆布袋&lt;/h1&gt;
+&lt;img src="/image?filename=42.jpg"&gt;
+&lt;p&gt;NT$ 300&lt;/p&gt;</code></pre>
+<ul>
+  <li><code>&lt;h1&gt;帆布袋&lt;/h1&gt;</code>：<code>&lt;h1&gt;</code> 與 <code>&lt;/h1&gt;</code> 是一對標籤，表示中間的「帆布袋」是第一層標題。</li>
+  <li><code>&lt;img src="..."&gt;</code>：<code>img</code> 標籤表示這裡要放一張圖；<code>src</code> 是它的屬性（attribute），值是圖片的網址。瀏覽器看到這行，才會去發第二次請求，對應往返圖中的第 ③ 步。</li>
+  <li><code>&lt;p&gt;NT$ 300&lt;/p&gt;</code>：一段文字。</li>
+</ul>
+<p>瀏覽器讀完這段文字後，會在記憶體中建立一棵由<strong>節點</strong>（node）組成的樹，稱為 <strong>DOM</strong>（Document Object Model，文件物件模型）：標題是一個節點、圖片是一個節點、段落是一個節點。畫面就是依這棵樹畫出來的。DevTools 的 Elements 面板顯示的是這棵樹<em>目前的樣子</em>。</p>
+<p>於是同一頁在你面前有三份東西：</p>
+<ol>
+  <li>Response：伺服器送來的 HTML 文字。Network 保存的是收到當下的原文，之後不會再變。</li>
+  <li>DOM：瀏覽器依 HTML 建出的樹，可以被程式或你手動修改。</li>
+  <li>畫面：依 DOM 畫出的結果。</li>
+</ol>
+
+<h3>在 Elements 改商品名稱</h3>
+<p>先猜一猜：在 Elements 改掉商品名稱，Network 裡那份 HTML 會不會跟著改，重新整理之後又會怎樣。</p>
+<ol>
+  <li>在商品名稱上按右鍵選「檢查」，Elements 會定位到對應的元素。</li>
+  <li>雙擊標籤之間的文字，改成「我改的名稱」，按 Enter。只改文字，不碰表單或按鈕。</li>
+  <li>看畫面是否改變；再到 Network 看剛才載入的主文件 Response，找原本的商品名稱。</li>
+  <li>重新整理頁面，看名稱是否恢復，以及 Network 是否多了一次新的往返。</li>
+</ol>
+<figure id="dom-timeline">
+  <svg viewBox="0 0 640 270" role="img" aria-labelledby="dom-timeline-t" style="color:var(--text)">
+    <title id="dom-timeline-t">三個時間點，Response、DOM 與畫面的內容：載入、手動改 DOM、重新整理</title>
+    <g font-size="13" font-weight="700" text-anchor="middle" fill="currentColor">
+      <text x="175" y="22">收到的 Response</text>
+      <text x="355" y="22">DOM（Elements）</text>
+      <text x="535" y="22">畫面</text>
+    </g>
+    <g font-size="13" font-weight="700" fill="currentColor">
+      <text x="6" y="68">① 載入</text>
+      <text x="6" y="150">② 改 DOM</text>
+      <text x="6" y="232">③ 重新整理</text>
+    </g>
+    <g fill="var(--surface)" stroke="currentColor" stroke-width="1.2">
+      <rect x="90" y="36" width="170" height="56" rx="6"/>
+      <rect x="270" y="36" width="170" height="56" rx="6"/>
+      <rect x="450" y="36" width="170" height="56" rx="6"/>
+      <rect x="90" y="118" width="170" height="56" rx="6"/>
+      <rect x="450" y="118" width="170" height="56" rx="6"/>
+      <rect x="90" y="200" width="170" height="56" rx="6"/>
+      <rect x="270" y="200" width="170" height="56" rx="6"/>
+      <rect x="450" y="200" width="170" height="56" rx="6"/>
+    </g>
+    <rect x="270" y="118" width="170" height="56" rx="6" fill="var(--accent-soft)" stroke="currentColor" stroke-width="1.6"/>
+    <g style="font-family:var(--font-mono)" font-size="12" text-anchor="middle" fill="currentColor">
+      <text x="175" y="58">&lt;h1&gt;帆布袋&lt;/h1&gt;</text>
+      <text x="355" y="58">h1 節點：帆布袋</text>
+      <text x="535" y="58">帆布袋</text>
+      <text x="175" y="140">&lt;h1&gt;帆布袋&lt;/h1&gt;</text>
+      <text x="355" y="140">h1 節點：我改的名稱</text>
+      <text x="535" y="140">我改的名稱</text>
+      <text x="175" y="222">&lt;h1&gt;帆布袋&lt;/h1&gt;</text>
+      <text x="355" y="222">h1 節點：帆布袋</text>
+      <text x="535" y="222">帆布袋</text>
+    </g>
+    <g font-size="12" text-anchor="middle" fill="currentColor" opacity=".85">
+      <text x="175" y="78">第一次收到的文字</text>
+      <text x="355" y="78">依 HTML 建出</text>
+      <text x="535" y="78">依 DOM 畫出</text>
+      <text x="175" y="160">沒有變：仍是舊紀錄</text>
+      <text x="355" y="160">只有這個副本被改</text>
+      <text x="535" y="160">跟著 DOM 變</text>
+      <text x="175" y="242">新的一筆往返、新文字</text>
+      <text x="355" y="242">用新文字重新建立</text>
+      <text x="535" y="242">恢復原樣</text>
+    </g>
+  </svg>
+  <figcaption><span class="fig-num">圖 1.1.5-1</span> 有底色的格子是你手動改過的純文字：只有瀏覽器記憶體裡的 DOM 副本變了，伺服器送來的 Response 與商品資料都沒有動</figcaption>
+</figure>
+<p>一般的結果如上圖：畫面改了，原本那筆 Response 沒變，重新整理後名稱恢復。重新整理是向伺服器要一份新的 HTML，再用它重建 DOM；你改的只是自己瀏覽器裡的副本，沒有寫回伺服器。</p>
+<p>上面說的是手動編輯純文字的情況。如果網站用 JavaScript 動態更新頁面，或把資料存在瀏覽器裡，結果會不一樣；DevTools 的 Local Overrides 之類的功能也會讓瀏覽器自己保存修改。結果和預期不同時，先確認你改的是哪一份東西。</p>
+
+<h2 id="error-disclosure"><span class="num">1.1.6</span> 錯誤訊息與資訊揭露</h2>
+<p>正常的商品編號會得到商品頁。但網站遲早會收到預期外的值：該是數字的地方送來文字，或指定的商品不存在。常見的失誤是出錯時把只有開發者需要的訊息，一起交給了任何來訪的人。</p>
+
+<h3>三組輸入</h3>
+<p>延續這個商品網站。伺服器端程式拿到 <code>productId</code> 之後，先把它轉成整數，再去查詢商品。比較三組輸入：</p>
+<pre data-lang="text"><code>輸入 A（正常）：GET /product?productId=1
+回應節錄：&lt;h1&gt;帆布袋&lt;/h1&gt;
+
+輸入 B（另一個有效商品）：GET /product?productId=2
+回應節錄：&lt;h1&gt;保溫杯&lt;/h1&gt;
+
+輸入 C（值的型別不符）：GET /product?productId=example
+回應節錄：Invalid integer: "example"
+  at ProductController.show (DemoFramework version 1.2.3)</code></pre>
+<p>A 與 B 是正常功能：值不同，內容不同。C 與 A、B 的差別只有 <code>productId</code> 的值，路徑、方法都沒變，所以多出來的那段文字來自這個值引起的處理差異。</p>
+<p>C 的回應裡有三樣東西：</p>
+<ul>
+  <li><code>Invalid integer: "example"</code>：說明哪裡出錯。這句對使用者也有一點幫助。</li>
+  <li><code>ProductController.show</code>：伺服器內部的程式名稱。使用者不需要，開發者除錯時才需要。</li>
+  <li><code>DemoFramework version 1.2.3</code>：網站使用的<strong>框架</strong>（framework，網站程式所依賴的現成程式元件）名稱與版本（該元件的版本編號）。</li>
+</ul>
+
+<figure id="error-flow">
+  <svg viewBox="0 0 640 330" role="img" aria-labelledby="error-flow-t" style="color:var(--text)">
+    <title id="error-flow-t">正常輸入走商品回應；非數字輸入進入錯誤處理，詳細診斷應留在內部紀錄（log），不應穿過公開回應邊界</title>
+    <defs>
+      <marker id="ef-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+        <path d="M0 0 L10 5 L0 10 z" fill="currentColor"/>
+      </marker>
+    </defs>
+    <rect x="10" y="30" width="400" height="290" rx="10" fill="none" stroke="currentColor" stroke-width="1.2" opacity=".6"/>
+    <text x="10" y="20" font-size="13" font-weight="700" fill="currentColor">伺服器端（Application）</text>
+    <path d="M440 8 V322" stroke="currentColor" stroke-width="1.5" stroke-dasharray="6 4"/>
+    <text x="446" y="20" font-size="12" fill="currentColor">公開回應邊界</text>
+    <g fill="var(--surface)" stroke="currentColor" stroke-width="1.4">
+      <rect x="24" y="44" width="372" height="44" rx="6"/>
+      <rect x="24" y="116" width="372" height="58" rx="6"/>
+      <rect x="24" y="262" width="372" height="44" rx="6"/>
+      <rect x="556" y="190" width="74" height="60" rx="8"/>
+    </g>
+    <rect x="24" y="196" width="372" height="46" rx="6" fill="var(--accent-soft)" stroke="currentColor" stroke-width="1.4"/>
+    <g font-size="13" fill="currentColor">
+      <text x="34" y="62">A：productId=1 是整數，查到商品</text>
+      <text x="34" y="79" font-size="12" opacity=".85">→ 產生正常的商品 HTML</text>
+      <text x="34" y="134">C：productId=example 轉整數失敗，發生例外</text>
+      <text x="34" y="151" font-size="12" opacity=".85">例外：程式的非預期狀況，帶有詳細診斷</text>
+      <text x="34" y="165" font-size="12" opacity=".85">（框架、版本、內部路徑）</text>
+      <text x="34" y="214">錯誤處理：決定哪些內容回給使用者</text>
+      <text x="34" y="231" font-size="12" opacity=".85">詳細診斷是否越過邊界，取決於這一步</text>
+      <text x="34" y="280">內部 log（有存取控制，只給維運人員）</text>
+      <text x="34" y="297" font-size="12" opacity=".85">詳細診斷應寫在這裡</text>
+    </g>
+    <text x="593" y="224" font-size="14" font-weight="700" text-anchor="middle" fill="currentColor">瀏覽器</text>
+    <g stroke="currentColor" stroke-width="2" fill="none">
+      <path d="M200 174 V194" marker-end="url(#ef-arrow)"/>
+      <path d="M200 242 V260" marker-end="url(#ef-arrow)"/>
+      <path d="M396 66 H500 Q593 66 593 188" marker-end="url(#ef-arrow)"/>
+      <path d="M396 206 H554" marker-end="url(#ef-arrow)"/>
+      <path d="M396 232 H554" stroke-dasharray="6 4" marker-end="url(#ef-arrow)"/>
+    </g>
+    <g font-size="12" fill="currentColor">
+      <text x="446" y="58">商品頁</text>
+      <text x="446" y="200">建議：一般訊息</text>
+      <text x="446" y="250">不安全：連同詳細</text>
+      <text x="446" y="266">診斷一起回傳</text>
+    </g>
+  </svg>
+  <figcaption><span class="fig-num">圖 1.1.6-1</span> 同一個功能收到不同輸入後的流向：正常輸入產生商品頁；型別不符的輸入引發例外並進入錯誤處理。實線是建議的做法，虛線是不安全的做法，詳細診斷越過公開回應的邊界就成為資訊揭露</figcaption>
+</figure>
+
+<h3>資訊揭露</h3>
+<p><strong>資訊揭露</strong>（information disclosure，也稱 information leakage）指網站在不該給的時候，把資訊交給了不該拿到的人。上面的例子是這樣發生的：</p>
+<ol>
+  <li>輸入的型別不符（該是整數，收到文字）；</li>
+  <li>處理過程發生例外；</li>
+  <li>錯誤處理沒有分辨「對外」與「對內」，把詳細診斷整段放進公開的回應；</li>
+  <li>任何人都能讀到內部名稱、框架與版本。</li>
+</ol>
+<p>框架與版本告訴外人這個網站用了哪種元件。該版本若有公開已知的弱點，對方就知道從哪裡下手；內部路徑和程式名稱則透露程式的結構。這些資訊本身通常構不成入侵，但能縮小對方猜測的範圍。</p>
+
+<h3>有版本號，不代表有漏洞</h3>
+<p>這次觀察看得到的是：只改了 <code>productId</code> 的值，回應就多出框架名稱與版本。由此可以合理推論，這個網站的錯誤處理把診斷資訊交給了一般使用者。版本號本身只是一個字串，它有沒有可利用的弱點、網站是否真的受影響，需要另外的證據。一個錯誤頁也只呈現一個入口的一條錯誤路徑，看不出整個後端。</p>
+
+<h3>修補與預防</h3>
+<ul>
+  <li>驗證輸入：伺服器應檢查 <code>productId</code> 是否為合理範圍內的整數，不符就拒絕。</li>
+  <li>對外回簡單的訊息，對內留詳細紀錄：對使用者顯示「找不到商品」之類的一般性訊息；詳細診斷寫進有存取控制的內部事件紀錄（log，記錄系統發生了什麼事的檔案或服務），由維運人員查看。圖中實線與虛線的差別就在這裡。</li>
+  <li>正式環境關閉除錯模式：許多框架在開發時會自動顯示詳細錯誤，上線後應改成一般錯誤頁。</li>
+</ul>
+<p>隱藏版本號修補不了框架本身的漏洞，只是不讓人輕易看到；把這個參數限制成數字，其他入口照樣可能洩漏資訊。資訊揭露常見於錯誤頁、HTML 裡留下的註解、備份檔、目錄列表等地方。第 2 章的 <a href="../../server-input/path-traversal/index.html#information-disclosure">Path Traversal</a> 會看到它與檔案讀取的關係，之後的章節也會再遇到。</p>
+
+<h2 id="trust"><span class="num">1.1.7</span> 常見誤解</h2>
+<table>
+  <thead>
+    <tr><th>你看到的東西</th><th>表示什麼</th><th>不一定的事</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>網址列</td><td>瀏覽器將要請求的位置。</td><td>伺服器會照預期處理你的輸入。網址的每個部分，使用者都能自己改。</td></tr>
+    <tr><td>Network 裡的 Response</td><td>伺服器對這次請求實際回傳的文字或位元組。</td><td>內容正確、安全；也看不出伺服器內部怎麼產生它。</td></tr>
+    <tr><td>狀態碼</td><td>伺服器對這次處理結果的訊號。</td><td><code>200</code> 的內容是對的；<code>500</code> 代表有漏洞。</td></tr>
+    <tr><td>Elements 中的 DOM</td><td>瀏覽器此刻記憶體中的結構。</td><td>和伺服器送來的原始 HTML 相同。它可能已被頁面上的程式或你自己改過。</td></tr>
+    <tr><td>畫面上看不到的東西</td><td>沒有畫出來。</td><td>網站沒有送出。隱藏的內容仍可能在 Response 裡。</td></tr>
+  </tbody>
+</table>
+<p>瀏覽器端的一切都在使用者手上。網站可以在畫面上隱藏按鈕、限制輸入框只能填數字，這些只方便一般使用者，擋不住有心的人：任何人都能直接改網址、改 DOM，或用工具送出自己寫的請求。所以檢查必須在伺服器端做，後面幾乎每一章都會用到這條原則。</p>
+
+<h2 id="summary"><span class="num">1.1.8</span> 小結</h2>
+<ul>
+  <li>一次往返是一個 request 加一個 response；打開一頁通常要好幾次往返，先拿 HTML，再拿圖片等資源。</li>
+  <li>URL 由 host、path、查詢參數等組成；參數的意義由網站決定，path 也不必對應磁碟上的檔案。</li>
+  <li>Response 是已收到的紀錄，DOM 是瀏覽器裡可改的副本，畫面依 DOM 畫出；改 DOM 動不到伺服器。</li>
+  <li>錯誤頁把框架、版本等診斷交給使用者，就是資訊揭露；修補是驗證輸入、對外回一般訊息、細節寫進內部 log。</li>
+  <li>瀏覽器端的一切都能被使用者改動，檢查要放在伺服器端。</li>
+</ul>
+<p>PortSwigger Academy 的對應練習（主題頁 <a href="https://portswigger.net/web-security/information-disclosure">Information disclosure</a>），只在 Lab 或其他獲明確授權的系統上測試：</p>
+<ul>
+  <li><a href="https://portswigger.net/web-security/information-disclosure/exploiting/lab-infoleak-in-error-messages">Information disclosure in error messages</a>：只改商品編號參數，比較正常與異常回應的 body，找出錯誤頁多交出的資訊。</li>
+</ul>
+<p>網址只是 request 的一小部分，完整的 request 還有 method、標頭與 body，登入狀態（Cookie）也在其中。下一節 <a href="../http-session/index.html">HTTP Requests and Sessions</a> 從登入表單開始，看完整的 request 怎麼檢視與修改，以及伺服器如何在多次 request 之間認得你。</p>
+
+</article>
+<nav class="pager" aria-label="上下節"><span class="prev"></span><a class="next" href="../../web-http/http-session/index.html"><small>next →</small><span class="num">1.2</span> HTTP Requests and Sessions</a></nav>
+</main>
+</div>
+<footer class="sm-status"><span class="sm-s-main">26 sections</span><span class="sm-s-list"><span class="sm-s-planned">規劃中 12</span> <span class="sm-s-draft">草稿 3</span> <span class="sm-s-ready">已完成 11</span></span><span class="sm-s-end">系統地圖</span></footer>
+<script src="../../assets/theme/theme.js?v=d288e31038"></script>
+</body>
+</html>

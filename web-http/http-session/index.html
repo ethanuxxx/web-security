@@ -1,0 +1,369 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>1.2 HTTP Requests and Sessions｜Web 安全</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Crect width='16' height='16' rx='3' fill='%23070c12'/%3E%3Crect x='1.5' y='1.5' width='13' height='13' rx='2.5' fill='none' stroke='%2336e0cc' stroke-width='1.4'/%3E%3Cpath d='M5 8 L11 5 M5 8 L11 11' stroke='%2336e0cc' stroke-width='1.2' fill='none'/%3E%3Ccircle cx='5' cy='8' r='1.6' fill='%2336e0cc'/%3E%3Ccircle cx='11' cy='5' r='1.6' fill='%2336e0cc'/%3E%3Ccircle cx='11' cy='11' r='1.6' fill='%2336e0cc'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="../../assets/style.css?v=d288e31038">
+<link rel="stylesheet" href="../../assets/theme/theme.css?v=d288e31038">
+<script>(function(){var m=null;try{m=localStorage.getItem("web-security:motion")}catch(e){}if(m!=="on"&&m!=="off"){m="on";try{if(matchMedia("(prefers-reduced-motion: reduce)").matches)m="off"}catch(e){}}document.documentElement.setAttribute("data-motion",m)})()</script>
+</head>
+<body class="page-section sm-body">
+<a class="skip" href="#main">跳到正文</a>
+<header class="sm-top"><a class="sm-brand" href="../../index.html"><svg class="sm-logo" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><rect x="1" y="1" width="14" height="14" rx="3" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M5 8 L11 5 M5 8 L11 11" stroke="currentColor" stroke-width="1.3" fill="none"/><circle cx="5" cy="8" r="1.7" fill="currentColor"/><circle cx="11" cy="5" r="1.7" fill="currentColor"/><circle cx="11" cy="11" r="1.7" fill="currentColor"/></svg><span class="sm-brand-t">web-security</span></a><nav class="sm-path" aria-label="目前位置"><ol><li class="sm-p-root"><a href="../../index.html">web-security</a></li><li class="sm-p-ch split"><a href="../../web-http/index.html">1<span class="sm-p-title">&nbsp;Web 與 HTTP</span></a></li><li class=""><span aria-current="page">1.2</span></li></ol></nav><a class="sm-toplink" href="../../index.html#map">map</a><a class="sm-toplink" href="../../chapters/index.html">chapters</a><button type="button" class="sm-toplink sm-motion" aria-pressed="true" hidden>動畫：開</button></header>
+<div class="sm-shell">
+<nav class="sm-tree" aria-label="教材瀏覽器"><details class="sm-tree-wrap" open><summary class="sm-tree-sum">EXPLORER／教材目錄</summary><p class="sm-tree-h" aria-hidden="true">EXPLORER</p><details class="sm-partd" open><summary class="sm-part">第一部分：輸入如何穿過網站</summary><details class="sm-folder" open><summary><a class="sm-chlink" href="../../web-http/index.html" title="第 1 章 Web 與 HTTP"><span class="num">1</span><span class="sm-fname">Web 與 HTTP</span></a></summary><div class="sm-files"><a class="sm-file" href="../../web-http/web-basics/index.html" title="1.1 Seeing the Web Through the Browser"><span class="num">1.1</span><span class="sm-fname">Seeing the Web Through the Browser</span><span class="sm-st sm-st-ready" aria-hidden="true"></span><span class="sm-sr">（已完成）</span></a><a class="sm-file" href="../../web-http/http-session/index.html" aria-current="page" title="1.2 HTTP Requests and Sessions"><span class="num">1.2</span><span class="sm-fname">HTTP Requests and Sessions</span><span class="sm-st sm-st-ready" aria-hidden="true"></span><span class="sm-sr">（已完成）</span></a></div></details><details class="sm-folder"><summary><a class="sm-chlink" href="../../server-input/index.html" title="第 2 章 伺服器如何處理使用者輸入"><span class="num">2</span><span class="sm-fname">伺服器如何處理使用者輸入</span></a></summary><div class="sm-files"><a class="sm-file" href="../../server-input/path-traversal/index.html" title="2.1 Path Traversal"><span class="num">2.1</span><span class="sm-fname">Path Traversal</span><span class="sm-st sm-st-ready" aria-hidden="true"></span><span class="sm-sr">（已完成）</span></a><a class="sm-file" href="../../server-input/file-upload/index.html" title="2.2 File Upload Vulnerabilities"><span class="num">2.2</span><span class="sm-fname">File Upload Vulnerabilities</span><span class="sm-st sm-st-ready" aria-hidden="true"></span><span class="sm-sr">（已完成）</span></a><a class="sm-file" href="../../server-input/sql-injection/index.html" title="2.3 SQL Injection Basics"><span class="num">2.3</span><span class="sm-fname">SQL Injection Basics</span><span class="sm-st sm-st-ready" aria-hidden="true"></span><span class="sm-sr">（已完成）</span></a><a class="sm-file" href="../../server-input/sql-injection-observation/index.html" title="2.4 UNION and Blind SQL Injection"><span class="num">2.4</span><span class="sm-fname">UNION and Blind SQL Injection</span><span class="sm-st sm-st-ready" aria-hidden="true"></span><span class="sm-sr">（已完成）</span></a><a class="sm-file" href="../../server-input/command-injection/index.html" title="2.5 OS Command Injection"><span class="num">2.5</span><span class="sm-fname">OS Command Injection</span><span class="sm-st sm-st-ready" aria-hidden="true"></span><span class="sm-sr">（已完成）</span></a></div></details><details class="sm-folder"><summary><a class="sm-chlink" href="../../browser-output/index.html" title="第 3 章 伺服器的輸出如何在瀏覽器中變成程式"><span class="num">3</span><span class="sm-fname">伺服器的輸出如何在瀏覽器中變成程式</span></a></summary><div class="sm-files"><a class="sm-file" href="../../browser-output/xss-basics/index.html" title="3.1 Cross-Site Scripting Basics"><span class="num">3.1</span><span class="sm-fname">Cross-Site Scripting Basics</span><span class="sm-st sm-st-ready" aria-hidden="true"></span><span class="sm-sr">（已完成）</span></a><a class="sm-file" href="../../browser-output/xss-context-dom/index.html" title="3.2 Output Contexts and DOM-Based XSS"><span class="num">3.2</span><span class="sm-fname">Output Contexts and DOM-Based XSS</span><span class="sm-st sm-st-ready" aria-hidden="true"></span><span class="sm-sr">（已完成）</span></a></div></details><details class="sm-folder"><summary><a class="sm-chlink" href="../../identity/index.html" title="第 4 章 網站如何知道你是誰、允許你做什麼"><span class="num">4</span><span class="sm-fname">網站如何知道你是誰、允許你做什麼</span></a></summary><div class="sm-files"><a class="sm-file" href="../../identity/authentication/index.html" title="4.1 Authentication"><span class="num">4.1</span><span class="sm-fname">Authentication</span><span class="sm-st sm-st-ready" aria-hidden="true"></span><span class="sm-sr">（已完成）</span></a><a class="sm-file" href="../../identity/access-control/index.html" title="4.2 Access Control"><span class="num">4.2</span><span class="sm-fname">Access Control</span><span class="sm-st sm-st-ready" aria-hidden="true"></span><span class="sm-sr">（已完成）</span></a></div></details><details class="sm-folder"><summary><a class="sm-chlink" href="../../cross-site/index.html" title="第 5 章 網站之間如何利用瀏覽器的信任"><span class="num">5</span><span class="sm-fname">網站之間如何利用瀏覽器的信任</span></a></summary><div class="sm-files"><a class="sm-file" href="../../cross-site/cross-site-trust/index.html" title="5.1 CSRF, CORS, and Cross-Site Trust"><span class="num">5.1</span><span class="sm-fname">CSRF, CORS, and Cross-Site Trust</span><span class="sm-st sm-st-draft" aria-hidden="true"></span><span class="sm-sr">（草稿）</span></a></div></details><details class="sm-folder"><summary><a class="sm-chlink" href="../../logic-timing/index.html" title="第 6 章 問題藏在流程與時間裡"><span class="num">6</span><span class="sm-fname">問題藏在流程與時間裡</span></a></summary><div class="sm-files"><a class="sm-file" href="../../logic-timing/business-logic/index.html" title="6.1 Business Logic Vulnerabilities"><span class="num">6.1</span><span class="sm-fname">Business Logic Vulnerabilities</span><span class="sm-st sm-st-draft" aria-hidden="true"></span><span class="sm-sr">（草稿）</span></a><a class="sm-file" href="../../logic-timing/race-conditions/index.html" title="6.2 Race Conditions"><span class="num">6.2</span><span class="sm-fname">Race Conditions</span><span class="sm-st sm-st-draft" aria-hidden="true"></span><span class="sm-sr">（草稿）</span></a></div></details></details><details class="sm-partd" open><summary class="sm-part">第二部分：多元件系統的信任邊界</summary><details class="sm-folder"><summary><a class="sm-chlink" href="../../server-actions/index.html" title="第 7 章 伺服器把資料交給其他元件之後"><span class="num">7</span><span class="sm-fname">伺服器把資料交給其他元件之後</span></a></summary><div class="sm-files"><a class="sm-file is-planned" href="../../server-actions/ssrf/index.html" title="7.1 Server-Side Request Forgery"><span class="num">7.1</span><span class="sm-fname">Server-Side Request Forgery</span><span class="sm-st sm-st-planned" aria-hidden="true"></span><span class="sm-sr">（規劃中）</span></a><a class="sm-file is-planned" href="../../server-actions/xxe/index.html" title="7.2 XML External Entity Injection"><span class="num">7.2</span><span class="sm-fname">XML External Entity Injection</span><span class="sm-st sm-st-planned" aria-hidden="true"></span><span class="sm-sr">（規劃中）</span></a><a class="sm-file is-planned" href="../../server-actions/ssti/index.html" title="7.3 Server-Side Template Injection"><span class="num">7.3</span><span class="sm-fname">Server-Side Template Injection</span><span class="sm-st sm-st-planned" aria-hidden="true"></span><span class="sm-sr">（規劃中）</span></a><a class="sm-file is-planned" href="../../server-actions/deserialization/index.html" title="7.4 Insecure Deserialization"><span class="num">7.4</span><span class="sm-fname">Insecure Deserialization</span><span class="sm-st sm-st-planned" aria-hidden="true"></span><span class="sm-sr">（規劃中）</span></a><a class="sm-file is-planned" href="../../server-actions/prototype-pollution/index.html" title="7.5 Prototype Pollution"><span class="num">7.5</span><span class="sm-fname">Prototype Pollution</span><span class="sm-st sm-st-planned" aria-hidden="true"></span><span class="sm-sr">（規劃中）</span></a></div></details><details class="sm-folder"><summary><a class="sm-chlink" href="../../apis/index.html" title="第 8 章 網站變成 API 之後"><span class="num">8</span><span class="sm-fname">網站變成 API 之後</span></a></summary><div class="sm-files"><a class="sm-file is-planned" href="../../apis/api-testing/index.html" title="8.1 API Attack Surface"><span class="num">8.1</span><span class="sm-fname">API Attack Surface</span><span class="sm-st sm-st-planned" aria-hidden="true"></span><span class="sm-sr">（規劃中）</span></a><a class="sm-file is-planned" href="../../apis/graphql-websockets/index.html" title="8.2 GraphQL and WebSockets"><span class="num">8.2</span><span class="sm-fname">GraphQL and WebSockets</span><span class="sm-st sm-st-planned" aria-hidden="true"></span><span class="sm-sr">（規劃中）</span></a></div></details><details class="sm-folder"><summary><a class="sm-chlink" href="../../delegated-identity/index.html" title="第 9 章 身分跨越網站與元件之後"><span class="num">9</span><span class="sm-fname">身分跨越網站與元件之後</span></a></summary><div class="sm-files"><a class="sm-file is-planned" href="../../delegated-identity/jwt/index.html" title="9.1 JSON Web Tokens"><span class="num">9.1</span><span class="sm-fname">JSON Web Tokens</span><span class="sm-st sm-st-planned" aria-hidden="true"></span><span class="sm-sr">（規劃中）</span></a><a class="sm-file is-planned" href="../../delegated-identity/oauth/index.html" title="9.2 OAuth and Third-Party Login"><span class="num">9.2</span><span class="sm-fname">OAuth and Third-Party Login</span><span class="sm-st sm-st-planned" aria-hidden="true"></span><span class="sm-sr">（規劃中）</span></a></div></details><details class="sm-folder"><summary><a class="sm-chlink" href="../../proxy-cache/index.html" title="第 10 章 Proxy、Cache 與後端看到的不一樣"><span class="num">10</span><span class="sm-fname">Proxy、Cache 與後端看到的不一樣</span></a></summary><div class="sm-files"><a class="sm-file is-planned" href="../../proxy-cache/host-cache/index.html" title="10.1 Host Headers and Web Caches"><span class="num">10.1</span><span class="sm-fname">Host Headers and Web Caches</span><span class="sm-st sm-st-planned" aria-hidden="true"></span><span class="sm-sr">（規劃中）</span></a><a class="sm-file is-planned" href="../../proxy-cache/request-smuggling/index.html" title="10.2 HTTP Request Smuggling"><span class="num">10.2</span><span class="sm-fname">HTTP Request Smuggling</span><span class="sm-st sm-st-planned" aria-hidden="true"></span><span class="sm-sr">（規劃中）</span></a></div></details><details class="sm-folder"><summary><a class="sm-chlink" href="../../llm/index.html" title="第 11 章 把信任模型套到新元件：Web LLM"><span class="num">11</span><span class="sm-fname">把信任模型套到新元件：Web LLM</span></a></summary><div class="sm-files"><a class="sm-file is-planned" href="../../llm/llm-attacks/index.html" title="11.1 Web LLM Attacks"><span class="num">11.1</span><span class="sm-fname">Web LLM Attacks</span><span class="sm-st sm-st-planned" aria-hidden="true"></span><span class="sm-sr">（規劃中）</span></a></div></details></details></details></nav>
+<header class="sm-head">
+  <p class="sm-eyebrow">web-http/http-session</p>
+  <h1><span class="num">1.2</span> HTTP Requests and Sessions <span class="badge badge-ready">已完成</span></h1>
+  <p class="question sm-q"><span aria-hidden="true">❯</span> 怎麼看見並修改完整的 HTTP request？</p>
+</header>
+<aside class="sm-aside" aria-label="本節輔助"><nav class="sm-outline" aria-label="本節內容"><p class="sm-ph">本節內容</p><ol><li><a href="#message-model" title="1.2.1 HTTP 訊息的四個區塊"><span class="num">1.2.1</span>HTTP 訊息的四個區塊</a></li><li><a href="#login-exchange" title="1.2.2 登入，再看帳號頁"><span class="num">1.2.2</span>登入，再看帳號頁</a></li><li><a href="#encoding" title="1.2.3 資料放在請求的哪裡"><span class="num">1.2.3</span>資料放在請求的哪裡</a></li><li><a href="#session-model" title="1.2.4 伺服器怎麼記得你"><span class="num">1.2.4</span>伺服器怎麼記得你</a></li><li><a href="#burp" title="1.2.5 用 Burp Suite 觀察並重送請求"><span class="num">1.2.5</span>用 Burp Suite 觀察並重送請求</a></li><li><a href="#idor-intuition" title="1.2.6 身分與目標"><span class="num">1.2.6</span>身分與目標</a></li><li><a href="#limits" title="1.2.7 伺服器只依賴自己查到的身分"><span class="num">1.2.7</span>伺服器只依賴自己查到的身分</a></li><li><a href="#summary" title="1.2.8 小結"><span class="num">1.2.8</span>小結</a></li></ol></nav><section class="sm-locator" aria-label="系統地圖定位"><p class="sm-ph">系統地圖</p><a class="sm-mini-link" href="../../index.html#map-web-http" aria-label="在首頁的系統地圖上看第 1 章的位置"><svg class="sm-map sm-map-mini" viewBox="0 137 524 311" aria-hidden="true" focusable="false" preserveAspectRatio="xMidYMid meet" style="aspect-ratio:524/311"><line class="sm-edge" x1="200" y1="330" x2="290" y2="330"/><line class="sm-edge sm-dash" x1="440" y1="330" x2="530" y2="330"/><line class="sm-edge sm-threat-edge" x1="110" y1="100" x2="110" y2="255"/><line class="sm-edge sm-dash" x1="625" y1="100" x2="625" y2="150"/><line class="sm-edge" x1="625" y1="546" x2="625" y2="570"/><line class="sm-edge" x1="720" y1="325" x2="765" y2="325"/><line class="sm-edge" x1="765" y1="325" x2="765" y2="48"/><line class="sm-edge sm-dash" x1="765" y1="325" x2="765" y2="538"/><line class="sm-edge" x1="765" y1="48" x2="810" y2="48"/><line class="sm-edge" x1="765" y1="118" x2="810" y2="118"/><line class="sm-edge" x1="765" y1="188" x2="810" y2="188"/><line class="sm-edge sm-dash" x1="765" y1="328" x2="810" y2="328"/><line class="sm-edge sm-dash" x1="765" y1="398" x2="810" y2="398"/><line class="sm-edge sm-dash" x1="765" y1="468" x2="810" y2="468"/><line class="sm-edge sm-dash" x1="765" y1="538" x2="810" y2="538"/><g class="sm-n sm-threat off" data-ch="cross-site"><rect class="sm-box" x="20" y="20" width="180" height="80" rx="8"/><text class="sm-mini-t" x="110.0" y="62.0" text-anchor="middle" dominant-baseline="central" font-size="37">5</text></g><g class="sm-n sm-frame on" data-ch="web-http"><rect class="sm-box" x="20" y="255" width="180" height="150" rx="10"/><text class="sm-mini-t" x="50" y="285" text-anchor="middle" dominant-baseline="central" font-size="37">1</text></g><g class="sm-n sm-node off" data-ch="browser-output"><rect class="sm-box" x="36" y="322" width="148" height="64" rx="8"/><text class="sm-mini-t" x="110.0" y="356.0" text-anchor="middle" dominant-baseline="central" font-size="37">3</text></g><g class="sm-n sm-node sm-p2 off" data-ch="proxy-cache"><rect class="sm-box" x="290" y="240" width="150" height="180" rx="8"/><text class="sm-mini-t" x="365.0" y="332.0" text-anchor="middle" dominant-baseline="central" font-size="37">10</text></g><g class="sm-n sm-frame" aria-hidden="true"><rect class="sm-box" x="530" y="150" width="190" height="396" rx="10"/></g><g class="sm-n sm-node off" data-ch="identity"><rect class="sm-box" x="546" y="194" width="158" height="56" rx="8"/><text class="sm-mini-t" x="625.0" y="224.0" text-anchor="middle" dominant-baseline="central" font-size="37">4</text></g><g class="sm-n sm-node sm-p2 off" data-ch="apis"><rect class="sm-box" x="546" y="262" width="158" height="56" rx="8"/><text class="sm-mini-t" x="625.0" y="292.0" text-anchor="middle" dominant-baseline="central" font-size="37">8</text></g><g class="sm-n sm-node sm-p2 off" data-ch="llm"><rect class="sm-box" x="546" y="330" width="158" height="56" rx="8"/><text class="sm-mini-t" x="625.0" y="360.0" text-anchor="middle" dominant-baseline="central" font-size="37">11</text></g><g class="sm-n sm-node off" data-ch="logic-timing"><rect class="sm-box" x="546" y="398" width="158" height="56" rx="8"/><text class="sm-mini-t" x="625.0" y="428.0" text-anchor="middle" dominant-baseline="central" font-size="37">6</text></g><g class="sm-n sm-node sm-p2 off" data-ch="server-actions"><rect class="sm-box" x="546" y="466" width="158" height="56" rx="8"/><text class="sm-mini-t" x="625.0" y="496.0" text-anchor="middle" dominant-baseline="central" font-size="37">7</text></g><g class="sm-n sm-node sm-p2 off" data-ch="delegated-identity"><rect class="sm-box" x="530" y="20" width="190" height="80" rx="8"/><text class="sm-mini-t" x="625.0" y="62.0" text-anchor="middle" dominant-baseline="central" font-size="37">9</text></g><g class="sm-n sm-node off" data-ch="logic-timing"><rect class="sm-box" x="530" y="570" width="190" height="56" rx="8"/><text class="sm-mini-t" x="625.0" y="600.0" text-anchor="middle" dominant-baseline="central" font-size="37">6</text></g><g class="sm-n sm-node off" data-ch="server-input"><rect class="sm-box" x="810" y="20" width="170" height="56" rx="8"/><text class="sm-mini-t" x="895.0" y="50.0" text-anchor="middle" dominant-baseline="central" font-size="37">2</text></g><g class="sm-n sm-node off" data-ch="server-input"><rect class="sm-box" x="810" y="90" width="170" height="56" rx="8"/><text class="sm-mini-t" x="895.0" y="120.0" text-anchor="middle" dominant-baseline="central" font-size="37">2</text></g><g class="sm-n sm-node off" data-ch="server-input"><rect class="sm-box" x="810" y="160" width="170" height="56" rx="8"/><text class="sm-mini-t" x="895.0" y="190.0" text-anchor="middle" dominant-baseline="central" font-size="37">2</text></g><g class="sm-n sm-node sm-p2 off" data-ch="server-actions"><rect class="sm-box" x="810" y="300" width="170" height="56" rx="8"/><text class="sm-mini-t" x="895.0" y="330.0" text-anchor="middle" dominant-baseline="central" font-size="37">7</text></g><g class="sm-n sm-node sm-p2 off" data-ch="server-actions"><rect class="sm-box" x="810" y="370" width="170" height="56" rx="8"/><text class="sm-mini-t" x="895.0" y="400.0" text-anchor="middle" dominant-baseline="central" font-size="37">7</text></g><g class="sm-n sm-node sm-p2 off" data-ch="server-actions"><rect class="sm-box" x="810" y="440" width="170" height="56" rx="8"/><text class="sm-mini-t" x="895.0" y="470.0" text-anchor="middle" dominant-baseline="central" font-size="37">7</text></g><g class="sm-n sm-node sm-p2 off" data-ch="server-actions"><rect class="sm-box" x="810" y="510" width="170" height="56" rx="8"/><text class="sm-mini-t" x="895.0" y="540.0" text-anchor="middle" dominant-baseline="central" font-size="37">7</text></g><g class="sm-n sm-pill on" data-ch="web-http"><rect class="sm-pill-box" x="213" y="306" width="64" height="48" rx="24"/><text class="sm-mini-t" x="245" y="332" text-anchor="middle" dominant-baseline="central" font-size="33">1</text></g><g class="sm-n sm-pill on" data-ch="web-http"><rect class="sm-pill-box" x="453" y="306" width="64" height="48" rx="24"/><text class="sm-mini-t" x="485" y="332" text-anchor="middle" dominant-baseline="central" font-size="33">1</text></g><g class="sm-n sm-pill off" data-ch="cross-site"><rect class="sm-pill-box" x="78" y="153" width="64" height="48" rx="24"/><text class="sm-mini-t" x="110" y="179" text-anchor="middle" dominant-baseline="central" font-size="33">5</text></g><g class="sm-n sm-pill off" data-ch="delegated-identity"><rect class="sm-pill-box" x="593" y="101" width="64" height="48" rx="24"/><text class="sm-mini-t" x="625" y="127" text-anchor="middle" dominant-baseline="central" font-size="33">9</text></g></svg></a><p class="sm-cap">位置：第 1 章　Web 與 HTTP</p><ul class="sm-chips sm-comps" aria-label="本章元件"><li>Browser</li><li>HTTP request／response</li></ul><p class="sm-mini-hint">點地圖：到首頁地圖看這一章</p></section></aside>
+<main id="main" class="sm-doc" tabindex="-1">
+<article class="content sm-article">
+<p>上一節 <a href="../web-basics/index.html">Seeing the Web Through the Browser</a> 看的是網址與一次次的往返。登入購物網站後按下「我的帳號」，網址幾乎沒有透露你是誰，伺服器卻能顯示<em>你的</em>訂單，不會拿出別人的。它靠的是網址以外的東西：請求的其他欄位、瀏覽器自動帶上的 Cookie，以及伺服器怎麼把這些對應到你這個人。</p>
+
+<h2 id="message-model"><span class="num">1.2.1</span> HTTP 訊息的四個區塊</h2>
+<p>HTTP（HyperText Transfer Protocol）是瀏覽器與伺服器約定好的對話格式。一次對話由兩份訊息組成：瀏覽器送出請求（request），伺服器回傳回應（response）。兩份訊息的結構很像，都依序分成四個區塊：</p>
+<ol>
+  <li><strong>起始行</strong>：請求寫的是「要做什麼、對哪個目標」；回應寫的是「結果如何」。</li>
+  <li>標頭（headers）：每行一組「名稱: 值」，是關於這次交換的附加資訊。</li>
+  <li>空行：在 HTTP/1.1 的可讀形式中，標頭到此結束。沒有這個空行，接收方不知道本體從哪裡開始。</li>
+  <li>本體（body）：要傳的內容本身，可以是空的。</li>
+</ol>
+
+<figure id="http-message">
+  <svg viewBox="0 0 720 300" role="img" aria-labelledby="http-message-t" style="color:var(--text)">
+    <title id="http-message-t">左邊是一份 HTTP 請求，右邊是一份 HTTP 回應，各自分成起始行、標頭、空行與本體四個區塊</title>
+    <g font-size="14" font-weight="700" fill="currentColor">
+      <text x="10" y="22">請求（瀏覽器 → 伺服器）</text>
+      <text x="370" y="22">回應（伺服器 → 瀏覽器）</text>
+    </g>
+    <g stroke="currentColor" stroke-width="1.2">
+      <rect x="10" y="34" width="340" height="30" fill="var(--accent-soft)"/>
+      <rect x="10" y="64" width="340" height="90" fill="var(--surface)"/>
+      <rect x="10" y="154" width="340" height="22" fill="none" stroke-dasharray="4 3"/>
+      <rect x="10" y="176" width="340" height="60" fill="var(--surface)"/>
+      <rect x="370" y="34" width="340" height="30" fill="var(--accent-soft)"/>
+      <rect x="370" y="64" width="340" height="90" fill="var(--surface)"/>
+      <rect x="370" y="154" width="340" height="22" fill="none" stroke-dasharray="4 3"/>
+      <rect x="370" y="176" width="340" height="60" fill="var(--surface)"/>
+    </g>
+    <g style="font-family:var(--font-mono)" font-size="12" fill="currentColor">
+      <text x="20" y="54">GET /my-account?id=wiener HTTP/1.1</text>
+      <text x="20" y="84">Host: shop.example.com</text>
+      <text x="20" y="104">Cookie: session=DEMO123</text>
+      <text x="20" y="124">Accept: text/html</text>
+      <text x="380" y="54">HTTP/1.1 200 OK</text>
+      <text x="380" y="84">Content-Type: text/html</text>
+      <text x="380" y="104">Content-Length: 120</text>
+      <text x="380" y="124">Set-Cookie: theme=dark</text>
+      <text x="380" y="198">&lt;html&gt; … wiener 的帳號頁 … &lt;/html&gt;</text>
+    </g>
+    <g font-size="12" fill="currentColor" opacity=".75">
+      <text x="296" y="54">起始行</text>
+      <text x="320" y="84">標頭</text>
+      <text x="320" y="169">空行</text>
+      <text x="232" y="198">本體（此例為空）</text>
+      <text x="656" y="54">起始行</text>
+      <text x="680" y="84">標頭</text>
+      <text x="680" y="169">空行</text>
+      <text x="680" y="228">本體</text>
+    </g>
+    <text x="10" y="268" font-size="13" fill="currentColor" opacity=".8">GET 請求通常沒有本體。</text>
+  </svg>
+  <figcaption><span class="fig-num">圖 1.2.1-1</span> 一份 HTTP 請求與一份 HTTP 回應的四個區塊</figcaption>
+</figure>
+
+<p>把請求的起始行拆開，會得到三個部分：</p>
+<dl>
+  <dt>方法（method）</dt>
+  <dd>例如 <code>GET</code>、<code>POST</code>。它表達「想對目標做什麼」：<code>GET</code> 慣例上用來取得內容，<code>POST</code> 慣例上用來送出資料讓伺服器處理（登入、下單）。方法只是請求者宣告的意圖，伺服器是否照慣例處理，要看它怎麼寫。</dd>
+  <dt>目標（path 與 query）</dt>
+  <dd><code>/my-account?id=wiener</code> 中，<code>?</code> 之前的 <code>/my-account</code> 是路徑，<code>?</code> 之後的 <code>id=wiener</code> 是<strong>查詢字串</strong>（query string），由「名稱=值」組成，多組之間用 <code>&amp;</code> 隔開。</dd>
+  <dt>版本</dt>
+  <dd><code>HTTP/1.1</code> 是這份訊息使用的協定版本。這裡的例子都用最好讀的 HTTP/1.1 可讀形式；HTTP/2 改用二進位的訊息框架，工具通常會把它轉成類似的可讀顯示。本體可以是文字，也可以是圖片之類的位元組。</dd>
+</dl>
+<p>回應的起始行則有狀態碼（status code），三位數字加一段說明，告訴你伺服器怎麼處理這次請求。常見的有：</p>
+<table>
+  <thead><tr><th>狀態碼</th><th>意思</th><th>要注意的地方</th></tr></thead>
+  <tbody>
+    <tr><td><code>200 OK</code></td><td>請求成功，本體是要求的內容</td><td>「成功」是指伺服器照做了，不保證內容是你該看到的</td></tr>
+    <tr><td><code>302 Found</code></td><td>內容在別處，請照 <code>Location</code> 標頭再發一次請求</td><td>瀏覽器會自動跟隨，跟隨時另發一筆新請求</td></tr>
+    <tr><td><code>403 Forbidden</code></td><td>伺服器明白你要什麼，但拒絕</td><td>常用來表示「已知身分但沒有權限」</td></tr>
+    <tr><td><code>404 Not Found</code></td><td>找不到目標</td><td>有些網站為了不洩漏資源是否存在，也用它拒絕</td></tr>
+  </tbody>
+</table>
+<p>完整的狀態碼清單可看 <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Status">MDN 的 HTTP 狀態碼</a>，訊息格式的正式說明可看 <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/Messages">MDN 的 HTTP Messages</a>。狀態碼只是第一個線索，要知道發生了什麼事，還得看標頭與本體。</p>
+
+<h2 id="login-exchange"><span class="num">1.2.2</span> 登入，再看帳號頁</h2>
+<p>以購物網站 <code>shop.example.com</code> 為例，登入後看自己的帳號頁，會依序產生四份訊息。瀏覽器通常會附帶的其他標頭都省略，標成 <code>（其他標頭略）</code>。</p>
+
+<h3>瀏覽器送出登入表單</h3>
+<pre data-lang="http"><code># 登入請求
+POST /login HTTP/1.1
+Host: shop.example.com
+Content-Type: application/x-www-form-urlencoded
+Content-Length: 30
+（其他標頭略）
+
+username=wiener&amp;password=peter</code></pre>
+<p>空行之後的 <code>username=wiener&amp;password=peter</code> 是本體，剛好 30 個字元（15 + 1 + 14），所以 <code>Content-Length</code>（本體的位元組數）是 30。<code>Content-Type</code> 告訴伺服器「本體要用表單格式（名稱=值，以 <code>&amp;</code> 分隔）解讀」，伺服器才知道怎麼切出 <code>username</code> 與 <code>password</code>。</p>
+
+<h3>伺服器要瀏覽器記住一個值</h3>
+<pre data-lang="http"><code># 登入回應
+HTTP/1.1 302 Found
+Location: /my-account
+Set-Cookie: session=DEMO123; HttpOnly
+（其他標頭略）
+
+（本體為空）</code></pre>
+<p><code>Set-Cookie</code> 是伺服器對瀏覽器說：「請把名稱 <code>session</code>、值 <code>DEMO123</code> 記起來。」<code>302</code> 加上 <code>Location</code>，則要瀏覽器接著去 <code>/my-account</code>。<code>302</code> 本身只是導向，不代表登入成功：沒登入的人也常被 <code>302</code> 導回登入頁，要看 <code>Location</code> 指向哪裡。</p>
+
+<h3>瀏覽器帶著 Cookie 再發一次請求</h3>
+<pre data-lang="http"><code># 登入後的帳號頁請求
+GET /my-account HTTP/1.1
+Host: shop.example.com
+Cookie: session=DEMO123
+（其他標頭略）</code></pre>
+<p>這一筆是瀏覽器因為上一步的 <code>302</code> 而<em>另外</em>發出的新請求；你沒有按任何按鈕，它自己跟過去了。只要這個 Cookie 還有效，且請求符合它的適用範圍與傳送設定，瀏覽器送請求給 <code>shop.example.com</code> 時就會自動附上 <code>Cookie: session=DEMO123</code>。</p>
+
+<h3>伺服器靠 Cookie 認出你</h3>
+<pre data-lang="http"><code># 帳號頁回應
+HTTP/1.1 200 OK
+Content-Type: text/html
+（其他標頭略）
+
+&lt;html&gt; … 你好，wiener … &lt;/html&gt;</code></pre>
+<p>這個請求的網址裡沒有 <code>wiener</code>，伺服器是靠 Cookie 知道該顯示誰的帳號頁。</p>
+<aside class="note">
+  <p>Cookie 也會在登入之前出現。許多網站在你第一次造訪時就建立 Session，登入時再把身分填進去，有些網站登入時也不換新的 Cookie。所以看到 Set-Cookie 不能當成登入成功的證據；要判斷是否已登入，得看整體行為。</p>
+</aside>
+
+<h2 id="encoding"><span class="num">1.2.3</span> 資料放在請求的哪裡</h2>
+<p>使用者填的資料可以放在網址的查詢字串，也可以放在本體；上面的登入表單用的是本體。</p>
+<table>
+  <thead><tr><th>位置</th><th>常配合的方法</th><th>特點</th></tr></thead>
+  <tbody>
+    <tr><td>查詢字串</td><td><code>GET</code></td><td>在網址中，會出現在瀏覽器網址列、書籤與伺服器紀錄；適合單純取得內容</td></tr>
+    <tr><td>本體</td><td><code>POST</code></td><td>不在網址中；適合送出資料、讓伺服器改變狀態</td></tr>
+  </tbody>
+</table>
+<p>這個差別出於慣例與方便，與安全性無關。POST 並不加密：本體裡的帳號密碼仍是明文，路上會不會被偷看，要看連線有沒有使用 <strong>HTTPS</strong>（HTTP 加上由 TLS 提供的傳輸加密；TLS 是保護網路傳輸的協定，讓路上的人看不到也改不了內容）。HTTPS 只保護傳輸過程。送進伺服器的內容是否可信、伺服器會不會檢查你的權限，它都管不到。</p>
+
+<h3>特殊字元必須編碼</h3>
+<p>表單格式用 <code>=</code> 與 <code>&amp;</code> 當分隔符。資料本身若含有空白或 <code>&amp;</code> 這類有特殊作用的字元，原樣放進去會改變分隔的意思，所以送出前要依所用的格式做<strong>編碼</strong>（URL encoding，也稱 percent-encoding），收到後再依同一種格式解碼。做法是把這些字元換成 <code>%</code> 加兩位十六進位數字（十六進位用 0–9 與 A–F 表示數值，例如 <code>26</code> 是十進位的 38）；空白在表單中常寫成 <code>+</code>，也可以是 <code>%20</code>。瀏覽器和工具通常會自動處理；在工具的參數編輯器裡改值時，也讓工具替你編碼。</p>
+<p>這套規則屬於表單格式。網址本身的語法、瀏覽器把表單轉成文字的方式、應用程式解析參數的方式，各有各的規則；表單格式要求編碼的字元，網址語法不一定禁止。</p>
+<table>
+  <thead><tr><th>使用者輸入的原文</th><th>實際傳送的樣子</th><th>伺服器解碼後</th></tr></thead>
+  <tbody>
+    <tr><td><code>red shoes</code></td><td><code>q=red+shoes</code></td><td><code>q</code> = <code>red shoes</code></td></tr>
+    <tr><td><code>salt &amp; pepper</code></td><td><code>q=salt+%26+pepper</code></td><td><code>q</code> = <code>salt &amp; pepper</code></td></tr>
+  </tbody>
+</table>
+<p>第二列的 <code>%26</code> 是 <code>&amp;</code> 的編碼。因為編過碼，伺服器把它當成資料的一部分，不會當成下一組參數的開頭。同一個值傳送時和解碼後長得不一樣，之後講各種注入時，常要追問是誰在哪一步解碼；正常情況下只該解碼一次。</p>
+
+<h2 id="session-model"><span class="num">1.2.4</span> 伺服器怎麼記得你</h2>
+<p>HTTP 本身是<strong>無狀態</strong>（stateless）的：每一份請求都獨立，伺服器不會自動記得「這是剛才那個人」。網站要記得登入狀態，得自己想辦法。最常見的設計裡有三樣東西：</p>
+<ul>
+  <li><strong>Cookie</strong> 是瀏覽器保存的一組「名稱與值」。伺服器用 <code>Set-Cookie</code> 要求瀏覽器存起來，之後只要請求符合該 Cookie 的傳送條件（例如尚未過期，且目標位置與連線方式在它的適用範圍內），瀏覽器就用 <code>Cookie</code> 標頭自動帶回；同一個主機名稱並不是唯一的條件（詳見 <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/Cookies">MDN 的 Using HTTP cookies</a>）。兩個標頭方向相反：<code>Set-Cookie</code> 在回應中，由伺服器發給瀏覽器；<code>Cookie</code> 在請求中，由瀏覽器交給伺服器。</li>
+  <li><strong>Session</strong>（會話）是伺服器自己保存的狀態，例如「這個會話屬於 wiener、已登入」。它存在伺服器端（記憶體或資料庫），不在瀏覽器裡。</li>
+  <li><strong>Session 識別字</strong>（session identifier，常縮寫 Session ID）是連接兩者的鑰匙：一串難以猜到的隨機值，瀏覽器放在 Cookie 裡，伺服器用它去查自己的 Session 表。</li>
+</ul>
+
+<figure id="session-flow">
+  <svg viewBox="0 0 720 420" role="img" aria-labelledby="session-flow-t" style="color:var(--text)">
+    <title id="session-flow-t">登入與帳號頁的時序圖：瀏覽器送出登入，伺服器建立 Session 並以 Set-Cookie 回傳識別字，之後瀏覽器以 Cookie 帶回識別字，伺服器查表得知身分</title>
+    <defs>
+      <marker id="sf-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+        <path d="M0 0 L10 5 L0 10 z" fill="currentColor"/>
+      </marker>
+    </defs>
+    <g stroke="currentColor" stroke-width="1.2">
+      <rect x="20" y="10" width="140" height="44" rx="5" fill="var(--accent-soft)"/>
+      <rect x="290" y="10" width="140" height="44" rx="5" fill="var(--accent-soft)"/>
+      <rect x="560" y="10" width="140" height="44" rx="5" fill="var(--accent-soft)"/>
+    </g>
+    <g font-size="14" fill="currentColor" text-anchor="middle">
+      <text x="90" y="28">瀏覽器</text>
+      <text x="360" y="28">網站應用程式</text>
+      <text x="630" y="28">Session 表</text>
+    </g>
+    <g font-size="11" fill="currentColor" text-anchor="middle" opacity=".75">
+      <text x="90" y="45">只存 Cookie</text>
+      <text x="360" y="45">處理請求</text>
+      <text x="630" y="45">存在伺服器端</text>
+    </g>
+    <g stroke="currentColor" stroke-width="1" stroke-dasharray="4 4" opacity=".5">
+      <path d="M90 54 V400 M360 54 V400 M630 54 V400"/>
+    </g>
+    <g stroke="currentColor" stroke-width="1.6" fill="none">
+      <path d="M92 94 H356" marker-end="url(#sf-arrow)"/>
+      <path d="M362 134 H626" marker-end="url(#sf-arrow)"/>
+      <path d="M358 174 H94" marker-end="url(#sf-arrow)" stroke-dasharray="6 3"/>
+      <path d="M92 254 H356" marker-end="url(#sf-arrow)"/>
+      <path d="M362 294 H626" marker-end="url(#sf-arrow)"/>
+      <path d="M626 324 H364" marker-end="url(#sf-arrow)" stroke-dasharray="6 3"/>
+      <path d="M358 364 H94" marker-end="url(#sf-arrow)" stroke-dasharray="6 3"/>
+    </g>
+    <g font-size="12" fill="currentColor" text-anchor="middle">
+      <text x="224" y="84">① POST /login（帳號、密碼）</text>
+      <text x="494" y="124">② 建立 DEMO123 → user: wiener</text>
+      <text x="224" y="152">③ 302 + Set-Cookie：</text>
+      <text x="224" y="166" style="font-family:var(--font-mono)">session=DEMO123</text>
+      <text x="224" y="226">④ GET /my-account，並帶上</text>
+      <text x="224" y="242" style="font-family:var(--font-mono)">Cookie: session=DEMO123</text>
+      <text x="494" y="284">⑤ 用 DEMO123 查表</text>
+      <text x="494" y="314">⑥ 結果：user: wiener</text>
+      <text x="224" y="354">⑦ 200：wiener 的帳號頁</text>
+    </g>
+    <text x="10" y="416" font-size="12" fill="currentColor" opacity=".75">實線為請求，虛線為回應。</text>
+  </svg>
+  <figcaption><span class="fig-num">圖 1.2.4-1</span> 登入與帳號頁的往返：瀏覽器只保存 Session 識別字，身分資料留在伺服器的 Session 表</figcaption>
+</figure>
+
+<p>瀏覽器手上只有 <code>DEMO123</code> 這一串字，沒有你的姓名、權限或密碼，像一張寄物櫃的號碼牌。身分資料（誰、已登入、有什麼權限）都留在伺服器端。Cookie 的值使用者看得到，也改得動，所以伺服器每次都要自己查表，不能直接相信它。</p>
+<p>誰拿著這個號碼牌，伺服器就把誰當成那個使用者，所以識別字必須難以猜測，也不能隨手貼到公開的地方；在 Burp 裡看到它時，要當成密碼對待。</p>
+<aside class="note">
+  <p>Cookie 還有一些屬性，例如上面出現過的 <code>HttpOnly</code>（頁面中的 JavaScript 讀不到這個 Cookie）。這些屬性是 Cookie 的保護設定，也影響跨網站請求時 Cookie 會不會被帶上，談跨站信任的那一章會再討論。另有一種設計把身分直接放進 Cookie 的值、不查表，談 JWT 的那一節會看到；這裡用的是最常見的識別字加查表。</p>
+</aside>
+
+<h2 id="burp"><span class="num">1.2.5</span> 用 Burp Suite 觀察並重送請求</h2>
+<p>瀏覽器的開發者工具（DevTools）能看到請求，但想改動其中一個欄位再送一次，就需要另一種工具。<strong>Burp Suite</strong> 是資安測試常用的工具，它擺在瀏覽器與網站之間，記錄經過的請求與回應，並讓你修改後重送。免費的 Community Edition 就夠用：這裡用到的 Proxy、HTTP history、Repeater 都不需要付費版。</p>
+<p>Burp 在這裡用來觀察：它把瀏覽器原本隱藏的細節（標頭、Cookie、完整本體）攤開，讓你比較改了什麼、結果有什麼不同。它不會替你找出漏洞；伺服器不允許的事，經過 Burp 也不會變成允許。</p>
+<p>安裝與基本設定請看官方文件；選單位置與名稱會隨版本調整，畫面和這裡的說明對不上時，以官方文件為準：</p>
+<ul>
+  <li><a href="https://portswigger.net/burp/communitydownload">下載 Burp Suite Community Edition</a></li>
+  <li><a href="https://portswigger.net/burp/documentation/desktop/getting-started/intercepting-http-traffic">官方入門：攔截 HTTP 流量</a></li>
+  <li><a href="https://portswigger.net/burp/documentation/desktop/getting-started/reissuing-http-requests">官方入門：重送 HTTP 請求</a></li>
+</ul>
+
+<h3>Proxy、HTTP history 與 Repeater</h3>
+<dl>
+  <dt>Proxy（代理）</dt>
+  <dd>Burp 的核心。瀏覽器的請求先到 Burp，由 Burp 轉給網站；回應也經過它再回到瀏覽器。Burp 內附一個已設定好的瀏覽器（Proxy → Intercept → Open Browser），用它瀏覽網站，流量就會自動經過 Burp，不必自己改瀏覽器的代理設定。</dd>
+  <dt>HTTP history（HTTP 歷史）</dt>
+  <dd>Proxy 分頁下的清單，依時間順序列出每一筆經過的請求。點選一列，下方會顯示完整的請求與回應，格式就是上面那四個區塊。</dd>
+  <dt>Repeater（重送器）</dt>
+  <dd>一個可以編輯請求並按 Send 重新送出的工作區。把歷史裡的某筆請求「送到 Repeater」，就得到一份可以反覆修改與重送的副本，每次送出都會看到伺服器的新回應。</dd>
+</dl>
+<aside class="note">
+  <p>Proxy 還有一個 Intercept（攔截）功能，開著時請求會停在 Burp 等你放行。平常瀏覽請把它關掉，否則頁面會一直轉圈，看起來像網站壞了。這裡的流程只用到歷史紀錄，不需要攔截。</p>
+</aside>
+
+<h3>在 Repeater 每次只改一個欄位</h3>
+<ol>
+  <li>開啟 Burp，建立暫時專案（Community 版只提供暫時專案）。在 Proxy 分頁確認 Intercept 是關閉的。</li>
+  <li>在 Proxy → Intercept 分頁點 Open Browser，在這個瀏覽器中開啟要練習的網站並登入。以上面的購物網站為例：登入後點「我的帳號」。</li>
+  <li>回到 Burp 的 Proxy → HTTP history，找到路徑是 <code>/my-account</code> 的那一列並點選。下方可以看到完整的請求（其中有 <code>Cookie</code> 標頭）和回應中的帳號頁內容。若看到一個 <code>302</code> 的列，點它看 <code>Location</code>，再往後找它導向的那一列：那就是前面「瀏覽器帶著 Cookie 再發一次請求」的實際樣子。</li>
+  <li>在該列按右鍵，選 Send to Repeater，然後切到 Repeater 分頁。</li>
+  <li>先什麼都不改，按 Send。回應應該和瀏覽器看到的相同：同樣是你的帳號頁。這一步建立基準：原樣的請求可用，之後出現差異，就能確定是你的修改造成的。</li>
+  <li>每次只改一個欄位，例如把 <code>id=wiener</code> 的值換成別的字串，再按 Send。比較回應與基準的狀態碼、標頭、本體，看哪裡不一樣。</li>
+  <li>要回到基準時，把欄位改回原值再送一次。想同時保留兩份請求，就在 Repeater 的請求編輯區按右鍵，選 Send to Repeater，建立另一份副本；也可以回到 HTTP history，對同一筆請求再送一次到 Repeater。一份留作基準，一份用來實驗。</li>
+</ol>
+<p>「相同的回應」不必每個位元組都一樣：時間戳記、頁面內的隨機碼等動態欄位每次都會變，要比的是身分與內容。另外，Repeater 的重送是 Burp 直接送給網站，瀏覽器並不知道，所以在 Repeater 做的修改不會改變瀏覽器目前的畫面。</p>
+<aside class="warning">
+  <p>HTTP history 與 Repeater 中的請求含有你真正登入的 Session Cookie。不要把整份請求、截圖或「Copy as cURL」的輸出貼到公開平台或聊天群；需要分享時，把 Cookie 的值遮掉，道理和分享密碼一樣。</p>
+</aside>
+
+<h2 id="idor-intuition"><span class="num">1.2.6</span> 身分與目標</h2>
+<p>這兩筆請求帶著同一個 Cookie，只有 <code>id</code> 不同：</p>
+<pre data-lang="http"><code># 兩筆請求使用同一個 Cookie
+GET /my-account?id=wiener HTTP/1.1
+Cookie: session=DEMO123
+
+GET /my-account?id=[其他帳號的識別值] HTTP/1.1
+Cookie: session=DEMO123</code></pre>
+<p>每一筆請求都同時帶著兩份資訊：</p>
+<ul>
+  <li>目前身分：由 Cookie 決定。伺服器查 <code>DEMO123</code>，得知發出請求的人是 wiener。</li>
+  <li>目標資源：由 <code>id</code> 參數決定。它指明「要看哪一個帳號的資料」。</li>
+</ul>
+<p>這兩個欄位互相獨立。第二筆請求只改了目標，沒有改身分：發出請求的人仍是 wiener，他要求看另一個帳號的帳號頁，該帳號由 <code>[其他帳號的識別值]</code> 指定（方括號代表被換掉的那段輸入）。伺服器要判斷的是 wiener 有沒有權限看那個帳號的資料。</p>
+
+<figure id="identity-target">
+  <svg viewBox="0 0 720 320" role="img" aria-labelledby="identity-target-t" style="color:var(--text)">
+    <title id="identity-target-t">Cookie 決定目前身分，id 參數決定目標資源，兩者在授權判斷會合；缺少授權判斷的路徑直接回傳資料</title>
+    <defs>
+      <marker id="it-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+        <path d="M0 0 L10 5 L0 10 z" fill="currentColor"/>
+      </marker>
+    </defs>
+    <g stroke="currentColor" stroke-width="1.2">
+      <rect x="10" y="30" width="190" height="50" rx="5" fill="var(--surface)"/>
+      <rect x="10" y="130" width="190" height="50" rx="5" fill="var(--surface)"/>
+      <rect x="260" y="30" width="170" height="50" rx="5" fill="var(--accent-soft)"/>
+      <rect x="260" y="130" width="170" height="50" rx="5" fill="var(--accent-soft)"/>
+      <rect x="490" y="70" width="210" height="70" rx="5" fill="var(--accent-soft)"/>
+      <rect x="490" y="236" width="210" height="52" rx="5" fill="var(--surface)"/>
+    </g>
+    <g font-size="13" fill="currentColor" text-anchor="middle">
+      <text x="105" y="52" font-size="12" style="font-family:var(--font-mono)">Cookie: session=DEMO123</text>
+      <text x="105" y="70" font-size="11" opacity=".75">請求中的身分線索</text>
+      <text x="105" y="152" font-size="12" style="font-family:var(--font-mono)">?id=[其他帳號的識別值]</text>
+      <text x="105" y="170" font-size="11" opacity=".75">請求中的目標線索</text>
+      <text x="345" y="52">目前身分</text>
+      <text x="345" y="70" font-size="11" opacity=".75">wiener（伺服器查表得知）</text>
+      <text x="345" y="152">目標資源</text>
+      <text x="345" y="170" font-size="11" opacity=".75">其他帳號的帳號資料</text>
+      <text x="595" y="96" font-weight="700">授權判斷</text>
+      <text x="595" y="113">wiener 可以讀其他</text>
+      <text x="595" y="129">帳號的資料嗎？</text>
+      <text x="595" y="258" font-weight="700">直接回傳其他帳號的資料</text>
+      <text x="595" y="276" font-size="11" opacity=".75">缺少判斷時的結果</text>
+    </g>
+    <g stroke="currentColor" stroke-width="1.6" fill="none">
+      <path d="M200 55 H258" marker-end="url(#it-arrow)"/>
+      <path d="M200 155 H258" marker-end="url(#it-arrow)"/>
+      <path d="M430 55 H460 V90 H488" marker-end="url(#it-arrow)"/>
+      <path d="M430 155 H460 V120 H488" marker-end="url(#it-arrow)"/>
+      <path d="M345 180 V262 H488" marker-end="url(#it-arrow)" stroke-dasharray="6 4"/>
+    </g>
+    <text x="10" y="308" font-size="12" fill="currentColor" opacity=".8">實線是應有的檢查路徑；虛線是只檢查「已登入」、沒有比對目標時的路徑。</text>
+  </svg>
+  <figcaption><span class="fig-num">圖 1.2.6-1</span> 身分與目標是兩個輸入：正確的設計把兩者放在一起判斷；缺少判斷時，目標參數寫什麼就回什麼</figcaption>
+</figure>
+
+<p>如果伺服器只確認「這個人已登入」（Cookie 有效），就直接用 <code>id</code> 查資料並回傳，等於把任何登入的人都當成能讀任何帳號的人。這類問題叫 <strong>IDOR</strong>（Insecure Direct Object Reference，不安全的直接物件參考）：請求裡直接使用物件的識別（這裡是帳號名稱），伺服器卻沒有檢查請求者對那個物件有沒有權限。</p>
+<p>沒有身分和越權是兩種問題。設計正確的網站會這樣分別處理：</p>
+<table>
+  <thead><tr><th>Cookie</th><th>目標</th><th>正確系統應有的反應</th></tr></thead>
+  <tbody>
+    <tr><td>wiener 的 Session</td><td><code>id=wiener</code></td><td>顯示 wiener 的帳號頁</td></tr>
+    <tr><td>wiener 的 Session</td><td><code>id=[其他帳號的識別值]</code></td><td>拒絕（例如 403）：身分已知，但沒有權限</td></tr>
+    <tr><td>沒有 Cookie</td><td><code>id=wiener</code></td><td>導向登入頁：身分未知，連自己的資料都不能看</td></tr>
+  </tbody>
+</table>
+<p>看到其他帳號的資料，是因為伺服器沒有檢查你對目標的權限，你並沒有變成另一個使用者。反過來，一次重送得到回應，也只說明那一筆請求得到了那樣的結果；要判斷是不是漏洞，得比較身分與目標，並知道系統預期怎麼拒絕。</p>
+<p>只在畫面上隱藏連結也擋不住這種請求。網站可能只顯示通往自己帳號的連結，但請求可以由任何人自行構造或用工具修改。</p>
+<p>修補要在伺服器端做：同時用目前身分與目標資源判斷這個請求是否允許。更穩妥的做法是不讓請求自己宣稱要看哪個使用者，直接用 Session 查出的身分決定顯示誰的資料。</p>
+<aside class="note">
+  <p>上面區分的是認證（你是誰）與授權（你可以做什麼）。授權有許多形式，例如角色、物件所有權、多步驟流程，完整的分類與修補在 Access Control 一節；登入機制本身的弱點則在 Authentication 一節。</p>
+</aside>
+
+<h2 id="limits"><span class="num">1.2.7</span> 伺服器只依賴自己查到的身分</h2>
+<p>Cookie 的值和 <code>id</code> 參數都是使用者送來的，在 Repeater 裡隨手就能改。伺服器能依賴的只有一樣：它拿 Session 識別字到自己的 Session 表查出的身分。要不要讓這個身分讀取目標資源，也由伺服器用這個身分判斷。</p>
+
+<h2 id="summary"><span class="num">1.2.8</span> 小結</h2>
+<ul>
+  <li>HTTP 訊息由起始行、標頭與本體組成，HTTP/1.1 以空行隔開標頭與本體；請求起始行有方法、目標與版本，回應起始行有狀態碼。</li>
+  <li>資料放在查詢字串或本體，特殊字元要編碼。POST 沒有加密，HTTPS 只保護傳輸。</li>
+  <li>伺服器用 <code>Set-Cookie</code> 發出 Session 識別字，瀏覽器之後用 <code>Cookie</code> 帶回，伺服器拿它查 Session 表。識別字要像密碼一樣保密。</li>
+  <li>在 Burp 裡先原樣重送一次當基準，再每次只改一個欄位。</li>
+  <li>請求同時帶著目前身分與目標資源；只檢查有沒有登入、不檢查對目標的權限，就會出現 IDOR。</li>
+</ul>
+<p>PortSwigger Academy 的對應練習（主題頁 <a href="https://portswigger.net/web-security/authentication">Authentication</a>、<a href="https://portswigger.net/web-security/access-control">Access control</a>），只在 Lab 或其他獲明確授權的系統上測試：</p>
+<ul>
+  <li><a href="https://portswigger.net/web-security/access-control/lab-user-id-controlled-by-request-parameter">User ID controlled by request parameter</a>：在 Repeater 只改識別使用者的參數，比較回應裡的帳號，再用身分與目標的區分解釋結果。</li>
+</ul>
+<p>IDOR 例子裡的 <code>id</code> 被伺服器拿來決定要查哪個帳號。下一節 <a href="../../server-input/path-traversal/index.html">Path Traversal</a> 進入第 2 章「伺服器如何處理使用者輸入」，把目標參數換成檔名，看伺服器拿請求中的 <code>filename</code> 決定讀哪個檔案時，檔案系統怎麼解讀那段文字；HTTP history 與 Repeater 的流程在那裡直接用得上。</p>
+
+</article>
+<nav class="pager" aria-label="上下節"><a class="prev" href="../../web-http/web-basics/index.html"><small>← prev</small><span class="num">1.1</span> Seeing the Web Through the Browser</a><a class="next" href="../../server-input/path-traversal/index.html"><small>next →</small><span class="num">2.1</span> Path Traversal</a></nav>
+</main>
+</div>
+<footer class="sm-status"><span class="sm-s-main">26 sections</span><span class="sm-s-list"><span class="sm-s-planned">規劃中 12</span> <span class="sm-s-draft">草稿 3</span> <span class="sm-s-ready">已完成 11</span></span><span class="sm-s-end">系統地圖</span></footer>
+<script src="../../assets/theme/theme.js?v=d288e31038"></script>
+</body>
+</html>

@@ -1,0 +1,267 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>2.1 Path Traversal｜Web 安全</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Crect width='16' height='16' rx='3' fill='%23070c12'/%3E%3Crect x='1.5' y='1.5' width='13' height='13' rx='2.5' fill='none' stroke='%2336e0cc' stroke-width='1.4'/%3E%3Cpath d='M5 8 L11 5 M5 8 L11 11' stroke='%2336e0cc' stroke-width='1.2' fill='none'/%3E%3Ccircle cx='5' cy='8' r='1.6' fill='%2336e0cc'/%3E%3Ccircle cx='11' cy='5' r='1.6' fill='%2336e0cc'/%3E%3Ccircle cx='11' cy='11' r='1.6' fill='%2336e0cc'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="../../assets/style.css?v=d288e31038">
+<link rel="stylesheet" href="../../assets/theme/theme.css?v=d288e31038">
+<script>(function(){var m=null;try{m=localStorage.getItem("web-security:motion")}catch(e){}if(m!=="on"&&m!=="off"){m="on";try{if(matchMedia("(prefers-reduced-motion: reduce)").matches)m="off"}catch(e){}}document.documentElement.setAttribute("data-motion",m)})()</script>
+</head>
+<body class="page-section sm-body">
+<a class="skip" href="#main">跳到正文</a>
+<header class="sm-top"><a class="sm-brand" href="../../index.html"><svg class="sm-logo" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><rect x="1" y="1" width="14" height="14" rx="3" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M5 8 L11 5 M5 8 L11 11" stroke="currentColor" stroke-width="1.3" fill="none"/><circle cx="5" cy="8" r="1.7" fill="currentColor"/><circle cx="11" cy="5" r="1.7" fill="currentColor"/><circle cx="11" cy="11" r="1.7" fill="currentColor"/></svg><span class="sm-brand-t">web-security</span></a><nav class="sm-path" aria-label="目前位置"><ol><li class="sm-p-root"><a href="../../index.html">web-security</a></li><li class="sm-p-ch split"><a href="../../server-input/index.html">2<span class="sm-p-title">&nbsp;伺服器如何處理使用者輸入</span></a></li><li class=""><span aria-current="page">2.1</span></li></ol></nav><a class="sm-toplink" href="../../index.html#map">map</a><a class="sm-toplink" href="../../chapters/index.html">chapters</a><button type="button" class="sm-toplink sm-motion" aria-pressed="true" hidden>動畫：開</button></header>
+<div class="sm-shell">
+<nav class="sm-tree" aria-label="教材瀏覽器"><details class="sm-tree-wrap" open><summary class="sm-tree-sum">EXPLORER／教材目錄</summary><p class="sm-tree-h" aria-hidden="true">EXPLORER</p><details class="sm-partd" open><summary class="sm-part">第一部分：輸入如何穿過網站</summary><details class="sm-folder"><summary><a class="sm-chlink" href="../../web-http/index.html" title="第 1 章 Web 與 HTTP"><span class="num">1</span><span class="sm-fname">Web 與 HTTP</span></a></summary><div class="sm-files"><a class="sm-file" href="../../web-http/web-basics/index.html" title="1.1 Seeing the Web Through the Browser"><span class="num">1.1</span><span class="sm-fname">Seeing the Web Through the Browser</span><span class="sm-st sm-st-ready" aria-hidden="true"></span><span class="sm-sr">（已完成）</span></a><a class="sm-file" href="../../web-http/http-session/index.html" title="1.2 HTTP Requests and Sessions"><span class="num">1.2</span><span class="sm-fname">HTTP Requests and Sessions</span><span class="sm-st sm-st-ready" aria-hidden="true"></span><span class="sm-sr">（已完成）</span></a></div></details><details class="sm-folder" open><summary><a class="sm-chlink" href="../../server-input/index.html" title="第 2 章 伺服器如何處理使用者輸入"><span class="num">2</span><span class="sm-fname">伺服器如何處理使用者輸入</span></a></summary><div class="sm-files"><a class="sm-file" href="../../server-input/path-traversal/index.html" aria-current="page" title="2.1 Path Traversal"><span class="num">2.1</span><span class="sm-fname">Path Traversal</span><span class="sm-st sm-st-ready" aria-hidden="true"></span><span class="sm-sr">（已完成）</span></a><a class="sm-file" href="../../server-input/file-upload/index.html" title="2.2 File Upload Vulnerabilities"><span class="num">2.2</span><span class="sm-fname">File Upload Vulnerabilities</span><span class="sm-st sm-st-ready" aria-hidden="true"></span><span class="sm-sr">（已完成）</span></a><a class="sm-file" href="../../server-input/sql-injection/index.html" title="2.3 SQL Injection Basics"><span class="num">2.3</span><span class="sm-fname">SQL Injection Basics</span><span class="sm-st sm-st-ready" aria-hidden="true"></span><span class="sm-sr">（已完成）</span></a><a class="sm-file" href="../../server-input/sql-injection-observation/index.html" title="2.4 UNION and Blind SQL Injection"><span class="num">2.4</span><span class="sm-fname">UNION and Blind SQL Injection</span><span class="sm-st sm-st-ready" aria-hidden="true"></span><span class="sm-sr">（已完成）</span></a><a class="sm-file" href="../../server-input/command-injection/index.html" title="2.5 OS Command Injection"><span class="num">2.5</span><span class="sm-fname">OS Command Injection</span><span class="sm-st sm-st-ready" aria-hidden="true"></span><span class="sm-sr">（已完成）</span></a></div></details><details class="sm-folder"><summary><a class="sm-chlink" href="../../browser-output/index.html" title="第 3 章 伺服器的輸出如何在瀏覽器中變成程式"><span class="num">3</span><span class="sm-fname">伺服器的輸出如何在瀏覽器中變成程式</span></a></summary><div class="sm-files"><a class="sm-file" href="../../browser-output/xss-basics/index.html" title="3.1 Cross-Site Scripting Basics"><span class="num">3.1</span><span class="sm-fname">Cross-Site Scripting Basics</span><span class="sm-st sm-st-ready" aria-hidden="true"></span><span class="sm-sr">（已完成）</span></a><a class="sm-file" href="../../browser-output/xss-context-dom/index.html" title="3.2 Output Contexts and DOM-Based XSS"><span class="num">3.2</span><span class="sm-fname">Output Contexts and DOM-Based XSS</span><span class="sm-st sm-st-ready" aria-hidden="true"></span><span class="sm-sr">（已完成）</span></a></div></details><details class="sm-folder"><summary><a class="sm-chlink" href="../../identity/index.html" title="第 4 章 網站如何知道你是誰、允許你做什麼"><span class="num">4</span><span class="sm-fname">網站如何知道你是誰、允許你做什麼</span></a></summary><div class="sm-files"><a class="sm-file" href="../../identity/authentication/index.html" title="4.1 Authentication"><span class="num">4.1</span><span class="sm-fname">Authentication</span><span class="sm-st sm-st-ready" aria-hidden="true"></span><span class="sm-sr">（已完成）</span></a><a class="sm-file" href="../../identity/access-control/index.html" title="4.2 Access Control"><span class="num">4.2</span><span class="sm-fname">Access Control</span><span class="sm-st sm-st-ready" aria-hidden="true"></span><span class="sm-sr">（已完成）</span></a></div></details><details class="sm-folder"><summary><a class="sm-chlink" href="../../cross-site/index.html" title="第 5 章 網站之間如何利用瀏覽器的信任"><span class="num">5</span><span class="sm-fname">網站之間如何利用瀏覽器的信任</span></a></summary><div class="sm-files"><a class="sm-file" href="../../cross-site/cross-site-trust/index.html" title="5.1 CSRF, CORS, and Cross-Site Trust"><span class="num">5.1</span><span class="sm-fname">CSRF, CORS, and Cross-Site Trust</span><span class="sm-st sm-st-draft" aria-hidden="true"></span><span class="sm-sr">（草稿）</span></a></div></details><details class="sm-folder"><summary><a class="sm-chlink" href="../../logic-timing/index.html" title="第 6 章 問題藏在流程與時間裡"><span class="num">6</span><span class="sm-fname">問題藏在流程與時間裡</span></a></summary><div class="sm-files"><a class="sm-file" href="../../logic-timing/business-logic/index.html" title="6.1 Business Logic Vulnerabilities"><span class="num">6.1</span><span class="sm-fname">Business Logic Vulnerabilities</span><span class="sm-st sm-st-draft" aria-hidden="true"></span><span class="sm-sr">（草稿）</span></a><a class="sm-file" href="../../logic-timing/race-conditions/index.html" title="6.2 Race Conditions"><span class="num">6.2</span><span class="sm-fname">Race Conditions</span><span class="sm-st sm-st-draft" aria-hidden="true"></span><span class="sm-sr">（草稿）</span></a></div></details></details><details class="sm-partd" open><summary class="sm-part">第二部分：多元件系統的信任邊界</summary><details class="sm-folder"><summary><a class="sm-chlink" href="../../server-actions/index.html" title="第 7 章 伺服器把資料交給其他元件之後"><span class="num">7</span><span class="sm-fname">伺服器把資料交給其他元件之後</span></a></summary><div class="sm-files"><a class="sm-file is-planned" href="../../server-actions/ssrf/index.html" title="7.1 Server-Side Request Forgery"><span class="num">7.1</span><span class="sm-fname">Server-Side Request Forgery</span><span class="sm-st sm-st-planned" aria-hidden="true"></span><span class="sm-sr">（規劃中）</span></a><a class="sm-file is-planned" href="../../server-actions/xxe/index.html" title="7.2 XML External Entity Injection"><span class="num">7.2</span><span class="sm-fname">XML External Entity Injection</span><span class="sm-st sm-st-planned" aria-hidden="true"></span><span class="sm-sr">（規劃中）</span></a><a class="sm-file is-planned" href="../../server-actions/ssti/index.html" title="7.3 Server-Side Template Injection"><span class="num">7.3</span><span class="sm-fname">Server-Side Template Injection</span><span class="sm-st sm-st-planned" aria-hidden="true"></span><span class="sm-sr">（規劃中）</span></a><a class="sm-file is-planned" href="../../server-actions/deserialization/index.html" title="7.4 Insecure Deserialization"><span class="num">7.4</span><span class="sm-fname">Insecure Deserialization</span><span class="sm-st sm-st-planned" aria-hidden="true"></span><span class="sm-sr">（規劃中）</span></a><a class="sm-file is-planned" href="../../server-actions/prototype-pollution/index.html" title="7.5 Prototype Pollution"><span class="num">7.5</span><span class="sm-fname">Prototype Pollution</span><span class="sm-st sm-st-planned" aria-hidden="true"></span><span class="sm-sr">（規劃中）</span></a></div></details><details class="sm-folder"><summary><a class="sm-chlink" href="../../apis/index.html" title="第 8 章 網站變成 API 之後"><span class="num">8</span><span class="sm-fname">網站變成 API 之後</span></a></summary><div class="sm-files"><a class="sm-file is-planned" href="../../apis/api-testing/index.html" title="8.1 API Attack Surface"><span class="num">8.1</span><span class="sm-fname">API Attack Surface</span><span class="sm-st sm-st-planned" aria-hidden="true"></span><span class="sm-sr">（規劃中）</span></a><a class="sm-file is-planned" href="../../apis/graphql-websockets/index.html" title="8.2 GraphQL and WebSockets"><span class="num">8.2</span><span class="sm-fname">GraphQL and WebSockets</span><span class="sm-st sm-st-planned" aria-hidden="true"></span><span class="sm-sr">（規劃中）</span></a></div></details><details class="sm-folder"><summary><a class="sm-chlink" href="../../delegated-identity/index.html" title="第 9 章 身分跨越網站與元件之後"><span class="num">9</span><span class="sm-fname">身分跨越網站與元件之後</span></a></summary><div class="sm-files"><a class="sm-file is-planned" href="../../delegated-identity/jwt/index.html" title="9.1 JSON Web Tokens"><span class="num">9.1</span><span class="sm-fname">JSON Web Tokens</span><span class="sm-st sm-st-planned" aria-hidden="true"></span><span class="sm-sr">（規劃中）</span></a><a class="sm-file is-planned" href="../../delegated-identity/oauth/index.html" title="9.2 OAuth and Third-Party Login"><span class="num">9.2</span><span class="sm-fname">OAuth and Third-Party Login</span><span class="sm-st sm-st-planned" aria-hidden="true"></span><span class="sm-sr">（規劃中）</span></a></div></details><details class="sm-folder"><summary><a class="sm-chlink" href="../../proxy-cache/index.html" title="第 10 章 Proxy、Cache 與後端看到的不一樣"><span class="num">10</span><span class="sm-fname">Proxy、Cache 與後端看到的不一樣</span></a></summary><div class="sm-files"><a class="sm-file is-planned" href="../../proxy-cache/host-cache/index.html" title="10.1 Host Headers and Web Caches"><span class="num">10.1</span><span class="sm-fname">Host Headers and Web Caches</span><span class="sm-st sm-st-planned" aria-hidden="true"></span><span class="sm-sr">（規劃中）</span></a><a class="sm-file is-planned" href="../../proxy-cache/request-smuggling/index.html" title="10.2 HTTP Request Smuggling"><span class="num">10.2</span><span class="sm-fname">HTTP Request Smuggling</span><span class="sm-st sm-st-planned" aria-hidden="true"></span><span class="sm-sr">（規劃中）</span></a></div></details><details class="sm-folder"><summary><a class="sm-chlink" href="../../llm/index.html" title="第 11 章 把信任模型套到新元件：Web LLM"><span class="num">11</span><span class="sm-fname">把信任模型套到新元件：Web LLM</span></a></summary><div class="sm-files"><a class="sm-file is-planned" href="../../llm/llm-attacks/index.html" title="11.1 Web LLM Attacks"><span class="num">11.1</span><span class="sm-fname">Web LLM Attacks</span><span class="sm-st sm-st-planned" aria-hidden="true"></span><span class="sm-sr">（規劃中）</span></a></div></details></details></details></nav>
+<header class="sm-head">
+  <p class="sm-eyebrow">server-input/path-traversal</p>
+  <h1><span class="num">2.1</span> Path Traversal <span class="badge badge-ready">已完成</span></h1>
+  <p class="question sm-q"><span aria-hidden="true">❯</span> 輸入如何決定伺服器讀取哪個檔案？</p>
+</header>
+<aside class="sm-aside" aria-label="本節輔助"><nav class="sm-outline" aria-label="本節內容"><p class="sm-ph">本節內容</p><ol><li><a href="#path-model" title="2.1.1 檔案系統是一棵樹"><span class="num">2.1.1</span>檔案系統是一棵樹</a></li><li><a href="#where-it-breaks" title="2.1.2 應用程式與檔案系統之間"><span class="num">2.1.2</span>應用程式與檔案系統之間</a></li><li><a href="#worked-example" title="2.1.3 一步一步展開路徑"><span class="num">2.1.3</span>一步一步展開路徑</a></li><li><a href="#limits" title="2.1.4 成立條件與平台差異"><span class="num">2.1.4</span>成立條件與平台差異</a></li><li><a href="#failed-defences" title="2.1.5 靠不住的防禦"><span class="num">2.1.5</span>靠不住的防禦</a></li><li><a href="#fix" title="2.1.6 怎麼修補"><span class="num">2.1.6</span>怎麼修補</a></li><li><a href="#information-disclosure" title="2.1.7 Information disclosure"><span class="num">2.1.7</span>Information disclosure</a></li><li><a href="#summary" title="2.1.8 小結"><span class="num">2.1.8</span>小結</a></li></ol></nav><section class="sm-locator" aria-label="系統地圖定位"><p class="sm-ph">系統地圖</p><a class="sm-mini-link" href="../../index.html#map-server-input" aria-label="在首頁的系統地圖上看第 2 章的位置"><svg class="sm-map sm-map-mini" viewBox="206 0 794 566" aria-hidden="true" focusable="false" preserveAspectRatio="xMidYMid meet" style="aspect-ratio:794/566"><line class="sm-edge" x1="200" y1="330" x2="290" y2="330"/><line class="sm-edge sm-dash" x1="440" y1="330" x2="530" y2="330"/><line class="sm-edge sm-threat-edge" x1="110" y1="100" x2="110" y2="255"/><line class="sm-edge sm-dash" x1="625" y1="100" x2="625" y2="150"/><line class="sm-edge" x1="625" y1="546" x2="625" y2="570"/><line class="sm-edge" x1="720" y1="325" x2="765" y2="325"/><line class="sm-edge" x1="765" y1="325" x2="765" y2="48"/><line class="sm-edge sm-dash" x1="765" y1="325" x2="765" y2="538"/><line class="sm-edge" x1="765" y1="48" x2="810" y2="48"/><line class="sm-edge" x1="765" y1="118" x2="810" y2="118"/><line class="sm-edge" x1="765" y1="188" x2="810" y2="188"/><line class="sm-edge sm-dash" x1="765" y1="328" x2="810" y2="328"/><line class="sm-edge sm-dash" x1="765" y1="398" x2="810" y2="398"/><line class="sm-edge sm-dash" x1="765" y1="468" x2="810" y2="468"/><line class="sm-edge sm-dash" x1="765" y1="538" x2="810" y2="538"/><g class="sm-n sm-threat off" data-ch="cross-site"><rect class="sm-box" x="20" y="20" width="180" height="80" rx="8"/><text class="sm-mini-t" x="110.0" y="62.0" text-anchor="middle" dominant-baseline="central" font-size="56">5</text></g><g class="sm-n sm-frame off" data-ch="web-http"><rect class="sm-box" x="20" y="255" width="180" height="150" rx="10"/><text class="sm-mini-t" x="50" y="285" text-anchor="middle" dominant-baseline="central" font-size="48">1</text></g><g class="sm-n sm-node off" data-ch="browser-output"><rect class="sm-box" x="36" y="322" width="148" height="64" rx="8"/><text class="sm-mini-t" x="110.0" y="356.0" text-anchor="middle" dominant-baseline="central" font-size="51">3</text></g><g class="sm-n sm-node sm-p2 off" data-ch="proxy-cache"><rect class="sm-box" x="290" y="240" width="150" height="180" rx="8"/><text class="sm-mini-t" x="365.0" y="332.0" text-anchor="middle" dominant-baseline="central" font-size="56">10</text></g><g class="sm-n sm-frame" aria-hidden="true"><rect class="sm-box" x="530" y="150" width="190" height="396" rx="10"/></g><g class="sm-n sm-node off" data-ch="identity"><rect class="sm-box" x="546" y="194" width="158" height="56" rx="8"/><text class="sm-mini-t" x="625.0" y="224.0" text-anchor="middle" dominant-baseline="central" font-size="45">4</text></g><g class="sm-n sm-node sm-p2 off" data-ch="apis"><rect class="sm-box" x="546" y="262" width="158" height="56" rx="8"/><text class="sm-mini-t" x="625.0" y="292.0" text-anchor="middle" dominant-baseline="central" font-size="45">8</text></g><g class="sm-n sm-node sm-p2 off" data-ch="llm"><rect class="sm-box" x="546" y="330" width="158" height="56" rx="8"/><text class="sm-mini-t" x="625.0" y="360.0" text-anchor="middle" dominant-baseline="central" font-size="45">11</text></g><g class="sm-n sm-node off" data-ch="logic-timing"><rect class="sm-box" x="546" y="398" width="158" height="56" rx="8"/><text class="sm-mini-t" x="625.0" y="428.0" text-anchor="middle" dominant-baseline="central" font-size="45">6</text></g><g class="sm-n sm-node sm-p2 off" data-ch="server-actions"><rect class="sm-box" x="546" y="466" width="158" height="56" rx="8"/><text class="sm-mini-t" x="625.0" y="496.0" text-anchor="middle" dominant-baseline="central" font-size="45">7</text></g><g class="sm-n sm-node sm-p2 off" data-ch="delegated-identity"><rect class="sm-box" x="530" y="20" width="190" height="80" rx="8"/><text class="sm-mini-t" x="625.0" y="62.0" text-anchor="middle" dominant-baseline="central" font-size="56">9</text></g><g class="sm-n sm-node off" data-ch="logic-timing"><rect class="sm-box" x="530" y="570" width="190" height="56" rx="8"/><text class="sm-mini-t" x="625.0" y="600.0" text-anchor="middle" dominant-baseline="central" font-size="45">6</text></g><g class="sm-n sm-node on" data-ch="server-input"><rect class="sm-box" x="810" y="20" width="170" height="56" rx="8"/><text class="sm-mini-t" x="895.0" y="50.0" text-anchor="middle" dominant-baseline="central" font-size="45">2</text></g><g class="sm-n sm-node on" data-ch="server-input"><rect class="sm-box" x="810" y="90" width="170" height="56" rx="8"/><text class="sm-mini-t" x="895.0" y="120.0" text-anchor="middle" dominant-baseline="central" font-size="45">2</text></g><g class="sm-n sm-node on" data-ch="server-input"><rect class="sm-box" x="810" y="160" width="170" height="56" rx="8"/><text class="sm-mini-t" x="895.0" y="190.0" text-anchor="middle" dominant-baseline="central" font-size="45">2</text></g><g class="sm-n sm-node sm-p2 off" data-ch="server-actions"><rect class="sm-box" x="810" y="300" width="170" height="56" rx="8"/><text class="sm-mini-t" x="895.0" y="330.0" text-anchor="middle" dominant-baseline="central" font-size="45">7</text></g><g class="sm-n sm-node sm-p2 off" data-ch="server-actions"><rect class="sm-box" x="810" y="370" width="170" height="56" rx="8"/><text class="sm-mini-t" x="895.0" y="400.0" text-anchor="middle" dominant-baseline="central" font-size="45">7</text></g><g class="sm-n sm-node sm-p2 off" data-ch="server-actions"><rect class="sm-box" x="810" y="440" width="170" height="56" rx="8"/><text class="sm-mini-t" x="895.0" y="470.0" text-anchor="middle" dominant-baseline="central" font-size="45">7</text></g><g class="sm-n sm-node sm-p2 off" data-ch="server-actions"><rect class="sm-box" x="810" y="510" width="170" height="56" rx="8"/><text class="sm-mini-t" x="895.0" y="540.0" text-anchor="middle" dominant-baseline="central" font-size="45">7</text></g><g class="sm-n sm-pill off" data-ch="web-http"><rect class="sm-pill-box" x="213" y="306" width="64" height="48" rx="24"/><text class="sm-mini-t" x="245" y="332" text-anchor="middle" dominant-baseline="central" font-size="38">1</text></g><g class="sm-n sm-pill off" data-ch="web-http"><rect class="sm-pill-box" x="453" y="306" width="64" height="48" rx="24"/><text class="sm-mini-t" x="485" y="332" text-anchor="middle" dominant-baseline="central" font-size="38">1</text></g><g class="sm-n sm-pill off" data-ch="cross-site"><rect class="sm-pill-box" x="78" y="153" width="64" height="48" rx="24"/><text class="sm-mini-t" x="110" y="179" text-anchor="middle" dominant-baseline="central" font-size="38">5</text></g><g class="sm-n sm-pill off" data-ch="delegated-identity"><rect class="sm-pill-box" x="593" y="101" width="64" height="48" rx="24"/><text class="sm-mini-t" x="625" y="127" text-anchor="middle" dominant-baseline="central" font-size="38">9</text></g></svg></a><p class="sm-cap">位置：第 2 章　伺服器如何處理使用者輸入</p><ul class="sm-chips sm-comps" aria-label="本章元件"><li>File system</li><li>Database</li><li>Shell</li></ul><p class="sm-mini-hint">點地圖：到首頁地圖看這一章</p></section></aside>
+<main id="main" class="sm-doc" tabindex="-1">
+<article class="content sm-article">
+<p>想像一個購物網站，商品頁上的圖片由一支「載入圖片」的功能依檔名即時取得：瀏覽器請求 <code>/image?filename=42.jpg</code>，伺服器就回傳 <code>42.jpg</code> 的內容。這種做法很常見。問題出在 <code>filename</code> 是使用者（或任何能改動網址的人）送來的文字，伺服器卻拿它決定讀哪一個檔案：把 <code>42.jpg</code> 換成別的字串，伺服器就去讀別的檔案，能讀到多遠，要看程式有沒有設限。</p>
+
+<h2 id="path-model"><span class="num">2.1.1</span> 檔案系統是一棵樹</h2>
+<p>作業系統用<strong>檔案系統</strong>（file system）管理檔案。在 Linux、macOS 這類 Unix-like 系統裡，所有檔案都掛在同一棵樹上，樹的最上層叫<strong>根目錄</strong>（root directory），寫成 <code>/</code>。目錄（directory，俗稱資料夾）裡可以放檔案，也可以放更多目錄。</p>
+
+<figure id="path-tree">
+  <svg viewBox="0 0 640 300" role="img" aria-labelledby="path-tree-t" style="color:var(--text)">
+    <title id="path-tree-t">目錄樹與 ../ 往上走的過程：從 /var/www/images/ 連續往上三層到達根目錄，再進入範圍外的檔案</title>
+    <defs>
+      <marker id="pt-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+        <path d="M0 0 L10 5 L0 10 z" fill="currentColor"/>
+      </marker>
+    </defs>
+    <rect x="110" y="212" width="120" height="26" rx="4" fill="var(--accent-soft)" stroke="currentColor" stroke-width="1.2"/>
+    <g style="font-family:var(--font-mono)" font-size="15" fill="currentColor">
+      <text x="24" y="35">/</text>
+      <text x="54" y="75">etc/</text>
+      <text x="84" y="115">passwd</text>
+      <text x="54" y="155">var/</text>
+      <text x="84" y="195">www/</text>
+      <text x="120" y="231">images/</text>
+      <text x="150" y="271">42.jpg</text>
+    </g>
+    <g stroke="currentColor" stroke-width="1" opacity=".55" fill="none">
+      <path d="M32 42 V152 M32 72 H48 M32 152 H48"/>
+      <path d="M62 82 V112 M62 112 H78"/>
+      <path d="M62 162 V192 M62 192 H78"/>
+      <path d="M92 202 V228 M92 228 H108"/>
+      <path d="M122 242 V268 M122 268 H144"/>
+    </g>
+    <g stroke="currentColor" stroke-width="2" fill="none">
+      <path d="M310 224 V46" marker-end="url(#pt-arrow)"/>
+      <path d="M340 44 V100" stroke-dasharray="5 4" marker-end="url(#pt-arrow)"/>
+    </g>
+    <g fill="var(--surface)" stroke="currentColor" stroke-width="1.5">
+      <circle cx="310" cy="190" r="11"/>
+      <circle cx="310" cy="150" r="11"/>
+      <circle cx="310" cy="32" r="11"/>
+      <circle cx="340" cy="112" r="11" stroke-dasharray="3 2"/>
+    </g>
+    <g font-size="13" font-weight="700" text-anchor="middle" fill="currentColor">
+      <text x="310" y="195">1</text>
+      <text x="310" y="155">2</text>
+      <text x="310" y="37">3</text>
+      <text x="340" y="117">4</text>
+    </g>
+    <g style="font-family:var(--font-mono)" font-size="13" fill="currentColor">
+      <text x="362" y="195">../ → /var/www/</text>
+      <text x="362" y="155">../../ → /var/</text>
+      <text x="362" y="37">../../../ → /（根目錄）</text>
+      <text x="362" y="117">再接 [範圍外的檔案] → 該檔案</text>
+    </g>
+    <text x="362" y="262" font-size="13" fill="currentColor" opacity=".8">有底色的 images/ 是起點（基底目錄）</text>
+  </svg>
+  <figcaption><span class="fig-num">圖 2.1.1-1</span> 目錄樹，以及從 <code>/var/www/images/</code> 出發每多一個 <code>../</code> 就往上一層</figcaption>
+</figure>
+
+<h3>絕對路徑與相對路徑</h3>
+<p>描述一個檔案在樹上的位置，就是它的<strong>路徑</strong>（path）。從根目錄 <code>/</code> 一路寫下來的叫<strong>絕對路徑</strong>（absolute path），例如 <code>/var/www/images/42.jpg</code>：不管程式當下在哪裡，它都指向同一個檔案。只寫「從目前所在目錄算起」的叫<strong>相對路徑</strong>（relative path），例如 <code>42.jpg</code>。它指哪個檔案，要看「目前目錄」在哪裡。</p>
+<p>路徑裡有兩個特殊的名字：<code>.</code> 代表「目前這個目錄」，<code>..</code> 代表「上一層目錄」。所以在 <code>/var/www/images/</code> 這個目錄裡，<code>../</code> 指向 <code>/var/www/</code>，<code>../../</code> 指向 <code>/var/</code>，依此類推，如上圖所示。</p>
+
+<h3>路徑正規化</h3>
+<p>暫時假設路徑經過的目錄都存在、可以通行，而且途中沒有符號連結。在這個假設下，可以把路徑裡的 <code>.</code> 與 <code>..</code> 依文字規則化簡成最短的等價形式，這叫<strong>字面正規化</strong>（normalization）：</p>
+<pre data-lang="text"><code>/var/www/images/../                   →  /var/www/
+/var/www/images/../../                →  /var/
+/var/www/images/../../../             →  /
+/var/www/images/../../../[範圍外的檔案]  →  /[範圍外的檔案]</code></pre>
+<p>最後一行寫起來以 <code>/var/www/images/</code> 開頭，化簡後卻落在基底目錄之外。</p>
+<p>字面正規化只動文字。系統實際去找檔案時，會沿著檔案系統一層層解析，途中解開符號連結，得到最終位置，這叫 <strong>canonicalization</strong>。路徑上沒有符號連結時，兩種做法的結果相同；有符號連結時，文字化簡可能改變路徑原本的意思。修補時要用的是 canonicalization。</p>
+<p>根目錄沒有上一層：在 Unix-like 系統裡，對 <code>/</code> 再做 <code>..</code> 仍然停在 <code>/</code>，所以多寫幾個 <code>../</code> 也只會停在根目錄。這是路徑計算的規則，實際讀檔能不能成功是另一回事。</p>
+
+<h2 id="where-it-breaks"><span class="num">2.1.2</span> 應用程式與檔案系統之間</h2>
+<p>這裡有兩種路徑。瀏覽器網址列裡的 <code>/image</code> 是 URL 路徑，只告訴網站要用哪個功能，伺服器上不一定有叫 <code>image</code> 的資料夾。檔案路徑出現在下一層：應用程式（Application，即網站背後處理請求的程式）收到 <code>filename</code> 之後，自己組出主機上的檔案路徑，再請作業系統的檔案系統去讀。</p>
+<p>這種功能可能這樣寫：</p>
+<pre data-lang="python"><code># 不安全的做法
+base_directory = "/var/www/images/"
+filename = request.args["filename"]   # 使用者送來的文字
+target = base_directory + filename    # 直接接在後面
+return read_file(target)</code></pre>
+<p>設計者想讓它只讀圖片目錄裡的檔案，程式卻只把兩段字串接起來，沒有檢查最後會走到哪裡。檔案系統照路徑的語意去走，遇到 <code>..</code> 就往上爬。使用者可控制的文字被當成路徑交給檔案系統，途中沒有任何一步確認最後的位置仍在允許範圍內，這類問題稱為 <strong>Path Traversal</strong>（路徑穿越，也叫 directory traversal）。</p>
+
+<figure id="request-flow">
+  <svg viewBox="0 0 640 262" role="img" aria-labelledby="request-flow-t" style="color:var(--text)">
+    <title id="request-flow-t">正常與被操縱的 request 經過 Application 轉成檔案路徑，由檔案系統讀取</title>
+    <defs>
+      <marker id="rf-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+        <path d="M0 0 L10 5 L0 10 z" fill="currentColor"/>
+      </marker>
+    </defs>
+    <g font-size="13" font-weight="700" fill="currentColor">
+      <text x="12" y="18">正常</text>
+      <text x="12" y="140">被操縱</text>
+    </g>
+    <g fill="var(--surface)" stroke="currentColor" stroke-width="1.5">
+      <rect x="12" y="28" width="110" height="42" rx="8"/>
+      <rect x="265" y="28" width="110" height="42" rx="8"/>
+      <rect x="518" y="28" width="110" height="42" rx="8"/>
+      <rect x="12" y="150" width="110" height="42" rx="8"/>
+      <rect x="265" y="150" width="110" height="42" rx="8"/>
+      <rect x="518" y="150" width="110" height="42" rx="8"/>
+    </g>
+    <g font-size="15" font-weight="700" text-anchor="middle" fill="currentColor">
+      <text x="67" y="54">瀏覽器</text><text x="320" y="54">Application</text><text x="573" y="54">檔案系統</text>
+      <text x="67" y="176">瀏覽器</text><text x="320" y="176">Application</text><text x="573" y="176">檔案系統</text>
+    </g>
+    <g stroke="currentColor" stroke-width="2" fill="none">
+      <path d="M126 49 H261" marker-end="url(#rf-arrow)"/>
+      <path d="M379 49 H514" marker-end="url(#rf-arrow)"/>
+      <path d="M126 171 H261" marker-end="url(#rf-arrow)"/>
+      <path d="M379 171 H514" marker-end="url(#rf-arrow)"/>
+    </g>
+    <g font-size="12" text-anchor="middle" fill="currentColor">
+      <text x="194" y="43">1 送出檔名</text><text x="447" y="43">2 組成路徑並讀取</text>
+      <text x="194" y="165">1 送出檔名</text><text x="447" y="165">2 組成路徑並讀取</text>
+    </g>
+    <g style="font-family:var(--font-mono)" font-size="12" fill="currentColor">
+      <text x="12" y="92">filename=42.jpg</text>
+      <text x="12" y="112">→ /var/www/images/42.jpg（在允許目錄內）</text>
+      <text x="12" y="214">filename=[含 ../ 的片段]</text>
+      <text x="12" y="234">→ /var/www/images/[含 ../ 的片段]</text>
+      <text x="12" y="254">→ 化簡後落在允許目錄外</text>
+    </g>
+  </svg>
+  <figcaption><span class="fig-num">圖 2.1.2-1</span> 同一個功能收到兩種輸入：上方依設計運作，下方因為沒有檢查最終位置而讀到範圍外的檔案</figcaption>
+</figure>
+
+<h2 id="worked-example"><span class="num">2.1.3</span> 一步一步展開路徑</h2>
+<p>拿上面的程式推演兩筆 request：</p>
+<h3>正常情況</h3>
+<pre data-lang="text"><code>請求：        GET /image?filename=42.jpg
+基底目錄：    /var/www/images/
+組合路徑：    /var/www/images/42.jpg
+化簡結果：    /var/www/images/42.jpg      ← 仍在基底目錄內
+回應：        圖片的位元組（bytes），瀏覽器顯示成圖片</code></pre>
+<h3>被操縱的情況</h3>
+<pre data-lang="text"><code>請求：        GET /image?filename=[含 ../ 的片段]
+基底目錄：    /var/www/images/
+組合路徑：    /var/www/images/[含 ../ 的片段]
+化簡結果：    [範圍外的某個檔案]          ← 已離開基底目錄
+回應：        該檔案的內容，而不是圖片</code></pre>
+<p>方括號代表被換掉的那段輸入，以及它最後指到的檔案。</p>
+<p>兩筆 request 只差在 <code>filename</code>，功能、Cookie、請求方法都一樣，所以回應的差異來自這個輸入。</p>
+<p>回應的 <code>Content-Type</code> 標頭可能仍寫著圖片類型，因為程式不會因為內容改變而改標頭，瀏覽器於是顯示「圖片損毀」。要知道讀到了什麼，得看 body 的文字。</p>
+<p>片段裡需要幾個 <code>../</code>，取決於基底目錄離根目錄幾層：這個例子的基底在根目錄下三層，基底若是 <code>/srv/images/</code>（兩層）就少一個。自己數層數即可，不必背固定的數字。</p>
+
+<h2 id="limits"><span class="num">2.1.4</span> 成立條件與平台差異</h2>
+<ul>
+  <li>網站有用使用者輸入決定檔案路徑的功能，例如圖片、下載、模板選擇、語言檔這類以名稱取檔案的功能。網站沒有拿輸入去讀檔，就沒有這個問題。</li>
+  <li>能讀到的範圍受執行程式的帳號權限限制。網站程式通常以權限有限的帳號執行；那個帳號本來就讀不到的檔案，穿越也讀不到。</li>
+  <li>上面的例子只涉及讀取。能不能寫檔、改檔，要看另外的功能與權限。</li>
+  <li>Windows 的路徑用反斜線 <code>\</code> 分隔，並有磁碟機代號（例如 <code>C:\</code>）。一般的 Windows 路徑處理通常兩種斜線都接受（細節依 API 與路徑種類而定），所以 <code>..\</code> 與 <code>../</code> 都可能有效。<code>/etc/passwd</code> 是 Unix-like 的例子；在 Windows 上要換成該系統上確實存在的檔案。</li>
+</ul>
+<aside class="note">
+  <p><code>/etc/passwd</code> 名字裡有 password，但在現代 Unix-like 系統中它主要保存帳號名稱、編號、家目錄與登入 shell；密碼雜湊通常放在另一個權限更嚴的檔案。教材與 Lab 常拿它當目標，是因為幾乎所有 Linux 系統都有它、格式容易辨認，讀到它就能證明讀到了範圍外的檔案；裡面並沒有明文密碼。</p>
+</aside>
+
+<h2 id="failed-defences"><span class="num">2.1.5</span> 靠不住的防禦</h2>
+<p>很多開發者的第一反應是把 <code>../</code> 擋掉。這類做法檢查的是輸入字串長什麼樣子，看不到檔案系統最後走到哪裡：</p>
+<table>
+  <thead>
+    <tr><th>做法</th><th>為什麼不夠</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>把輸入裡的 <code>../</code> 刪掉（只刪一次）</td><td>刪除之後的結果可能又拼出新的 <code>../</code>：被刪掉的片段前後各留下幾個字元，湊在一起又成了 <code>../</code>。一次性的刪除不會重複檢查結果。</td></tr>
+    <tr><td>檢查字串是否以 <code>/var/www/images/</code> 開頭</td><td>字面上以 <code>/var/www/images/</code> 開頭、後面接著若干 <code>../</code> 的路徑就是以它開頭，但解析成最終位置後在目錄外。如果前綴少了結尾的斜線（<code>/var/www/images</code>），連 <code>/var/www/images-old/</code> 也會被誤判為通過。</td></tr>
+    <tr><td>要求副檔名是 <code>.jpg</code></td><td>副檔名只限制檔名結尾，不限制所在目錄，目錄外同樣是 .jpg 的檔案照樣讀得到。有些舊環境還會在空字元（null byte）處把字串提早截斷，讓結尾檢查被繞過，這是舊環境的行為。</td></tr>
+    <tr><td>在檢查前後沒有一致地解碼</td><td>URL 中的百分比編碼（percent-encoding，<a href="../../web-http/http-session/index.html#encoding">前一章的「資料放在請求的哪裡」</a>已說明）解碼後可以還原成 <code>../</code>。如果檢查在解碼<em>之前</em>做，而讀檔在解碼<em>之後</em>做（或被重複解碼），檢查看到的和實際用到的就成了兩個字串。</td></tr>
+    <tr><td>只擋 <code>../</code>，卻接受完整的絕對路徑</td><td>有些組合路徑的函式在遇到以 <code>/</code> 開頭的輸入時，會直接丟掉前面的基底目錄，輸入一個完整的絕對路徑，它就成了最終路徑。</td></tr>
+  </tbody>
+</table>
+<p>受檢查的字串和最後拿去開檔的路徑對不上，這幾種做法都敗在這裡。靠列舉壞的寫法來防守，每出現一種新變形就得再補一條規則。</p>
+
+<h2 id="fix"><span class="num">2.1.6</span> 怎麼修補</h2>
+<h3>最好不讓使用者決定路徑</h3>
+<p>最穩的方式是讓輸入根本不是路徑。例如圖片用編號：使用者只能送 <code>id=42</code>，伺服器自己從資料庫或設定查出「編號 42 對應 <code>/var/www/images/42.jpg</code>」。這叫 id 到檔案的<strong>對應</strong>（mapping）。若檔案數量有限，也可以用<strong>允許清單</strong>（allow-list）：輸入必須恰好等於清單中的某個名字，否則拒絕。這樣 <code>../</code> 之類的字串連進入檔案系統的機會都沒有。</p>
+<h3>必須用檔名時，先解析再檢查</h3>
+<p>如果一定要用使用者給的檔名，處理順序是：依所用的傳輸格式取得解碼後的值；組合路徑；讓系統解析出實際的最終位置，同時解開符號連結（symbolic link，一種指向別處的捷徑檔案）；驗證這個位置在允許的基底目錄之內；通過才開檔讀取。解析要用實際沿檔案系統走的函式（realpath 一類），只做文字化簡的函式（normpath 一類）看不到符號連結。檢查與開檔之間的時間差，見下面「其他限制」。</p>
+<pre data-lang="python"><code># 較安全的做法（real_path 代表沿實際檔案系統解析並解開連結的函式；
+# 偽碼採 Unix-like 路徑，不代表可直接套用到其他平台）
+base = real_path("/var/www/images")             # 基底目錄的最終位置
+target = real_path(join(base, filename))        # 組合後解析成實際的最終位置
+
+# 比較時要含結尾的分隔符，避免 /var/www/images-old 誤判
+if not target.startswith(base + "/"):
+    return error("not allowed")                 # 回一般錯誤，不洩漏細節
+return read_file(target)</code></pre>
+<p>這樣受檢查的就是實際要讀的位置。輸入裡的 <code>..</code> 或多餘斜線怎麼變化，都在解析之後才比較。百分比編碼要在更前面依傳輸格式解碼一次，一般的檔案路徑函式不處理 URL 編碼。</p>
+<h3>其他限制</h3>
+<ul>
+  <li>檢查與使用之間若檔案被替換（例如符號連結被改指向別處），就會出現時間差（競態）問題；正式系統要用能原子化處理的檔案開啟方式，或限制誰能改動該目錄。</li>
+  <li>以<strong>最小權限</strong>（least privilege）執行網站程式，讓它只讀得到必要檔案。這能縮小出事時的損害，但不能取代路徑檢查。</li>
+  <li>錯誤時回一般性的訊息，細節放在內部紀錄（見下面的 Information disclosure）。</li>
+</ul>
+
+<h2 id="information-disclosure"><span class="num">2.1.7</span> Information disclosure</h2>
+<p>Information disclosure（資訊揭露）指網站在不該給的時候，把資訊交給了不該拿到的人。比較正常與錯誤的回應、從中辨認多出來的資訊，這套觀察方法在 <a href="../../web-http/web-basics/index.html#error-disclosure">Seeing the Web Through the Browser 一節的「錯誤訊息與資訊揭露」</a>介紹過。</p>
+<h3>穿越可能洩漏什麼</h3>
+<p>能讀到範圍外的檔案，就可能看到原本不公開的內容：帳號清單、應用程式的設定檔、原始碼，以及放在檔案中的金鑰或連線資訊。哪些檔案存在、是否可讀，要看權限與部署方式。密碼之類的敏感資料因此不該以明文放在網站程式讀得到的檔案裡。</p>
+<h3>錯誤訊息也會洩漏路徑</h3>
+<p>即使沒有穿越，錯誤頁也會透露資訊。例如請求一個不存在的檔名，回應可能是：</p>
+<pre data-lang="text"><code>請求：filename=nope.jpg
+回應：FileNotFoundError: /var/www/images/nope.jpg
+      (framework DemoFramework 1.2.3)</code></pre>
+<p>這一行告訴對方基底目錄、使用的框架與版本。基底目錄讓人可以算出需要幾個 <code>../</code>；版本則可能對應到已公開的弱點。修補方式是對外只回一般性的錯誤（例如「找不到圖片」），把詳細內容寫進有存取控制的內部紀錄。</p>
+<h3>直接暴露，與被誘使讀檔</h3>
+<p>兩種情況都可能讓資料外流，成因與修補位置卻不同：</p>
+<table>
+  <thead>
+    <tr><th></th><th>直接暴露</th><th>Path Traversal</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>發生了什麼</td><td>檔案本來就放在網站公開的位置，例如目錄列表（directory listing）打開、備份檔（<code>.bak</code>、<code>~</code>）留在網站目錄下、爬蟲規則檔 <code>robots.txt</code> 列出了不想被看到的路徑</td><td>應用程式被使用者輸入誘使，去讀原本不該公開的檔案</td></tr>
+    <tr><td>誰在「讀檔」</td><td>網站伺服器照一般規則提供檔案</td><td>應用程式自己執行讀檔動作</td></tr>
+    <tr><td>修補位置</td><td>部署與設定：不要把這些檔案放進公開範圍、關閉目錄列表</td><td>程式：限制輸入與最終路徑</td></tr>
+  </tbody>
+</table>
+<aside class="warning">
+  <p>限制了圖片功能的路徑後，備份檔、錯誤頁與其他以名稱取檔案的功能仍要另外檢查。</p>
+</aside>
+
+<h2 id="summary"><span class="num">2.1.8</span> 小結</h2>
+<ul>
+  <li><code>..</code> 代表上一層。文字化簡和沿檔案系統解析的結果可以不同，讀檔時用的是後者。</li>
+  <li>Path Traversal 的成因：應用程式把使用者可控的文字當成檔案路徑，沒確認解析後的最終位置仍在允許目錄內。</li>
+  <li>刪 <code>../</code>、檢查前綴或副檔名都只看字面，檢查的和實際使用的對不上。</li>
+  <li>修補：用 id 對應或允許清單，不讓使用者決定路徑；必要時先解析實際位置再驗證，並配合最小權限與一般性的錯誤訊息。</li>
+  <li>能讀到範圍外的檔案，不代表能寫入或執行；<code>/etc/passwd</code> 裡也沒有明文密碼。</li>
+</ul>
+<p>PortSwigger Academy 的對應練習（主題頁 <a href="https://portswigger.net/web-security/file-path-traversal">File path traversal</a>、<a href="https://portswigger.net/web-security/information-disclosure">Information disclosure</a>），只在 Lab 或其他獲明確授權的系統上測試：</p>
+<ul>
+  <li><a href="https://portswigger.net/web-security/file-path-traversal/lab-simple">File path traversal, simple case</a>：只改檔名參數，把回應 body 的變化和本節的路徑展開對照。</li>
+  <li>同一主題頁下的其他 Lab：分別對應<a href="#failed-defences">靠不住的防禦</a>所列的情況，例如刪去 <code>../</code>、檢查前綴或副檔名、解碼。</li>
+</ul>
+<p>Path Traversal 裡解讀輸入的是檔案系統，它把 <code>..</code> 當成往上一層。下一節 <a href="../file-upload/index.html">File Upload Vulnerabilities</a> 從讀檔轉到存檔：使用者送來的是整個檔案，它被存進哪個目錄、取回時交給哪個處理器，決定它被當成資料送出還是被當成程式執行。</p>
+
+</article>
+<nav class="pager" aria-label="上下節"><a class="prev" href="../../web-http/http-session/index.html"><small>← prev</small><span class="num">1.2</span> HTTP Requests and Sessions</a><a class="next" href="../../server-input/file-upload/index.html"><small>next →</small><span class="num">2.2</span> File Upload Vulnerabilities</a></nav>
+</main>
+</div>
+<footer class="sm-status"><span class="sm-s-main">26 sections</span><span class="sm-s-list"><span class="sm-s-planned">規劃中 12</span> <span class="sm-s-draft">草稿 3</span> <span class="sm-s-ready">已完成 11</span></span><span class="sm-s-end">系統地圖</span></footer>
+<script src="../../assets/theme/theme.js?v=d288e31038"></script>
+</body>
+</html>

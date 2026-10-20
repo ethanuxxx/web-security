@@ -1,0 +1,442 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>2.4 UNION and Blind SQL Injection｜Web 安全</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Crect width='16' height='16' rx='3' fill='%23070c12'/%3E%3Crect x='1.5' y='1.5' width='13' height='13' rx='2.5' fill='none' stroke='%2336e0cc' stroke-width='1.4'/%3E%3Cpath d='M5 8 L11 5 M5 8 L11 11' stroke='%2336e0cc' stroke-width='1.2' fill='none'/%3E%3Ccircle cx='5' cy='8' r='1.6' fill='%2336e0cc'/%3E%3Ccircle cx='11' cy='5' r='1.6' fill='%2336e0cc'/%3E%3Ccircle cx='11' cy='11' r='1.6' fill='%2336e0cc'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="../../assets/style.css?v=d288e31038">
+<link rel="stylesheet" href="../../assets/theme/theme.css?v=d288e31038">
+<script>(function(){var m=null;try{m=localStorage.getItem("web-security:motion")}catch(e){}if(m!=="on"&&m!=="off"){m="on";try{if(matchMedia("(prefers-reduced-motion: reduce)").matches)m="off"}catch(e){}}document.documentElement.setAttribute("data-motion",m)})()</script>
+</head>
+<body class="page-section sm-body">
+<a class="skip" href="#main">跳到正文</a>
+<header class="sm-top"><a class="sm-brand" href="../../index.html"><svg class="sm-logo" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><rect x="1" y="1" width="14" height="14" rx="3" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M5 8 L11 5 M5 8 L11 11" stroke="currentColor" stroke-width="1.3" fill="none"/><circle cx="5" cy="8" r="1.7" fill="currentColor"/><circle cx="11" cy="5" r="1.7" fill="currentColor"/><circle cx="11" cy="11" r="1.7" fill="currentColor"/></svg><span class="sm-brand-t">web-security</span></a><nav class="sm-path" aria-label="目前位置"><ol><li class="sm-p-root"><a href="../../index.html">web-security</a></li><li class="sm-p-ch split"><a href="../../server-input/index.html">2<span class="sm-p-title">&nbsp;伺服器如何處理使用者輸入</span></a></li><li class=""><span aria-current="page">2.4</span></li></ol></nav><a class="sm-toplink" href="../../index.html#map">map</a><a class="sm-toplink" href="../../chapters/index.html">chapters</a><button type="button" class="sm-toplink sm-motion" aria-pressed="true" hidden>動畫：開</button></header>
+<div class="sm-shell">
+<nav class="sm-tree" aria-label="教材瀏覽器"><details class="sm-tree-wrap" open><summary class="sm-tree-sum">EXPLORER／教材目錄</summary><p class="sm-tree-h" aria-hidden="true">EXPLORER</p><details class="sm-partd" open><summary class="sm-part">第一部分：輸入如何穿過網站</summary><details class="sm-folder"><summary><a class="sm-chlink" href="../../web-http/index.html" title="第 1 章 Web 與 HTTP"><span class="num">1</span><span class="sm-fname">Web 與 HTTP</span></a></summary><div class="sm-files"><a class="sm-file" href="../../web-http/web-basics/index.html" title="1.1 Seeing the Web Through the Browser"><span class="num">1.1</span><span class="sm-fname">Seeing the Web Through the Browser</span><span class="sm-st sm-st-ready" aria-hidden="true"></span><span class="sm-sr">（已完成）</span></a><a class="sm-file" href="../../web-http/http-session/index.html" title="1.2 HTTP Requests and Sessions"><span class="num">1.2</span><span class="sm-fname">HTTP Requests and Sessions</span><span class="sm-st sm-st-ready" aria-hidden="true"></span><span class="sm-sr">（已完成）</span></a></div></details><details class="sm-folder" open><summary><a class="sm-chlink" href="../../server-input/index.html" title="第 2 章 伺服器如何處理使用者輸入"><span class="num">2</span><span class="sm-fname">伺服器如何處理使用者輸入</span></a></summary><div class="sm-files"><a class="sm-file" href="../../server-input/path-traversal/index.html" title="2.1 Path Traversal"><span class="num">2.1</span><span class="sm-fname">Path Traversal</span><span class="sm-st sm-st-ready" aria-hidden="true"></span><span class="sm-sr">（已完成）</span></a><a class="sm-file" href="../../server-input/file-upload/index.html" title="2.2 File Upload Vulnerabilities"><span class="num">2.2</span><span class="sm-fname">File Upload Vulnerabilities</span><span class="sm-st sm-st-ready" aria-hidden="true"></span><span class="sm-sr">（已完成）</span></a><a class="sm-file" href="../../server-input/sql-injection/index.html" title="2.3 SQL Injection Basics"><span class="num">2.3</span><span class="sm-fname">SQL Injection Basics</span><span class="sm-st sm-st-ready" aria-hidden="true"></span><span class="sm-sr">（已完成）</span></a><a class="sm-file" href="../../server-input/sql-injection-observation/index.html" aria-current="page" title="2.4 UNION and Blind SQL Injection"><span class="num">2.4</span><span class="sm-fname">UNION and Blind SQL Injection</span><span class="sm-st sm-st-ready" aria-hidden="true"></span><span class="sm-sr">（已完成）</span></a><a class="sm-file" href="../../server-input/command-injection/index.html" title="2.5 OS Command Injection"><span class="num">2.5</span><span class="sm-fname">OS Command Injection</span><span class="sm-st sm-st-ready" aria-hidden="true"></span><span class="sm-sr">（已完成）</span></a></div></details><details class="sm-folder"><summary><a class="sm-chlink" href="../../browser-output/index.html" title="第 3 章 伺服器的輸出如何在瀏覽器中變成程式"><span class="num">3</span><span class="sm-fname">伺服器的輸出如何在瀏覽器中變成程式</span></a></summary><div class="sm-files"><a class="sm-file" href="../../browser-output/xss-basics/index.html" title="3.1 Cross-Site Scripting Basics"><span class="num">3.1</span><span class="sm-fname">Cross-Site Scripting Basics</span><span class="sm-st sm-st-ready" aria-hidden="true"></span><span class="sm-sr">（已完成）</span></a><a class="sm-file" href="../../browser-output/xss-context-dom/index.html" title="3.2 Output Contexts and DOM-Based XSS"><span class="num">3.2</span><span class="sm-fname">Output Contexts and DOM-Based XSS</span><span class="sm-st sm-st-ready" aria-hidden="true"></span><span class="sm-sr">（已完成）</span></a></div></details><details class="sm-folder"><summary><a class="sm-chlink" href="../../identity/index.html" title="第 4 章 網站如何知道你是誰、允許你做什麼"><span class="num">4</span><span class="sm-fname">網站如何知道你是誰、允許你做什麼</span></a></summary><div class="sm-files"><a class="sm-file" href="../../identity/authentication/index.html" title="4.1 Authentication"><span class="num">4.1</span><span class="sm-fname">Authentication</span><span class="sm-st sm-st-ready" aria-hidden="true"></span><span class="sm-sr">（已完成）</span></a><a class="sm-file" href="../../identity/access-control/index.html" title="4.2 Access Control"><span class="num">4.2</span><span class="sm-fname">Access Control</span><span class="sm-st sm-st-ready" aria-hidden="true"></span><span class="sm-sr">（已完成）</span></a></div></details><details class="sm-folder"><summary><a class="sm-chlink" href="../../cross-site/index.html" title="第 5 章 網站之間如何利用瀏覽器的信任"><span class="num">5</span><span class="sm-fname">網站之間如何利用瀏覽器的信任</span></a></summary><div class="sm-files"><a class="sm-file" href="../../cross-site/cross-site-trust/index.html" title="5.1 CSRF, CORS, and Cross-Site Trust"><span class="num">5.1</span><span class="sm-fname">CSRF, CORS, and Cross-Site Trust</span><span class="sm-st sm-st-draft" aria-hidden="true"></span><span class="sm-sr">（草稿）</span></a></div></details><details class="sm-folder"><summary><a class="sm-chlink" href="../../logic-timing/index.html" title="第 6 章 問題藏在流程與時間裡"><span class="num">6</span><span class="sm-fname">問題藏在流程與時間裡</span></a></summary><div class="sm-files"><a class="sm-file" href="../../logic-timing/business-logic/index.html" title="6.1 Business Logic Vulnerabilities"><span class="num">6.1</span><span class="sm-fname">Business Logic Vulnerabilities</span><span class="sm-st sm-st-draft" aria-hidden="true"></span><span class="sm-sr">（草稿）</span></a><a class="sm-file" href="../../logic-timing/race-conditions/index.html" title="6.2 Race Conditions"><span class="num">6.2</span><span class="sm-fname">Race Conditions</span><span class="sm-st sm-st-draft" aria-hidden="true"></span><span class="sm-sr">（草稿）</span></a></div></details></details><details class="sm-partd" open><summary class="sm-part">第二部分：多元件系統的信任邊界</summary><details class="sm-folder"><summary><a class="sm-chlink" href="../../server-actions/index.html" title="第 7 章 伺服器把資料交給其他元件之後"><span class="num">7</span><span class="sm-fname">伺服器把資料交給其他元件之後</span></a></summary><div class="sm-files"><a class="sm-file is-planned" href="../../server-actions/ssrf/index.html" title="7.1 Server-Side Request Forgery"><span class="num">7.1</span><span class="sm-fname">Server-Side Request Forgery</span><span class="sm-st sm-st-planned" aria-hidden="true"></span><span class="sm-sr">（規劃中）</span></a><a class="sm-file is-planned" href="../../server-actions/xxe/index.html" title="7.2 XML External Entity Injection"><span class="num">7.2</span><span class="sm-fname">XML External Entity Injection</span><span class="sm-st sm-st-planned" aria-hidden="true"></span><span class="sm-sr">（規劃中）</span></a><a class="sm-file is-planned" href="../../server-actions/ssti/index.html" title="7.3 Server-Side Template Injection"><span class="num">7.3</span><span class="sm-fname">Server-Side Template Injection</span><span class="sm-st sm-st-planned" aria-hidden="true"></span><span class="sm-sr">（規劃中）</span></a><a class="sm-file is-planned" href="../../server-actions/deserialization/index.html" title="7.4 Insecure Deserialization"><span class="num">7.4</span><span class="sm-fname">Insecure Deserialization</span><span class="sm-st sm-st-planned" aria-hidden="true"></span><span class="sm-sr">（規劃中）</span></a><a class="sm-file is-planned" href="../../server-actions/prototype-pollution/index.html" title="7.5 Prototype Pollution"><span class="num">7.5</span><span class="sm-fname">Prototype Pollution</span><span class="sm-st sm-st-planned" aria-hidden="true"></span><span class="sm-sr">（規劃中）</span></a></div></details><details class="sm-folder"><summary><a class="sm-chlink" href="../../apis/index.html" title="第 8 章 網站變成 API 之後"><span class="num">8</span><span class="sm-fname">網站變成 API 之後</span></a></summary><div class="sm-files"><a class="sm-file is-planned" href="../../apis/api-testing/index.html" title="8.1 API Attack Surface"><span class="num">8.1</span><span class="sm-fname">API Attack Surface</span><span class="sm-st sm-st-planned" aria-hidden="true"></span><span class="sm-sr">（規劃中）</span></a><a class="sm-file is-planned" href="../../apis/graphql-websockets/index.html" title="8.2 GraphQL and WebSockets"><span class="num">8.2</span><span class="sm-fname">GraphQL and WebSockets</span><span class="sm-st sm-st-planned" aria-hidden="true"></span><span class="sm-sr">（規劃中）</span></a></div></details><details class="sm-folder"><summary><a class="sm-chlink" href="../../delegated-identity/index.html" title="第 9 章 身分跨越網站與元件之後"><span class="num">9</span><span class="sm-fname">身分跨越網站與元件之後</span></a></summary><div class="sm-files"><a class="sm-file is-planned" href="../../delegated-identity/jwt/index.html" title="9.1 JSON Web Tokens"><span class="num">9.1</span><span class="sm-fname">JSON Web Tokens</span><span class="sm-st sm-st-planned" aria-hidden="true"></span><span class="sm-sr">（規劃中）</span></a><a class="sm-file is-planned" href="../../delegated-identity/oauth/index.html" title="9.2 OAuth and Third-Party Login"><span class="num">9.2</span><span class="sm-fname">OAuth and Third-Party Login</span><span class="sm-st sm-st-planned" aria-hidden="true"></span><span class="sm-sr">（規劃中）</span></a></div></details><details class="sm-folder"><summary><a class="sm-chlink" href="../../proxy-cache/index.html" title="第 10 章 Proxy、Cache 與後端看到的不一樣"><span class="num">10</span><span class="sm-fname">Proxy、Cache 與後端看到的不一樣</span></a></summary><div class="sm-files"><a class="sm-file is-planned" href="../../proxy-cache/host-cache/index.html" title="10.1 Host Headers and Web Caches"><span class="num">10.1</span><span class="sm-fname">Host Headers and Web Caches</span><span class="sm-st sm-st-planned" aria-hidden="true"></span><span class="sm-sr">（規劃中）</span></a><a class="sm-file is-planned" href="../../proxy-cache/request-smuggling/index.html" title="10.2 HTTP Request Smuggling"><span class="num">10.2</span><span class="sm-fname">HTTP Request Smuggling</span><span class="sm-st sm-st-planned" aria-hidden="true"></span><span class="sm-sr">（規劃中）</span></a></div></details><details class="sm-folder"><summary><a class="sm-chlink" href="../../llm/index.html" title="第 11 章 把信任模型套到新元件：Web LLM"><span class="num">11</span><span class="sm-fname">把信任模型套到新元件：Web LLM</span></a></summary><div class="sm-files"><a class="sm-file is-planned" href="../../llm/llm-attacks/index.html" title="11.1 Web LLM Attacks"><span class="num">11.1</span><span class="sm-fname">Web LLM Attacks</span><span class="sm-st sm-st-planned" aria-hidden="true"></span><span class="sm-sr">（規劃中）</span></a></div></details></details></details></nav>
+<header class="sm-head">
+  <p class="sm-eyebrow">server-input/sql-injection-observation</p>
+  <h1><span class="num">2.4</span> UNION and Blind SQL Injection <span class="badge badge-ready">已完成</span></h1>
+  <p class="question sm-q"><span aria-hidden="true">❯</span> 看不到資料時，怎麼繼續理解查詢結果？</p>
+</header>
+<aside class="sm-aside" aria-label="本節輔助"><nav class="sm-outline" aria-label="本節內容"><p class="sm-ph">本節內容</p><ol><li><a href="#recap" title="2.4.1 查詢、資料與語法"><span class="num">2.4.1</span>查詢、資料與語法</a></li><li><a href="#union" title="2.4.2 用 UNION 合併結果"><span class="num">2.4.2</span>用 UNION 合併結果</a></li><li><a href="#blind" title="2.4.3 看不到資料時的訊號"><span class="num">2.4.3</span>看不到資料時的訊號</a></li><li><a href="#nosql-injection" title="2.4.4 NoSQL injection"><span class="num">2.4.4</span>NoSQL injection</a></li><li><a href="#detection" title="2.4.5 同一個現象的幾種解釋"><span class="num">2.4.5</span>同一個現象的幾種解釋</a></li><li><a href="#fix" title="2.4.6 修補"><span class="num">2.4.6</span>修補</a></li><li><a href="#summary" title="2.4.7 小結"><span class="num">2.4.7</span>小結</a></li></ol></nav><section class="sm-locator" aria-label="系統地圖定位"><p class="sm-ph">系統地圖</p><a class="sm-mini-link" href="../../index.html#map-server-input" aria-label="在首頁的系統地圖上看第 2 章的位置"><svg class="sm-map sm-map-mini" viewBox="206 0 794 566" aria-hidden="true" focusable="false" preserveAspectRatio="xMidYMid meet" style="aspect-ratio:794/566"><line class="sm-edge" x1="200" y1="330" x2="290" y2="330"/><line class="sm-edge sm-dash" x1="440" y1="330" x2="530" y2="330"/><line class="sm-edge sm-threat-edge" x1="110" y1="100" x2="110" y2="255"/><line class="sm-edge sm-dash" x1="625" y1="100" x2="625" y2="150"/><line class="sm-edge" x1="625" y1="546" x2="625" y2="570"/><line class="sm-edge" x1="720" y1="325" x2="765" y2="325"/><line class="sm-edge" x1="765" y1="325" x2="765" y2="48"/><line class="sm-edge sm-dash" x1="765" y1="325" x2="765" y2="538"/><line class="sm-edge" x1="765" y1="48" x2="810" y2="48"/><line class="sm-edge" x1="765" y1="118" x2="810" y2="118"/><line class="sm-edge" x1="765" y1="188" x2="810" y2="188"/><line class="sm-edge sm-dash" x1="765" y1="328" x2="810" y2="328"/><line class="sm-edge sm-dash" x1="765" y1="398" x2="810" y2="398"/><line class="sm-edge sm-dash" x1="765" y1="468" x2="810" y2="468"/><line class="sm-edge sm-dash" x1="765" y1="538" x2="810" y2="538"/><g class="sm-n sm-threat off" data-ch="cross-site"><rect class="sm-box" x="20" y="20" width="180" height="80" rx="8"/><text class="sm-mini-t" x="110.0" y="62.0" text-anchor="middle" dominant-baseline="central" font-size="56">5</text></g><g class="sm-n sm-frame off" data-ch="web-http"><rect class="sm-box" x="20" y="255" width="180" height="150" rx="10"/><text class="sm-mini-t" x="50" y="285" text-anchor="middle" dominant-baseline="central" font-size="48">1</text></g><g class="sm-n sm-node off" data-ch="browser-output"><rect class="sm-box" x="36" y="322" width="148" height="64" rx="8"/><text class="sm-mini-t" x="110.0" y="356.0" text-anchor="middle" dominant-baseline="central" font-size="51">3</text></g><g class="sm-n sm-node sm-p2 off" data-ch="proxy-cache"><rect class="sm-box" x="290" y="240" width="150" height="180" rx="8"/><text class="sm-mini-t" x="365.0" y="332.0" text-anchor="middle" dominant-baseline="central" font-size="56">10</text></g><g class="sm-n sm-frame" aria-hidden="true"><rect class="sm-box" x="530" y="150" width="190" height="396" rx="10"/></g><g class="sm-n sm-node off" data-ch="identity"><rect class="sm-box" x="546" y="194" width="158" height="56" rx="8"/><text class="sm-mini-t" x="625.0" y="224.0" text-anchor="middle" dominant-baseline="central" font-size="45">4</text></g><g class="sm-n sm-node sm-p2 off" data-ch="apis"><rect class="sm-box" x="546" y="262" width="158" height="56" rx="8"/><text class="sm-mini-t" x="625.0" y="292.0" text-anchor="middle" dominant-baseline="central" font-size="45">8</text></g><g class="sm-n sm-node sm-p2 off" data-ch="llm"><rect class="sm-box" x="546" y="330" width="158" height="56" rx="8"/><text class="sm-mini-t" x="625.0" y="360.0" text-anchor="middle" dominant-baseline="central" font-size="45">11</text></g><g class="sm-n sm-node off" data-ch="logic-timing"><rect class="sm-box" x="546" y="398" width="158" height="56" rx="8"/><text class="sm-mini-t" x="625.0" y="428.0" text-anchor="middle" dominant-baseline="central" font-size="45">6</text></g><g class="sm-n sm-node sm-p2 off" data-ch="server-actions"><rect class="sm-box" x="546" y="466" width="158" height="56" rx="8"/><text class="sm-mini-t" x="625.0" y="496.0" text-anchor="middle" dominant-baseline="central" font-size="45">7</text></g><g class="sm-n sm-node sm-p2 off" data-ch="delegated-identity"><rect class="sm-box" x="530" y="20" width="190" height="80" rx="8"/><text class="sm-mini-t" x="625.0" y="62.0" text-anchor="middle" dominant-baseline="central" font-size="56">9</text></g><g class="sm-n sm-node off" data-ch="logic-timing"><rect class="sm-box" x="530" y="570" width="190" height="56" rx="8"/><text class="sm-mini-t" x="625.0" y="600.0" text-anchor="middle" dominant-baseline="central" font-size="45">6</text></g><g class="sm-n sm-node on" data-ch="server-input"><rect class="sm-box" x="810" y="20" width="170" height="56" rx="8"/><text class="sm-mini-t" x="895.0" y="50.0" text-anchor="middle" dominant-baseline="central" font-size="45">2</text></g><g class="sm-n sm-node on" data-ch="server-input"><rect class="sm-box" x="810" y="90" width="170" height="56" rx="8"/><text class="sm-mini-t" x="895.0" y="120.0" text-anchor="middle" dominant-baseline="central" font-size="45">2</text></g><g class="sm-n sm-node on" data-ch="server-input"><rect class="sm-box" x="810" y="160" width="170" height="56" rx="8"/><text class="sm-mini-t" x="895.0" y="190.0" text-anchor="middle" dominant-baseline="central" font-size="45">2</text></g><g class="sm-n sm-node sm-p2 off" data-ch="server-actions"><rect class="sm-box" x="810" y="300" width="170" height="56" rx="8"/><text class="sm-mini-t" x="895.0" y="330.0" text-anchor="middle" dominant-baseline="central" font-size="45">7</text></g><g class="sm-n sm-node sm-p2 off" data-ch="server-actions"><rect class="sm-box" x="810" y="370" width="170" height="56" rx="8"/><text class="sm-mini-t" x="895.0" y="400.0" text-anchor="middle" dominant-baseline="central" font-size="45">7</text></g><g class="sm-n sm-node sm-p2 off" data-ch="server-actions"><rect class="sm-box" x="810" y="440" width="170" height="56" rx="8"/><text class="sm-mini-t" x="895.0" y="470.0" text-anchor="middle" dominant-baseline="central" font-size="45">7</text></g><g class="sm-n sm-node sm-p2 off" data-ch="server-actions"><rect class="sm-box" x="810" y="510" width="170" height="56" rx="8"/><text class="sm-mini-t" x="895.0" y="540.0" text-anchor="middle" dominant-baseline="central" font-size="45">7</text></g><g class="sm-n sm-pill off" data-ch="web-http"><rect class="sm-pill-box" x="213" y="306" width="64" height="48" rx="24"/><text class="sm-mini-t" x="245" y="332" text-anchor="middle" dominant-baseline="central" font-size="38">1</text></g><g class="sm-n sm-pill off" data-ch="web-http"><rect class="sm-pill-box" x="453" y="306" width="64" height="48" rx="24"/><text class="sm-mini-t" x="485" y="332" text-anchor="middle" dominant-baseline="central" font-size="38">1</text></g><g class="sm-n sm-pill off" data-ch="cross-site"><rect class="sm-pill-box" x="78" y="153" width="64" height="48" rx="24"/><text class="sm-mini-t" x="110" y="179" text-anchor="middle" dominant-baseline="central" font-size="38">5</text></g><g class="sm-n sm-pill off" data-ch="delegated-identity"><rect class="sm-pill-box" x="593" y="101" width="64" height="48" rx="24"/><text class="sm-mini-t" x="625" y="127" text-anchor="middle" dominant-baseline="central" font-size="38">9</text></g></svg></a><p class="sm-cap">位置：第 2 章　伺服器如何處理使用者輸入</p><ul class="sm-chips sm-comps" aria-label="本章元件"><li>File system</li><li>Database</li><li>Shell</li></ul><p class="sm-mini-hint">點地圖：到首頁地圖看這一章</p></section></aside>
+<main id="main" class="sm-doc" tabindex="-1">
+<article class="content sm-article">
+<p>想像一個購物網站的商品列表頁。你點選「Gifts」分類，頁面列出幾件商品；你換成別的分類，列表跟著換。背後的流程很單純：網站把你選的分類放進一段查詢，交給資料庫，再把查回來的列表畫成頁面。上一節 <a href="../sql-injection/index.html">SQL Injection Basics</a> 說過，使用者的輸入若被當成查詢語法而不是單純的資料，查詢的意思就會改變。</p>
+<p>頁面<em>會</em>把查詢結果印出來時，被改變的查詢可以讓不屬於這個列表的資料混進頁面，這是 UNION 的情況。頁面<em>完全不印</em>查詢結果、只剩成功與沒成功的差別時，這個差別本身仍會透露資料庫裡的事，這是 blind 的情況。以 JSON 文件為主的另一類資料庫（NoSQL）也有類似的問題。</p>
+
+<h2 id="recap"><span class="num">2.4.1</span> 查詢、資料與語法</h2>
+<p>這裡沿用上一節的詞彙。關聯式資料庫把資料放在表（table）裡，每一列（row）是一筆記錄，每一欄（column）是一種屬性，例如商品的名稱、價格、分類。<code>SELECT</code> 指定要取哪些欄，<code>FROM</code> 指定從哪張表，<code>WHERE</code> 指定哪些列符合條件。查詢裡有<strong>語法</strong>（告訴資料庫要做什麼）與<strong>資料</strong>（被拿來比較的值）兩種東西：安全的程式把兩者分開；有問題的程式把使用者輸入直接接在查詢文字裡，資料庫便可能把輸入的一部分當成語法。修補方法是參數化查詢（parameterized query，也稱 prepared statement）：查詢的結構先固定，使用者的值另外傳入，只被當成資料。</p>
+<p>例子都來自同一家商店。商品表 <code>products</code> 有 <code>name</code>、<code>price</code> 與分類欄 <code>category</code>，網站用使用者選的分類組出查詢：</p>
+<pre data-lang="sql"><code>-- 使用者選了 Gifts，網站組出的正常查詢
+SELECT name, price FROM products WHERE category = 'Gifts'</code></pre>
+
+<h2 id="union"><span class="num">2.4.2</span> 用 UNION 合併結果</h2>
+<h3>UNION 在正常 SQL 裡做什麼</h3>
+<p><code>UNION</code> 是 SQL 的一個正當功能：把兩個 <code>SELECT</code> 的結果上下接在一起，變成一張結果表。例如商店想在同一份清單上同時列出一般商品與特價商品，可以寫成：</p>
+<pre data-lang="sql"><code>-- 兩個正常查詢合併，各自回傳 (name, price) 兩欄
+SELECT name, price FROM products WHERE category = 'Gifts'
+UNION
+SELECT name, price FROM clearance_items</code></pre>
+<p>下圖是合併的結果：第一個查詢回傳 2 列，第二個回傳 1 列，合併後得到 3 列。列數可以不同，但每一列的格子數（欄數）必須一樣。</p>
+
+<figure id="union-grid">
+  <svg viewBox="0 0 640 330" role="img" aria-labelledby="union-grid-t" style="color:var(--text)">
+    <title id="union-grid-t">UNION 合併兩個結果表：欄數相同可以合併；欄數不同（二欄對三欄）會出錯</title>
+    <g font-size="13" font-weight="700" fill="currentColor">
+      <text x="12" y="18">可以合併：兩邊都是兩欄</text>
+      <text x="12" y="198">不能合併：二欄對三欄</text>
+    </g>
+    <g font-size="12" fill="currentColor" opacity=".8">
+      <text x="12" y="40">查詢 A：2 列</text>
+      <text x="232" y="40">查詢 B：1 列</text>
+      <text x="432" y="40">UNION 後：3 列</text>
+      <text x="12" y="218">查詢 A：2 欄</text>
+      <text x="232" y="218">查詢 B：3 欄</text>
+    </g>
+    <g fill="var(--surface)" stroke="currentColor" stroke-width="1.3">
+      <rect x="12" y="48" width="86" height="28"/><rect x="98" y="48" width="60" height="28"/>
+      <rect x="12" y="76" width="86" height="28"/><rect x="98" y="76" width="60" height="28"/>
+      <rect x="232" y="48" width="86" height="28"/><rect x="318" y="48" width="60" height="28"/>
+      <rect x="432" y="48" width="86" height="28"/><rect x="518" y="48" width="60" height="28"/>
+      <rect x="432" y="76" width="86" height="28"/><rect x="518" y="76" width="60" height="28"/>
+      <rect x="12" y="226" width="86" height="28"/><rect x="98" y="226" width="60" height="28"/>
+      <rect x="12" y="254" width="86" height="28"/><rect x="98" y="254" width="60" height="28"/>
+      <rect x="232" y="226" width="86" height="28"/><rect x="318" y="226" width="60" height="28"/><rect x="378" y="226" width="60" height="28"/>
+    </g>
+    <rect x="432" y="104" width="146" height="28" fill="var(--accent-soft)" stroke="currentColor" stroke-width="1.3"/>
+    <g font-size="12" fill="currentColor">
+      <text x="20" y="67">Mug</text><text x="106" y="67">9</text>
+      <text x="20" y="95">Pen</text><text x="106" y="95">3</text>
+      <text x="240" y="67">Bag</text><text x="326" y="67">5</text>
+      <text x="440" y="67">Mug</text><text x="526" y="67">9</text>
+      <text x="440" y="95">Pen</text><text x="526" y="95">3</text>
+      <text x="440" y="123">Bag</text><text x="526" y="123">5</text>
+      <text x="20" y="245">Mug</text><text x="106" y="245">9</text>
+      <text x="20" y="273">Pen</text><text x="106" y="273">3</text>
+      <text x="240" y="245">Bag</text><text x="326" y="245">5</text><text x="386" y="245">x</text>
+    </g>
+    <text x="176" y="72" font-size="20" fill="currentColor">+</text>
+    <text x="396" y="72" font-size="20" fill="currentColor">=</text>
+    <g font-size="13" fill="currentColor">
+      <text x="470" y="250" font-weight="700">資料庫拒絕合併，回報錯誤</text>
+      <text x="470" y="272" opacity=".8">兩邊欄數不一致</text>
+      <text x="432" y="152" opacity=".8">有底色的是來自查詢 B 的列</text>
+    </g>
+    <text x="12" y="316" font-size="12" fill="currentColor" opacity=".8">頁面通常只顯示結果表的其中幾欄，資料庫結果與畫面上看到的內容不一定一一對應。</text>
+  </svg>
+  <figcaption><span class="fig-num">圖 2.4.2-1</span> UNION 把兩個結果表上下接起來：列數可以不同，欄數必須相同</figcaption>
+</figure>
+
+<h3>兩個查詢必須相容</h3>
+<p>欄數必須一致，因為結果是一張表，每一列都要有相同數量的格子，才排得成整齊的欄。除了欄數，對應位置的欄位型別也要相容：名稱欄對名稱欄，價格欄對價格欄。第一個查詢的第一欄是文字，第二個查詢的第一欄就必須是能當文字看待的東西。「相容」的標準因資料庫產品而異，有的會自動轉型，有的會直接報錯。</p>
+<p><code>UNION</code> 會把完全重複的列合併成一列，<code>UNION ALL</code> 則全部保留。資料庫裡另有一個特殊值 <code>NULL</code>，意思是「沒有值」，不是空字串，也不是 0；它可以放在多數型別的格子裡，所以常用來表示「這格先不填」。用 NULL 填格子可以讓欄數對上，但那一欄未必能放文字值，應用程式也未必會把它畫出來；有的應用程式遇到 NULL 就會出錯。</p>
+
+<h3>額外的列怎麼出現在頁面上</h3>
+<p>商品頁的程式不在乎一列資料從哪裡來，它拿到一張結果表，就把每一列的名稱欄和價格欄畫成頁面上的一個商品。加上上一節的弱點，過程是這樣：</p>
+<ol>
+  <li>使用者輸入被放進 <code>WHERE</code> 條件，而且沒有被當成純資料處理。</li>
+  <li>被當成語法的那一段輸入，可以讓原本的查詢後面再多接一個 <code>SELECT</code>。</li>
+  <li>資料庫忠實地把兩個結果表合併。只要欄數和型別相容，合併就成功。</li>
+  <li>商品頁拿到的是合併後的表，於是額外那個查詢取回的列，被畫在商品列表裡，看起來就像普通商品。</li>
+</ol>
+<p>被操縱的查詢長這樣，方括號代表被換掉的那段輸入：</p>
+<pre data-lang="sql"><code>-- 只表達形狀
+SELECT name, price FROM products
+WHERE category = '[使用者輸入的值，其中含
+                  攻擊者附加的查詢片段]'</code></pre>
+<p>這個片段先讓原本的條件在「該結束的地方」結束，再接上另一個 <code>SELECT</code>，於是原本的查詢和附加的查詢被同一個 <code>UNION</code> 串起來，結果合成一張。附加的查詢可以指向這個資料庫帳號讀得到的任何表，不必是商品表，所以這類問題的影響取決於資料庫帳號的權限（見後面的「修補」）。</p>
+
+<h3>先弄清欄數與型別</h3>
+<p>附加的查詢要成功合併，就必須與原查詢欄數相同、型別相容。不知道原查詢有幾欄、各欄是什麼型別的人，一開始只能從回應的變化推測：</p>
+<table class="wide">
+  <colgroup><col style="width:34%"><col style="width:30%"><col style="width:36%"></colgroup>
+  <thead><tr><th>情形</th><th>頁面可能的樣子</th><th>代表什麼</th></tr></thead>
+  <tbody>
+    <tr><td>欄數不合</td><td>資料庫報錯，頁面出現錯誤或空白</td><td>附加的查詢與原查詢的欄數不一致（但錯誤也可能有別的來源）</td></tr>
+    <tr><td>欄數、型別與應用程式的處理方式都相容</td><td>頁面<em>可能</em>回到基準的樣子，或多出額外的列</td><td>欄數相容的證據之一，但不是唯一的解釋</td></tr>
+    <tr><td>欄數相容，但型別不合，或應用程式處理不了 NULL，或結果沒有被畫出來</td><td>仍然出現錯誤，或看起來與基準相同</td><td>單靠這個差異判斷不了欄數，要換個角度再對照</td></tr>
+  </tbody>
+</table>
+<p>整個過程看不到資料，原查詢的結構是從回應的差異一步步推出來的，所以每一步都要記下當時的前提。</p>
+<aside class="note">
+  <p>欄數相容之後，能讀哪些表還要看資料庫帳號的權限。附加的查詢即使成功，頁面也可能只畫出其中某幾欄（例如只畫文字欄），其餘欄看不到。</p>
+</aside>
+
+<h2 id="blind"><span class="num">2.4.3</span> 看不到資料時的訊號</h2>
+<h3>什麼叫 blind</h3>
+<p>前面的情況，被改變的查詢結果會畫在頁面上。很多網站卻根本不顯示查詢結果，例如登入檢查只回「成功／失敗」，或網站在背景記錄瀏覽紀錄，用了查詢卻從不印出結果。此時即使查詢被改變，頁面上也不會出現多餘的列。這種情況稱為<strong>盲注</strong>（blind SQL injection）。</p>
+<p>不過查詢仍在資料庫裡執行，結果仍會影響網站之後的行為。觀察者只要看得到行為上的任何差異，那個差異就帶著一個「是或否」的答案。常見的差異有三種：</p>
+<ul>
+  <li>內容差異：條件成立時頁面多一句歡迎文字，不成立時沒有。</li>
+  <li>錯誤差異：條件成立時正常回應，不成立時（或相反）資料庫報錯，網站回一個錯誤頁。</li>
+  <li>時間差異：條件成立時多花幾秒才回應，不成立時立刻回應。</li>
+</ul>
+<p>另外還有一類：讓資料庫自己對外發出一個網路請求（稱為 out-of-band，帶外通道），結果不經過原本的回應，而是從別的管道觀察。這需要資料庫具備發出網路請求的功能，網路環境也允許它對外連線。</p>
+
+<h3>一次只問一個是非題</h3>
+<p>先不看 SQL。想像一位朋友心裡想了一個 1 到 100 的整數，只肯回答「是」或「不是」。你問不出數字本身，但可以問它是否大於 50。答案是「是」，就知道在 51 到 100；再問是否大於 75，答案是「不是」，範圍縮成 51 到 75。每問一題，候選範圍減半，最多約 7 題就能鎖定任何一個 1 到 100 的數字。</p>
+
+<figure id="twenty-questions">
+  <svg viewBox="0 0 640 230" role="img" aria-labelledby="twenty-questions-t" style="color:var(--text)">
+    <title id="twenty-questions-t">用是非題逐步縮小範圍：猜 1 到 100 的數字，每問一題範圍減半</title>
+    <defs>
+      <marker id="tq-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+        <path d="M0 0 L10 5 L0 10 z" fill="currentColor"/>
+      </marker>
+    </defs>
+    <g fill="var(--surface)" stroke="currentColor" stroke-width="1.5">
+      <rect x="12" y="20" width="120" height="48" rx="8"/>
+      <rect x="260" y="20" width="120" height="48" rx="8"/>
+    </g>
+    <rect x="508" y="20" width="120" height="48" rx="8" fill="var(--accent-soft)" stroke="currentColor" stroke-width="1.5"/>
+    <g font-size="14" text-anchor="middle" fill="currentColor">
+      <text x="72" y="42" font-weight="700">範圍 1 到 100</text><text x="72" y="60" font-size="12">100 種可能</text>
+      <text x="320" y="42" font-weight="700">範圍 51 到 100</text><text x="320" y="60" font-size="12">50 種可能</text>
+      <text x="568" y="42" font-weight="700">範圍 51 到 75</text><text x="568" y="60" font-size="12">25 種可能</text>
+    </g>
+    <g stroke="currentColor" stroke-width="2" fill="none">
+      <path d="M136 44 H256" marker-end="url(#tq-arrow)"/>
+      <path d="M384 44 H504" marker-end="url(#tq-arrow)"/>
+    </g>
+    <g font-size="12" text-anchor="middle" fill="currentColor">
+      <text x="196" y="36">問：大於 50 嗎？</text><text x="196" y="62">答：是</text>
+      <text x="444" y="36">問：大於 75 嗎？</text><text x="444" y="62">答：不是</text>
+    </g>
+    <g font-size="13" fill="currentColor">
+      <text x="12" y="116" font-weight="700">類比與 blind 的對應</text>
+      <text x="12" y="142">朋友心裡的數字 ＝ 資料庫裡你看不到的值</text>
+      <text x="12" y="164">「是／不是」＝ 頁面上可觀察的差異（內容、錯誤或時間）</text>
+      <text x="12" y="186">每次只能問一題 ＝ 每次請求只得到一個是非答案，所以需要很多次請求</text>
+      <text x="12" y="212" opacity=".8">請求次數多，是 blind 最容易被偵測到的特徵之一。</text>
+    </g>
+  </svg>
+  <figcaption><span class="fig-num">圖 2.4.3-1</span> 用是非題逐步縮小範圍的類比，只說明推論方式</figcaption>
+</figure>
+
+<p>blind 用的是同一個想法：資料庫裡有一個你看不到的值，無法直接要它，但可以反覆問關於它的是非題，從網站行為的差異讀出答案。代價是慢：每次請求只得到一位元（是或否）的資訊，需要很多次請求。因此這類活動會在網站的紀錄裡留下明顯的規律：同一個功能被大量重複請求，每次只差一點點。</p>
+
+<h3>是非答案怎麼洩漏</h3>
+<p>下圖是資料流：條件在資料庫裡成立或不成立，應用程式據此走不同分支，分支的差異變成觀察者看到的訊號。資料本身不會出現在回應裡。</p>
+
+<figure id="blind-channel">
+  <svg viewBox="0 0 640 270" role="img" aria-labelledby="blind-channel-t" style="color:var(--text)">
+    <title id="blind-channel-t">Blind 判斷通道：資料庫中的條件結果使應用程式走不同分支，產生內容、錯誤或時間上的可見差異</title>
+    <defs>
+      <marker id="bc-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+        <path d="M0 0 L10 5 L0 10 z" fill="currentColor"/>
+      </marker>
+    </defs>
+    <g fill="var(--surface)" stroke="currentColor" stroke-width="1.5">
+      <rect x="12" y="100" width="130" height="56" rx="8"/>
+      <rect x="196" y="100" width="130" height="56" rx="8"/>
+      <rect x="470" y="20" width="158" height="44" rx="8"/>
+      <rect x="470" y="106" width="158" height="44" rx="8"/>
+      <rect x="470" y="192" width="158" height="44" rx="8"/>
+    </g>
+    <g font-size="14" text-anchor="middle" fill="currentColor">
+      <text x="77" y="124" font-weight="700">資料庫</text><text x="77" y="144" font-size="12">條件成立／不成立</text>
+      <text x="261" y="124" font-weight="700">應用程式</text><text x="261" y="144" font-size="12">依結果走分支</text>
+      <text x="549" y="40" font-weight="700">內容不同</text><text x="549" y="56" font-size="12">多／少一段文字</text>
+      <text x="549" y="126" font-weight="700">錯誤不同</text><text x="549" y="142" font-size="12">正常頁／錯誤頁</text>
+      <text x="549" y="212" font-weight="700">時間不同</text><text x="549" y="228" font-size="12">立刻回應／延遲回應</text>
+    </g>
+    <g stroke="currentColor" stroke-width="2" fill="none">
+      <path d="M146 128 H192" marker-end="url(#bc-arrow)"/>
+      <path d="M330 118 L466 44" marker-end="url(#bc-arrow)"/>
+      <path d="M330 128 H466" marker-end="url(#bc-arrow)"/>
+      <path d="M330 138 L466 212" marker-end="url(#bc-arrow)"/>
+    </g>
+    <g font-size="12" fill="currentColor" opacity=".85">
+      <text x="12" y="186">資料庫裡的值本身，</text>
+      <text x="12" y="204">不會直接出現在回應中。</text>
+      <text x="196" y="186">只要分支造成任何可</text>
+      <text x="196" y="204">見差異，就洩漏一個</text>
+      <text x="196" y="222">是非答案。</text>
+    </g>
+    <text x="470" y="258" font-size="12" fill="currentColor" opacity=".85">觀察者讀到的是「訊號」</text>
+  </svg>
+  <figcaption><span class="fig-num">圖 2.4.3-2</span> Blind 的三種常見訊號通道</figcaption>
+</figure>
+
+<h3>回訪者提示的例子</h3>
+<p>假設某個網站根據瀏覽器帶來的追蹤識別碼，在資料庫查這位訪客是不是回訪者；是的話頁面多顯示一行「歡迎回來」，查不到則不顯示。查詢結果本身從不印出，只影響這一行。</p>
+<p>觀察分五步。<code>[已知為真的條件]</code> 是事先知道會成立的條件，<code>[已知為假的條件]</code> 是事先知道不會成立的條件。</p>
+<table>
+  <thead>
+    <tr><th>步驟</th><th>送出的識別碼</th><th>回應片段</th><th>判讀</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>1　基準之一</td><td>資料庫裡存在的識別碼</td><td><code>…商品列表… 歡迎回來，訪客 A</code></td><td>「條件成立」時的樣子</td></tr>
+    <tr><td>2　基準之二</td><td>不存在的識別碼</td><td><code>…商品列表…</code></td><td>「條件不成立」時的樣子</td></tr>
+    <tr><td>3　對照：真</td><td>原識別碼加上 <code>[已知為真的條件]</code></td><td><code>…商品列表… 歡迎回來，訪客 A</code></td><td>與步驟 1 相同；在這個網站的規則下，支持「改變的輸入進了查詢，且被執行」</td></tr>
+    <tr><td>4　對照：假</td><td>原識別碼加上 <code>[已知為假的條件]</code></td><td><code>…商品列表…</code></td><td>與步驟 2 相同；支持差異來自條件的真假，對象若是未知網站，還要排除其他因素</td></tr>
+    <tr><td>5　恢復</td><td>原本的識別碼</td><td><code>…商品列表… 歡迎回來，訪客 A</code></td><td>回到步驟 1 的樣子，排除偶然的變化</td></tr>
+  </tbody>
+</table>
+<p>明知為真與明知為假的條件穩定地得到不同回應，這個差異才算可信的訊號；之後換成想問的條件，得到的差異才有意義。</p>
+
+<h3>時間訊號要重複量測</h3>
+<p>假設條件成立時，資料庫刻意多等幾秒再回應。時間差異比內容或錯誤差異更容易受干擾：</p>
+<ul>
+  <li>網路本來就忽快忽慢，單次請求慢了幾秒，可能只是網路或伺服器忙碌。</li>
+  <li>較可靠的做法是交錯重複量測：對照組與實驗組輪流各送多次，比較兩組的分布是否穩定地分開。</li>
+  <li>差異要足夠大。如果延遲只有幾十毫秒，很容易被雜訊淹沒。</li>
+</ul>
+<p>假設量到下表兩組數字，單位是毫秒。每一輪都是對照組與實驗組輪流各送一次：</p>
+<table>
+  <thead>
+    <tr><th rowspan="2">輪次</th><th colspan="2">第一組</th><th colspan="2">第二組</th></tr>
+    <tr><th>對照</th><th>實驗</th><th>對照</th><th>實驗</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>1</td><td>112</td><td>3105</td><td>110</td><td>107</td></tr>
+    <tr><td>2</td><td>98</td><td>3089</td><td>103</td><td>101</td></tr>
+    <tr><td>3</td><td>105</td><td>3120</td><td>2980</td><td>112</td></tr>
+    <tr><td>4</td><td>120</td><td>3098</td><td>108</td><td>3050</td></tr>
+    <tr><td>5</td><td>101</td><td>3112</td><td>99</td><td>106</td></tr>
+    <tr><td>6</td><td>109</td><td>3101</td><td>115</td><td>104</td></tr>
+  </tbody>
+</table>
+<p>第一組的兩個分布完全不重疊：對照組都在一百毫秒上下，實驗組都在三千毫秒上下，穩定地分開。第二組只有兩次變慢，一次在對照組、一次在實驗組，其餘各輪沒有差別。變慢與實驗與否無關，更像網路或伺服器偶發的忙碌，不足以當成證據。</p>
+
+<h3>資料庫產品的差異</h3>
+<p>不同的資料庫產品（例如 MySQL、PostgreSQL、Oracle、Microsoft SQL Server、SQLite）在字串寫法、註解寫法、型別轉換、讓查詢延遲的函式，以及出錯的行為上都有差異。推論的思路通用，細節要依實際的資料庫決定。</p>
+
+<h2 id="nosql-injection"><span class="num">2.4.4</span> NoSQL injection</h2>
+<p>到目前為止談的都是關聯式資料庫。但很多網站使用另一類資料庫，統稱 <strong>NoSQL</strong>（意思是「不只是 SQL」）。它們不一定用表和列，也不一定用 SQL 語言。其中常見的一種把資料存成 JSON 文件，要理解這類資料庫上的問題，得先看懂 JSON。</p>
+
+<h3>JSON 的最小模型</h3>
+<p><strong>JSON</strong>（JavaScript Object Notation）是一種用純文字表示結構化資料的格式，網站之間傳資料時很常用。這裡會用到四個詞：</p>
+<ul>
+  <li><strong>鍵</strong>（key）：資料的名稱，一定是用雙引號包起來的字串，例如 <code>"username"</code>。</li>
+  <li><strong>值</strong>（value）：鍵對應的內容，寫在冒號後面，例如 <code>"alice"</code>。</li>
+  <li><strong>字串</strong>（string）：雙引號包起來的文字。值也可以是數字（<code>25</code>）、真或假（<code>true</code>）。</li>
+  <li><strong>物件</strong>（object）：用大括號 <code>{ }</code> 包起來的一組「鍵：值」。物件的值可以又是一個物件，這叫<strong>巢狀</strong>（nested）。</li>
+</ul>
+<p>一份正常的登入請求，網站收到的 JSON 內容如下：</p>
+<pre data-lang="json"><code>{
+  "username": "alice",
+  "password": "demo-password"
+}</code></pre>
+<p>這份資料有兩個鍵，兩個值都是字串。資料庫裡可能存了這樣的使用者文件（省略了密碼欄；真實網站存的是密碼雜湊，不存明文）：</p>
+<pre data-lang="json"><code>{ "username": "alice", "role": "user" }
+{ "username": "bob",   "role": "user" }
+{ "username": "carol", "role": "admin" }</code></pre>
+<p>應用程式拿到 <code>"alice"</code> 這個字串，要在這些文件裡找人時，查詢用白話說是：「找出 <code>username</code> 等於 <code>alice</code> 的文件」。三份文件中只有第一份符合。</p>
+
+<h3>字串變成了結構</h3>
+<p>在這類資料庫中，查詢本身通常也是用 JSON 物件寫成的，一個「鍵：值」代表「欄位等於這個值」。許多這類資料庫還允許把「值」的位置換成一個<strong>帶有運算子的物件</strong>：鍵是運算子的名稱（通常以特殊符號開頭），表達「不等於」「大於」「符合某個模式」這類比較，不再只是「等於」。</p>
+<p>風險就出現在應用程式和資料庫之間的交接點：</p>
+<ol>
+  <li>應用程式預期 <code>username</code> 欄位是個字串，例如 <code>"alice"</code>。</li>
+  <li>但 JSON 的語法允許欄位的值是任何東西，包括巢狀物件。若請求裡送來的 <code>username</code> 是一個帶有查詢運算子的物件，而應用程式不檢查型別，就會把整個值原封不動交給資料庫。</li>
+  <li>資料庫把這個物件解讀成查詢條件的一部分，而非要比對的文字。條件的意思從「username 等於 alice」，變成像「username 不等於某個指定的值」這樣的另一種條件。</li><!-- prose-lint: allow contrast-repeat -->
+  <li>「不等於某個值」會符合所有不是那個值的文件，通常就是使用者本來碰不到的許多人。</li>
+</ol>
+<p>用上面三份文件算一次。假設條件用白話寫成「<code>username</code> 不等於 <code>demo-absent</code>」，而三份文件的名稱都不是 <code>demo-absent</code>：</p>
+<table>
+  <thead><tr><th>文件</th><th><code>username</code></th><th>是否符合「不等於 demo-absent」</th></tr></thead>
+  <tbody>
+    <tr><td>第一份</td><td>alice</td><td>符合</td></tr>
+    <tr><td>第二份</td><td>bob</td><td>符合</td></tr>
+    <tr><td>第三份</td><td>carol</td><td>符合</td></tr>
+  </tbody>
+</table>
+<p>三份全都符合。如果比較的值剛好是 <code>alice</code>，第一份就不符合，只剩第二、三份。符合的文件有哪些，取決於被比較的值。</p>
+
+<figure id="json-query-tree">
+  <svg viewBox="0 0 640 300" role="img" aria-labelledby="json-query-tree-t" style="color:var(--text)">
+    <title id="json-query-tree-t">JSON 值與查詢結構樹：左邊 username 的值是字串葉節點，右邊 username 的值是帶運算子的巢狀物件，應用程式把使用者輸入提升成了查詢結構</title>
+    <defs>
+      <marker id="jq-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+        <path d="M0 0 L10 5 L0 10 z" fill="currentColor"/>
+      </marker>
+    </defs>
+    <g font-size="13" font-weight="700" fill="currentColor">
+      <text x="12" y="20">預期：值是字串</text>
+      <text x="340" y="20">被操縱：值是帶運算子的物件</text>
+    </g>
+    <g fill="var(--surface)" stroke="currentColor" stroke-width="1.5">
+      <rect x="60" y="34" width="130" height="36" rx="8"/>
+      <rect x="388" y="34" width="130" height="36" rx="8"/>
+      <rect x="388" y="108" width="130" height="36" rx="8"/>
+    </g>
+    <rect x="60" y="108" width="130" height="36" rx="18" fill="var(--accent-soft)" stroke="currentColor" stroke-width="1.5"/>
+    <rect x="388" y="182" width="130" height="36" rx="18" fill="var(--accent-soft)" stroke="currentColor" stroke-width="1.5"/>
+    <g font-size="13" text-anchor="middle" fill="currentColor">
+      <text x="125" y="57">查詢物件</text>
+      <text x="453" y="57">查詢物件</text>
+      <text x="453" y="131">鍵 username</text>
+      <text x="125" y="131">字串 "alice"</text>
+      <text x="453" y="205">運算子與其比較值</text>
+    </g>
+    <g stroke="currentColor" stroke-width="2" fill="none">
+      <path d="M125 72 V104" marker-end="url(#jq-arrow)"/>
+      <path d="M453 72 V104" marker-end="url(#jq-arrow)"/>
+      <path d="M453 146 V178" marker-end="url(#jq-arrow)"/>
+    </g>
+    <g font-size="12" fill="currentColor">
+      <text x="134" y="92">username 的值</text>
+      <text x="462" y="92">username 的值</text>
+      <text x="462" y="166">值是一個巢狀物件</text>
+    </g>
+    <g font-size="13" fill="currentColor">
+      <text x="12" y="190">意思：username 等於 alice</text>
+      <text x="12" y="210">匹配：1 份文件</text>
+      <text x="340" y="244">意思：username「不等於 demo-absent」</text>
+      <text x="340" y="264">匹配：三份文件全部（含不該碰到的）</text>
+    </g>
+    <text x="12" y="290" font-size="12" fill="currentColor" opacity=".85">交接點：應用程式把使用者送來的整個值，直接放進了查詢結構的位置。</text>
+  </svg>
+  <figcaption><span class="fig-num">圖 2.4.4-1</span> 同一個位置，值是字串時只是「資料」，值是帶運算子的物件時就成了「查詢結構」</figcaption>
+</figure>
+
+<p>和 SQL 對照：SQL 的混淆發生在<em>文字</em>裡（引號和關鍵字），這類 NoSQL 的混淆發生在<em>資料的結構</em>裡（字串變成物件）。兩者的共同點是使用者控制的內容跨過了「資料」和「查詢語法」的邊界。</p>
+
+<h3>成立的條件</h3>
+<ul>
+  <li>應用程式得把請求中的 JSON 值不經型別檢查就放進查詢。先確認 <code>username</code> 是字串，這條路就走不通。</li>
+  <li>「運算子」的意義由資料庫（和它的驅動程式）決定，不同的 NoSQL 系統語法不同，一個系統的結論不能套到另一個上。這裡的模型以 MongoDB 風格的查詢為例，其他產品需查各自的文件。</li>
+  <li>光有這種結構上的差異，不能證明漏洞存在，也不能證明登入被繞過。登入流程通常還要比對密碼等其他條件，是否有影響，要看實際的程式怎麼寫。</li>
+  <li>NoSQL 也有其他類型的問題（例如在伺服器端執行 JavaScript 條件的查詢），屬於進階主題。</li>
+</ul>
+
+<h2 id="detection"><span class="num">2.4.5</span> 同一個現象的幾種解釋</h2>
+<p>防禦者和授權的測試者看到的訊號，常有好幾種解釋：</p>
+<table class="wide">
+  <colgroup><col style="width:34%"><col style="width:30%"><col style="width:36%"></colgroup>
+  <thead>
+    <tr><th>觀察到的現象</th><th>可能的原因</th><th>還要確認的事</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>輸入加上特殊字元後出現資料庫錯誤訊息</td><td>輸入可能進入了查詢，且改變了語法</td><td>錯誤是否來自程式的其他部分，或只是型別不符；從錯誤本身看不出能否讀取資料</td></tr>
+    <tr><td>輸入後回傳 500 或空白頁</td><td>後端處理失敗</td><td>500 可以由任何錯誤造成，例如別的 bug、輸入太長</td></tr>
+    <tr><td>列表多出不屬於該分類的列</td><td>查詢的結果集被擴大或合併</td><td>資料庫帳號的權限有多大；畫面上的欄可能只是全部資料的一小部分</td></tr>
+    <tr><td>明知為真與明知為假的兩個對照，回應穩定地不同</td><td>輸入影響了查詢的條件，可用於 blind 推論</td><td>能否取得任意資料、查到的是資料庫哪個部分；應用程式的其他分支、輸入驗證、快取或背景負載也要排除</td></tr>
+    <tr><td>回應時間穩定地分成兩群</td><td>條件的真假影響了處理時間</td><td>網路與伺服器負載也會造成延遲，穩定分群時同樣要排除；單次變慢不算證據</td></tr>
+    <tr><td>JSON 欄位送物件而不是字串時，結果數量變多或回應不同</td><td>應用程式沒有檢查型別，值被當成查詢結構</td><td>帳號是否真的能被接管；要看實際的登入流程與其他檢查</td></tr>
+  </tbody>
+</table>
+<p>防禦者還可以看伺服器端的紀錄：同一個端點被大量請求、參數裡出現不尋常的引號或結構、回應時間規律地分成兩群、資料庫報出的錯誤突然增加，都是該警覺的特徵。</p>
+
+<h2 id="fix"><span class="num">2.4.6</span> 修補</h2>
+<h3>SQL 改用參數化查詢</h3>
+<p>UNION 與 blind 是同一個根本問題的不同表現：使用者的輸入被當成語法。兩者的修補也相同：不要用字串相接組查詢，改用參數化查詢。</p>
+<pre data-lang="python"><code># 不安全的做法（把輸入接進查詢文字）
+query = "SELECT name, price FROM products WHERE category = '" + category + "'"
+
+# 參數化的做法（結構固定，值另外傳入）
+cursor.execute(
+    "SELECT name, price FROM products WHERE category = ?",
+    (category,)
+)</code></pre>
+<p>資料庫先把查詢結構（語法）固定下來，值之後才以「資料」的身分傳入，無論值裡寫了什麼，都不會被重新解讀為語法。UNION 無從附加，blind 的條件也改不了。</p>
+<aside class="note">
+  <p>參數化只保護「值」的位置。表名、欄名、排序方向這類結構性的片段不能用參數傳入；功能若需要讓使用者選擇，就用允許清單（只接受事先列好的幾個選項）對應到固定的查詢片段。</p>
+</aside>
+<h3>NoSQL 的修補</h3>
+<ul>
+  <li>強制型別：<code>username</code> 必須是字串。收到物件、陣列或其他型別就直接拒絕。</li>
+  <li>用 schema 驗證輸入：schema（綱要）是事先寫好的規格，說明允許哪些欄位、每個欄位是什麼型別、長度或格式有什麼限制。不符合規格的請求在進入查詢之前就被擋掉。</li>
+  <li>不要把整個請求物件直接當查詢：由伺服器自己寫出固定的查詢結構，只把驗證過的單一值填進去，而不是把使用者送來的物件整份交給資料庫。</li>
+  <li>不要只封鎖某一個運算子名稱：運算子不只一個，也會隨資料庫版本增加。允許清單加上型別檢查才穩定。</li>
+</ul>
+<p>寫成程式是這樣：</p>
+<pre data-lang="python"><code># 先檢查型別，再放進固定結構的查詢
+username = request.json.get("username")
+if not isinstance(username, str):
+    return error("invalid request")       # 一般性的錯誤，不洩漏細節
+user = users.find_one({"username": username})   # 結構由伺服器決定</code></pre>
+<p>這段程式分三步：取出請求中的 <code>username</code>；用 <code>isinstance</code> 確認它是字串，不是就拒絕；最後才放進由伺服器寫死的查詢結構。</p>
+<h3>其他防線（縱深防禦）</h3>
+<ul>
+  <li>最小權限（least privilege）：網站使用的資料庫帳號只給必要的權限。商品頁只需要讀商品表，就不該能讀使用者表。這樣即使輸入被當成語法，能影響的範圍也小。</li>
+  <li>一般性的錯誤訊息：對外只回「發生錯誤」，詳細內容寫進有存取控制的內部紀錄。這會讓依賴錯誤差異的觀察更困難，但只是第二道防線，不能取代參數化，因為 blind 的訊號也可以來自內容或時間。</li>
+  <li>監控與限制請求頻率：blind 需要大量重複請求，異常的頻率是可偵測的特徵。</li>
+</ul>
+
+<h2 id="summary"><span class="num">2.4.7</span> 小結</h2>
+<ul>
+  <li><code>UNION</code> 把兩個查詢的結果合成一張表；欄數必須相同、對應欄型別必須相容。商品頁不在意列從哪裡來，所以被合併進來的額外列會被畫在頁面上。</li>
+  <li>頁面不顯示結果時，仍可能有內容、錯誤或時間上的差異；每次差異帶來一個是非答案，反覆詢問就能推論出看不到的事實，代價是需要大量請求。</li>
+  <li>NoSQL 的問題是同一個想法的結構版：應該是字串的值，變成了帶運算子的物件，使條件的意義改變。</li>
+  <li>同一個現象可以有多種解釋；錯誤、500、變慢單獨都不構成證明，要有對照組才能判斷。</li>
+  <li>修補在源頭：SQL 用參數化查詢；NoSQL 強制型別、用 schema 驗證、不直傳請求物件；再加上最小權限與一般性的錯誤訊息。</li>
+</ul>
+<p>PortSwigger Academy 的對應練習（主題頁 <a href="https://portswigger.net/web-security/sql-injection">SQL injection</a>），只在 Lab 或其他獲明確授權的系統上測試：</p>
+<ul>
+  <li><a href="https://portswigger.net/web-security/sql-injection/union-attacks">SQL injection UNION attacks</a>，<a href="https://portswigger.net/web-security/sql-injection/union-attacks/lab-determine-number-of-columns">判斷欄數的 Lab</a>：從回應的差異判斷哪一種能支持「欄數相容」。</li>
+  <li><a href="https://portswigger.net/web-security/sql-injection/blind">Blind SQL injection</a>，<a href="https://portswigger.net/web-security/sql-injection/blind/lab-conditional-responses">條件回應 Lab</a>（選讀）：先建立明知為真與明知為假兩種基準，找出穩定的回應差異。</li>
+  <li><a href="https://portswigger.net/web-security/nosql-injection">NoSQL injection</a>，<a href="https://portswigger.net/web-security/nosql-injection/lab-nosql-injection-bypass-authentication">NoSQL 運算子 Lab</a>（選讀）：值的型別變成結構之後，看回應的哪一部分顯示條件的意義已經不同。</li>
+</ul>
+<p>SQL injection 裡解讀輸入的是資料庫。下一節 <a href="../command-injection/index.html">OS Command Injection</a> 把解讀者換成作業系統上的 shell：網站有時為了完成功能，把使用者的輸入放進一條交給 shell 執行的命令；輸入一旦被 shell 當成命令的一部分，改變的就是主機上要執行的程式。</p>
+
+</article>
+<nav class="pager" aria-label="上下節"><a class="prev" href="../../server-input/sql-injection/index.html"><small>← prev</small><span class="num">2.3</span> SQL Injection Basics</a><a class="next" href="../../server-input/command-injection/index.html"><small>next →</small><span class="num">2.5</span> OS Command Injection</a></nav>
+</main>
+</div>
+<footer class="sm-status"><span class="sm-s-main">26 sections</span><span class="sm-s-list"><span class="sm-s-planned">規劃中 12</span> <span class="sm-s-draft">草稿 3</span> <span class="sm-s-ready">已完成 11</span></span><span class="sm-s-end">系統地圖</span></footer>
+<script src="../../assets/theme/theme.js?v=d288e31038"></script>
+</body>
+</html>

@@ -1,0 +1,202 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>3.1 Cross-Site Scripting Basics｜Web 安全</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Crect width='16' height='16' rx='3' fill='%23070c12'/%3E%3Crect x='1.5' y='1.5' width='13' height='13' rx='2.5' fill='none' stroke='%2336e0cc' stroke-width='1.4'/%3E%3Cpath d='M5 8 L11 5 M5 8 L11 11' stroke='%2336e0cc' stroke-width='1.2' fill='none'/%3E%3Ccircle cx='5' cy='8' r='1.6' fill='%2336e0cc'/%3E%3Ccircle cx='11' cy='5' r='1.6' fill='%2336e0cc'/%3E%3Ccircle cx='11' cy='11' r='1.6' fill='%2336e0cc'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="../../assets/style.css?v=d288e31038">
+<link rel="stylesheet" href="../../assets/theme/theme.css?v=d288e31038">
+<script>(function(){var m=null;try{m=localStorage.getItem("web-security:motion")}catch(e){}if(m!=="on"&&m!=="off"){m="on";try{if(matchMedia("(prefers-reduced-motion: reduce)").matches)m="off"}catch(e){}}document.documentElement.setAttribute("data-motion",m)})()</script>
+</head>
+<body class="page-section sm-body">
+<a class="skip" href="#main">跳到正文</a>
+<header class="sm-top"><a class="sm-brand" href="../../index.html"><svg class="sm-logo" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><rect x="1" y="1" width="14" height="14" rx="3" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M5 8 L11 5 M5 8 L11 11" stroke="currentColor" stroke-width="1.3" fill="none"/><circle cx="5" cy="8" r="1.7" fill="currentColor"/><circle cx="11" cy="5" r="1.7" fill="currentColor"/><circle cx="11" cy="11" r="1.7" fill="currentColor"/></svg><span class="sm-brand-t">web-security</span></a><nav class="sm-path" aria-label="目前位置"><ol><li class="sm-p-root"><a href="../../index.html">web-security</a></li><li class="sm-p-ch split"><a href="../../browser-output/index.html">3<span class="sm-p-title">&nbsp;伺服器的輸出如何在瀏覽器中變成程式</span></a></li><li class=""><span aria-current="page">3.1</span></li></ol></nav><a class="sm-toplink" href="../../index.html#map">map</a><a class="sm-toplink" href="../../chapters/index.html">chapters</a><button type="button" class="sm-toplink sm-motion" aria-pressed="true" hidden>動畫：開</button></header>
+<div class="sm-shell">
+<nav class="sm-tree" aria-label="教材瀏覽器"><details class="sm-tree-wrap" open><summary class="sm-tree-sum">EXPLORER／教材目錄</summary><p class="sm-tree-h" aria-hidden="true">EXPLORER</p><details class="sm-partd" open><summary class="sm-part">第一部分：輸入如何穿過網站</summary><details class="sm-folder"><summary><a class="sm-chlink" href="../../web-http/index.html" title="第 1 章 Web 與 HTTP"><span class="num">1</span><span class="sm-fname">Web 與 HTTP</span></a></summary><div class="sm-files"><a class="sm-file" href="../../web-http/web-basics/index.html" title="1.1 Seeing the Web Through the Browser"><span class="num">1.1</span><span class="sm-fname">Seeing the Web Through the Browser</span><span class="sm-st sm-st-ready" aria-hidden="true"></span><span class="sm-sr">（已完成）</span></a><a class="sm-file" href="../../web-http/http-session/index.html" title="1.2 HTTP Requests and Sessions"><span class="num">1.2</span><span class="sm-fname">HTTP Requests and Sessions</span><span class="sm-st sm-st-ready" aria-hidden="true"></span><span class="sm-sr">（已完成）</span></a></div></details><details class="sm-folder"><summary><a class="sm-chlink" href="../../server-input/index.html" title="第 2 章 伺服器如何處理使用者輸入"><span class="num">2</span><span class="sm-fname">伺服器如何處理使用者輸入</span></a></summary><div class="sm-files"><a class="sm-file" href="../../server-input/path-traversal/index.html" title="2.1 Path Traversal"><span class="num">2.1</span><span class="sm-fname">Path Traversal</span><span class="sm-st sm-st-ready" aria-hidden="true"></span><span class="sm-sr">（已完成）</span></a><a class="sm-file" href="../../server-input/file-upload/index.html" title="2.2 File Upload Vulnerabilities"><span class="num">2.2</span><span class="sm-fname">File Upload Vulnerabilities</span><span class="sm-st sm-st-ready" aria-hidden="true"></span><span class="sm-sr">（已完成）</span></a><a class="sm-file" href="../../server-input/sql-injection/index.html" title="2.3 SQL Injection Basics"><span class="num">2.3</span><span class="sm-fname">SQL Injection Basics</span><span class="sm-st sm-st-ready" aria-hidden="true"></span><span class="sm-sr">（已完成）</span></a><a class="sm-file" href="../../server-input/sql-injection-observation/index.html" title="2.4 UNION and Blind SQL Injection"><span class="num">2.4</span><span class="sm-fname">UNION and Blind SQL Injection</span><span class="sm-st sm-st-ready" aria-hidden="true"></span><span class="sm-sr">（已完成）</span></a><a class="sm-file" href="../../server-input/command-injection/index.html" title="2.5 OS Command Injection"><span class="num">2.5</span><span class="sm-fname">OS Command Injection</span><span class="sm-st sm-st-ready" aria-hidden="true"></span><span class="sm-sr">（已完成）</span></a></div></details><details class="sm-folder" open><summary><a class="sm-chlink" href="../../browser-output/index.html" title="第 3 章 伺服器的輸出如何在瀏覽器中變成程式"><span class="num">3</span><span class="sm-fname">伺服器的輸出如何在瀏覽器中變成程式</span></a></summary><div class="sm-files"><a class="sm-file" href="../../browser-output/xss-basics/index.html" aria-current="page" title="3.1 Cross-Site Scripting Basics"><span class="num">3.1</span><span class="sm-fname">Cross-Site Scripting Basics</span><span class="sm-st sm-st-ready" aria-hidden="true"></span><span class="sm-sr">（已完成）</span></a><a class="sm-file" href="../../browser-output/xss-context-dom/index.html" title="3.2 Output Contexts and DOM-Based XSS"><span class="num">3.2</span><span class="sm-fname">Output Contexts and DOM-Based XSS</span><span class="sm-st sm-st-ready" aria-hidden="true"></span><span class="sm-sr">（已完成）</span></a></div></details><details class="sm-folder"><summary><a class="sm-chlink" href="../../identity/index.html" title="第 4 章 網站如何知道你是誰、允許你做什麼"><span class="num">4</span><span class="sm-fname">網站如何知道你是誰、允許你做什麼</span></a></summary><div class="sm-files"><a class="sm-file" href="../../identity/authentication/index.html" title="4.1 Authentication"><span class="num">4.1</span><span class="sm-fname">Authentication</span><span class="sm-st sm-st-ready" aria-hidden="true"></span><span class="sm-sr">（已完成）</span></a><a class="sm-file" href="../../identity/access-control/index.html" title="4.2 Access Control"><span class="num">4.2</span><span class="sm-fname">Access Control</span><span class="sm-st sm-st-ready" aria-hidden="true"></span><span class="sm-sr">（已完成）</span></a></div></details><details class="sm-folder"><summary><a class="sm-chlink" href="../../cross-site/index.html" title="第 5 章 網站之間如何利用瀏覽器的信任"><span class="num">5</span><span class="sm-fname">網站之間如何利用瀏覽器的信任</span></a></summary><div class="sm-files"><a class="sm-file" href="../../cross-site/cross-site-trust/index.html" title="5.1 CSRF, CORS, and Cross-Site Trust"><span class="num">5.1</span><span class="sm-fname">CSRF, CORS, and Cross-Site Trust</span><span class="sm-st sm-st-draft" aria-hidden="true"></span><span class="sm-sr">（草稿）</span></a></div></details><details class="sm-folder"><summary><a class="sm-chlink" href="../../logic-timing/index.html" title="第 6 章 問題藏在流程與時間裡"><span class="num">6</span><span class="sm-fname">問題藏在流程與時間裡</span></a></summary><div class="sm-files"><a class="sm-file" href="../../logic-timing/business-logic/index.html" title="6.1 Business Logic Vulnerabilities"><span class="num">6.1</span><span class="sm-fname">Business Logic Vulnerabilities</span><span class="sm-st sm-st-draft" aria-hidden="true"></span><span class="sm-sr">（草稿）</span></a><a class="sm-file" href="../../logic-timing/race-conditions/index.html" title="6.2 Race Conditions"><span class="num">6.2</span><span class="sm-fname">Race Conditions</span><span class="sm-st sm-st-draft" aria-hidden="true"></span><span class="sm-sr">（草稿）</span></a></div></details></details><details class="sm-partd" open><summary class="sm-part">第二部分：多元件系統的信任邊界</summary><details class="sm-folder"><summary><a class="sm-chlink" href="../../server-actions/index.html" title="第 7 章 伺服器把資料交給其他元件之後"><span class="num">7</span><span class="sm-fname">伺服器把資料交給其他元件之後</span></a></summary><div class="sm-files"><a class="sm-file is-planned" href="../../server-actions/ssrf/index.html" title="7.1 Server-Side Request Forgery"><span class="num">7.1</span><span class="sm-fname">Server-Side Request Forgery</span><span class="sm-st sm-st-planned" aria-hidden="true"></span><span class="sm-sr">（規劃中）</span></a><a class="sm-file is-planned" href="../../server-actions/xxe/index.html" title="7.2 XML External Entity Injection"><span class="num">7.2</span><span class="sm-fname">XML External Entity Injection</span><span class="sm-st sm-st-planned" aria-hidden="true"></span><span class="sm-sr">（規劃中）</span></a><a class="sm-file is-planned" href="../../server-actions/ssti/index.html" title="7.3 Server-Side Template Injection"><span class="num">7.3</span><span class="sm-fname">Server-Side Template Injection</span><span class="sm-st sm-st-planned" aria-hidden="true"></span><span class="sm-sr">（規劃中）</span></a><a class="sm-file is-planned" href="../../server-actions/deserialization/index.html" title="7.4 Insecure Deserialization"><span class="num">7.4</span><span class="sm-fname">Insecure Deserialization</span><span class="sm-st sm-st-planned" aria-hidden="true"></span><span class="sm-sr">（規劃中）</span></a><a class="sm-file is-planned" href="../../server-actions/prototype-pollution/index.html" title="7.5 Prototype Pollution"><span class="num">7.5</span><span class="sm-fname">Prototype Pollution</span><span class="sm-st sm-st-planned" aria-hidden="true"></span><span class="sm-sr">（規劃中）</span></a></div></details><details class="sm-folder"><summary><a class="sm-chlink" href="../../apis/index.html" title="第 8 章 網站變成 API 之後"><span class="num">8</span><span class="sm-fname">網站變成 API 之後</span></a></summary><div class="sm-files"><a class="sm-file is-planned" href="../../apis/api-testing/index.html" title="8.1 API Attack Surface"><span class="num">8.1</span><span class="sm-fname">API Attack Surface</span><span class="sm-st sm-st-planned" aria-hidden="true"></span><span class="sm-sr">（規劃中）</span></a><a class="sm-file is-planned" href="../../apis/graphql-websockets/index.html" title="8.2 GraphQL and WebSockets"><span class="num">8.2</span><span class="sm-fname">GraphQL and WebSockets</span><span class="sm-st sm-st-planned" aria-hidden="true"></span><span class="sm-sr">（規劃中）</span></a></div></details><details class="sm-folder"><summary><a class="sm-chlink" href="../../delegated-identity/index.html" title="第 9 章 身分跨越網站與元件之後"><span class="num">9</span><span class="sm-fname">身分跨越網站與元件之後</span></a></summary><div class="sm-files"><a class="sm-file is-planned" href="../../delegated-identity/jwt/index.html" title="9.1 JSON Web Tokens"><span class="num">9.1</span><span class="sm-fname">JSON Web Tokens</span><span class="sm-st sm-st-planned" aria-hidden="true"></span><span class="sm-sr">（規劃中）</span></a><a class="sm-file is-planned" href="../../delegated-identity/oauth/index.html" title="9.2 OAuth and Third-Party Login"><span class="num">9.2</span><span class="sm-fname">OAuth and Third-Party Login</span><span class="sm-st sm-st-planned" aria-hidden="true"></span><span class="sm-sr">（規劃中）</span></a></div></details><details class="sm-folder"><summary><a class="sm-chlink" href="../../proxy-cache/index.html" title="第 10 章 Proxy、Cache 與後端看到的不一樣"><span class="num">10</span><span class="sm-fname">Proxy、Cache 與後端看到的不一樣</span></a></summary><div class="sm-files"><a class="sm-file is-planned" href="../../proxy-cache/host-cache/index.html" title="10.1 Host Headers and Web Caches"><span class="num">10.1</span><span class="sm-fname">Host Headers and Web Caches</span><span class="sm-st sm-st-planned" aria-hidden="true"></span><span class="sm-sr">（規劃中）</span></a><a class="sm-file is-planned" href="../../proxy-cache/request-smuggling/index.html" title="10.2 HTTP Request Smuggling"><span class="num">10.2</span><span class="sm-fname">HTTP Request Smuggling</span><span class="sm-st sm-st-planned" aria-hidden="true"></span><span class="sm-sr">（規劃中）</span></a></div></details><details class="sm-folder"><summary><a class="sm-chlink" href="../../llm/index.html" title="第 11 章 把信任模型套到新元件：Web LLM"><span class="num">11</span><span class="sm-fname">把信任模型套到新元件：Web LLM</span></a></summary><div class="sm-files"><a class="sm-file is-planned" href="../../llm/llm-attacks/index.html" title="11.1 Web LLM Attacks"><span class="num">11.1</span><span class="sm-fname">Web LLM Attacks</span><span class="sm-st sm-st-planned" aria-hidden="true"></span><span class="sm-sr">（規劃中）</span></a></div></details></details></details></nav>
+<header class="sm-head">
+  <p class="sm-eyebrow">browser-output/xss-basics</p>
+  <h1><span class="num">3.1</span> Cross-Site Scripting Basics <span class="badge badge-ready">已完成</span></h1>
+  <p class="question sm-q"><span aria-hidden="true">❯</span> 伺服器回傳的文字怎麼變成 HTML／JavaScript？</p>
+</header>
+<aside class="sm-aside" aria-label="本節輔助"><nav class="sm-outline" aria-label="本節內容"><p class="sm-ph">本節內容</p><ol><li><a href="#html-parsing" title="3.1.1 瀏覽器怎麼讀回應"><span class="num">3.1.1</span>瀏覽器怎麼讀回應</a></li><li><a href="#data-becomes-code" title="3.1.2 資料變成程式"><span class="num">3.1.2</span>資料變成程式</a></li><li><a href="#same-origin" title="3.1.3 以網站的身分執行"><span class="num">3.1.3</span>以網站的身分執行</a></li><li><a href="#reflected-stored" title="3.1.4 兩條送達路徑"><span class="num">3.1.4</span>兩條送達路徑</a></li><li><a href="#worked-example" title="3.1.5 從請求到 DOM"><span class="num">3.1.5</span>從請求到 DOM</a></li><li><a href="#impact" title="3.1.6 影響與界限"><span class="num">3.1.6</span>影響與界限</a></li><li><a href="#recognition" title="3.1.7 辨認反射位置"><span class="num">3.1.7</span>辨認反射位置</a></li><li><a href="#failed-defences" title="3.1.8 靠不住的防禦"><span class="num">3.1.8</span>靠不住的防禦</a></li><li><a href="#fix" title="3.1.9 怎麼修補"><span class="num">3.1.9</span>怎麼修補</a></li><li><a href="#summary" title="3.1.10 小結"><span class="num">3.1.10</span>小結</a></li></ol></nav><section class="sm-locator" aria-label="系統地圖定位"><p class="sm-ph">系統地圖</p><a class="sm-mini-link" href="../../index.html#map-browser-output" aria-label="在首頁的系統地圖上看第 3 章的位置"><svg class="sm-map sm-map-mini" viewBox="0 212 524 236" aria-hidden="true" focusable="false" preserveAspectRatio="xMidYMid meet" style="aspect-ratio:524/236"><line class="sm-edge" x1="200" y1="330" x2="290" y2="330"/><line class="sm-edge sm-dash" x1="440" y1="330" x2="530" y2="330"/><line class="sm-edge sm-threat-edge" x1="110" y1="100" x2="110" y2="255"/><line class="sm-edge sm-dash" x1="625" y1="100" x2="625" y2="150"/><line class="sm-edge" x1="625" y1="546" x2="625" y2="570"/><line class="sm-edge" x1="720" y1="325" x2="765" y2="325"/><line class="sm-edge" x1="765" y1="325" x2="765" y2="48"/><line class="sm-edge sm-dash" x1="765" y1="325" x2="765" y2="538"/><line class="sm-edge" x1="765" y1="48" x2="810" y2="48"/><line class="sm-edge" x1="765" y1="118" x2="810" y2="118"/><line class="sm-edge" x1="765" y1="188" x2="810" y2="188"/><line class="sm-edge sm-dash" x1="765" y1="328" x2="810" y2="328"/><line class="sm-edge sm-dash" x1="765" y1="398" x2="810" y2="398"/><line class="sm-edge sm-dash" x1="765" y1="468" x2="810" y2="468"/><line class="sm-edge sm-dash" x1="765" y1="538" x2="810" y2="538"/><g class="sm-n sm-threat off" data-ch="cross-site"><rect class="sm-box" x="20" y="20" width="180" height="80" rx="8"/><text class="sm-mini-t" x="110.0" y="62.0" text-anchor="middle" dominant-baseline="central" font-size="37">5</text></g><g class="sm-n sm-frame off" data-ch="web-http"><rect class="sm-box" x="20" y="255" width="180" height="150" rx="10"/><text class="sm-mini-t" x="50" y="285" text-anchor="middle" dominant-baseline="central" font-size="37">1</text></g><g class="sm-n sm-node on" data-ch="browser-output"><rect class="sm-box" x="36" y="322" width="148" height="64" rx="8"/><text class="sm-mini-t" x="110.0" y="356.0" text-anchor="middle" dominant-baseline="central" font-size="37">3</text></g><g class="sm-n sm-node sm-p2 off" data-ch="proxy-cache"><rect class="sm-box" x="290" y="240" width="150" height="180" rx="8"/><text class="sm-mini-t" x="365.0" y="332.0" text-anchor="middle" dominant-baseline="central" font-size="37">10</text></g><g class="sm-n sm-frame" aria-hidden="true"><rect class="sm-box" x="530" y="150" width="190" height="396" rx="10"/></g><g class="sm-n sm-node off" data-ch="identity"><rect class="sm-box" x="546" y="194" width="158" height="56" rx="8"/><text class="sm-mini-t" x="625.0" y="224.0" text-anchor="middle" dominant-baseline="central" font-size="37">4</text></g><g class="sm-n sm-node sm-p2 off" data-ch="apis"><rect class="sm-box" x="546" y="262" width="158" height="56" rx="8"/><text class="sm-mini-t" x="625.0" y="292.0" text-anchor="middle" dominant-baseline="central" font-size="37">8</text></g><g class="sm-n sm-node sm-p2 off" data-ch="llm"><rect class="sm-box" x="546" y="330" width="158" height="56" rx="8"/><text class="sm-mini-t" x="625.0" y="360.0" text-anchor="middle" dominant-baseline="central" font-size="37">11</text></g><g class="sm-n sm-node off" data-ch="logic-timing"><rect class="sm-box" x="546" y="398" width="158" height="56" rx="8"/><text class="sm-mini-t" x="625.0" y="428.0" text-anchor="middle" dominant-baseline="central" font-size="37">6</text></g><g class="sm-n sm-node sm-p2 off" data-ch="server-actions"><rect class="sm-box" x="546" y="466" width="158" height="56" rx="8"/><text class="sm-mini-t" x="625.0" y="496.0" text-anchor="middle" dominant-baseline="central" font-size="37">7</text></g><g class="sm-n sm-node sm-p2 off" data-ch="delegated-identity"><rect class="sm-box" x="530" y="20" width="190" height="80" rx="8"/><text class="sm-mini-t" x="625.0" y="62.0" text-anchor="middle" dominant-baseline="central" font-size="37">9</text></g><g class="sm-n sm-node off" data-ch="logic-timing"><rect class="sm-box" x="530" y="570" width="190" height="56" rx="8"/><text class="sm-mini-t" x="625.0" y="600.0" text-anchor="middle" dominant-baseline="central" font-size="37">6</text></g><g class="sm-n sm-node off" data-ch="server-input"><rect class="sm-box" x="810" y="20" width="170" height="56" rx="8"/><text class="sm-mini-t" x="895.0" y="50.0" text-anchor="middle" dominant-baseline="central" font-size="37">2</text></g><g class="sm-n sm-node off" data-ch="server-input"><rect class="sm-box" x="810" y="90" width="170" height="56" rx="8"/><text class="sm-mini-t" x="895.0" y="120.0" text-anchor="middle" dominant-baseline="central" font-size="37">2</text></g><g class="sm-n sm-node off" data-ch="server-input"><rect class="sm-box" x="810" y="160" width="170" height="56" rx="8"/><text class="sm-mini-t" x="895.0" y="190.0" text-anchor="middle" dominant-baseline="central" font-size="37">2</text></g><g class="sm-n sm-node sm-p2 off" data-ch="server-actions"><rect class="sm-box" x="810" y="300" width="170" height="56" rx="8"/><text class="sm-mini-t" x="895.0" y="330.0" text-anchor="middle" dominant-baseline="central" font-size="37">7</text></g><g class="sm-n sm-node sm-p2 off" data-ch="server-actions"><rect class="sm-box" x="810" y="370" width="170" height="56" rx="8"/><text class="sm-mini-t" x="895.0" y="400.0" text-anchor="middle" dominant-baseline="central" font-size="37">7</text></g><g class="sm-n sm-node sm-p2 off" data-ch="server-actions"><rect class="sm-box" x="810" y="440" width="170" height="56" rx="8"/><text class="sm-mini-t" x="895.0" y="470.0" text-anchor="middle" dominant-baseline="central" font-size="37">7</text></g><g class="sm-n sm-node sm-p2 off" data-ch="server-actions"><rect class="sm-box" x="810" y="510" width="170" height="56" rx="8"/><text class="sm-mini-t" x="895.0" y="540.0" text-anchor="middle" dominant-baseline="central" font-size="37">7</text></g><g class="sm-n sm-pill off" data-ch="web-http"><rect class="sm-pill-box" x="213" y="306" width="64" height="48" rx="24"/><text class="sm-mini-t" x="245" y="332" text-anchor="middle" dominant-baseline="central" font-size="33">1</text></g><g class="sm-n sm-pill off" data-ch="web-http"><rect class="sm-pill-box" x="453" y="306" width="64" height="48" rx="24"/><text class="sm-mini-t" x="485" y="332" text-anchor="middle" dominant-baseline="central" font-size="33">1</text></g><g class="sm-n sm-pill off" data-ch="cross-site"><rect class="sm-pill-box" x="78" y="153" width="64" height="48" rx="24"/><text class="sm-mini-t" x="110" y="179" text-anchor="middle" dominant-baseline="central" font-size="33">5</text></g><g class="sm-n sm-pill off" data-ch="delegated-identity"><rect class="sm-pill-box" x="593" y="101" width="64" height="48" rx="24"/><text class="sm-mini-t" x="625" y="127" text-anchor="middle" dominant-baseline="central" font-size="33">9</text></g></svg></a><p class="sm-cap">位置：第 3 章　伺服器的輸出如何在瀏覽器中變成程式</p><ul class="sm-chips sm-comps" aria-label="本章元件"><li>Rendering</li></ul><p class="sm-mini-hint">點地圖：到首頁地圖看這一章</p></section></aside>
+<main id="main" class="sm-doc" tabindex="-1">
+<article class="content sm-article">
+<p>一個寫網頁教學的部落格有搜尋功能。你輸入關鍵字，結果頁上方會寫「你搜尋的是：……」，把你剛才打的字原樣顯示出來。伺服器沒有開檔、沒有執行命令，只是把一段文字放回 HTML 裡回傳。</p>
+<p>第 2 章到 <a href="../../server-input/command-injection/index.html">OS Command Injection</a> 為止，解讀輸入的都是伺服器上的元件：檔案系統、檔案處理器、資料庫、shell。回應送到瀏覽器之後，還有一個解讀者：瀏覽器的 HTML 解析器。伺服器放進回應的文字，在瀏覽器裡可能變成新的頁面結構，甚至變成會執行的程式。</p>
+
+<h2 id="html-parsing"><span class="num">3.1.1</span> 瀏覽器怎麼讀回應</h2>
+<p>在 <a href="../../web-http/web-basics/index.html#dom">Seeing the Web Through the Browser</a> 看過：回應是一段 HTML 文字，瀏覽器讀完後建出 DOM（Document Object Model，文件物件模型）這棵節點樹，畫面依 DOM 畫出。把文字讀成節點的那個元件稱為 <strong>HTML 解析器</strong>（HTML parser）。例如搜尋結果頁的這一段：</p>
+<pre data-lang="html"><code>&lt;!-- 搜尋結果頁的一段 --&gt;
+&lt;h1&gt;搜尋結果&lt;/h1&gt;
+&lt;p&gt;你搜尋的是：hello&lt;/p&gt;
+&lt;p&gt;找到 2 篇文章。&lt;/p&gt;
+&lt;script src="/static/search.js"&gt;&lt;/script&gt;</code></pre>
+<p>解析器逐字讀這段文字。看到 <code>&lt;</code> 加上標籤名稱，它就知道一個元素開始了；直到對應的結束標籤，中間的字是元素的內容。<code>你搜尋的是：hello</code> 因此成為段落元素底下的一個<strong>文字節點</strong>（text node），畫面上只會顯示成字。</p>
+<p>最後一行的 <code>script</code> 元素不顯示在畫面上。它告訴瀏覽器去載入 <code>/static/search.js</code> 這個檔案，並把內容當成 <strong>JavaScript</strong> 執行。JavaScript 是瀏覽器內建能執行的程式語言，網站用它在頁面載入後改變內容、回應點擊、向伺服器發出請求。一段 JavaScript 常由<strong>函式呼叫</strong>（function call）組成，例如 <code>showResults(2)</code> 表示「執行名為 showResults 的功能，並交給它數字 2」。你不必會寫 JavaScript，只要知道 HTML 裡有些結構會讓瀏覽器執行程式，script 元素是最直接的一種。</p>
+<p>如果使用者想在畫面上看到 <code>&lt;</code> 這個字元本身，伺服器要寫成<strong>字元參照</strong>（character reference）<code>&amp;lt;</code>。解析器看到 <code>&amp;lt;</code> 會產生字元 <code>&lt;</code>，放進文字節點，不會把它當成標籤的開頭。同樣地，<code>&amp;gt;</code> 代表 <code>&gt;</code>，<code>&amp;amp;</code> 代表 <code>&amp;</code>，<code>&amp;quot;</code> 代表雙引號。</p>
+
+<h3>沒有攻擊者也會出錯</h3>
+<p>這個部落格寫的是網頁教學，有人會搜尋「<code>&lt;p&gt;</code> 標籤」。伺服器若把搜尋字直接接進 HTML，回應會是：</p>
+<pre data-lang="html"><code>&lt;!-- 未經處理就接入的搜尋字 --&gt;
+&lt;p&gt;你搜尋的是：&lt;p&gt; 標籤&lt;/p&gt;</code></pre>
+<p>解析器讀到第二個 <code>&lt;p&gt;</code>，會依 HTML 規則結束前一個段落、開始一個新段落。畫面上顯示「你搜尋的是：」，下一行是「標籤」，使用者打的 <code>&lt;p&gt;</code> 從畫面上消失了。正確的回應應該是：</p>
+<pre data-lang="html"><code>&lt;!-- 搜尋字以字元參照寫入 --&gt;
+&lt;p&gt;你搜尋的是：&amp;lt;p&amp;gt; 標籤&lt;/p&gt;</code></pre>
+<p>這次解析器只建出一個段落，裡面的文字節點是「你搜尋的是：&lt;p&gt; 標籤」，和使用者輸入的一模一樣。兩份回應只差在伺服器寫入時有沒有轉換那幾個字元，解析器建出的 DOM 卻不同：前者讓使用者的資料參與了頁面結構。</p>
+
+<h2 id="data-becomes-code"><span class="num">3.1.2</span> 資料變成程式</h2>
+<p>同一個缺陷落在攻擊者手上，結果就不只是排版錯亂。資料若能決定頁面上出現哪些元素，就能讓解析器建出一個會執行程式的元素。這類漏洞稱為<strong>跨站腳本</strong>（Cross-Site Scripting，縮寫 XSS；用 X 是為了不和樣式表 CSS 混淆）：網站把不可信的輸入放進回應，瀏覽器把其中一部分當成網站自己的程式執行。名稱來自早期的案例，指攻擊者讓別人的網站替他送出腳本。</p>
+<p>下圖並排三種回應。方括號代表被換掉的那段輸入，<code>[攻擊者插入的 HTML 片段]</code> 指一段描述新元素的文字，那個元素被解析後會執行程式。</p>
+
+<figure id="parse-boundary">
+<svg viewBox="0 0 640 335" role="img" aria-labelledby="parse-boundary-t" style="color:var(--text)">
+<title id="parse-boundary-t">三份回應經過 HTML 解析器：正常輸入成為文字節點；未編碼的插入片段成為新的元素節點；編碼後的片段仍是文字節點</title>
+<defs><marker id="xb-parse-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="currentColor"/></marker></defs>
+<g fill="currentColor" font-size="14"><text x="16" y="22">回應原文</text><text x="340" y="22">解析後的 DOM</text></g>
+<g fill="var(--surface)" stroke="currentColor"><rect x="16" y="40" width="260" height="44" rx="6"/><rect x="16" y="135" width="260" height="44" rx="6"/><rect x="16" y="230" width="260" height="44" rx="6"/></g>
+<g fill="currentColor" font-size="12" style="font-family:var(--font-mono)"><text x="28" y="67">&lt;p&gt;你搜尋的是：hello&lt;/p&gt;</text><text x="28" y="162">&lt;p&gt;你搜尋的是：[插入的片段]&lt;/p&gt;</text><text x="28" y="257">&lt;p&gt;你搜尋的是：[片段的字元參照]&lt;/p&gt;</text></g>
+<g fill="currentColor" font-size="12" opacity=".75"><text x="16" y="104">正常：輸入只是文字</text><text x="16" y="199">未編碼：解析器看到新的標籤</text><text x="16" y="294">編碼後：特殊字元以 &amp;lt; 等形式寫入</text></g>
+<g fill="none" stroke="currentColor" stroke-width="1.7"><path d="M280 62 H330" marker-end="url(#xb-parse-arrow)"/><path d="M280 157 H330" marker-end="url(#xb-parse-arrow)"/><path d="M280 252 H330" marker-end="url(#xb-parse-arrow)"/></g>
+<g fill="currentColor" font-size="11"><text x="288" y="54">解析</text><text x="288" y="149">解析</text><text x="288" y="244">解析</text></g>
+<g fill="var(--surface)" stroke="currentColor"><rect x="340" y="40" width="44" height="24" rx="4"/><rect x="340" y="135" width="44" height="24" rx="4"/><rect x="340" y="230" width="44" height="24" rx="4"/><rect x="400" y="82" width="200" height="26" rx="4"/><rect x="400" y="177" width="130" height="26" rx="4"/><rect x="400" y="272" width="224" height="26" rx="4"/></g>
+<rect x="540" y="177" width="84" height="26" rx="4" fill="var(--accent-soft)" stroke="currentColor" stroke-width="1.6" stroke-dasharray="5 3"/>
+<g fill="currentColor" font-size="13" text-anchor="middle"><text x="362" y="57">p</text><text x="362" y="152">p</text><text x="362" y="247">p</text><text x="500" y="100">文字：你搜尋的是：hello</text><text x="465" y="195">文字：你搜尋的是：</text><text x="582" y="195">[新的元素]</text><text x="512" y="290">文字：你搜尋的是：[片段原樣]</text></g>
+<g fill="none" stroke="currentColor" stroke-width="1.2"><path d="M362 64 V95 H400"/><path d="M362 159 V190 H400"/><path d="M362 166 H582 V177"/><path d="M362 254 V285 H400"/></g>
+<text x="16" y="326" fill="currentColor" font-size="12">有底色的虛線框是資料越過邊界的位置：它是元素節點，可能讓瀏覽器執行程式。</text>
+</svg>
+<figcaption><span class="fig-num">圖 3.1.2-1</span> 同一個搜尋欄位的三種回應，以及 HTML 解析器各自建出的節點</figcaption>
+</figure>
+
+<p>中間那一列，伺服器的程式碼和正常時完全相同，只是拿到的輸入不同。解析器無從分辨哪些標籤是開發者寫的、哪些是從搜尋欄位來的，它看到的只是一整段 HTML 文字。第三列用字元參照寫入同樣的片段，解析器只產生文字，畫面上會顯示那串字的原樣，沒有任何東西被執行。</p>
+<p>和 <a href="../../server-input/command-injection/index.html">OS Command Injection</a> 比較：命令注入是資料在伺服器的 shell 裡變成命令，XSS 則是資料在使用者的瀏覽器裡變成程式。兩者都發生在「把資料接進另一種語言的文字」這一步，執行的地點不同。</p>
+
+<h2 id="same-origin"><span class="num">3.1.3</span> 以網站的身分執行</h2>
+<p>瀏覽器同時開著許多網站，卻不讓一個網站的程式讀另一個網站的頁面。區分的單位是<strong>來源</strong>（origin）：網址的協定、主機名稱與連接埠三者合起來。<code>https://blog.example.com</code> 和 <code>https://shop.example.com</code> 是不同的來源。瀏覽器依<strong>同源政策</strong>（same-origin policy，SOP）限制：一個來源的程式，通常不能讀取另一個來源的頁面內容或回應。跨站的細節與例外在第 5 章 <a href="../../cross-site/cross-site-trust/index.html">CSRF, CORS, and Cross-Site Trust</a> 討論，這裡只需要這條基本規則。</p>
+<p>XSS 正是利用這條規則。被插入的程式出現在 <code>https://blog.example.com</code> 送來的回應裡，瀏覽器就把它當成這個來源的程式，給它和網站自己的 <code>search.js</code> 一樣的權限。這段程式可以：</p>
+<ul>
+<li>讀取並修改目前頁面的 DOM，包括只有登入者才看得到的內容，例如帳號資料或表單裡的隱藏欄位。</li>
+<li>向同一個網站發出請求。瀏覽器會照常附上這個網站的 Cookie（見 <a href="../../web-http/http-session/index.html#session-model">HTTP Requests and Sessions</a>），所以伺服器會把這些請求當成使用者本人的操作；同源的回應內容，程式也讀得到。</li>
+<li>讀取沒有設定 <code>HttpOnly</code> 屬性的 Cookie。</li>
+<li>改寫頁面的外觀，例如在網站原本的網址下顯示一個假的登入框。</li>
+</ul>
+<p>被攻擊的是開啟頁面的那位使用者。攻擊者不需要知道他的密碼，只要讓他的瀏覽器在這個網站的頁面裡執行一段程式，這段程式就能以他的登入狀態行事。</p>
+
+<h2 id="reflected-stored"><span class="num">3.1.4</span> 兩條送達路徑</h2>
+<p>依不可信的輸入怎麼進到受害者收到的回應，XSS 常分成兩類。</p>
+<p><strong>反射型 XSS</strong>（reflected XSS）：輸入在同一次請求的回應中出現。搜尋頁就是典型例子：搜尋字寫在網址的查詢參數中，伺服器把它放回當次的結果頁。每觸發一次，受害者的瀏覽器就要送出一次帶有該輸入的請求。最常見的方式是誘使他點開準備好的連結；自動送出的表單或頁面導向，也能讓他的瀏覽器送出同樣的請求。輸入沒有被保存，只有送出這個請求的瀏覽器會收到那份回應。</p>
+<p><strong>儲存型 XSS</strong>（stored XSS）：輸入先被伺服器保存，之後在別的回應中顯示。部落格的留言就是例子：攻擊者送出一則留言，網站把它存進資料庫；之後任何人打開那篇文章，伺服器都會把留言放進頁面。受害者只要正常瀏覽就會受影響，不需要點任何特別的連結。</p>
+
+<figure id="delivery-paths">
+<svg viewBox="0 0 640 290" role="img" aria-labelledby="delivery-paths-t" style="color:var(--text)">
+<title id="delivery-paths-t">反射型：含輸入的請求、伺服器處理、當次回應、送出請求的瀏覽器。儲存型：送出留言、存入資料庫、日後的回應頁、每位閱覽者的瀏覽器</title>
+<defs><marker id="xb-path-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="currentColor"/></marker></defs>
+<g fill="currentColor" font-size="14"><text x="16" y="26">反射型：輸入在當次回應中出現</text><text x="16" y="146">儲存型：輸入先保存，日後再顯示</text></g>
+<g fill="var(--surface)" stroke="currentColor"><rect x="16" y="40" width="128" height="48" rx="6"/><rect x="178" y="40" width="128" height="48" rx="6"/><rect x="340" y="40" width="128" height="48" rx="6"/><rect x="16" y="160" width="128" height="48" rx="6"/><rect x="178" y="160" width="128" height="48" rx="6"/><rect x="340" y="160" width="128" height="48" rx="6"/></g>
+<g fill="var(--accent-soft)" stroke="currentColor"><rect x="502" y="40" width="128" height="48" rx="6"/><rect x="502" y="160" width="128" height="48" rx="6"/></g>
+<g fill="currentColor" font-size="13" text-anchor="middle"><text x="80" y="69">含輸入的請求</text><text x="242" y="69">伺服器處理</text><text x="404" y="69">當次的回應</text><text x="566" y="69">送出請求的瀏覽器</text><text x="80" y="189">攻擊者送出留言</text><text x="242" y="189">存入資料庫</text><text x="404" y="189">日後的文章頁</text><text x="566" y="189">每位閱覽者</text></g>
+<g fill="none" stroke="currentColor" stroke-width="1.7"><path d="M146 64 H174" marker-end="url(#xb-path-arrow)"/><path d="M308 64 H336" marker-end="url(#xb-path-arrow)"/><path d="M470 64 H498" marker-end="url(#xb-path-arrow)"/><path d="M146 184 H174" marker-end="url(#xb-path-arrow)"/><path d="M308 184 H336" stroke-dasharray="5 4" marker-end="url(#xb-path-arrow)"/><path d="M470 184 H498" marker-end="url(#xb-path-arrow)"/></g>
+<g fill="currentColor" font-size="12" opacity=".75"><text x="312" y="226">虛線：之後的任何時間</text><text x="502" y="108">通常是點了連結的人</text><text x="502" y="226">打開頁面的人</text></g>
+<g fill="currentColor" font-size="12"><text x="16" y="256">兩條路徑的最後一步相同：回應抵達瀏覽器，由 HTML 解析器建出 DOM。</text><text x="16" y="278">差別在輸入如何抵達回應，以及誰會收到這份回應。</text></g>
+</svg>
+<figcaption><span class="fig-num">圖 3.1.4-1</span> 反射型與儲存型 XSS 的資料路徑；有底色的方塊是程式實際執行的位置</figcaption>
+</figure>
+
+<p>這兩個名稱描述資料怎麼抵達瀏覽器，不代表嚴重程度的排序。儲存型常被認為較嚴重，因為受害者不必做任何特別的事，而且一則留言可能被大量使用者看到；但反射型若出現在管理介面，受害者是管理員，影響同樣可觀。常見的第三個名稱 DOM 型 XSS（DOM-based XSS）換了分類的角度，看的是不安全的處理發生在哪裡：頁面上的 JavaScript 自己讀取網址等來源，在前端以不安全的方式寫進 DOM。所以它可以和前兩類重疊，伺服器反射或保存的資料，也可能再被前端程式這樣寫進 DOM。</p>
+
+<h2 id="worked-example"><span class="num">3.1.5</span> 從請求到 DOM</h2>
+<p>用部落格的搜尋頁逐步走一次，請求與回應都省略了大部分標頭。</p>
+<h3>正常的搜尋</h3>
+<pre data-lang="http"><code>GET /search?q=hello HTTP/1.1
+Host: blog.example.com</code></pre>
+<ol>
+<li>取值：伺服器解析網址的查詢字串，得到參數 <code>q</code> 的值 <code>hello</code>。</li>
+<li>組回應：伺服器的程式把這個值接進結果頁的模板，產生 <code>&lt;p&gt;你搜尋的是：hello&lt;/p&gt;</code>，連同頁面其他部分一起回傳。</li>
+<li>解析：瀏覽器的 HTML 解析器讀這份回應，建出段落元素與裡面的文字節點。</li>
+<li>執行網站自己的程式：解析到 script 元素時，瀏覽器載入並執行 <code>/static/search.js</code>。這是開發者寫的程式。</li>
+<li>畫面：使用者看到「你搜尋的是：hello」。</li>
+</ol>
+<h3>參數被換掉時</h3>
+<p>攻擊者準備一個連結，把 <code>q</code> 的值換成 <code>[攻擊者插入的 HTML 片段]</code>，再設法讓已登入的使用者點開。網址裡的特殊字元會經過 URL 編碼，伺服器取值時先解碼，拿到的就是那段片段的原文。</p>
+<ol>
+<li>取值：和正常時一樣，伺服器得到一個字串，只是內容不同。</li>
+<li>組回應：程式照樣把字串接進 HTML。如果沒有把特殊字元轉成字元參照，回應裡就出現 <code>&lt;p&gt;你搜尋的是：[攻擊者插入的 HTML 片段]&lt;/p&gt;</code>。</li>
+<li>解析：邊界在這一步被越過。解析器把片段讀成標籤，建出一個新的元素，如上方<a href="#parse-boundary">三種回應的對照圖</a>中間那一列。</li>
+<li>執行：那個元素讓瀏覽器執行 <code>[會被當成程式執行的片段]</code>。它出現在 <code>blog.example.com</code> 的頁面裡，所以和 <code>search.js</code> 擁有相同的來源。</li>
+<li>畫面：使用者可能什麼都沒察覺，頁面看起來和平常一樣。</li>
+</ol>
+<p>整個過程中，伺服器沒有執行攻擊者的任何東西，HTTP 請求的格式也完全合法。問題出在第二步把資料接進 HTML 的方式，後果則在第三、四步的瀏覽器裡發生。</p>
+
+<h2 id="impact"><span class="num">3.1.6</span> 影響與界限</h2>
+<p>判斷一個 XSS 能造成什麼，要回到「程式在誰的瀏覽器、哪個來源、以誰的身分執行」：</p>
+<ul>
+<li>執行地點在瀏覽器。注入的程式不能直接讀伺服器的檔案或資料庫，這點和命令注入不同。它能碰到的伺服器資料，是受害者本來就能透過網站取得的那些。</li>
+<li>能力等於受害者在這個網站的權限。一般會員打開頁面，程式能以會員身分操作；管理員打開同一頁，程式就能使用管理功能。儲存型 XSS 若出現在管理員會檢視的頁面，例如待審核的留言，影響會大得多。</li>
+<li>範圍限在這個來源。依同源政策，程式通常讀不到其他網站的頁面。其他網站若特意開放跨來源存取，情況會不同，那是第 5 章的主題。</li>
+<li>HttpOnly 只擋住讀取 Cookie 的值。Cookie 設了 <code>HttpOnly</code>，頁面中的 JavaScript 就讀不到它，Session 識別字比較不容易被帶走。但程式從頁面發出的同源請求仍會自動附上這個 Cookie，所以在頁面開著的期間，它還是能以使用者的身分讀資料、送出操作。</li>
+<li>需要有人開啟頁面。反射型要受害者送出那個請求，儲存型要有人瀏覽含有資料的頁面。沒有人開啟，程式就不會執行。</li>
+</ul>
+<p>練習環境常以「讓瀏覽器跳出一個對話框」作為完成條件。對話框出現，表示程式在這個頁面執行了，但從它看不出程式讀不讀得到 Cookie、能不能完成某項操作。評估影響時，要另外確認 Cookie 屬性、受害者的權限，以及頁面上有哪些功能可以被呼叫。</p>
+
+<h2 id="recognition"><span class="num">3.1.7</span> 辨認反射位置</h2>
+<p>辨認 XSS 先要找到輸入在回應裡出現的位置，再判斷它在那裡被當成什麼。</p>
+<ol>
+<li>送一個獨特的標記。在欄位裡輸入一個不會和頁面原有文字撞在一起的普通字串，例如 <code>demo7731</code>。它只有字母和數字，用來定位，不會改變頁面結構。</li>
+<li>在原始回應中搜尋。到 DevTools 的 Network 面板或 Burp Suite 看回應原文，找出標記出現的每一處。不要只看 Elements：那裡顯示的是解析後的 DOM，已經看不出原文寫的是字元參照還是原字元。</li>
+<li>看它落在哪裡。標記可能在元素的文字中、某個屬性的值裡，或一段 JavaScript 裡。不同位置由不同的規則解讀；搜尋頁的例子都落在元素的文字裡。</li>
+<li>看特殊字元有沒有被轉換。在標記旁邊加上 HTML 會特別解讀的字元，觀察回應裡它們是原樣出現，還是變成 <code>&amp;lt;</code> 這類字元參照。</li>
+<li>儲存型要看別的頁面。輸入可能在送出時沒有顯示，之後才出現在文章頁、個人資料頁或管理介面。記下輸入的地方和顯示的地方，兩者常不是同一頁。</li>
+</ol>
+<p>回應裡出現了輸入，只說明這裡有反射。搜尋頁的值落在元素的文字中；若特殊字元都已轉成字元參照，而且這個值之後沒有再被前端程式當成 HTML 寫入，這一處就不構成 XSS。落在屬性或 JavaScript 裡的值，要依那個位置的規則另外判斷。另外，Burp Suite 的 Repeater 只顯示回應文字，不會執行頁面上的 JavaScript；要確認程式真的執行，必須讓瀏覽器開啟那個回應。</p>
+
+<h2 id="failed-defences"><span class="num">3.1.8</span> 靠不住的防禦</h2>
+<table><thead><tr><th>做法</th><th>為什麼不夠</th></tr></thead><tbody>
+<tr><td>刪除輸入中的 script 字樣</td><td>能讓瀏覽器執行程式的 HTML 結構不只一種，黑名單很難列全；還會破壞「搜尋 script 標籤」這種正當輸入。</td></tr>
+<tr><td>只在瀏覽器端限制輸入</td><td>表單的長度限制或格式檢查都能被繞過，任何人都能直接改網址或送出自己組的請求。</td></tr>
+<tr><td>在輸入時編碼後存起來</td><td>存的時候還不知道資料將來會放進 HTML 文字、屬性、JavaScript 還是電子郵件；各處需要的轉換不同，也容易重複編碼，讓正常使用者看到一堆 <code>&amp;amp;</code>。</td></tr>
+<tr><td>只把 Cookie 設成 HttpOnly</td><td>程式讀不到 Cookie 的值，但仍能在頁面中以使用者身分發出請求、讀取頁面內容。</td></tr>
+<tr><td>只依賴 CSP</td><td>政策可能設得太寬或有例外，也不是每個頁面都有正確設定；輸出位置本身的錯誤仍然存在。</td></tr>
+</tbody></table>
+
+<h2 id="fix"><span class="num">3.1.9</span> 怎麼修補</h2>
+<h3>輸出時依位置編碼</h3>
+<p>修補的位置在資料寫進回應的那一刻。<strong>輸出編碼</strong>（output encoding，也常稱 escaping）是指依資料將要放進的位置，把會被解讀成語法的字元轉成安全的表示法。資料放在 HTML 元素的文字中時，至少把 <code>&amp;</code>、<code>&lt;</code>、<code>&gt;</code> 轉成 <code>&amp;amp;</code>、<code>&amp;lt;</code>、<code>&amp;gt;</code>。如果引號也一併轉換，同一個函式也能用在加了引號、名稱固定的一般文字屬性（例如 <code>title</code>）。轉換後，解析器只會產生文字節點，畫面顯示的仍是使用者原本輸入的字。</p>
+<p>這條規則只適用於 HTML 元素的文字和上述的一般文字屬性。事件處理屬性的值會先還原字元參照，再交給 JavaScript 執行；網址屬性的值還要經過 URL parser；JavaScript 程式碼裡的字串也有自己的規則。這些位置需要不同的處理，有些位置任何編碼都不夠安全，不應放入不可信資料。各位置的比較見 <a href="../xss-context-dom/index.html#context-boundaries">Output Contexts and DOM-Based XSS</a>。</p>
+<h3>交給模板引擎</h3>
+<p>多數網站用<strong>模板引擎</strong>（template engine）產生 HTML：開發者先寫好固定的頁面骨架，再標出要填入資料的空位。現代模板引擎多半預設會對填入的資料做 HTML 編碼，開發者不必手動轉換每個字元。常見的錯誤來自繞過這個預設：</p>
+<ul>
+<li>使用模板的「原樣輸出」功能，把資料標記成「已經安全、不需編碼」。</li>
+<li>不用模板，而是在程式裡用字串相接的方式組出 HTML。</li>
+<li>在前端用 JavaScript 把資料當成 HTML 寫進頁面，而不是當成文字。這屬於 DOM 型 XSS。</li>
+</ul>
+<p>檢查程式碼時，留意每一個把資料當成 HTML 輸出的地方，確認那份資料不來自使用者，或已經過 HTML 清理器（見下一小段）處理。</p>
+<h3>需要保留格式時</h3>
+<p>有些功能本來就要讓使用者寫一部分 HTML，例如可以加粗體、連結的留言編輯器。這時編碼會把格式也一起變成文字，不合用。做法是使用維護中的 <strong>HTML 清理器</strong>（HTML sanitizer）函式庫：它解析使用者送來的 HTML，只保留允許清單中的元素與屬性，其餘移除。不要自己用字串替換寫一個；HTML 的解析規則很多，自製的過濾器幾乎一定會漏。</p>
+<h3>驗證有固定格式的輸入</h3>
+<p>文章編號、日期、排序方式這類欄位有明確的格式，伺服器應該拒絕不符合的值。這能縮小攻擊面，但搜尋字、留言這種自由文字無法靠驗證排除所有特殊字元，仍然要靠輸出編碼。</p>
+<h3>縱深防禦</h3>
+<p><strong>內容安全政策</strong>（Content Security Policy，CSP）是網站以回應標頭告訴瀏覽器的一組限制，例如「只執行來自這些位置的程式，頁面內嵌的程式不要執行」。設定嚴格時，即使有片段被注入，瀏覽器也可能拒絕執行。把 Session Cookie 設成 <code>HttpOnly</code>，則減少了 Cookie 值被讀走的機會。這兩項都只是在輸出處理出錯時降低損害，不能代替正確的編碼。</p>
+
+<h2 id="summary"><span class="num">3.1.10</span> 小結</h2>
+<ul>
+<li>伺服器送出的回應由瀏覽器的 HTML 解析器讀成 DOM；未經轉換的使用者資料可能變成新的元素，其中有些會讓瀏覽器執行程式。</li>
+<li>注入的程式出現在網站自己的回應裡，因此擁有網站的來源，能讀寫頁面、以受害者的登入狀態向網站發出請求。</li>
+<li>反射型的輸入在當次回應中出現，每次都要受害者的瀏覽器送出帶有該輸入的請求；儲存型先被保存，之後每位閱覽者都會收到。</li>
+<li>影響受限於受害者的權限與這個來源；HttpOnly 讓程式讀不到 Cookie 的值，但擋不住它在頁面中代替使用者操作。</li>
+<li>修補在輸出端：依位置編碼，交給預設會編碼的模板，避免原樣輸出 HTML；需要格式時用清理器。CSP 與 HttpOnly 是縱深防禦。</li>
+</ul>
+<p>PortSwigger Academy 的對應練習（主題頁 <a href="https://portswigger.net/web-security/cross-site-scripting">Cross-site scripting</a>，以及 <a href="https://portswigger.net/web-security/cross-site-scripting/reflected">Reflected XSS</a>、<a href="https://portswigger.net/web-security/cross-site-scripting/stored">Stored XSS</a>、<a href="https://portswigger.net/web-security/cross-site-scripting/preventing">How to prevent XSS</a>），只在 Lab 或其他獲明確授權的系統上測試：</p>
+<ul>
+  <li><a href="https://portswigger.net/web-security/cross-site-scripting/reflected/lab-html-context-nothing-encoded">Reflected XSS into HTML context with nothing encoded</a>：在回應原文找到搜尋詞，再對照解析後的 DOM，看特殊字元有沒有被轉換。</li>
+  <li><a href="https://portswigger.net/web-security/cross-site-scripting/stored/lab-html-context-nothing-encoded">Stored XSS into HTML context with nothing encoded</a>：說明輸入在哪一步被保存、在哪一份回應中重新出現。</li>
+</ul>
+<p>搜尋頁的例子都把輸入放在 HTML 元素的文字裡，所以轉換角括號就足以守住邊界。下一節 <a href="../xss-context-dom/index.html">Output Contexts and DOM-Based XSS</a> 比較其他位置：同一個搜尋字放進屬性的引號中、一段 JavaScript 字串裡，或由前端程式從網址讀出再寫進頁面時，邊界由不同的字元決定。</p>
+
+</article>
+<nav class="pager" aria-label="上下節"><a class="prev" href="../../server-input/command-injection/index.html"><small>← prev</small><span class="num">2.5</span> OS Command Injection</a><a class="next" href="../../browser-output/xss-context-dom/index.html"><small>next →</small><span class="num">3.2</span> Output Contexts and DOM-Based XSS</a></nav>
+</main>
+</div>
+<footer class="sm-status"><span class="sm-s-main">26 sections</span><span class="sm-s-list"><span class="sm-s-planned">規劃中 12</span> <span class="sm-s-draft">草稿 3</span> <span class="sm-s-ready">已完成 11</span></span><span class="sm-s-end">系統地圖</span></footer>
+<script src="../../assets/theme/theme.js?v=d288e31038"></script>
+</body>
+</html>

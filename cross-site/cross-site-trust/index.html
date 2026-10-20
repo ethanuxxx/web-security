@@ -1,0 +1,394 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>5.1 CSRF, CORS, and Cross-Site Trust｜Web 安全</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Crect width='16' height='16' rx='3' fill='%23070c12'/%3E%3Crect x='1.5' y='1.5' width='13' height='13' rx='2.5' fill='none' stroke='%2336e0cc' stroke-width='1.4'/%3E%3Cpath d='M5 8 L11 5 M5 8 L11 11' stroke='%2336e0cc' stroke-width='1.2' fill='none'/%3E%3Ccircle cx='5' cy='8' r='1.6' fill='%2336e0cc'/%3E%3Ccircle cx='11' cy='5' r='1.6' fill='%2336e0cc'/%3E%3Ccircle cx='11' cy='11' r='1.6' fill='%2336e0cc'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="../../assets/style.css?v=d288e31038">
+<link rel="stylesheet" href="../../assets/theme/theme.css?v=d288e31038">
+<script>(function(){var m=null;try{m=localStorage.getItem("web-security:motion")}catch(e){}if(m!=="on"&&m!=="off"){m="on";try{if(matchMedia("(prefers-reduced-motion: reduce)").matches)m="off"}catch(e){}}document.documentElement.setAttribute("data-motion",m)})()</script>
+</head>
+<body class="page-section sm-body">
+<a class="skip" href="#main">跳到正文</a>
+<header class="sm-top"><a class="sm-brand" href="../../index.html"><svg class="sm-logo" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><rect x="1" y="1" width="14" height="14" rx="3" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M5 8 L11 5 M5 8 L11 11" stroke="currentColor" stroke-width="1.3" fill="none"/><circle cx="5" cy="8" r="1.7" fill="currentColor"/><circle cx="11" cy="5" r="1.7" fill="currentColor"/><circle cx="11" cy="11" r="1.7" fill="currentColor"/></svg><span class="sm-brand-t">web-security</span></a><nav class="sm-path" aria-label="目前位置"><ol><li class="sm-p-root"><a href="../../index.html">web-security</a></li><li class="sm-p-ch split"><a href="../../cross-site/index.html">5<span class="sm-p-title">&nbsp;網站之間如何利用瀏覽器的信任</span></a></li><li class=""><span aria-current="page">5.1</span></li></ol></nav><a class="sm-toplink" href="../../index.html#map">map</a><a class="sm-toplink" href="../../chapters/index.html">chapters</a><button type="button" class="sm-toplink sm-motion" aria-pressed="true" hidden>動畫：開</button></header>
+<div class="sm-shell">
+<nav class="sm-tree" aria-label="教材瀏覽器"><details class="sm-tree-wrap" open><summary class="sm-tree-sum">EXPLORER／教材目錄</summary><p class="sm-tree-h" aria-hidden="true">EXPLORER</p><details class="sm-partd" open><summary class="sm-part">第一部分：輸入如何穿過網站</summary><details class="sm-folder"><summary><a class="sm-chlink" href="../../web-http/index.html" title="第 1 章 Web 與 HTTP"><span class="num">1</span><span class="sm-fname">Web 與 HTTP</span></a></summary><div class="sm-files"><a class="sm-file" href="../../web-http/web-basics/index.html" title="1.1 Seeing the Web Through the Browser"><span class="num">1.1</span><span class="sm-fname">Seeing the Web Through the Browser</span><span class="sm-st sm-st-ready" aria-hidden="true"></span><span class="sm-sr">（已完成）</span></a><a class="sm-file" href="../../web-http/http-session/index.html" title="1.2 HTTP Requests and Sessions"><span class="num">1.2</span><span class="sm-fname">HTTP Requests and Sessions</span><span class="sm-st sm-st-ready" aria-hidden="true"></span><span class="sm-sr">（已完成）</span></a></div></details><details class="sm-folder"><summary><a class="sm-chlink" href="../../server-input/index.html" title="第 2 章 伺服器如何處理使用者輸入"><span class="num">2</span><span class="sm-fname">伺服器如何處理使用者輸入</span></a></summary><div class="sm-files"><a class="sm-file" href="../../server-input/path-traversal/index.html" title="2.1 Path Traversal"><span class="num">2.1</span><span class="sm-fname">Path Traversal</span><span class="sm-st sm-st-ready" aria-hidden="true"></span><span class="sm-sr">（已完成）</span></a><a class="sm-file" href="../../server-input/file-upload/index.html" title="2.2 File Upload Vulnerabilities"><span class="num">2.2</span><span class="sm-fname">File Upload Vulnerabilities</span><span class="sm-st sm-st-ready" aria-hidden="true"></span><span class="sm-sr">（已完成）</span></a><a class="sm-file" href="../../server-input/sql-injection/index.html" title="2.3 SQL Injection Basics"><span class="num">2.3</span><span class="sm-fname">SQL Injection Basics</span><span class="sm-st sm-st-ready" aria-hidden="true"></span><span class="sm-sr">（已完成）</span></a><a class="sm-file" href="../../server-input/sql-injection-observation/index.html" title="2.4 UNION and Blind SQL Injection"><span class="num">2.4</span><span class="sm-fname">UNION and Blind SQL Injection</span><span class="sm-st sm-st-ready" aria-hidden="true"></span><span class="sm-sr">（已完成）</span></a><a class="sm-file" href="../../server-input/command-injection/index.html" title="2.5 OS Command Injection"><span class="num">2.5</span><span class="sm-fname">OS Command Injection</span><span class="sm-st sm-st-ready" aria-hidden="true"></span><span class="sm-sr">（已完成）</span></a></div></details><details class="sm-folder"><summary><a class="sm-chlink" href="../../browser-output/index.html" title="第 3 章 伺服器的輸出如何在瀏覽器中變成程式"><span class="num">3</span><span class="sm-fname">伺服器的輸出如何在瀏覽器中變成程式</span></a></summary><div class="sm-files"><a class="sm-file" href="../../browser-output/xss-basics/index.html" title="3.1 Cross-Site Scripting Basics"><span class="num">3.1</span><span class="sm-fname">Cross-Site Scripting Basics</span><span class="sm-st sm-st-ready" aria-hidden="true"></span><span class="sm-sr">（已完成）</span></a><a class="sm-file" href="../../browser-output/xss-context-dom/index.html" title="3.2 Output Contexts and DOM-Based XSS"><span class="num">3.2</span><span class="sm-fname">Output Contexts and DOM-Based XSS</span><span class="sm-st sm-st-ready" aria-hidden="true"></span><span class="sm-sr">（已完成）</span></a></div></details><details class="sm-folder"><summary><a class="sm-chlink" href="../../identity/index.html" title="第 4 章 網站如何知道你是誰、允許你做什麼"><span class="num">4</span><span class="sm-fname">網站如何知道你是誰、允許你做什麼</span></a></summary><div class="sm-files"><a class="sm-file" href="../../identity/authentication/index.html" title="4.1 Authentication"><span class="num">4.1</span><span class="sm-fname">Authentication</span><span class="sm-st sm-st-ready" aria-hidden="true"></span><span class="sm-sr">（已完成）</span></a><a class="sm-file" href="../../identity/access-control/index.html" title="4.2 Access Control"><span class="num">4.2</span><span class="sm-fname">Access Control</span><span class="sm-st sm-st-ready" aria-hidden="true"></span><span class="sm-sr">（已完成）</span></a></div></details><details class="sm-folder" open><summary><a class="sm-chlink" href="../../cross-site/index.html" title="第 5 章 網站之間如何利用瀏覽器的信任"><span class="num">5</span><span class="sm-fname">網站之間如何利用瀏覽器的信任</span></a></summary><div class="sm-files"><a class="sm-file" href="../../cross-site/cross-site-trust/index.html" aria-current="page" title="5.1 CSRF, CORS, and Cross-Site Trust"><span class="num">5.1</span><span class="sm-fname">CSRF, CORS, and Cross-Site Trust</span><span class="sm-st sm-st-draft" aria-hidden="true"></span><span class="sm-sr">（草稿）</span></a></div></details><details class="sm-folder"><summary><a class="sm-chlink" href="../../logic-timing/index.html" title="第 6 章 問題藏在流程與時間裡"><span class="num">6</span><span class="sm-fname">問題藏在流程與時間裡</span></a></summary><div class="sm-files"><a class="sm-file" href="../../logic-timing/business-logic/index.html" title="6.1 Business Logic Vulnerabilities"><span class="num">6.1</span><span class="sm-fname">Business Logic Vulnerabilities</span><span class="sm-st sm-st-draft" aria-hidden="true"></span><span class="sm-sr">（草稿）</span></a><a class="sm-file" href="../../logic-timing/race-conditions/index.html" title="6.2 Race Conditions"><span class="num">6.2</span><span class="sm-fname">Race Conditions</span><span class="sm-st sm-st-draft" aria-hidden="true"></span><span class="sm-sr">（草稿）</span></a></div></details></details><details class="sm-partd" open><summary class="sm-part">第二部分：多元件系統的信任邊界</summary><details class="sm-folder"><summary><a class="sm-chlink" href="../../server-actions/index.html" title="第 7 章 伺服器把資料交給其他元件之後"><span class="num">7</span><span class="sm-fname">伺服器把資料交給其他元件之後</span></a></summary><div class="sm-files"><a class="sm-file is-planned" href="../../server-actions/ssrf/index.html" title="7.1 Server-Side Request Forgery"><span class="num">7.1</span><span class="sm-fname">Server-Side Request Forgery</span><span class="sm-st sm-st-planned" aria-hidden="true"></span><span class="sm-sr">（規劃中）</span></a><a class="sm-file is-planned" href="../../server-actions/xxe/index.html" title="7.2 XML External Entity Injection"><span class="num">7.2</span><span class="sm-fname">XML External Entity Injection</span><span class="sm-st sm-st-planned" aria-hidden="true"></span><span class="sm-sr">（規劃中）</span></a><a class="sm-file is-planned" href="../../server-actions/ssti/index.html" title="7.3 Server-Side Template Injection"><span class="num">7.3</span><span class="sm-fname">Server-Side Template Injection</span><span class="sm-st sm-st-planned" aria-hidden="true"></span><span class="sm-sr">（規劃中）</span></a><a class="sm-file is-planned" href="../../server-actions/deserialization/index.html" title="7.4 Insecure Deserialization"><span class="num">7.4</span><span class="sm-fname">Insecure Deserialization</span><span class="sm-st sm-st-planned" aria-hidden="true"></span><span class="sm-sr">（規劃中）</span></a><a class="sm-file is-planned" href="../../server-actions/prototype-pollution/index.html" title="7.5 Prototype Pollution"><span class="num">7.5</span><span class="sm-fname">Prototype Pollution</span><span class="sm-st sm-st-planned" aria-hidden="true"></span><span class="sm-sr">（規劃中）</span></a></div></details><details class="sm-folder"><summary><a class="sm-chlink" href="../../apis/index.html" title="第 8 章 網站變成 API 之後"><span class="num">8</span><span class="sm-fname">網站變成 API 之後</span></a></summary><div class="sm-files"><a class="sm-file is-planned" href="../../apis/api-testing/index.html" title="8.1 API Attack Surface"><span class="num">8.1</span><span class="sm-fname">API Attack Surface</span><span class="sm-st sm-st-planned" aria-hidden="true"></span><span class="sm-sr">（規劃中）</span></a><a class="sm-file is-planned" href="../../apis/graphql-websockets/index.html" title="8.2 GraphQL and WebSockets"><span class="num">8.2</span><span class="sm-fname">GraphQL and WebSockets</span><span class="sm-st sm-st-planned" aria-hidden="true"></span><span class="sm-sr">（規劃中）</span></a></div></details><details class="sm-folder"><summary><a class="sm-chlink" href="../../delegated-identity/index.html" title="第 9 章 身分跨越網站與元件之後"><span class="num">9</span><span class="sm-fname">身分跨越網站與元件之後</span></a></summary><div class="sm-files"><a class="sm-file is-planned" href="../../delegated-identity/jwt/index.html" title="9.1 JSON Web Tokens"><span class="num">9.1</span><span class="sm-fname">JSON Web Tokens</span><span class="sm-st sm-st-planned" aria-hidden="true"></span><span class="sm-sr">（規劃中）</span></a><a class="sm-file is-planned" href="../../delegated-identity/oauth/index.html" title="9.2 OAuth and Third-Party Login"><span class="num">9.2</span><span class="sm-fname">OAuth and Third-Party Login</span><span class="sm-st sm-st-planned" aria-hidden="true"></span><span class="sm-sr">（規劃中）</span></a></div></details><details class="sm-folder"><summary><a class="sm-chlink" href="../../proxy-cache/index.html" title="第 10 章 Proxy、Cache 與後端看到的不一樣"><span class="num">10</span><span class="sm-fname">Proxy、Cache 與後端看到的不一樣</span></a></summary><div class="sm-files"><a class="sm-file is-planned" href="../../proxy-cache/host-cache/index.html" title="10.1 Host Headers and Web Caches"><span class="num">10.1</span><span class="sm-fname">Host Headers and Web Caches</span><span class="sm-st sm-st-planned" aria-hidden="true"></span><span class="sm-sr">（規劃中）</span></a><a class="sm-file is-planned" href="../../proxy-cache/request-smuggling/index.html" title="10.2 HTTP Request Smuggling"><span class="num">10.2</span><span class="sm-fname">HTTP Request Smuggling</span><span class="sm-st sm-st-planned" aria-hidden="true"></span><span class="sm-sr">（規劃中）</span></a></div></details><details class="sm-folder"><summary><a class="sm-chlink" href="../../llm/index.html" title="第 11 章 把信任模型套到新元件：Web LLM"><span class="num">11</span><span class="sm-fname">把信任模型套到新元件：Web LLM</span></a></summary><div class="sm-files"><a class="sm-file is-planned" href="../../llm/llm-attacks/index.html" title="11.1 Web LLM Attacks"><span class="num">11.1</span><span class="sm-fname">Web LLM Attacks</span><span class="sm-st sm-st-planned" aria-hidden="true"></span><span class="sm-sr">（規劃中）</span></a></div></details></details></details></nav>
+<header class="sm-head">
+  <p class="sm-eyebrow">cross-site/cross-site-trust</p>
+  <h1><span class="num">5.1</span> CSRF, CORS, and Cross-Site Trust <span class="badge badge-draft">草稿</span></h1>
+  <p class="question sm-q"><span aria-hidden="true">❯</span> 瀏覽器為什麼會替其他網站帶上登入狀態？</p>
+</header>
+<aside class="sm-aside" aria-label="本節輔助"><nav class="sm-outline" aria-label="本節內容"><p class="sm-ph">本節內容</p><ol><li><a href="#ambient-cookies" title="5.1.1 瀏覽器替誰帶 Cookie"><span class="num">5.1.1</span>瀏覽器替誰帶 Cookie</a></li><li><a href="#origin-site" title="5.1.2 Origin 與 site"><span class="num">5.1.2</span>Origin 與 site</a></li><li><a href="#three-questions" title="5.1.3 送出、執行、讀取"><span class="num">5.1.3</span>送出、執行、讀取</a></li><li><a href="#csrf-conditions" title="5.1.4 CSRF 成立的三個條件"><span class="num">5.1.4</span>CSRF 成立的三個條件</a></li><li><a href="#worked-example" title="5.1.5 一次跨站修改 email"><span class="num">5.1.5</span>一次跨站修改 email</a></li><li><a href="#csrf-limits" title="5.1.6 什麼情況下成立"><span class="num">5.1.6</span>什麼情況下成立</a></li><li><a href="#csrf-token" title="5.1.7 CSRF token"><span class="num">5.1.7</span>CSRF token</a></li><li><a href="#samesite" title="5.1.8 SameSite Cookie"><span class="num">5.1.8</span>SameSite Cookie</a></li><li><a href="#referer-check" title="5.1.9 依 Referer 判斷來源"><span class="num">5.1.9</span>依 Referer 判斷來源</a></li><li><a href="#sop-cors" title="5.1.10 誰能讀取回應"><span class="num">5.1.10</span>誰能讀取回應</a></li><li><a href="#cors-misconfig" title="5.1.11 CORS 設定錯誤"><span class="num">5.1.11</span>CORS 設定錯誤</a></li><li><a href="#clickjacking" title="5.1.12 Clickjacking"><span class="num">5.1.12</span>Clickjacking</a></li><li><a href="#fix" title="5.1.13 怎麼修補"><span class="num">5.1.13</span>怎麼修補</a></li><li><a href="#summary" title="5.1.14 小結"><span class="num">5.1.14</span>小結</a></li></ol></nav><section class="sm-locator" aria-label="系統地圖定位"><p class="sm-ph">系統地圖</p><a class="sm-mini-link" href="../../index.html#map-cross-site" aria-label="在首頁的系統地圖上看第 5 章的位置"><svg class="sm-map sm-map-mini" viewBox="0 0 748 564" aria-hidden="true" focusable="false" preserveAspectRatio="xMidYMid meet" style="aspect-ratio:748/564"><line class="sm-edge" x1="200" y1="330" x2="290" y2="330"/><line class="sm-edge sm-dash" x1="440" y1="330" x2="530" y2="330"/><line class="sm-edge sm-threat-edge" x1="110" y1="100" x2="110" y2="255"/><line class="sm-edge sm-dash" x1="625" y1="100" x2="625" y2="150"/><line class="sm-edge" x1="625" y1="546" x2="625" y2="570"/><line class="sm-edge" x1="720" y1="325" x2="765" y2="325"/><line class="sm-edge" x1="765" y1="325" x2="765" y2="48"/><line class="sm-edge sm-dash" x1="765" y1="325" x2="765" y2="538"/><line class="sm-edge" x1="765" y1="48" x2="810" y2="48"/><line class="sm-edge" x1="765" y1="118" x2="810" y2="118"/><line class="sm-edge" x1="765" y1="188" x2="810" y2="188"/><line class="sm-edge sm-dash" x1="765" y1="328" x2="810" y2="328"/><line class="sm-edge sm-dash" x1="765" y1="398" x2="810" y2="398"/><line class="sm-edge sm-dash" x1="765" y1="468" x2="810" y2="468"/><line class="sm-edge sm-dash" x1="765" y1="538" x2="810" y2="538"/><g class="sm-n sm-threat on" data-ch="cross-site"><rect class="sm-box" x="20" y="20" width="180" height="80" rx="8"/><text class="sm-mini-t" x="110.0" y="62.0" text-anchor="middle" dominant-baseline="central" font-size="53">5</text></g><g class="sm-n sm-frame off" data-ch="web-http"><rect class="sm-box" x="20" y="255" width="180" height="150" rx="10"/><text class="sm-mini-t" x="50" y="285" text-anchor="middle" dominant-baseline="central" font-size="48">1</text></g><g class="sm-n sm-node off" data-ch="browser-output"><rect class="sm-box" x="36" y="322" width="148" height="64" rx="8"/><text class="sm-mini-t" x="110.0" y="356.0" text-anchor="middle" dominant-baseline="central" font-size="51">3</text></g><g class="sm-n sm-node sm-p2 off" data-ch="proxy-cache"><rect class="sm-box" x="290" y="240" width="150" height="180" rx="8"/><text class="sm-mini-t" x="365.0" y="332.0" text-anchor="middle" dominant-baseline="central" font-size="53">10</text></g><g class="sm-n sm-frame" aria-hidden="true"><rect class="sm-box" x="530" y="150" width="190" height="396" rx="10"/></g><g class="sm-n sm-node off" data-ch="identity"><rect class="sm-box" x="546" y="194" width="158" height="56" rx="8"/><text class="sm-mini-t" x="625.0" y="224.0" text-anchor="middle" dominant-baseline="central" font-size="45">4</text></g><g class="sm-n sm-node sm-p2 off" data-ch="apis"><rect class="sm-box" x="546" y="262" width="158" height="56" rx="8"/><text class="sm-mini-t" x="625.0" y="292.0" text-anchor="middle" dominant-baseline="central" font-size="45">8</text></g><g class="sm-n sm-node sm-p2 off" data-ch="llm"><rect class="sm-box" x="546" y="330" width="158" height="56" rx="8"/><text class="sm-mini-t" x="625.0" y="360.0" text-anchor="middle" dominant-baseline="central" font-size="45">11</text></g><g class="sm-n sm-node off" data-ch="logic-timing"><rect class="sm-box" x="546" y="398" width="158" height="56" rx="8"/><text class="sm-mini-t" x="625.0" y="428.0" text-anchor="middle" dominant-baseline="central" font-size="45">6</text></g><g class="sm-n sm-node sm-p2 off" data-ch="server-actions"><rect class="sm-box" x="546" y="466" width="158" height="56" rx="8"/><text class="sm-mini-t" x="625.0" y="496.0" text-anchor="middle" dominant-baseline="central" font-size="45">7</text></g><g class="sm-n sm-node sm-p2 off" data-ch="delegated-identity"><rect class="sm-box" x="530" y="20" width="190" height="80" rx="8"/><text class="sm-mini-t" x="625.0" y="62.0" text-anchor="middle" dominant-baseline="central" font-size="53">9</text></g><g class="sm-n sm-node off" data-ch="logic-timing"><rect class="sm-box" x="530" y="570" width="190" height="56" rx="8"/><text class="sm-mini-t" x="625.0" y="600.0" text-anchor="middle" dominant-baseline="central" font-size="45">6</text></g><g class="sm-n sm-node off" data-ch="server-input"><rect class="sm-box" x="810" y="20" width="170" height="56" rx="8"/><text class="sm-mini-t" x="895.0" y="50.0" text-anchor="middle" dominant-baseline="central" font-size="45">2</text></g><g class="sm-n sm-node off" data-ch="server-input"><rect class="sm-box" x="810" y="90" width="170" height="56" rx="8"/><text class="sm-mini-t" x="895.0" y="120.0" text-anchor="middle" dominant-baseline="central" font-size="45">2</text></g><g class="sm-n sm-node off" data-ch="server-input"><rect class="sm-box" x="810" y="160" width="170" height="56" rx="8"/><text class="sm-mini-t" x="895.0" y="190.0" text-anchor="middle" dominant-baseline="central" font-size="45">2</text></g><g class="sm-n sm-node sm-p2 off" data-ch="server-actions"><rect class="sm-box" x="810" y="300" width="170" height="56" rx="8"/><text class="sm-mini-t" x="895.0" y="330.0" text-anchor="middle" dominant-baseline="central" font-size="45">7</text></g><g class="sm-n sm-node sm-p2 off" data-ch="server-actions"><rect class="sm-box" x="810" y="370" width="170" height="56" rx="8"/><text class="sm-mini-t" x="895.0" y="400.0" text-anchor="middle" dominant-baseline="central" font-size="45">7</text></g><g class="sm-n sm-node sm-p2 off" data-ch="server-actions"><rect class="sm-box" x="810" y="440" width="170" height="56" rx="8"/><text class="sm-mini-t" x="895.0" y="470.0" text-anchor="middle" dominant-baseline="central" font-size="45">7</text></g><g class="sm-n sm-node sm-p2 off" data-ch="server-actions"><rect class="sm-box" x="810" y="510" width="170" height="56" rx="8"/><text class="sm-mini-t" x="895.0" y="540.0" text-anchor="middle" dominant-baseline="central" font-size="45">7</text></g><g class="sm-n sm-pill off" data-ch="web-http"><rect class="sm-pill-box" x="213" y="306" width="64" height="48" rx="24"/><text class="sm-mini-t" x="245" y="332" text-anchor="middle" dominant-baseline="central" font-size="38">1</text></g><g class="sm-n sm-pill off" data-ch="web-http"><rect class="sm-pill-box" x="453" y="306" width="64" height="48" rx="24"/><text class="sm-mini-t" x="485" y="332" text-anchor="middle" dominant-baseline="central" font-size="38">1</text></g><g class="sm-n sm-pill on" data-ch="cross-site"><rect class="sm-pill-box" x="78" y="153" width="64" height="48" rx="24"/><text class="sm-mini-t" x="110" y="179" text-anchor="middle" dominant-baseline="central" font-size="38">5</text></g><g class="sm-n sm-pill off" data-ch="delegated-identity"><rect class="sm-pill-box" x="593" y="101" width="64" height="48" rx="24"/><text class="sm-mini-t" x="625" y="127" text-anchor="middle" dominant-baseline="central" font-size="38">9</text></g></svg></a><p class="sm-cap">位置：第 5 章　網站之間如何利用瀏覽器的信任</p><ul class="sm-chips sm-comps" aria-label="本章元件"><li>Other site</li><li>Cross-site request</li></ul><p class="sm-mini-hint">點地圖：到首頁地圖看這一章</p></section></aside>
+<main id="main" class="sm-doc" tabindex="-1">
+<article class="content sm-article">
+<p class="notice">本節是草稿，內容仍在撰寫與查核中。</p><p>第 4 章的伺服器把每筆請求都拆成兩個問題：帶著這個 Session Cookie 的是誰，他有沒有權限做這件事。兩個都答對了，還有一個問題沒有問：這筆請求是不是他自己要送的。你登入 <code>shop.example.com</code> 之後，在另一個分頁打開一個無關的網站，那個網站的頁面也能讓你的瀏覽器向商店送出請求，而瀏覽器照樣會附上商店的 Cookie。伺服器看到的是 wiener 的 Session、wiener 有權限的動作，看起來和 wiener 親手按下按鈕沒有差別。</p>
+
+<h2 id="ambient-cookies"><span class="num">5.1.1</span> 瀏覽器替誰帶 Cookie</h2>
+<p><a href="../../web-http/http-session/index.html#session-model">HTTP Requests and Sessions</a> 說過，瀏覽器保存 Cookie 後，只要請求符合傳送條件，就自動用 <code>Cookie</code> 標頭帶回去。這個判斷看的是請求要送到哪裡，例如目標的主機名稱、路徑、是否走 HTTPS，以及 Cookie 是否過期。請求是怎麼產生的，傳統的 Cookie 規則並不在乎：使用者在商店頁面上按的按鈕、網址列直接輸入的網址、別的網站頁面裡的表單或圖片，只要目標是 <code>shop.example.com</code>，都可能帶上同一個 Session Cookie。</p>
+<p>這種不必由頁面程式主動提供、瀏覽器自己附上的憑證，常稱為環境憑證（ambient credentials）。Cookie 是最常見的一種，瀏覽器記住的 HTTP Basic 驗證帳密也是。它讓網站使用起來很方便：你點開商店的任何一個連結，都不必重新登入。代價是伺服器看到 Cookie，只能確定「這是 wiener 的瀏覽器送來的」，不能確定「wiener 想送這筆請求」。</p>
+<p><code>HttpOnly</code> 屬性改變不了這件事。它禁止頁面中的 JavaScript 讀取 Cookie 的值，瀏覽器送請求時仍然照常附上。後來加入的 <code>SameSite</code> 屬性才開始讓瀏覽器考慮請求從哪裡發起，這要先分清楚 origin 與 site 兩個單位。</p>
+
+<h2 id="origin-site"><span class="num">5.1.2</span> Origin 與 site</h2>
+<p><a href="../../browser-output/xss-basics/index.html#same-origin">Cross-Site Scripting Basics</a> 定義過<strong>來源</strong>（origin）：協定、主機名稱、連接埠三者都相同，才是同一個 origin。<code>https://shop.example.com</code> 和 <code>https://blog.example.com</code> 主機名稱不同，是不同的 origin。</p>
+<p><strong>Site</strong> 是比較寬的單位。它看協定，加上可註冊網域：公共後綴（public suffix，例如 <code>.com</code>、<code>.co.uk</code> 這類任何人都能在其下註冊網域的後綴，也稱 eTLD，effective top-level domain）再往左多一層，例如 <code>example.com</code>。<code>shop.example.com</code> 和 <code>blog.example.com</code> 都屬於 <code>example.com</code>，兩者是 same-site、cross-origin。早期的 site 定義不看協定，現在的瀏覽器多採「含協定」的判定（schemeful same-site），所以 <code>http://</code> 與 <code>https://</code> 下的同一個網域算不同的 site。</p>
+<table>
+  <thead><tr><th>發起請求的頁面</th><th>目標</th><th>same-origin</th><th>same-site</th></tr></thead>
+  <tbody>
+    <tr><td><code>https://shop.example.com/cart</code></td><td><code>https://shop.example.com/my-account</code></td><td>是</td><td>是</td></tr>
+    <tr><td><code>https://shop.example.com</code></td><td><code>https://shop.example.com:8443</code></td><td>否，連接埠不同</td><td>是</td></tr>
+    <tr><td><code>https://blog.example.com</code></td><td><code>https://shop.example.com</code></td><td>否，主機名稱不同</td><td>是，都在 <code>example.com</code> 下</td></tr>
+    <tr><td><code>http://shop.example.com</code></td><td><code>https://shop.example.com</code></td><td>否，協定不同</td><td>否（含協定的判定）</td></tr>
+    <tr><td><code>https://attacker.example.net</code></td><td><code>https://shop.example.com</code></td><td>否</td><td>否，可註冊網域不同</td></tr>
+  </tbody>
+</table>
+<p>兩個單位各管不同的規則。同源政策以 origin 為單位，決定一個頁面的程式能讀哪些回應；<code>SameSite</code> 以 site 為單位，決定跨站請求帶不帶 Cookie。把兩者混為一談，就會誤以為「不同子網域之間一定隔開了」：對 <code>SameSite</code> 來說，同一個網域下的所有子網域都是自己人。</p>
+
+<h2 id="three-questions"><span class="num">5.1.3</span> 送出、執行、讀取</h2>
+<p>一個網站的頁面讓瀏覽器向另一個網站送請求時，結果由三個各自獨立的決定組成：</p>
+
+<figure id="cross-site-gates">
+  <svg viewBox="0 0 720 320" role="img" aria-labelledby="cross-site-gates-t" style="color:var(--text)">
+    <title id="cross-site-gates-t">攻擊者的頁面讓瀏覽器向商店送出請求：瀏覽器決定附不附 Cookie，商店伺服器決定執不執行動作，回應回來後瀏覽器再決定交不交給攻擊者頁面的程式</title>
+    <defs>
+      <marker id="cg-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+        <path d="M0 0 L10 5 L0 10 z" fill="currentColor"/>
+      </marker>
+    </defs>
+    <g stroke="currentColor" stroke-width="1.4">
+      <rect x="10" y="30" width="170" height="90" rx="8" fill="var(--surface)"/>
+      <rect x="275" y="30" width="170" height="90" rx="8" fill="var(--accent-soft)"/>
+      <rect x="540" y="30" width="170" height="90" rx="8" fill="var(--surface)"/>
+    </g>
+    <g font-size="14" font-weight="700" text-anchor="middle" fill="currentColor">
+      <text x="95" y="62">攻擊者的頁面</text>
+      <text x="360" y="62">使用者的瀏覽器</text>
+      <text x="625" y="62">商店伺服器</text>
+    </g>
+    <g font-size="11" text-anchor="middle" fill="currentColor" opacity=".75">
+      <text x="95" y="82" style="font-family:var(--font-mono)">attacker.example.net</text>
+      <text x="360" y="82">已登入商店</text>
+      <text x="625" y="82" style="font-family:var(--font-mono)">shop.example.com</text>
+    </g>
+    <text x="625" y="106" font-size="12" text-anchor="middle" fill="currentColor">② 執行動作？</text>
+    <g stroke="currentColor" stroke-width="1.6" fill="none">
+      <path d="M182 56 H271" marker-end="url(#cg-arrow)"/>
+      <path d="M447 56 H536" marker-end="url(#cg-arrow)"/>
+      <path d="M538 100 H449" marker-end="url(#cg-arrow)" stroke-dasharray="5 3"/>
+      <path d="M273 100 H184" marker-end="url(#cg-arrow)" stroke-dasharray="5 3"/>
+    </g>
+    <g font-size="11" text-anchor="middle" fill="currentColor">
+      <text x="227" y="48">送出請求</text>
+      <text x="492" y="48">① 附 Cookie？</text>
+      <text x="492" y="94">回應</text>
+      <text x="227" y="94">③ 交給頁面？</text>
+    </g>
+    <g stroke="currentColor" stroke-width="1.2" fill="var(--surface)">
+      <rect x="10" y="150" width="700" height="48" rx="6"/>
+      <rect x="10" y="206" width="700" height="48" rx="6"/>
+      <rect x="10" y="262" width="700" height="48" rx="6"/>
+    </g>
+    <g font-size="13" font-weight="700" fill="currentColor">
+      <text x="26" y="179">① 請求附不附 Cookie</text>
+      <text x="26" y="235">② 伺服器執不執行</text>
+      <text x="26" y="291">③ 頁面程式讀不讀得到回應</text>
+    </g>
+    <g font-size="12" fill="currentColor">
+      <text x="250" y="179">瀏覽器依 Cookie 的屬性決定，例如 SameSite</text>
+      <text x="250" y="235">伺服器依授權檢查與 CSRF 防禦決定</text>
+      <text x="250" y="291">瀏覽器依同源政策與伺服器回的 CORS 標頭決定</text>
+    </g>
+  </svg>
+  <figcaption><span class="fig-num">圖 5.1.3-1</span> 跨站請求的三個決定：前兩個決定動作會不會發生，第三個只決定回應內容能不能被讀走</figcaption>
+</figure>
+
+<p>同源政策（same-origin policy，SOP）管的是第三個決定。它限制一個 origin 的程式讀取另一個 origin 的回應，不禁止送出請求。跨 origin 的表單送出、連結導覽、載入圖片與 script，向來都是允許的，網頁本來就靠這些互相連結。攻擊者的頁面讀不到商店的回應，但請求已經送到商店，伺服器也可能已經照做。</p>
+<p>所以兩類問題要分開看：</p>
+<ul>
+  <li>跨站請求偽造（cross-site request forgery，CSRF）只需要第一、二個決定對攻擊者有利：Cookie 被帶上、伺服器執行了動作。攻擊者不必看到結果。</li>
+  <li>CORS 設定錯誤出在第三個決定：伺服器自己宣告「這個來源可以讀我的回應」，讓攻擊者的頁面讀到只有登入者才看得到的資料。</li>
+</ul>
+
+<h2 id="csrf-conditions"><span class="num">5.1.4</span> CSRF 成立的三個條件</h2>
+<p>CSRF 是讓受害者的瀏覽器，在他不知情的情況下，帶著他的登入狀態向目標網站送出一筆會改變狀態的請求。PortSwigger 把成立條件歸納成三項，三項都要同時成立：</p>
+<ol>
+  <li>有一個值得觸發的動作：修改 email 或密碼、轉帳、新增管理員之類會改變伺服器狀態的操作。只讀取資料的請求，攻擊者讀不到回應，觸發了也沒有用。</li>
+  <li>伺服器只靠 Cookie 認人：Session 只由瀏覽器自動附上的 Cookie 識別，沒有其他需要頁面主動提供的憑證。</li>
+  <li>攻擊者能寫出整筆請求：請求裡的每個參數，攻擊者都能事先知道或猜到。若改密碼時要求輸入目前的密碼，攻擊者不知道這個值，就寫不出有效的請求。</li>
+</ol>
+<p>第二項還隱含一個條件：受害者送出請求時，瀏覽器真的會附上 Cookie。這取決於 Cookie 的 <code>SameSite</code> 屬性與請求的種類，後面會細看。</p>
+
+<h2 id="worked-example"><span class="num">5.1.5</span> 一次跨站修改 email</h2>
+<p>wiener 在 <code>shop.example.com</code> 的帳號頁修改 email，瀏覽器送出的請求如下：</p>
+<pre data-lang="http"><code>POST /my-account/change-email HTTP/1.1
+Host: shop.example.com
+Origin: https://shop.example.com
+Content-Type: application/x-www-form-urlencoded
+Cookie: session=DEMO123
+
+email=wiener%40example.net</code></pre>
+<p>逐項對照三個條件：修改 email 會改變帳號狀態，之後還能拿來走「忘記密碼」流程接管帳號；身分只由 <code>Cookie</code> 決定；body 只有一個 <code>email</code> 欄位，值由送出者決定，沒有攻擊者無法預測的東西。三個條件都成立。</p>
+<p>攻擊者在自己的網站放一個頁面，頁面裡有一個隱藏表單：<code>action</code> 指向 <code>https://shop.example.com/my-account/change-email</code>、方法是 <code>POST</code>，<code>email</code> 欄位填 <code>[攻擊者控制的信箱]</code>，頁面一載入就自動送出。方括號代表攻擊者換進去的值。接著他想辦法讓 wiener 打開這個頁面，例如在留言、郵件或社群貼文中放上連結。</p>
+
+<figure id="csrf-sequence">
+  <svg viewBox="0 0 720 380" role="img" aria-labelledby="csrf-sequence-t" style="color:var(--text)">
+    <title id="csrf-sequence-t">CSRF 的時序：已登入商店的瀏覽器開啟攻擊者頁面，頁面中的表單自動向商店送出修改 email 的 POST，瀏覽器附上商店的 Session Cookie，商店查到 wiener 並修改 email，回應回到瀏覽器但攻擊者頁面讀不到</title>
+    <defs>
+      <marker id="cs-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+        <path d="M0 0 L10 5 L0 10 z" fill="currentColor"/>
+      </marker>
+    </defs>
+    <g stroke="currentColor" stroke-width="1.2">
+      <rect x="20" y="10" width="180" height="40" rx="5" fill="var(--surface)"/>
+      <rect x="270" y="10" width="180" height="40" rx="5" fill="var(--accent-soft)"/>
+      <rect x="520" y="10" width="180" height="40" rx="5" fill="var(--surface)"/>
+    </g>
+    <g font-size="13" text-anchor="middle" fill="currentColor">
+      <text x="110" y="35" style="font-family:var(--font-mono)">attacker.example.net</text>
+      <text x="360" y="35">wiener 的瀏覽器</text>
+      <text x="610" y="35" style="font-family:var(--font-mono)">shop.example.com</text>
+    </g>
+    <g stroke="currentColor" stroke-width="1" stroke-dasharray="4 4" opacity=".5">
+      <path d="M110 50 V370 M360 50 V370 M610 50 V370"/>
+    </g>
+    <g stroke="currentColor" stroke-width="1.6" fill="none">
+      <path d="M358 90 H114" marker-end="url(#cs-arrow)"/>
+      <path d="M112 140 H356" marker-end="url(#cs-arrow)"/>
+      <path d="M362 200 H606" marker-end="url(#cs-arrow)"/>
+      <path d="M608 320 H364" marker-end="url(#cs-arrow)" stroke-dasharray="6 3"/>
+    </g>
+    <g font-size="12" text-anchor="middle" fill="currentColor">
+      <text x="235" y="82">① 開啟攻擊者的頁面</text>
+      <text x="235" y="132">② 含自動送出表單的頁面</text>
+      <text x="485" y="182">③ POST /my-account/change-email</text>
+      <text x="485" y="312">⑤ 回應</text>
+    </g>
+    <g font-size="11" text-anchor="middle" fill="currentColor" opacity=".75">
+      <text x="485" y="218" style="font-family:var(--font-mono)">Cookie: session=DEMO123</text>
+      <text x="485" y="234">瀏覽器自動附上</text>
+      <text x="235" y="345">攻擊者的頁面讀不到這份回應，</text>
+      <text x="235" y="361">動作已經完成</text>
+    </g>
+    <g font-size="12" fill="currentColor">
+      <text x="400" y="262">④ 查 Session：wiener，已登入</text>
+      <text x="414" y="280">把 email 改成攻擊者的信箱</text>
+    </g>
+  </svg>
+  <figcaption><span class="fig-num">圖 5.1.5-1</span> CSRF 的一次往返：表單由攻擊者的頁面送出，Cookie 由瀏覽器附上，伺服器分不出這不是 wiener 自己按的</figcaption>
+</figure>
+
+<p>步驟 ③ 的請求和 wiener 自己送的那筆只有兩處不同：<code>email</code> 的值，以及 <code>Origin</code> 標頭變成 <code>https://attacker.example.net</code>。如果伺服器不看 <code>Origin</code>，也沒有其他防禦，它就會照常修改 email。攻擊者接著對新信箱申請重設密碼，就能接管帳號。</p>
+<p>整個過程中攻擊者沒有碰到 wiener 的 Cookie，也沒有讀到任何回應。表單是一般的跨站導覽，不需要商店允許 CORS；同源政策在這裡沒有出場的機會。</p>
+
+<h2 id="csrf-limits"><span class="num">5.1.6</span> 什麼情況下成立</h2>
+<ul>
+  <li>受害者必須在攻擊發生時處於登入狀態，而且瀏覽器會為這種請求附上 Cookie。Session Cookie 設為 <code>SameSite=Strict</code> 或 <code>Lax</code> 時，上面這種跨站 POST 不會帶 Cookie，伺服器看到的是未登入的請求。</li>
+  <li>HTML 表單只能送出三種 <code>Content-Type</code>：<code>application/x-www-form-urlencoded</code>、<code>multipart/form-data</code>、<code>text/plain</code>，也不能加自訂標頭。端點若只接受 <code>application/json</code> 並嚴格檢查，表單就送不出被接受的請求；改用跨站的 JavaScript 送 JSON，瀏覽器會先發一個預檢請求（preflight，見後面的 CORS），伺服器沒有允許就不會送出正式請求。伺服器若不檢查 <code>Content-Type</code>，照樣解析表單送來的 body，這道限制就不存在。</li>
+  <li>攻擊者拿不到回應，所以只有「做了就有效果」的動作有意義。需要先讀一個值再送下一步的多步驟流程，攻擊者無法完成。</li>
+  <li>動作需要使用者重新輸入密碼、第二因素或其他攻擊者不知道的值時，第三個條件不成立。</li>
+</ul>
+
+<h2 id="csrf-token"><span class="num">5.1.7</span> CSRF token</h2>
+<p>最直接的防禦是讓第三個條件不成立：每個會改變狀態的請求都要帶一個攻擊者無法得知的值。伺服器在產生表單時放進一個隨機值，稱為 <strong>CSRF token</strong>，並在 Session 中記下它；收到請求時比對 token 是否等於這個 Session 記下的值。</p>
+<pre data-lang="html"><code>&lt;form method="POST" action="/my-account/change-email"&gt;
+  &lt;input type="hidden" name="csrf" value="（伺服器產生的隨機值）"&gt;
+  &lt;input name="email"&gt;
+&lt;/form&gt;</code></pre>
+<p>攻擊者的頁面可以讓瀏覽器送出請求，卻讀不到商店的頁面（這時同源政策發揮作用），所以拿不到表單裡的 token。CSRF token 防的是「攻擊者能寫出整筆請求」這一項，與 Cookie 帶不帶上無關。</p>
+<p>token 只有在伺服器每次都正確驗證時才有效。常見的驗證缺陷：</p>
+<table>
+  <thead><tr><th>缺陷</th><th>機制</th></tr></thead>
+  <tbody>
+    <tr><td>只在 POST 驗證</td><td>同一個動作也接受 GET，而驗證程式只對 POST 執行。攻擊者改用 GET 送出同樣的參數，就跳過了檢查。</td></tr>
+    <tr><td>沒有 token 就不驗證</td><td>程式寫成「有 <code>csrf</code> 參數才比對」。攻擊者把整個參數拿掉，請求就不經比對直接通過。</td></tr>
+    <tr><td>token 沒有綁定 Session</td><td>伺服器只檢查 token 是否在「曾經發出過的 token」清單裡，不檢查它屬於哪個 Session。攻擊者用自己的帳號取得一個有效 token，放進要讓受害者送出的請求裡。</td></tr>
+    <tr><td>token 綁在另一個 Cookie 上</td><td>token 對應的是一個不是 Session 的 Cookie，常見於 Session 與 CSRF 由兩套元件分別處理。攻擊者若有辦法在受害者的瀏覽器設定 Cookie，就能把自己的一組 Cookie 與 token 放進去。</td></tr>
+    <tr><td>只比對 Cookie 與參數是否相同</td><td>這種做法稱為 double submit：伺服器不記錄 token，只要請求參數等於某個 Cookie 的值就放行。攻擊者若能設定這個 Cookie，就能讓兩者都等於自己選的值。</td></tr>
+  </tbody>
+</table>
+<p>後兩種都需要攻擊者能在受害者瀏覽器上設定 Cookie。同一個網域下任何一個子網域的漏洞都可能提供這個能力，因為子網域可以設定作用於上層網域的 Cookie。</p>
+
+<h2 id="samesite"><span class="num">5.1.8</span> SameSite Cookie</h2>
+<p><code>SameSite</code> 是 Cookie 的屬性，讓瀏覽器在跨站請求時決定要不要附上這個 Cookie，處理的是第一個決定：</p>
+<table>
+  <thead><tr><th>值</th><th>跨站請求時</th></tr></thead>
+  <tbody>
+    <tr><td><code>Strict</code></td><td>一律不附上。從別的網站點連結進來，第一個頁面也看不到登入狀態。</td></tr>
+    <tr><td><code>Lax</code></td><td>只在頂層導覽（top-level navigation，網址列的頁面整個換掉）且方法是 GET 時附上，例如點連結進入。跨站的 POST 表單、iframe、圖片與 script 發出的請求都不附。</td></tr>
+    <tr><td><code>None</code></td><td>照傳統規則附上；必須同時設定 <code>Secure</code>，否則瀏覽器拒收。</td></tr>
+  </tbody>
+</table>
+<p>Cookie 沒有寫 <code>SameSite</code> 時，Chrome 從 2021 年起預設當成 <code>Lax</code>。其他主要瀏覽器沒有採用這個預設，所以網站要明確寫出這個屬性，不能依賴瀏覽器的預設值。Chrome 對沒寫屬性的 Cookie 另有一個相容例外：Cookie 剛設定後約兩分鐘內，跨站的頂層 POST 仍會附上它，好讓部分單一登入流程繼續運作。</p>
+<p><code>SameSite</code> 從瀏覽器端擋掉「Cookie 被帶上」這個條件，不需要改動表單。它的效力有幾個邊界：</p>
+<ul>
+  <li>Lax 與頂層 GET：<code>Lax</code> 允許跨站的頂層 GET 導覽帶 Cookie。伺服器若讓 GET 也能執行修改，攻擊者只要讓受害者的瀏覽器整頁導覽到那個網址，Cookie 就會附上。有些框架允許用一個參數覆寫請求方法（例如表單送的是 GET，參數聲稱自己是 POST），效果相同。</li>
+  <li>同一個 site 不受限制：<code>SameSite</code> 只管跨 site 的請求。<code>blog.example.com</code> 若有 XSS，從那裡發出的請求對 <code>shop.example.com</code> 是 same-site，<code>Strict</code> 也照樣附上 Cookie。</li>
+  <li>不是每個 Cookie 都有設定：網站為了避免 Lax 預設破壞既有功能，有時把所有 Cookie 一律設成 <code>None</code>，連 Session Cookie 也一起放寬。</li>
+</ul>
+<p>所以 <code>SameSite</code> 適合當第二道防線，和 CSRF token 一起用。token 不受 site 範圍影響，<code>SameSite</code> 則在 token 驗證有缺陷時仍能擋掉大部分跨站請求。</p>
+
+<h2 id="referer-check"><span class="num">5.1.9</span> 依 Referer 判斷來源</h2>
+<p>有些網站檢查 <code>Referer</code> 標頭（瀏覽器附上的「從哪個頁面來」，拼字照 HTTP 規範的歷史寫法），只接受來自自己網域的請求。<a href="../../identity/access-control/index.html#request-context">Access Control 的「依請求附帶資訊做的檢查」</a>已經看過，拿它做授權靠不住；拿它防 CSRF 也有類似的弱點：</p>
+<ul>
+  <li>標頭不一定存在。使用者的瀏覽器設定、隱私外掛或頁面的 <code>Referrer-Policy</code> 都可能讓它消失。網站為了不擋到正常使用者，常寫成「沒有 <code>Referer</code> 就放行」，而攻擊者的頁面可以用自己的 referrer policy 讓瀏覽器不送這個標頭。</li>
+  <li>比對寫得太寬。只檢查 <code>Referer</code> 是否「包含」或「以」商店網域開頭，攻擊者可以把商店網域放進自己網址的子網域名稱或查詢字串裡，讓檢查通過。</li>
+</ul>
+<p>同樣標示來源的 <code>Origin</code> 標頭比較可靠：瀏覽器在跨 origin 的 POST 等請求上會附上它，網頁無法偽造，內容只有協定、主機與連接埠。不過有些情況下它的值會是 <code>null</code> 或不存在，所以它適合當 token 之外的額外檢查，不適合單獨使用。</p>
+
+<h2 id="sop-cors"><span class="num">5.1.10</span> 誰能讀取回應</h2>
+<p>回到第三個決定。商店的帳號頁有一支 API，<code>GET /api/account</code>，回傳登入者的 email 與 API 金鑰。攻擊者的頁面可以用 JavaScript 對它發出請求，瀏覽器也可能附上 Cookie，但回應回來後，瀏覽器不會把內容交給 <code>attacker.example.net</code> 的程式。這是同源政策的預設。</p>
+<p>有時網站需要開放跨 origin 讀取，例如 <code>app.example.com</code> 的前端要呼叫 <code>api.example.com</code>。<strong>跨來源資源共用</strong>（cross-origin resource sharing，CORS）讓伺服器用回應標頭宣告「哪些 origin 可以讀這份回應」，瀏覽器據此放寬同源政策：</p>
+<pre data-lang="http"><code># 瀏覽器自動加上發起頁面的 origin
+GET /api/account HTTP/1.1
+Host: api.example.com
+Origin: https://app.example.com
+Cookie: session=DEMO123
+
+# 伺服器宣告這個 origin 可以讀，且可以是帶 Cookie 的請求
+HTTP/1.1 200 OK
+Access-Control-Allow-Origin: https://app.example.com
+Access-Control-Allow-Credentials: true
+Vary: Origin
+Content-Type: application/json</code></pre>
+<ul>
+  <li><code>Access-Control-Allow-Origin</code>（常縮寫 ACAO）：允許讀取的 origin。可以是一個完整的 origin，或 <code>*</code> 代表任何 origin。</li>
+  <li><code>Access-Control-Allow-Credentials: true</code>（ACAC）：允許「帶著 Cookie 的請求」的回應也被讀取。沒有它，跨 origin 的程式要嘛不帶 Cookie，要嘛帶了也讀不到回應。<code>*</code> 不能和它一起用：瀏覽器遇到 <code>Access-Control-Allow-Origin: *</code> 配上帶 Cookie 的請求，會拒絕交出回應。</li>
+  <li><code>Vary: Origin</code>：告訴快取這份回應依 <code>Origin</code> 而不同，避免把給某個 origin 的版本交給另一個 origin。</li>
+</ul>
+<p>請求的方法不是 GET、HEAD、POST，或帶了自訂標頭、表單以外的 <code>Content-Type</code> 時，瀏覽器會先送一個 <code>OPTIONS</code> 方法的預檢請求，詢問伺服器是否允許；伺服器回應允許後才送出正式請求。一般的 GET、表單格式的 POST 則不經預檢，直接送出，只在讀取回應時檢查 ACAO。所以 CORS 防不了 CSRF：CSRF 用的表單不會觸發預檢，請求照樣送到伺服器。</p>
+<p>CORS 只會放寬，不會收緊。沒有 CORS 標頭時，跨 origin 讀取本來就被擋；加上標頭，等於伺服器自己開了一扇門。設定錯誤的後果，就是門開給了不該進來的人。</p>
+
+<h2 id="cors-misconfig"><span class="num">5.1.11</span> CORS 設定錯誤</h2>
+<p>網站要允許好幾個 origin，而 ACAO 只能寫一個值，所以伺服器通常讀取請求的 <code>Origin</code>，判斷是否可信，再把它填進 ACAO。問題都出在「判斷是否可信」這一步：</p>
+
+<figure id="cors-reflection">
+  <svg viewBox="0 0 720 300" role="img" aria-labelledby="cors-reflection-t" style="color:var(--text)">
+    <title id="cors-reflection-t">三種情況的比較：正確設定下，可信來源得到相符的 ACAO 與 ACAC，回應交給頁面；其他來源得不到 ACAO，瀏覽器不交出回應；反射設定把任何 Origin 原樣填進 ACAO 並允許 credentials，攻擊者頁面讀到使用者的資料</title>
+    <g font-size="13" font-weight="700" fill="currentColor">
+      <text x="120" y="22">請求的 Origin</text>
+      <text x="340" y="22">伺服器回的標頭</text>
+      <text x="580" y="22">瀏覽器</text>
+    </g>
+    <g stroke="currentColor" stroke-width="1.2">
+      <rect x="10" y="36" width="700" height="76" rx="6" fill="var(--surface)"/>
+      <rect x="10" y="122" width="700" height="76" rx="6" fill="var(--surface)"/>
+      <rect x="10" y="208" width="700" height="76" rx="6" fill="var(--accent-soft)"/>
+    </g>
+    <g font-size="13" font-weight="700" fill="currentColor">
+      <text x="22" y="64">可信來源</text>
+      <text x="22" y="150">其他來源</text>
+      <text x="22" y="236">反射設定</text>
+    </g>
+    <g font-size="11" fill="currentColor" opacity=".75">
+      <text x="22" y="84">正確設定</text>
+      <text x="22" y="170">正確設定</text>
+      <text x="22" y="256">任何來源</text>
+    </g>
+    <g font-size="12" fill="currentColor">
+      <text x="120" y="64" style="font-family:var(--font-mono)">https://app.example.com</text>
+      <text x="120" y="150" style="font-family:var(--font-mono)">https://attacker.example.net</text>
+      <text x="120" y="236" style="font-family:var(--font-mono)">[攻擊者網站的 origin]</text>
+      <text x="340" y="64" style="font-family:var(--font-mono)">ACAO: https://app.example.com</text>
+      <text x="340" y="84" style="font-family:var(--font-mono)">ACAC: true</text>
+      <text x="340" y="150">（沒有 ACAO）</text>
+      <text x="340" y="236" style="font-family:var(--font-mono)">ACAO: [同一個 origin]</text>
+      <text x="340" y="256" style="font-family:var(--font-mono)">ACAC: true</text>
+    </g>
+    <g font-size="12" fill="currentColor">
+      <text x="580" y="64">交給頁面程式</text>
+      <text x="580" y="150">不交出回應</text>
+      <text x="580" y="236">攻擊者頁面讀到</text>
+      <text x="580" y="256">使用者的資料</text>
+    </g>
+  </svg>
+  <figcaption><span class="fig-num">圖 5.1.11-1</span> 同一支 API 對三種 Origin 的回應。反射設定讓任何網站都成了「可信來源」</figcaption>
+</figure>
+
+<h3>反射任意 Origin 並允許 credentials</h3>
+<p>最常見的錯誤是不做判斷，直接把收到的 <code>Origin</code> 原樣填回 ACAO，同時送出 <code>Access-Control-Allow-Credentials: true</code>。瀏覽器看到 ACAO 正好等於發起頁面的 origin，又允許 credentials，就把帶著使用者 Cookie 取得的回應交給那個頁面。結果和直接寫 <code>*</code> 一樣寬，卻繞過了瀏覽器對 <code>*</code> 加 credentials 的限制。</p>
+<p>受害者只要在登入狀態下打開攻擊者的頁面，頁面中的程式就能向 <code>/api/account</code> 發出帶 Cookie 的請求、讀到回應，再把 email 與 API 金鑰送回攻擊者的伺服器。和 CSRF 不同，這次攻擊者拿到了資料。</p>
+
+<h3>信任 null origin</h3>
+<p><code>Origin</code> 的值可能是字串 <code>null</code>：例如 sandbox 屬性的 iframe 內發出的請求、從 <code>file:</code> 開啟的本機檔案，以及某些跨 origin 的轉址之後。開發者在本機測試時看到 <code>null</code>，順手加進允許清單，就等於信任了任何能讓自己的請求帶上 <code>null</code> 的頁面。攻擊者的頁面把程式放進一個 sandbox iframe，就能做到。</p>
+
+<h3>白名單比對寫錯</h3>
+<p>允許清單用字串比對實作時，很容易寫得太寬：</p>
+<ul>
+  <li>只檢查結尾：「以 <code>example.com</code> 結尾就放行」，攻擊者註冊一個 <code>[結尾恰好是 example.com 的網域]</code>，例如在 <code>example.com</code> 前面接上別的字母組成的新網域，就能通過。</li>
+  <li>只檢查開頭：「以 <code>https://app.example.com</code> 開頭就放行」，攻擊者在後面接上自己的網域，組成一個以這段字串開頭、實際屬於攻擊者的主機名稱。</li>
+  <li>正規表示式裡的 <code>.</code> 沒有跳脫，會比對任何字元，或沒有錨定整個字串的頭尾。</li>
+</ul>
+
+<h3>信任所有子網域</h3>
+<p>「<code>example.com</code> 底下的任何子網域都可信」看起來合理，但只要其中一個子網域有 XSS，攻擊者的程式就能以那個子網域的 origin 發出請求、讀取回應。允許清單若連 <code>http://</code> 的子網域也信任，能竄改未加密流量的攻擊者（例如同一個公共 Wi-Fi 上的人）就能冒充那個 origin。CORS 的信任範圍有多大，攻擊面就有多大。</p>
+
+<h2 id="clickjacking"><span class="num">5.1.12</span> Clickjacking</h2>
+<p>還有第四種跨站能力：把別的網站整頁嵌進自己的頁面。攻擊者的頁面用 iframe 載入 <code>shop.example.com</code> 的帳號頁，把 iframe 設成透明，疊在一個誘餌按鈕上，例如「領取優惠」。使用者以為點的是誘餌，點擊落在透明 iframe 裡商店頁面的「刪除帳號」上。這稱為 <strong>clickjacking</strong>（點擊劫持）。</p>
+<p>CSRF token 擋不住它。iframe 裡是商店自己的頁面，表單裡有商店自己產生的有效 token，送出的請求和使用者在商店上親手操作完全相同。差別只在使用者看到的畫面被蓋住了。</p>
+<p>成立的條件是商店頁面允許被別的網站嵌入，而且 iframe 中的請求帶得到 Cookie。iframe 不是頂層導覽，Session Cookie 若為 <code>Lax</code> 或 <code>Strict</code>，或瀏覽器封鎖了第三方 Cookie，iframe 裡的商店頁面就是未登入狀態，攻擊無從進行。防禦是由伺服器宣告「誰可以嵌入我」：</p>
+<pre data-lang="http"><code>Content-Security-Policy: frame-ancestors 'self'
+X-Frame-Options: SAMEORIGIN</code></pre>
+<p><code>frame-ancestors</code> 是內容安全政策（Content Security Policy，CSP）的指令，列出可以把這個頁面放進 iframe 的 origin；<code>'self'</code> 只允許同 origin，<code>'none'</code> 則完全禁止。<code>X-Frame-Options</code> 是較舊的標頭，給不支援 <code>frame-ancestors</code> 的瀏覽器用。用 JavaScript 偵測自己是否被嵌入再跳出的寫法（frame busting）可以被 sandbox iframe 停用，不能取代這兩個標頭。</p>
+
+<h2 id="fix"><span class="num">5.1.13</span> 怎麼修補</h2>
+<h3>CSRF</h3>
+<p>依 <a href="https://cheatsheetseries.owasp.org/cheatsheets/Cross-Site_Request_Forgery_Prevention_Cheat_Sheet.html">OWASP Cross-Site Request Forgery Prevention Cheat Sheet</a>，主要防禦與縱深防禦分開來看：</p>
+<ul>
+  <li>使用框架內建的 CSRF 防護，不要自己寫。token 由密碼學安全的亂數產生、綁定 Session、在伺服器端比對；缺少或不符一律拒絕。</li>
+  <li>驗證套用到每一個會改變狀態的請求，不論方法。GET 只用來讀取，不讓任何修改經由 GET 完成，也不接受用參數覆寫方法。</li>
+  <li>Session Cookie 明確設定 <code>SameSite</code>，一般網站用 <code>Lax</code>，不需要從外站連入時保持登入的網站可用 <code>Strict</code>：<code>Set-Cookie: session=...; Secure; HttpOnly; SameSite=Lax</code>。</li>
+  <li>額外檢查請求的來源：比對 <code>Origin</code> 是否為自己的 origin，或檢查瀏覽器附上的 <code>Sec-Fetch-Site</code> 標頭，拒絕標示為 <code>cross-site</code> 的狀態變更請求。</li>
+  <li>修改密碼、email、付款資訊這類高風險動作，要求重新輸入密碼或第二因素。攻擊者不知道這些值，第三個條件自然不成立。</li>
+</ul>
+<h3>CORS</h3>
+<p>依 <a href="https://portswigger.net/web-security/cors">PortSwigger 的 CORS 說明</a>與 <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/CORS">MDN 的 CORS 指南</a>：</p>
+<ul>
+  <li>不需要跨 origin 讀取的端點，不要送任何 CORS 標頭。</li>
+  <li>需要時，維護一份完整 origin（協定、主機、連接埠）的允許清單，以整個字串相等比對；不用開頭、結尾或未錨定的正規表示式。</li>
+  <li>不把 <code>null</code> 放進允許清單，只允許 <code>https://</code> 的 origin。</li>
+  <li><code>Access-Control-Allow-Credentials: true</code> 只給確實需要帶 Cookie 的端點；回應依 <code>Origin</code> 變化時加上 <code>Vary: Origin</code>。</li>
+  <li>CORS 是瀏覽器端的讀取規則，不是存取控制。伺服器仍要對每個請求做身分驗證與授權。</li>
+</ul>
+<pre data-lang="python"><code># 允許清單以完整 origin 逐字比對
+ALLOWED_ORIGINS = {"https://app.example.com", "https://admin.example.com"}
+
+def add_cors_headers(request, response):
+    origin = request.headers.get("Origin")
+    response.headers["Vary"] = "Origin"
+    if origin in ALLOWED_ORIGINS:
+        response.headers["Access-Control-Allow-Origin"] = origin
+        response.headers["Access-Control-Allow-Credentials"] = "true"
+    # 不在清單上：不送 CORS 標頭，瀏覽器維持同源政策</code></pre>
+<h3>Clickjacking</h3>
+<p>所有頁面預設送出 <code>Content-Security-Policy: frame-ancestors 'self'</code>（或 <code>'none'</code>），需要被特定網站嵌入的頁面才明列那些 origin；同時送出 <code>X-Frame-Options</code> 照顧舊瀏覽器。Session Cookie 使用 <code>Lax</code> 或 <code>Strict</code> 也讓跨站 iframe 拿不到登入狀態。</p>
+
+<h2 id="summary"><span class="num">5.1.14</span> 小結</h2>
+<ul>
+  <li>瀏覽器依目標決定附不附 Cookie，不管請求由哪個網站的頁面發起；<code>HttpOnly</code> 只擋 JavaScript 讀取，不擋附帶。</li>
+  <li>Origin 比對協定、主機與連接埠，site 比對協定與可註冊網域；同一網域下的子網域是 same-site、cross-origin。同源政策以 origin 為單位限制讀取回應，<code>SameSite</code> 以 site 為單位限制附帶 Cookie。</li>
+  <li>CSRF 需要值得觸發的動作、只靠 Cookie 認人、所有參數可預測三者同時成立。CSRF token 讓參數不可預測，<code>SameSite</code> 讓 Cookie 不被帶上；token 要綁定 Session 並在所有方法上驗證，Lax 仍放行頂層 GET，同一個 site 的子網域不受 <code>SameSite</code> 限制。</li>
+  <li>CORS 只會放寬同源政策。反射任意 <code>Origin</code> 並允許 credentials、信任 <code>null</code>、以開頭或結尾比對允許清單，都讓攻擊者的頁面讀到使用者的資料；正確做法是完整 origin 的逐字比對。</li>
+  <li>Clickjacking 讓使用者在真頁面上點擊，token 擋不住；由伺服器用 <code>frame-ancestors</code> 與 <code>X-Frame-Options</code> 限制誰能嵌入。</li>
+</ul>
+<p>PortSwigger Academy 的對應練習（主題頁 <a href="https://portswigger.net/web-security/csrf">CSRF</a>、<a href="https://portswigger.net/web-security/cors">CORS</a>、<a href="https://portswigger.net/web-security/clickjacking">Clickjacking</a>），只在 Lab 或其他獲明確授權的系統上測試：</p>
+<ul>
+  <li><a href="https://portswigger.net/web-security/csrf/lab-no-defenses">CSRF vulnerability with no defenses</a>：對照三個條件，確認修改 email 的請求裡沒有攻擊者無法預測的值。</li>
+  <li><a href="https://portswigger.net/web-security/csrf/bypassing-token-validation/lab-token-validation-depends-on-request-method">CSRF where token validation depends on request method</a>：同一個動作換一種方法時，token 還有沒有被檢查。</li>
+  <li><a href="https://portswigger.net/web-security/csrf/bypassing-token-validation/lab-token-validation-depends-on-token-being-present">CSRF where token validation depends on token being present</a>：token 欄位整個不見時伺服器怎麼處理。</li>
+  <li><a href="https://portswigger.net/web-security/csrf/bypassing-token-validation/lab-token-not-tied-to-user-session">CSRF where token is not tied to user session</a>：用兩個帳號判斷 token 是否綁定 Session。</li>
+  <li><a href="https://portswigger.net/web-security/csrf/bypassing-samesite-restrictions/lab-samesite-lax-bypass-via-method-override">SameSite Lax bypass via method override</a>：Lax 放行的頂層 GET 與方法覆寫如何組合。</li>
+  <li><a href="https://portswigger.net/web-security/csrf/bypassing-referer-based-defenses/lab-referer-validation-depends-on-header-being-present">CSRF where Referer validation depends on header being present</a>：<code>Referer</code> 缺席時的處理方式。</li>
+  <li><a href="https://portswigger.net/web-security/cors/lab-basic-origin-reflection-attack">CORS vulnerability with basic origin reflection</a>：比較不同 <code>Origin</code> 得到的 ACAO 與 ACAC。</li>
+  <li><a href="https://portswigger.net/web-security/cors/lab-null-origin-whitelisted-attack">CORS vulnerability with trusted null origin</a>：允許清單裡的 <code>null</code> 會讓哪些頁面通過。</li>
+  <li><a href="https://portswigger.net/web-security/clickjacking/lab-basic-csrf-protected">Basic clickjacking with CSRF token protection</a>：頁面能否被嵌入，以及為什麼 token 在這裡沒有作用。</li>
+</ul>
+<p>到這裡，伺服器對一筆請求問過三件事：送出的人是誰，他有沒有權限，這是不是他的意思。三項都通過的請求仍可能不該執行：優惠券在已經套用過之後又套用一次，訂單在付款前就被標成已出貨，數量欄位填了負數。下一章的 <a href="../../logic-timing/business-logic/index.html">Business Logic Vulnerabilities</a> 看的是另一種檢查：在目前的業務狀態下，這個動作是否被允許，每一步都合法的請求組合起來是否仍然合理。</p>
+
+</article>
+<nav class="pager" aria-label="上下節"><a class="prev" href="../../identity/access-control/index.html"><small>← prev</small><span class="num">4.2</span> Access Control</a><a class="next" href="../../logic-timing/business-logic/index.html"><small>next →</small><span class="num">6.1</span> Business Logic Vulnerabilities</a></nav>
+</main>
+</div>
+<footer class="sm-status"><span class="sm-s-main">26 sections</span><span class="sm-s-list"><span class="sm-s-planned">規劃中 12</span> <span class="sm-s-draft">草稿 3</span> <span class="sm-s-ready">已完成 11</span></span><span class="sm-s-end">系統地圖</span></footer>
+<script src="../../assets/theme/theme.js?v=d288e31038"></script>
+</body>
+</html>

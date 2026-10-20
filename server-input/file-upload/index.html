@@ -1,0 +1,216 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>2.2 File Upload Vulnerabilities｜Web 安全</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Crect width='16' height='16' rx='3' fill='%23070c12'/%3E%3Crect x='1.5' y='1.5' width='13' height='13' rx='2.5' fill='none' stroke='%2336e0cc' stroke-width='1.4'/%3E%3Cpath d='M5 8 L11 5 M5 8 L11 11' stroke='%2336e0cc' stroke-width='1.2' fill='none'/%3E%3Ccircle cx='5' cy='8' r='1.6' fill='%2336e0cc'/%3E%3Ccircle cx='11' cy='5' r='1.6' fill='%2336e0cc'/%3E%3Ccircle cx='11' cy='11' r='1.6' fill='%2336e0cc'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="../../assets/style.css?v=d288e31038">
+<link rel="stylesheet" href="../../assets/theme/theme.css?v=d288e31038">
+<script>(function(){var m=null;try{m=localStorage.getItem("web-security:motion")}catch(e){}if(m!=="on"&&m!=="off"){m="on";try{if(matchMedia("(prefers-reduced-motion: reduce)").matches)m="off"}catch(e){}}document.documentElement.setAttribute("data-motion",m)})()</script>
+</head>
+<body class="page-section sm-body">
+<a class="skip" href="#main">跳到正文</a>
+<header class="sm-top"><a class="sm-brand" href="../../index.html"><svg class="sm-logo" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><rect x="1" y="1" width="14" height="14" rx="3" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M5 8 L11 5 M5 8 L11 11" stroke="currentColor" stroke-width="1.3" fill="none"/><circle cx="5" cy="8" r="1.7" fill="currentColor"/><circle cx="11" cy="5" r="1.7" fill="currentColor"/><circle cx="11" cy="11" r="1.7" fill="currentColor"/></svg><span class="sm-brand-t">web-security</span></a><nav class="sm-path" aria-label="目前位置"><ol><li class="sm-p-root"><a href="../../index.html">web-security</a></li><li class="sm-p-ch split"><a href="../../server-input/index.html">2<span class="sm-p-title">&nbsp;伺服器如何處理使用者輸入</span></a></li><li class=""><span aria-current="page">2.2</span></li></ol></nav><a class="sm-toplink" href="../../index.html#map">map</a><a class="sm-toplink" href="../../chapters/index.html">chapters</a><button type="button" class="sm-toplink sm-motion" aria-pressed="true" hidden>動畫：開</button></header>
+<div class="sm-shell">
+<nav class="sm-tree" aria-label="教材瀏覽器"><details class="sm-tree-wrap" open><summary class="sm-tree-sum">EXPLORER／教材目錄</summary><p class="sm-tree-h" aria-hidden="true">EXPLORER</p><details class="sm-partd" open><summary class="sm-part">第一部分：輸入如何穿過網站</summary><details class="sm-folder"><summary><a class="sm-chlink" href="../../web-http/index.html" title="第 1 章 Web 與 HTTP"><span class="num">1</span><span class="sm-fname">Web 與 HTTP</span></a></summary><div class="sm-files"><a class="sm-file" href="../../web-http/web-basics/index.html" title="1.1 Seeing the Web Through the Browser"><span class="num">1.1</span><span class="sm-fname">Seeing the Web Through the Browser</span><span class="sm-st sm-st-ready" aria-hidden="true"></span><span class="sm-sr">（已完成）</span></a><a class="sm-file" href="../../web-http/http-session/index.html" title="1.2 HTTP Requests and Sessions"><span class="num">1.2</span><span class="sm-fname">HTTP Requests and Sessions</span><span class="sm-st sm-st-ready" aria-hidden="true"></span><span class="sm-sr">（已完成）</span></a></div></details><details class="sm-folder" open><summary><a class="sm-chlink" href="../../server-input/index.html" title="第 2 章 伺服器如何處理使用者輸入"><span class="num">2</span><span class="sm-fname">伺服器如何處理使用者輸入</span></a></summary><div class="sm-files"><a class="sm-file" href="../../server-input/path-traversal/index.html" title="2.1 Path Traversal"><span class="num">2.1</span><span class="sm-fname">Path Traversal</span><span class="sm-st sm-st-ready" aria-hidden="true"></span><span class="sm-sr">（已完成）</span></a><a class="sm-file" href="../../server-input/file-upload/index.html" aria-current="page" title="2.2 File Upload Vulnerabilities"><span class="num">2.2</span><span class="sm-fname">File Upload Vulnerabilities</span><span class="sm-st sm-st-ready" aria-hidden="true"></span><span class="sm-sr">（已完成）</span></a><a class="sm-file" href="../../server-input/sql-injection/index.html" title="2.3 SQL Injection Basics"><span class="num">2.3</span><span class="sm-fname">SQL Injection Basics</span><span class="sm-st sm-st-ready" aria-hidden="true"></span><span class="sm-sr">（已完成）</span></a><a class="sm-file" href="../../server-input/sql-injection-observation/index.html" title="2.4 UNION and Blind SQL Injection"><span class="num">2.4</span><span class="sm-fname">UNION and Blind SQL Injection</span><span class="sm-st sm-st-ready" aria-hidden="true"></span><span class="sm-sr">（已完成）</span></a><a class="sm-file" href="../../server-input/command-injection/index.html" title="2.5 OS Command Injection"><span class="num">2.5</span><span class="sm-fname">OS Command Injection</span><span class="sm-st sm-st-ready" aria-hidden="true"></span><span class="sm-sr">（已完成）</span></a></div></details><details class="sm-folder"><summary><a class="sm-chlink" href="../../browser-output/index.html" title="第 3 章 伺服器的輸出如何在瀏覽器中變成程式"><span class="num">3</span><span class="sm-fname">伺服器的輸出如何在瀏覽器中變成程式</span></a></summary><div class="sm-files"><a class="sm-file" href="../../browser-output/xss-basics/index.html" title="3.1 Cross-Site Scripting Basics"><span class="num">3.1</span><span class="sm-fname">Cross-Site Scripting Basics</span><span class="sm-st sm-st-ready" aria-hidden="true"></span><span class="sm-sr">（已完成）</span></a><a class="sm-file" href="../../browser-output/xss-context-dom/index.html" title="3.2 Output Contexts and DOM-Based XSS"><span class="num">3.2</span><span class="sm-fname">Output Contexts and DOM-Based XSS</span><span class="sm-st sm-st-ready" aria-hidden="true"></span><span class="sm-sr">（已完成）</span></a></div></details><details class="sm-folder"><summary><a class="sm-chlink" href="../../identity/index.html" title="第 4 章 網站如何知道你是誰、允許你做什麼"><span class="num">4</span><span class="sm-fname">網站如何知道你是誰、允許你做什麼</span></a></summary><div class="sm-files"><a class="sm-file" href="../../identity/authentication/index.html" title="4.1 Authentication"><span class="num">4.1</span><span class="sm-fname">Authentication</span><span class="sm-st sm-st-ready" aria-hidden="true"></span><span class="sm-sr">（已完成）</span></a><a class="sm-file" href="../../identity/access-control/index.html" title="4.2 Access Control"><span class="num">4.2</span><span class="sm-fname">Access Control</span><span class="sm-st sm-st-ready" aria-hidden="true"></span><span class="sm-sr">（已完成）</span></a></div></details><details class="sm-folder"><summary><a class="sm-chlink" href="../../cross-site/index.html" title="第 5 章 網站之間如何利用瀏覽器的信任"><span class="num">5</span><span class="sm-fname">網站之間如何利用瀏覽器的信任</span></a></summary><div class="sm-files"><a class="sm-file" href="../../cross-site/cross-site-trust/index.html" title="5.1 CSRF, CORS, and Cross-Site Trust"><span class="num">5.1</span><span class="sm-fname">CSRF, CORS, and Cross-Site Trust</span><span class="sm-st sm-st-draft" aria-hidden="true"></span><span class="sm-sr">（草稿）</span></a></div></details><details class="sm-folder"><summary><a class="sm-chlink" href="../../logic-timing/index.html" title="第 6 章 問題藏在流程與時間裡"><span class="num">6</span><span class="sm-fname">問題藏在流程與時間裡</span></a></summary><div class="sm-files"><a class="sm-file" href="../../logic-timing/business-logic/index.html" title="6.1 Business Logic Vulnerabilities"><span class="num">6.1</span><span class="sm-fname">Business Logic Vulnerabilities</span><span class="sm-st sm-st-draft" aria-hidden="true"></span><span class="sm-sr">（草稿）</span></a><a class="sm-file" href="../../logic-timing/race-conditions/index.html" title="6.2 Race Conditions"><span class="num">6.2</span><span class="sm-fname">Race Conditions</span><span class="sm-st sm-st-draft" aria-hidden="true"></span><span class="sm-sr">（草稿）</span></a></div></details></details><details class="sm-partd" open><summary class="sm-part">第二部分：多元件系統的信任邊界</summary><details class="sm-folder"><summary><a class="sm-chlink" href="../../server-actions/index.html" title="第 7 章 伺服器把資料交給其他元件之後"><span class="num">7</span><span class="sm-fname">伺服器把資料交給其他元件之後</span></a></summary><div class="sm-files"><a class="sm-file is-planned" href="../../server-actions/ssrf/index.html" title="7.1 Server-Side Request Forgery"><span class="num">7.1</span><span class="sm-fname">Server-Side Request Forgery</span><span class="sm-st sm-st-planned" aria-hidden="true"></span><span class="sm-sr">（規劃中）</span></a><a class="sm-file is-planned" href="../../server-actions/xxe/index.html" title="7.2 XML External Entity Injection"><span class="num">7.2</span><span class="sm-fname">XML External Entity Injection</span><span class="sm-st sm-st-planned" aria-hidden="true"></span><span class="sm-sr">（規劃中）</span></a><a class="sm-file is-planned" href="../../server-actions/ssti/index.html" title="7.3 Server-Side Template Injection"><span class="num">7.3</span><span class="sm-fname">Server-Side Template Injection</span><span class="sm-st sm-st-planned" aria-hidden="true"></span><span class="sm-sr">（規劃中）</span></a><a class="sm-file is-planned" href="../../server-actions/deserialization/index.html" title="7.4 Insecure Deserialization"><span class="num">7.4</span><span class="sm-fname">Insecure Deserialization</span><span class="sm-st sm-st-planned" aria-hidden="true"></span><span class="sm-sr">（規劃中）</span></a><a class="sm-file is-planned" href="../../server-actions/prototype-pollution/index.html" title="7.5 Prototype Pollution"><span class="num">7.5</span><span class="sm-fname">Prototype Pollution</span><span class="sm-st sm-st-planned" aria-hidden="true"></span><span class="sm-sr">（規劃中）</span></a></div></details><details class="sm-folder"><summary><a class="sm-chlink" href="../../apis/index.html" title="第 8 章 網站變成 API 之後"><span class="num">8</span><span class="sm-fname">網站變成 API 之後</span></a></summary><div class="sm-files"><a class="sm-file is-planned" href="../../apis/api-testing/index.html" title="8.1 API Attack Surface"><span class="num">8.1</span><span class="sm-fname">API Attack Surface</span><span class="sm-st sm-st-planned" aria-hidden="true"></span><span class="sm-sr">（規劃中）</span></a><a class="sm-file is-planned" href="../../apis/graphql-websockets/index.html" title="8.2 GraphQL and WebSockets"><span class="num">8.2</span><span class="sm-fname">GraphQL and WebSockets</span><span class="sm-st sm-st-planned" aria-hidden="true"></span><span class="sm-sr">（規劃中）</span></a></div></details><details class="sm-folder"><summary><a class="sm-chlink" href="../../delegated-identity/index.html" title="第 9 章 身分跨越網站與元件之後"><span class="num">9</span><span class="sm-fname">身分跨越網站與元件之後</span></a></summary><div class="sm-files"><a class="sm-file is-planned" href="../../delegated-identity/jwt/index.html" title="9.1 JSON Web Tokens"><span class="num">9.1</span><span class="sm-fname">JSON Web Tokens</span><span class="sm-st sm-st-planned" aria-hidden="true"></span><span class="sm-sr">（規劃中）</span></a><a class="sm-file is-planned" href="../../delegated-identity/oauth/index.html" title="9.2 OAuth and Third-Party Login"><span class="num">9.2</span><span class="sm-fname">OAuth and Third-Party Login</span><span class="sm-st sm-st-planned" aria-hidden="true"></span><span class="sm-sr">（規劃中）</span></a></div></details><details class="sm-folder"><summary><a class="sm-chlink" href="../../proxy-cache/index.html" title="第 10 章 Proxy、Cache 與後端看到的不一樣"><span class="num">10</span><span class="sm-fname">Proxy、Cache 與後端看到的不一樣</span></a></summary><div class="sm-files"><a class="sm-file is-planned" href="../../proxy-cache/host-cache/index.html" title="10.1 Host Headers and Web Caches"><span class="num">10.1</span><span class="sm-fname">Host Headers and Web Caches</span><span class="sm-st sm-st-planned" aria-hidden="true"></span><span class="sm-sr">（規劃中）</span></a><a class="sm-file is-planned" href="../../proxy-cache/request-smuggling/index.html" title="10.2 HTTP Request Smuggling"><span class="num">10.2</span><span class="sm-fname">HTTP Request Smuggling</span><span class="sm-st sm-st-planned" aria-hidden="true"></span><span class="sm-sr">（規劃中）</span></a></div></details><details class="sm-folder"><summary><a class="sm-chlink" href="../../llm/index.html" title="第 11 章 把信任模型套到新元件：Web LLM"><span class="num">11</span><span class="sm-fname">把信任模型套到新元件：Web LLM</span></a></summary><div class="sm-files"><a class="sm-file is-planned" href="../../llm/llm-attacks/index.html" title="11.1 Web LLM Attacks"><span class="num">11.1</span><span class="sm-fname">Web LLM Attacks</span><span class="sm-st sm-st-planned" aria-hidden="true"></span><span class="sm-sr">（規劃中）</span></a></div></details></details></details></nav>
+<header class="sm-head">
+  <p class="sm-eyebrow">server-input/file-upload</p>
+  <h1><span class="num">2.2</span> File Upload Vulnerabilities <span class="badge badge-ready">已完成</span></h1>
+  <p class="question sm-q"><span aria-hidden="true">❯</span> 如果輸入不是文字，而是一整個檔案呢？</p>
+</header>
+<aside class="sm-aside" aria-label="本節輔助"><nav class="sm-outline" aria-label="本節內容"><p class="sm-ph">本節內容</p><ol><li><a href="#upload-model" title="2.2.1 檔名、類型標籤與內容"><span class="num">2.2.1</span>檔名、類型標籤與內容</a></li><li><a href="#multipart" title="2.2.2 上傳請求的結構"><span class="num">2.2.2</span>上傳請求的結構</a></li><li><a href="#storage-and-handlers" title="2.2.3 取回時由誰解讀"><span class="num">2.2.3</span>取回時由誰解讀</a></li><li><a href="#worked-example" title="2.2.4 追蹤一次頭像上傳"><span class="num">2.2.4</span>追蹤一次頭像上傳</a></li><li><a href="#evidence-and-limits" title="2.2.5 從取回結果下結論"><span class="num">2.2.5</span>從取回結果下結論</a></li><li><a href="#failed-defences" title="2.2.6 單獨不夠的防禦"><span class="num">2.2.6</span>單獨不夠的防禦</a></li><li><a href="#fix" title="2.2.7 怎麼修補"><span class="num">2.2.7</span>怎麼修補</a></li><li><a href="#summary" title="2.2.8 小結"><span class="num">2.2.8</span>小結</a></li></ol></nav><section class="sm-locator" aria-label="系統地圖定位"><p class="sm-ph">系統地圖</p><a class="sm-mini-link" href="../../index.html#map-server-input" aria-label="在首頁的系統地圖上看第 2 章的位置"><svg class="sm-map sm-map-mini" viewBox="206 0 794 566" aria-hidden="true" focusable="false" preserveAspectRatio="xMidYMid meet" style="aspect-ratio:794/566"><line class="sm-edge" x1="200" y1="330" x2="290" y2="330"/><line class="sm-edge sm-dash" x1="440" y1="330" x2="530" y2="330"/><line class="sm-edge sm-threat-edge" x1="110" y1="100" x2="110" y2="255"/><line class="sm-edge sm-dash" x1="625" y1="100" x2="625" y2="150"/><line class="sm-edge" x1="625" y1="546" x2="625" y2="570"/><line class="sm-edge" x1="720" y1="325" x2="765" y2="325"/><line class="sm-edge" x1="765" y1="325" x2="765" y2="48"/><line class="sm-edge sm-dash" x1="765" y1="325" x2="765" y2="538"/><line class="sm-edge" x1="765" y1="48" x2="810" y2="48"/><line class="sm-edge" x1="765" y1="118" x2="810" y2="118"/><line class="sm-edge" x1="765" y1="188" x2="810" y2="188"/><line class="sm-edge sm-dash" x1="765" y1="328" x2="810" y2="328"/><line class="sm-edge sm-dash" x1="765" y1="398" x2="810" y2="398"/><line class="sm-edge sm-dash" x1="765" y1="468" x2="810" y2="468"/><line class="sm-edge sm-dash" x1="765" y1="538" x2="810" y2="538"/><g class="sm-n sm-threat off" data-ch="cross-site"><rect class="sm-box" x="20" y="20" width="180" height="80" rx="8"/><text class="sm-mini-t" x="110.0" y="62.0" text-anchor="middle" dominant-baseline="central" font-size="56">5</text></g><g class="sm-n sm-frame off" data-ch="web-http"><rect class="sm-box" x="20" y="255" width="180" height="150" rx="10"/><text class="sm-mini-t" x="50" y="285" text-anchor="middle" dominant-baseline="central" font-size="48">1</text></g><g class="sm-n sm-node off" data-ch="browser-output"><rect class="sm-box" x="36" y="322" width="148" height="64" rx="8"/><text class="sm-mini-t" x="110.0" y="356.0" text-anchor="middle" dominant-baseline="central" font-size="51">3</text></g><g class="sm-n sm-node sm-p2 off" data-ch="proxy-cache"><rect class="sm-box" x="290" y="240" width="150" height="180" rx="8"/><text class="sm-mini-t" x="365.0" y="332.0" text-anchor="middle" dominant-baseline="central" font-size="56">10</text></g><g class="sm-n sm-frame" aria-hidden="true"><rect class="sm-box" x="530" y="150" width="190" height="396" rx="10"/></g><g class="sm-n sm-node off" data-ch="identity"><rect class="sm-box" x="546" y="194" width="158" height="56" rx="8"/><text class="sm-mini-t" x="625.0" y="224.0" text-anchor="middle" dominant-baseline="central" font-size="45">4</text></g><g class="sm-n sm-node sm-p2 off" data-ch="apis"><rect class="sm-box" x="546" y="262" width="158" height="56" rx="8"/><text class="sm-mini-t" x="625.0" y="292.0" text-anchor="middle" dominant-baseline="central" font-size="45">8</text></g><g class="sm-n sm-node sm-p2 off" data-ch="llm"><rect class="sm-box" x="546" y="330" width="158" height="56" rx="8"/><text class="sm-mini-t" x="625.0" y="360.0" text-anchor="middle" dominant-baseline="central" font-size="45">11</text></g><g class="sm-n sm-node off" data-ch="logic-timing"><rect class="sm-box" x="546" y="398" width="158" height="56" rx="8"/><text class="sm-mini-t" x="625.0" y="428.0" text-anchor="middle" dominant-baseline="central" font-size="45">6</text></g><g class="sm-n sm-node sm-p2 off" data-ch="server-actions"><rect class="sm-box" x="546" y="466" width="158" height="56" rx="8"/><text class="sm-mini-t" x="625.0" y="496.0" text-anchor="middle" dominant-baseline="central" font-size="45">7</text></g><g class="sm-n sm-node sm-p2 off" data-ch="delegated-identity"><rect class="sm-box" x="530" y="20" width="190" height="80" rx="8"/><text class="sm-mini-t" x="625.0" y="62.0" text-anchor="middle" dominant-baseline="central" font-size="56">9</text></g><g class="sm-n sm-node off" data-ch="logic-timing"><rect class="sm-box" x="530" y="570" width="190" height="56" rx="8"/><text class="sm-mini-t" x="625.0" y="600.0" text-anchor="middle" dominant-baseline="central" font-size="45">6</text></g><g class="sm-n sm-node on" data-ch="server-input"><rect class="sm-box" x="810" y="20" width="170" height="56" rx="8"/><text class="sm-mini-t" x="895.0" y="50.0" text-anchor="middle" dominant-baseline="central" font-size="45">2</text></g><g class="sm-n sm-node on" data-ch="server-input"><rect class="sm-box" x="810" y="90" width="170" height="56" rx="8"/><text class="sm-mini-t" x="895.0" y="120.0" text-anchor="middle" dominant-baseline="central" font-size="45">2</text></g><g class="sm-n sm-node on" data-ch="server-input"><rect class="sm-box" x="810" y="160" width="170" height="56" rx="8"/><text class="sm-mini-t" x="895.0" y="190.0" text-anchor="middle" dominant-baseline="central" font-size="45">2</text></g><g class="sm-n sm-node sm-p2 off" data-ch="server-actions"><rect class="sm-box" x="810" y="300" width="170" height="56" rx="8"/><text class="sm-mini-t" x="895.0" y="330.0" text-anchor="middle" dominant-baseline="central" font-size="45">7</text></g><g class="sm-n sm-node sm-p2 off" data-ch="server-actions"><rect class="sm-box" x="810" y="370" width="170" height="56" rx="8"/><text class="sm-mini-t" x="895.0" y="400.0" text-anchor="middle" dominant-baseline="central" font-size="45">7</text></g><g class="sm-n sm-node sm-p2 off" data-ch="server-actions"><rect class="sm-box" x="810" y="440" width="170" height="56" rx="8"/><text class="sm-mini-t" x="895.0" y="470.0" text-anchor="middle" dominant-baseline="central" font-size="45">7</text></g><g class="sm-n sm-node sm-p2 off" data-ch="server-actions"><rect class="sm-box" x="810" y="510" width="170" height="56" rx="8"/><text class="sm-mini-t" x="895.0" y="540.0" text-anchor="middle" dominant-baseline="central" font-size="45">7</text></g><g class="sm-n sm-pill off" data-ch="web-http"><rect class="sm-pill-box" x="213" y="306" width="64" height="48" rx="24"/><text class="sm-mini-t" x="245" y="332" text-anchor="middle" dominant-baseline="central" font-size="38">1</text></g><g class="sm-n sm-pill off" data-ch="web-http"><rect class="sm-pill-box" x="453" y="306" width="64" height="48" rx="24"/><text class="sm-mini-t" x="485" y="332" text-anchor="middle" dominant-baseline="central" font-size="38">1</text></g><g class="sm-n sm-pill off" data-ch="cross-site"><rect class="sm-pill-box" x="78" y="153" width="64" height="48" rx="24"/><text class="sm-mini-t" x="110" y="179" text-anchor="middle" dominant-baseline="central" font-size="38">5</text></g><g class="sm-n sm-pill off" data-ch="delegated-identity"><rect class="sm-pill-box" x="593" y="101" width="64" height="48" rx="24"/><text class="sm-mini-t" x="625" y="127" text-anchor="middle" dominant-baseline="central" font-size="38">9</text></g></svg></a><p class="sm-cap">位置：第 2 章　伺服器如何處理使用者輸入</p><ul class="sm-chips sm-comps" aria-label="本章元件"><li>File system</li><li>Database</li><li>Shell</li></ul><p class="sm-mini-hint">點地圖：到首頁地圖看這一章</p></section></aside>
+<main id="main" class="sm-doc" tabindex="-1">
+<article class="content sm-article">
+<p>設定個人頭像時，你選一張圖片、按下上傳，頁面就換成新照片。看起來只有一個動作，網站卻至少做了兩件事：先接收並儲存檔案，再讓瀏覽器用另一筆請求把圖片取回。送來的若是一份程式，網站會把它當資料保存還是拿去執行，要看整條處理流程。</p>
+<p>上一節 <a href="../path-traversal/index.html">Path Traversal</a> 追蹤的是一段檔名怎麼決定伺服器讀哪個檔案，這裡的輸入是整個檔案，要問的是它存到哪裡、之後由誰接手處理。網站接受了上傳、檔案能被取回、檔案內容被當成程式執行，三者各需要不同的證據。</p>
+
+<h2 id="upload-model"><span class="num">2.2.1</span> 檔名、類型標籤與內容</h2>
+<p>檔案的內容是一串<strong>位元組</strong>（bytes），即電腦實際儲存的資料。圖片有圖片格式規定的內容；純文字檔則保存文字。檔名是用來稱呼檔案的名字，最後的 <code>.jpg</code> 或 <code>.php</code> 叫<strong>副檔名</strong>（extension）。把文字檔改名成 <code>demo.jpg</code>，裡面的文字不會因此變成 JPEG 圖片。</p>
+<p>上傳時還會有一個內容類型標籤，例如 <code>image/jpeg</code>。這種描述內容種類的標籤稱為 <strong>MIME 類型</strong>（Multipurpose Internet Mail Extensions）。在請求裡，<code>Content-Type</code> 標頭用它描述內容。不過檔案 part 中的標籤只是用戶端送來的聲明，伺服器並沒有因此檢驗過內容。</p>
+<p>用戶端（client）就是發出請求的一方，平常是瀏覽器，也可能是能自行組出 HTTP 請求的工具。正常的檔案選擇視窗即使只讓你挑圖片，對方仍可能送出別的請求，所以「介面只讓選圖片」不能代替伺服器端的檢查。</p>
+
+<h2 id="multipart"><span class="num">2.2.2</span> 上傳請求的結構</h2>
+<p>回顧 HTTP 的 header（標頭）與 body（內文）：上傳檔案通常把檔案放在 body。當同一個表單還有文字欄位時，常用 <code>multipart/form-data</code>，意思是把 body 分成多個部分（part），每個部分代表一個欄位。<strong>boundary</strong> 是分隔這些部分的字串；外層標頭宣告字串，body 則用它標出每個部分的開始與整份內容的結束。</p>
+<p>例如一個表單有暱稱 <code>display_name</code> 與頭像 <code>avatar</code> 兩個欄位。圖片位元組用說明文字代替，長度等標頭也沒有列出，但 multipart 的各部分、空行與結束分隔線都有展開。HTTP/1.1 的標頭行與分隔線以 CRLF（回車加換行）結尾，畫面上的換行只用來表達結構。</p>
+<pre data-lang="http"><code>POST /demo/profile/avatar HTTP/1.1
+Host: example.com
+Cookie: demo_session=demo-only
+Content-Type: multipart/form-data; boundary=DemoUploadBoundary
+
+--DemoUploadBoundary
+Content-Disposition: form-data; name="display_name"
+
+demo-reader
+--DemoUploadBoundary
+Content-Disposition: form-data; name="avatar"; filename="demo-portrait.jpg"
+Content-Type: image/jpeg
+
+[此處省略真正的 JPEG 圖片位元組]
+--DemoUploadBoundary--</code></pre>
+<ul>
+  <li>最上面的 <code>Content-Type: multipart/form-data</code> 描述整個 body 的包裝方式，整個請求並不是一張圖片。<code>boundary=DemoUploadBoundary</code> 宣告分隔字串；body 裡每條分隔線在它前面加 <code>--</code>，最後一條再在末端加 <code>--</code>。</li>
+  <li><code>Content-Disposition: form-data</code> 說明這部分是一個表單欄位；<code>name="avatar"</code> 是欄位名，讓接收程式知道它是哪一格。<code>filename="demo-portrait.jpg"</code> 是用戶端提供的原檔名，兩者用途不同。</li>
+  <li>檔案部分自己的 <code>Content-Type: image/jpeg</code> 只描述那一部分的宣稱類型。它與外層的 Content-Type 位於不同層。</li>
+  <li>每組標頭後面的空行把標頭與內容分開；圖片的實際內容在檔案 part 的空行後面，不在檔名裡。</li>
+</ul>
+<p>分隔字串不能與內容中的分隔線衝突，一般由瀏覽器或工具替你產生。表單欄位名、檔名、類型標籤與內容全都來自用戶端，伺服器應檢查預期欄位、拒絕不合規的內容，不能把這些值當成可信的保證。完整格式可參考 <a href="https://www.rfc-editor.org/rfc/rfc7578.html">RFC 7578</a>。</p>
+
+<figure id="multipart-layers">
+  <svg viewBox="0 0 640 340" role="img" aria-labelledby="multipart-layers-t" style="color:var(--text)">
+    <title id="multipart-layers-t">外層 multipart 包裝包含文字與檔案兩部分；檔案部分又有欄位名、檔名、類型聲明與實際內容</title>
+    <rect x="12" y="12" width="616" height="316" rx="8" fill="var(--surface)" stroke="currentColor"/>
+    <text x="28" y="40" font-size="15" fill="currentColor">外層：multipart/form-data + boundary</text>
+    <rect x="28" y="58" width="584" height="66" rx="6" fill="var(--accent-soft)" stroke="currentColor"/>
+    <g fill="currentColor" font-size="14">
+      <text x="44" y="83">文字 part：name="display_name"</text>
+      <text x="44" y="107">空行後的內容：demo-reader</text>
+    </g>
+    <path d="M28 141 H612" stroke="currentColor" stroke-dasharray="5 4"/>
+    <text x="42" y="160" fill="currentColor" font-size="12">boundary 分開欄位，不負責判斷內容安全</text>
+    <rect x="28" y="174" width="584" height="112" rx="6" fill="var(--accent-soft)" stroke="currentColor"/>
+    <g fill="currentColor" font-size="14">
+      <text x="44" y="198">檔案 part：name="avatar"；filename="demo-portrait.jpg"</text>
+      <text x="44" y="224">類型聲明：Content-Type: image/jpeg</text>
+      <text x="44" y="254">空行後：實際的檔案位元組</text>
+      <text x="44" y="276" font-size="12">檔名、標籤與位元組均由用戶端提供，必須分開檢查</text>
+    </g>
+    <text x="28" y="310" fill="currentColor" font-size="13">結束分隔線：--DemoUploadBoundary--</text>
+  </svg>
+  <figcaption><span class="fig-num">圖 2.2.2-1</span> 外層包裝和檔案類型位於不同層，看到 image/jpeg 不能就信任內容</figcaption>
+</figure>
+
+<h2 id="storage-and-handlers"><span class="num">2.2.3</span> 取回時由誰解讀</h2>
+<p>接收上傳的程式先驗證輸入，再選一個儲存位置，把檔案寫入。之後，瀏覽器可能用另一筆 GET 請求取回檔案。負責處理這筆請求的元件叫<strong>處理器</strong>（handler）：有的只把檔案當靜態資料送出，有的把檔案交給程式語言執行，再把執行產生的內容送出。哪一種處理器接手，要看網站的路由、伺服器設定與執行環境。</p>
+<p>以 PHP 為例，它是一種常用於伺服器的程式語言。在設定了相應 PHP 處理器的路徑中，請求某份 PHP 檔案可能使它被執行；在沒有這種設定的儲存服務中，同樣的檔案可能只會被下載，或遭拒絕。所以 <code>.php</code> 檔不會在任何網站上都自動執行。</p>
+<p>常見的對應方式，是依請求的 URL 路徑、對應的檔案位置或副檔名選擇處理器，不一定先查看檔案內容。<a href="https://httpd.apache.org/docs/2.4/handler.html">Apache 的處理器說明</a>就區分依副檔名與依位置設定的方式。所以同一份內容放在不同目錄，可能得到不同處理。要確認的是上傳目錄有沒有沿用應用程式的執行設定，或另有禁止執行的設定。</p>
+<p>有些伺服器還支援目錄層級的設定檔，例如 Apache 的 <code>.htaccess</code>，可在管理者允許的範圍內改變該目錄及子目錄的行為。它是否生效取決於主設定，並非每台伺服器都會讀取；詳見 <a href="https://httpd.apache.org/docs/2.4/howto/htaccess.html">Apache 目錄設定說明</a>。所以上傳功能也必須避免讓使用者提供的檔案成為有效的伺服器設定。</p>
+<p>檔名如何比對還受平台影響：Windows 的常見檔案存取環境預設不區分大小寫，許多 Unix 環境則會區分；Windows 對名稱末端空白與句點的處理也有介面限制。具體行為取決於檔案系統、呼叫介面與設定，某個平台上的結果不能直接套到另一個平台。<a href="https://learn.microsoft.com/en-us/windows/win32/fileio/naming-a-file">Microsoft 的檔案命名規則</a>說明了這些限制。驗證檔名的程式與最後選處理器的元件若採不同規則，只擋少數名稱就可能漏掉實際被當成程式處理的檔案。</p>
+<p><strong>檔案上傳漏洞</strong>（file upload vulnerability）發生在網站對可接受內容、儲存位置或後續用途的控制不足時。其中一條危險路徑是：原本只應接受頭像的功能，讓使用者提供的程式進入可執行區域，後續請求又把它交給執行器。這時資料跨過了「儲存內容」與「伺服器程式」的界線。</p>
+<p><a href="../path-traversal/index.html">Path Traversal</a> 區分過 URL 路徑與磁碟路徑，上傳也一樣。公開網址 <code>/demo/media/demo-image.jpg</code> 可能對應到磁碟的 <code>/srv/demo-upload/demo-image.jpg</code>，也可能由程式從別的儲存服務取回。光看網址推不出磁碟位置，也不能假定伺服器保留了上傳時的檔名。</p>
+
+<figure id="upload-retrieval-flow">
+  <svg viewBox="0 0 640 300" role="img" aria-labelledby="upload-retrieval-flow-t" style="color:var(--text)">
+    <title id="upload-retrieval-flow-t">第一筆 POST 驗證並儲存檔案，第二筆 GET 選取回處理器；儲存成功不是執行證據</title>
+    <defs><marker id="fu-flow-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="currentColor"/></marker></defs>
+    <g fill="var(--surface)" stroke="currentColor">
+      <rect x="12" y="40" width="152" height="58" rx="6"/><rect x="244" y="40" width="152" height="58" rx="6"/><rect x="476" y="40" width="152" height="58" rx="6"/>
+      <rect x="12" y="170" width="152" height="58" rx="6"/><rect x="244" y="170" width="152" height="58" rx="6"/><rect x="476" y="170" width="152" height="58" rx="6"/>
+    </g>
+    <g fill="currentColor" font-size="14" text-anchor="middle">
+      <text x="88" y="65">瀏覽器</text><text x="88" y="86">送出檔案</text><text x="320" y="65">上傳處理器</text><text x="320" y="86">驗證內容</text><text x="552" y="65">儲存區</text><text x="552" y="86">寫入檔案</text>
+      <text x="88" y="195">瀏覽器</text><text x="88" y="216">請求實際 URL</text><text x="320" y="195">取回處理器</text><text x="320" y="216">讀檔或執行</text><text x="552" y="195">回應 body</text><text x="552" y="216">原檔或執行輸出</text>
+    </g>
+    <g fill="none" stroke="currentColor" stroke-width="2" marker-end="url(#fu-flow-arrow)">
+      <path d="M168 69 H240"/><path d="M400 69 H472"/><path d="M168 199 H240"/><path d="M400 199 H472"/><path d="M552 102 V132 H320 V166"/>
+    </g>
+    <g fill="currentColor" font-size="12">
+      <text x="12" y="24">第一筆請求：上傳 POST</text><text x="12" y="154">第二筆請求：取回 GET</text><text x="360" y="124">取回時使用已儲存的內容</text>
+      <text x="12" y="258">URL 是網站入口；儲存位置是伺服器選擇的另一層位置。</text><text x="12" y="282">第一階段通過，不代表第二階段會執行程式。</text>
+    </g>
+  </svg>
+  <figcaption><span class="fig-num">圖 2.2.3-1</span> 上傳 POST 與取回 GET 是兩筆請求，接受檔案與解讀檔案由不同元件決定</figcaption>
+</figure>
+
+<h2 id="worked-example"><span class="num">2.2.4</span> 追蹤一次頭像上傳</h2>
+<p>假設一個練習用的網站以 PHP 處理部分 URL，頭像功能又錯把未驗證的檔案存進 PHP 處理器可執行的區域。</p>
+<h3>正常的兩筆請求</h3>
+<p>先上傳一張正常圖片，送出的是前面那種 multipart POST。假設網站回傳一個新檔名，頁面接著請求它。下面省略圖片位元組與無關的標頭，只列判斷需要的摘要：</p>
+<pre data-lang="text"><code>輸入：POST /demo/profile/avatar
+      avatar 欄位提供 demo-portrait.jpg，內容是正常的 JPEG 圖片
+中間：上傳處理器儲存內容，改名為 demo-image.jpg
+回應：201 Created；文字告知 /demo/media/demo-image.jpg
+後續：GET /demo/media/demo-image.jpg
+回應：200 OK；Content-Type: image/jpeg；body 是圖片位元組</code></pre>
+<p>在授權環境中，取回 URL 要從上傳回應、更新後頁面的圖片網址或 HTTP 請求紀錄找出來。看不到取回請求時，先檢查流量篩選是否隱藏了圖片，或圖片是否來自瀏覽器快取，不要直接猜目錄。網址可能含伺服器新產生的名稱，找不到原檔名不表示沒有儲存。</p>
+<h3>原檔與執行輸出</h3>
+<p>PHP 是伺服器端語言，程式檔可以包含要求處理器完成的動作。它的 <code>echo</code> 負責把文字放進輸出，文字值稱為字串。處理器若執行一份「輸出固定標示文字」的程式，回應可能只有這段文字；處理器若只是提供靜態檔案，回應就會包含原本那份程式的內容。<a href="https://www.php.net/manual/en/function.echo.php">PHP 官方 echo 說明</a>可用來核對輸出的意義。</p>
+<p>方括號內是內容的文字說明。</p>
+<pre data-lang="text"><code>正常輸入：[真正的 JPEG 圖片位元組]
+預期用途：儲存圖片，取回時回傳圖片資料
+
+不符合頭像用途的輸入：[要求伺服器輸出固定標示文字的程式內容]
+安全處理：拒絕不符合允許格式的內容
+失守情況：內容進入可執行區域，後續被程式處理器解讀</code></pre>
+<p>檔案只是被接收與保存時，網站可能從未執行它；要等後續處理器把內容當成程式，才跨過執行的界線。有些流程會在背景處理時執行檔案；本例只看取回階段。</p>
+<h3>分開讀兩個回應</h3>
+<p>沿用正常圖片的例子，上傳回應的 <code>201</code> 或「上傳成功」訊息，只表示網站聲稱已接受並儲存檔案；網站也可能用 <code>200</code> 表示成功。這些回應都不能證明檔案被執行。要判斷後續用途，得讀取回請求的<strong>原始回應內文</strong>（raw response body），拿它和原檔及網站的處理方式對照。</p>
+<p>瀏覽器畫面不能當唯一的證據，因為瀏覽器會依回應類型解析內容，HTML 標籤本身可能不會顯示出來。HTTP 檢視工具中的原始 body，才能分清「檔案本身的文字」和「處理後產生的文字」。那段固定標示文字若原本就寫在檔案裡，畫面上看到它並不夠，還要排除靜態回傳或文字轉換。</p>
+
+<h2 id="evidence-and-limits"><span class="num">2.2.5</span> 從取回結果下結論</h2>
+<h3>執行路徑的前提</h3>
+<p>「上傳後，取回請求觸發伺服器執行」這條路徑要成立，下列條件要分開確認：</p>
+<ul>
+  <li>接收與儲存：功能確實接受並保留了使用者提供的內容，而不是在驗證時拒絕或轉換成其他內容。</li>
+  <li>取回位置：有可對應到已存內容的請求入口；判讀者須知道實際 URL，不能只根據原檔名猜測。</li>
+  <li>處理方式：該位置的有效設定會交給程式執行器，且內容符合執行器能處理的語言或格式。只有副檔名相似並不足夠。</li>
+  <li>執行權限：處理器能存取該檔案；後續能讀寫的資源仍受執行帳號、隔離及環境設定限制。</li>
+</ul>
+<p>辨識時，把正常上傳紀錄、實際取回位置、原始回應內文與可取得的伺服器設定相互對照。缺少某項證據，就保留那項不確定性。背景處理或瀏覽器解析是另外的路徑，這張清單排除不了。</p>
+<p>對一份含程式內容的檔案，取回處理器可能產生下圖的三種結果，光憑狀態碼 200 不能判斷執行成功。body 是整份 PHP 原始碼時，這筆請求把檔案當資料送出；若那是網站自己的敏感原始碼，直接送出也可能造成資訊揭露。body 只有固定標示文字時，還要排除其他功能只是抽取或轉換文字，而且一段文字推不出所有路徑都有相同行為。403、404 或其他拒絕回應可能來自權限限制、網址錯誤、名稱改變或檔案不存在。</p>
+
+<figure id="handler-outcomes">
+  <svg viewBox="0 0 640 294" role="img" aria-labelledby="handler-outcomes-t" style="color:var(--text)">
+    <title id="handler-outcomes-t">同一份含程式內容的檔案，依取回處理器不同，可能回原始碼、執行輸出，或拒絕；每個結果支持不同結論</title>
+    <defs><marker id="fu-outcome-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="currentColor"/></marker></defs>
+    <rect x="12" y="102" width="160" height="68" rx="6" fill="var(--accent-soft)" stroke="currentColor"/>
+    <g text-anchor="middle" fill="currentColor" font-size="14"><text x="92" y="130">同一份已存檔案</text><text x="92" y="154">收到取回 GET</text></g>
+    <g fill="none" stroke="currentColor" stroke-width="2" marker-end="url(#fu-outcome-arrow)"><path d="M176 136 H208 V48 H248"/><path d="M176 136 H248"/><path d="M176 136 H208 V224 H248"/></g>
+    <g fill="var(--surface)" stroke="currentColor"><rect x="252" y="16" width="372" height="66" rx="6"/><rect x="252" y="104" width="372" height="66" rx="6"/><rect x="252" y="192" width="372" height="66" rx="6"/></g>
+    <g fill="currentColor" font-size="14"><text x="268" y="42">靜態處理 → 回原始碼</text><text x="268" y="65" font-size="12">證明可取回資料，未證明程式執行</text><text x="268" y="130">PHP 處理 → 回執行輸出</text><text x="268" y="153" font-size="12">須與原檔及處理前提對照</text><text x="268" y="218">拒絕／找不到 → 錯誤回應</text><text x="268" y="241" font-size="12">未取回內容，不代表從未儲存</text><text x="12" y="282" font-size="12">比較原始回應內文，不能只看瀏覽器畫面或狀態碼。</text></g>
+  </svg>
+  <figcaption><span class="fig-num">圖 2.2.5-1</span> 同一份檔案交給不同的取回處理器，會得到不同的回應</figcaption>
+</figure>
+<h3>執行之後能做什麼</h3>
+<p>若伺服器真的執行了外部提供的程式，就可能形成<strong>遠端程式碼執行</strong>（Remote Code Execution，RCE）：從網路送來的內容獲得在伺服器執行的機會。這不一定要經過 shell（作業系統上負責解讀並執行命令的程式）：PHP 本身就能執行某些檔案操作。但能做什麼仍受網站執行帳號、環境設定與隔離措施限制，不能推論已取得整台主機的最高權限。</p>
+<p>PHP 也有讀取檔案的功能，例如 <code>file_get_contents</code>。<strong>函式呼叫</strong>就是請一項功能根據提供的資料完成工作：程式給它一個本機檔案位置，它嘗試取得伺服器上那份檔案的內容，再交回程式。讀到資料與把資料放進 HTTP 回應是不同動作，後者可以由輸出功能完成。讀取是否成功，要看檔案是否存在、帳號權限與環境設定；<a href="https://www.php.net/manual/en/function.file-get-contents.php">PHP 官方函式說明</a>記載其回傳與失敗行為。</p>
+<p>處理流程即使確實讀到一份檔案，也只支持「在這個環境能讀這個位置」，不支持「整個磁碟都可讀」。Web shell 是透過網頁請求操作伺服器的程式，它能做的事同樣受執行帳號與環境的限制。</p>
+
+<h2 id="failed-defences"><span class="num">2.2.6</span> 單獨不夠的防禦</h2>
+<p>檔案從接收到取回，可能由不同元件解讀。只有一個元件檢查了名字，其他元件仍可能依不同規則處理內容。下表的做法各有用處，單獨使用都保證不了整條流程的安全。</p>
+<table><thead><tr><th>做法</th><th>為什麼不夠</th></tr></thead><tbody>
+<tr><td>前端只允許選圖片</td><td>限制的是正常介面的操作，擋不住用戶端直接送出其他內容。</td></tr>
+<tr><td>相信 part 的 Content-Type</td><td>這個值是用戶端的聲明；改成 image/jpeg 不會改變檔案位元組。</td></tr>
+<tr><td>只列出禁止的副檔名</td><td>封鎖清單可能漏掉部署環境支援的其他名稱或不同解析規則。某個副檔名的繞過方式，也不是所有伺服器都適用。</td></tr>
+<tr><td>只看檔案開頭是否像圖片</td><td>短短一段格式識別資料，不保證整份內容能被安全解碼，也不保證後續元件只把它當圖片。</td></tr>
+<tr><td>只把檔名改成難猜的名字</td><td>降低碰撞與猜測風險，內容驗證、禁止執行與取回授權仍不可少。</td></tr>
+<tr><td>儲存區不執行程式就結案</td><td>這能切斷上述的執行路徑，但未授權下載、覆寫資料或其他內容處理問題仍要另外控制。</td></tr>
+</tbody></table>
+<p>通過圖片驗證，也不代表檔案不會被執行。有些檔案能同時被不同格式的解析器接受，稱為 <strong>polyglot</strong>（多格式檔案）。問題不只在檔頭像圖片：某些圖片格式有放置描述資訊的區域，圖片解析器把其中內容當成附帶資料，另一個程式解析器卻可能依自己的規則，把同一份位元組中的某個區段當成程式。</p>
+<p>例如 PHP 支援程式區段與非程式內容共存，程式區段以外的內容不會被當成 PHP 語法解析，詳見 <a href="https://www.php.net/manual/en/language.basic-syntax.phpmode.php">PHP 的混合內容說明</a>。這是 PHP 的行為，其他解譯器不一定也會略過不認得的內容。兩個解析器都接受這份檔案，也還要有前面說的處理器對應才會執行。所以防禦還要限制檔案的後續用途，不能因為檔案通過了圖片解析，就讓執行器處理它。</p>
+
+<h2 id="fix"><span class="num">2.2.7</span> 怎麼修補</h2>
+<h3>接收時只收需要的格式</h3>
+<p>頭像功能可以採用允許清單（allow-list），只接受業務需要的少數圖片格式。伺服器應檢查實際內容，用維護中的圖片解碼器嘗試讀取；適合時把像素重新編碼成受控的輸出格式，不要原封不動保存所有上傳位元組。重新編碼時由伺服器產生新的圖片內容，不需要的附帶資料就比較不會留下來。這仍不是絕對的保證，解碼器本身也要更新並限制資源。</p>
+<p>同時限制檔案大小、圖片尺寸與處理資源，避免小檔案在解碼後耗掉過多記憶體。尚未驗證的原始內容應放在外界無法取回或執行的暫存區，通過才發布。不要先把不可信內容放到公開可執行路徑，再指望後續檢查能及時移除。</p>
+<p>內容若先能被取回，檢查卻還沒完成，另一筆請求就可能在這段時間內使用未驗證的內容。安全與否取決於兩項操作的先後，這是<strong>競態條件</strong>（race condition）的例子。先隔離暫存、驗證後才發布，就是為了消除這個時間窗。第 6 章的 <a href="../../logic-timing/race-conditions/index.html">Race Conditions</a> 會建立並行與時間順序的模型。</p>
+<h3>由伺服器決定名稱與位置</h3>
+<p>用伺服器產生的新名稱或識別碼保存檔案，原始檔名若有顯示需要，只當作資料保存。這樣用戶端就不能透過名稱選擇路徑或覆寫既有檔案；最終儲存位置也要確認在允許範圍內，這是 Path Traversal 那一節的位置邊界。依實際部署，把上傳資料放在不會被當成應用程式執行的區域或獨立儲存服務，並確認相關路由沒有腳本執行處理器。</p>
+<p>「禁止執行」必須在實際執行鏈上成立。只移除檔案系統的可執行權限，不一定能阻止 PHP 這類解譯器讀取並執行檔案。網站、伺服器與儲存服務的配置要共同確保上傳內容只被當成資料提供。</p>
+<h3>取回時檢查授權與類型</h3>
+<p>下載處理器應依檔案的公開或私人性質檢查<strong>授權</strong>（這位使用者是否有權取得這個檔案）。登入只回答「你是誰」，並不表示你可以拿任何人的上傳內容。Authentication 與 Access Control 會在第 4 章展開。</p>
+<p>還要考慮瀏覽器這個解讀者。HTML 是描述網頁結構的文字格式，SVG（Scalable Vector Graphics，可縮放向量圖形）則以文字描述圖形；上傳內容若以 HTML 頁面或 SVG 文件提供，瀏覽器會依文件規則解析，內容中的腳本可能在允許執行的環境中運作。不過並非每張 SVG 圖片都會執行腳本：以圖片元素載入 SVG 時，瀏覽器通常會停用其中的 JavaScript，直接作為文件開啟則是另一種處理情境。<a href="https://developer.mozilla.org/en-US/docs/Web/SVG/Guides/SVG_as_an_image">MDN 的 SVG 圖片限制</a>說明了這項區別。實際影響還取決於回應類型、嵌入方式與瀏覽器安全政策，第 3 章會接著追蹤這條邊界。</p>
+<p>伺服器應依驗證後的內容決定回應類型；不需要在頁面內呈現的檔案，可以作為附件下載提供，並配合避免瀏覽器自行猜測類型的回應設定。這些措施控制的是瀏覽器如何使用內容，伺服器端的內容驗證與禁止執行仍不可少。最後，以最小權限執行網站與檔案處理工作，讓它們只能讀寫必要位置，降低某一層失守後的影響。</p>
+
+<h2 id="summary"><span class="num">2.2.8</span> 小結</h2>
+<ul>
+  <li>一次上傳至少有兩筆請求：POST 接收並儲存檔案，之後的 GET 由某個處理器取回。</li>
+  <li>檔名、part 的 Content-Type 與內容位元組都由用戶端提供，要分開檢查；改名或改標籤都不會改變位元組。</li>
+  <li>上傳成功、能夠取回、內容被執行各需要不同的證據，判斷時讀取回請求的原始回應內文。</li>
+  <li>處理器常依路徑、位置或副檔名選定；上傳目錄若沿用了執行設定，存進去的資料就可能被當成程式。</li>
+  <li>修補要一路控制到取回階段：允許清單加內容驗證、伺服器決定名稱與位置、儲存區不執行程式，取回時檢查授權與回應類型。只檢查副檔名不夠。</li>
+</ul>
+<p>PortSwigger Academy 的對應練習（主題頁 <a href="https://portswigger.net/web-security/file-upload">File upload vulnerabilities</a>），只在 Lab 或其他獲明確授權的系統上測試：</p>
+<ul>
+  <li><a href="https://portswigger.net/web-security/file-upload/lab-file-upload-remote-code-execution-via-web-shell-upload">Remote code execution via web shell upload</a>：找出上傳入口與實際取回位置，判斷每項證據支持的是「已上傳」「可取回」還是「已執行」。</li>
+</ul>
+<p>上傳檔案的用途由取回時接手的處理器決定。下一節 <a href="../sql-injection/index.html">SQL Injection Basics</a> 把解讀者換成資料庫，輸入也回到一段文字：網站常把輸入放進一段查詢語句交給資料庫執行，資料庫若把其中一部分當成查詢語法，查詢的意思就跟著改變。</p>
+
+</article>
+<nav class="pager" aria-label="上下節"><a class="prev" href="../../server-input/path-traversal/index.html"><small>← prev</small><span class="num">2.1</span> Path Traversal</a><a class="next" href="../../server-input/sql-injection/index.html"><small>next →</small><span class="num">2.3</span> SQL Injection Basics</a></nav>
+</main>
+</div>
+<footer class="sm-status"><span class="sm-s-main">26 sections</span><span class="sm-s-list"><span class="sm-s-planned">規劃中 12</span> <span class="sm-s-draft">草稿 3</span> <span class="sm-s-ready">已完成 11</span></span><span class="sm-s-end">系統地圖</span></footer>
+<script src="../../assets/theme/theme.js?v=d288e31038"></script>
+</body>
+</html>

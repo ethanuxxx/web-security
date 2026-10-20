@@ -1,0 +1,417 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>4.1 Authentication｜Web 安全</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Crect width='16' height='16' rx='3' fill='%23070c12'/%3E%3Crect x='1.5' y='1.5' width='13' height='13' rx='2.5' fill='none' stroke='%2336e0cc' stroke-width='1.4'/%3E%3Cpath d='M5 8 L11 5 M5 8 L11 11' stroke='%2336e0cc' stroke-width='1.2' fill='none'/%3E%3Ccircle cx='5' cy='8' r='1.6' fill='%2336e0cc'/%3E%3Ccircle cx='11' cy='5' r='1.6' fill='%2336e0cc'/%3E%3Ccircle cx='11' cy='11' r='1.6' fill='%2336e0cc'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="../../assets/style.css?v=d288e31038">
+<link rel="stylesheet" href="../../assets/theme/theme.css?v=d288e31038">
+<script>(function(){var m=null;try{m=localStorage.getItem("web-security:motion")}catch(e){}if(m!=="on"&&m!=="off"){m="on";try{if(matchMedia("(prefers-reduced-motion: reduce)").matches)m="off"}catch(e){}}document.documentElement.setAttribute("data-motion",m)})()</script>
+</head>
+<body class="page-section sm-body">
+<a class="skip" href="#main">跳到正文</a>
+<header class="sm-top"><a class="sm-brand" href="../../index.html"><svg class="sm-logo" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><rect x="1" y="1" width="14" height="14" rx="3" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M5 8 L11 5 M5 8 L11 11" stroke="currentColor" stroke-width="1.3" fill="none"/><circle cx="5" cy="8" r="1.7" fill="currentColor"/><circle cx="11" cy="5" r="1.7" fill="currentColor"/><circle cx="11" cy="11" r="1.7" fill="currentColor"/></svg><span class="sm-brand-t">web-security</span></a><nav class="sm-path" aria-label="目前位置"><ol><li class="sm-p-root"><a href="../../index.html">web-security</a></li><li class="sm-p-ch split"><a href="../../identity/index.html">4<span class="sm-p-title">&nbsp;網站如何知道你是誰、允許你做什麼</span></a></li><li class=""><span aria-current="page">4.1</span></li></ol></nav><a class="sm-toplink" href="../../index.html#map">map</a><a class="sm-toplink" href="../../chapters/index.html">chapters</a><button type="button" class="sm-toplink sm-motion" aria-pressed="true" hidden>動畫：開</button></header>
+<div class="sm-shell">
+<nav class="sm-tree" aria-label="教材瀏覽器"><details class="sm-tree-wrap" open><summary class="sm-tree-sum">EXPLORER／教材目錄</summary><p class="sm-tree-h" aria-hidden="true">EXPLORER</p><details class="sm-partd" open><summary class="sm-part">第一部分：輸入如何穿過網站</summary><details class="sm-folder"><summary><a class="sm-chlink" href="../../web-http/index.html" title="第 1 章 Web 與 HTTP"><span class="num">1</span><span class="sm-fname">Web 與 HTTP</span></a></summary><div class="sm-files"><a class="sm-file" href="../../web-http/web-basics/index.html" title="1.1 Seeing the Web Through the Browser"><span class="num">1.1</span><span class="sm-fname">Seeing the Web Through the Browser</span><span class="sm-st sm-st-ready" aria-hidden="true"></span><span class="sm-sr">（已完成）</span></a><a class="sm-file" href="../../web-http/http-session/index.html" title="1.2 HTTP Requests and Sessions"><span class="num">1.2</span><span class="sm-fname">HTTP Requests and Sessions</span><span class="sm-st sm-st-ready" aria-hidden="true"></span><span class="sm-sr">（已完成）</span></a></div></details><details class="sm-folder"><summary><a class="sm-chlink" href="../../server-input/index.html" title="第 2 章 伺服器如何處理使用者輸入"><span class="num">2</span><span class="sm-fname">伺服器如何處理使用者輸入</span></a></summary><div class="sm-files"><a class="sm-file" href="../../server-input/path-traversal/index.html" title="2.1 Path Traversal"><span class="num">2.1</span><span class="sm-fname">Path Traversal</span><span class="sm-st sm-st-ready" aria-hidden="true"></span><span class="sm-sr">（已完成）</span></a><a class="sm-file" href="../../server-input/file-upload/index.html" title="2.2 File Upload Vulnerabilities"><span class="num">2.2</span><span class="sm-fname">File Upload Vulnerabilities</span><span class="sm-st sm-st-ready" aria-hidden="true"></span><span class="sm-sr">（已完成）</span></a><a class="sm-file" href="../../server-input/sql-injection/index.html" title="2.3 SQL Injection Basics"><span class="num">2.3</span><span class="sm-fname">SQL Injection Basics</span><span class="sm-st sm-st-ready" aria-hidden="true"></span><span class="sm-sr">（已完成）</span></a><a class="sm-file" href="../../server-input/sql-injection-observation/index.html" title="2.4 UNION and Blind SQL Injection"><span class="num">2.4</span><span class="sm-fname">UNION and Blind SQL Injection</span><span class="sm-st sm-st-ready" aria-hidden="true"></span><span class="sm-sr">（已完成）</span></a><a class="sm-file" href="../../server-input/command-injection/index.html" title="2.5 OS Command Injection"><span class="num">2.5</span><span class="sm-fname">OS Command Injection</span><span class="sm-st sm-st-ready" aria-hidden="true"></span><span class="sm-sr">（已完成）</span></a></div></details><details class="sm-folder"><summary><a class="sm-chlink" href="../../browser-output/index.html" title="第 3 章 伺服器的輸出如何在瀏覽器中變成程式"><span class="num">3</span><span class="sm-fname">伺服器的輸出如何在瀏覽器中變成程式</span></a></summary><div class="sm-files"><a class="sm-file" href="../../browser-output/xss-basics/index.html" title="3.1 Cross-Site Scripting Basics"><span class="num">3.1</span><span class="sm-fname">Cross-Site Scripting Basics</span><span class="sm-st sm-st-ready" aria-hidden="true"></span><span class="sm-sr">（已完成）</span></a><a class="sm-file" href="../../browser-output/xss-context-dom/index.html" title="3.2 Output Contexts and DOM-Based XSS"><span class="num">3.2</span><span class="sm-fname">Output Contexts and DOM-Based XSS</span><span class="sm-st sm-st-ready" aria-hidden="true"></span><span class="sm-sr">（已完成）</span></a></div></details><details class="sm-folder" open><summary><a class="sm-chlink" href="../../identity/index.html" title="第 4 章 網站如何知道你是誰、允許你做什麼"><span class="num">4</span><span class="sm-fname">網站如何知道你是誰、允許你做什麼</span></a></summary><div class="sm-files"><a class="sm-file" href="../../identity/authentication/index.html" aria-current="page" title="4.1 Authentication"><span class="num">4.1</span><span class="sm-fname">Authentication</span><span class="sm-st sm-st-ready" aria-hidden="true"></span><span class="sm-sr">（已完成）</span></a><a class="sm-file" href="../../identity/access-control/index.html" title="4.2 Access Control"><span class="num">4.2</span><span class="sm-fname">Access Control</span><span class="sm-st sm-st-ready" aria-hidden="true"></span><span class="sm-sr">（已完成）</span></a></div></details><details class="sm-folder"><summary><a class="sm-chlink" href="../../cross-site/index.html" title="第 5 章 網站之間如何利用瀏覽器的信任"><span class="num">5</span><span class="sm-fname">網站之間如何利用瀏覽器的信任</span></a></summary><div class="sm-files"><a class="sm-file" href="../../cross-site/cross-site-trust/index.html" title="5.1 CSRF, CORS, and Cross-Site Trust"><span class="num">5.1</span><span class="sm-fname">CSRF, CORS, and Cross-Site Trust</span><span class="sm-st sm-st-draft" aria-hidden="true"></span><span class="sm-sr">（草稿）</span></a></div></details><details class="sm-folder"><summary><a class="sm-chlink" href="../../logic-timing/index.html" title="第 6 章 問題藏在流程與時間裡"><span class="num">6</span><span class="sm-fname">問題藏在流程與時間裡</span></a></summary><div class="sm-files"><a class="sm-file" href="../../logic-timing/business-logic/index.html" title="6.1 Business Logic Vulnerabilities"><span class="num">6.1</span><span class="sm-fname">Business Logic Vulnerabilities</span><span class="sm-st sm-st-draft" aria-hidden="true"></span><span class="sm-sr">（草稿）</span></a><a class="sm-file" href="../../logic-timing/race-conditions/index.html" title="6.2 Race Conditions"><span class="num">6.2</span><span class="sm-fname">Race Conditions</span><span class="sm-st sm-st-draft" aria-hidden="true"></span><span class="sm-sr">（草稿）</span></a></div></details></details><details class="sm-partd" open><summary class="sm-part">第二部分：多元件系統的信任邊界</summary><details class="sm-folder"><summary><a class="sm-chlink" href="../../server-actions/index.html" title="第 7 章 伺服器把資料交給其他元件之後"><span class="num">7</span><span class="sm-fname">伺服器把資料交給其他元件之後</span></a></summary><div class="sm-files"><a class="sm-file is-planned" href="../../server-actions/ssrf/index.html" title="7.1 Server-Side Request Forgery"><span class="num">7.1</span><span class="sm-fname">Server-Side Request Forgery</span><span class="sm-st sm-st-planned" aria-hidden="true"></span><span class="sm-sr">（規劃中）</span></a><a class="sm-file is-planned" href="../../server-actions/xxe/index.html" title="7.2 XML External Entity Injection"><span class="num">7.2</span><span class="sm-fname">XML External Entity Injection</span><span class="sm-st sm-st-planned" aria-hidden="true"></span><span class="sm-sr">（規劃中）</span></a><a class="sm-file is-planned" href="../../server-actions/ssti/index.html" title="7.3 Server-Side Template Injection"><span class="num">7.3</span><span class="sm-fname">Server-Side Template Injection</span><span class="sm-st sm-st-planned" aria-hidden="true"></span><span class="sm-sr">（規劃中）</span></a><a class="sm-file is-planned" href="../../server-actions/deserialization/index.html" title="7.4 Insecure Deserialization"><span class="num">7.4</span><span class="sm-fname">Insecure Deserialization</span><span class="sm-st sm-st-planned" aria-hidden="true"></span><span class="sm-sr">（規劃中）</span></a><a class="sm-file is-planned" href="../../server-actions/prototype-pollution/index.html" title="7.5 Prototype Pollution"><span class="num">7.5</span><span class="sm-fname">Prototype Pollution</span><span class="sm-st sm-st-planned" aria-hidden="true"></span><span class="sm-sr">（規劃中）</span></a></div></details><details class="sm-folder"><summary><a class="sm-chlink" href="../../apis/index.html" title="第 8 章 網站變成 API 之後"><span class="num">8</span><span class="sm-fname">網站變成 API 之後</span></a></summary><div class="sm-files"><a class="sm-file is-planned" href="../../apis/api-testing/index.html" title="8.1 API Attack Surface"><span class="num">8.1</span><span class="sm-fname">API Attack Surface</span><span class="sm-st sm-st-planned" aria-hidden="true"></span><span class="sm-sr">（規劃中）</span></a><a class="sm-file is-planned" href="../../apis/graphql-websockets/index.html" title="8.2 GraphQL and WebSockets"><span class="num">8.2</span><span class="sm-fname">GraphQL and WebSockets</span><span class="sm-st sm-st-planned" aria-hidden="true"></span><span class="sm-sr">（規劃中）</span></a></div></details><details class="sm-folder"><summary><a class="sm-chlink" href="../../delegated-identity/index.html" title="第 9 章 身分跨越網站與元件之後"><span class="num">9</span><span class="sm-fname">身分跨越網站與元件之後</span></a></summary><div class="sm-files"><a class="sm-file is-planned" href="../../delegated-identity/jwt/index.html" title="9.1 JSON Web Tokens"><span class="num">9.1</span><span class="sm-fname">JSON Web Tokens</span><span class="sm-st sm-st-planned" aria-hidden="true"></span><span class="sm-sr">（規劃中）</span></a><a class="sm-file is-planned" href="../../delegated-identity/oauth/index.html" title="9.2 OAuth and Third-Party Login"><span class="num">9.2</span><span class="sm-fname">OAuth and Third-Party Login</span><span class="sm-st sm-st-planned" aria-hidden="true"></span><span class="sm-sr">（規劃中）</span></a></div></details><details class="sm-folder"><summary><a class="sm-chlink" href="../../proxy-cache/index.html" title="第 10 章 Proxy、Cache 與後端看到的不一樣"><span class="num">10</span><span class="sm-fname">Proxy、Cache 與後端看到的不一樣</span></a></summary><div class="sm-files"><a class="sm-file is-planned" href="../../proxy-cache/host-cache/index.html" title="10.1 Host Headers and Web Caches"><span class="num">10.1</span><span class="sm-fname">Host Headers and Web Caches</span><span class="sm-st sm-st-planned" aria-hidden="true"></span><span class="sm-sr">（規劃中）</span></a><a class="sm-file is-planned" href="../../proxy-cache/request-smuggling/index.html" title="10.2 HTTP Request Smuggling"><span class="num">10.2</span><span class="sm-fname">HTTP Request Smuggling</span><span class="sm-st sm-st-planned" aria-hidden="true"></span><span class="sm-sr">（規劃中）</span></a></div></details><details class="sm-folder"><summary><a class="sm-chlink" href="../../llm/index.html" title="第 11 章 把信任模型套到新元件：Web LLM"><span class="num">11</span><span class="sm-fname">把信任模型套到新元件：Web LLM</span></a></summary><div class="sm-files"><a class="sm-file is-planned" href="../../llm/llm-attacks/index.html" title="11.1 Web LLM Attacks"><span class="num">11.1</span><span class="sm-fname">Web LLM Attacks</span><span class="sm-st sm-st-planned" aria-hidden="true"></span><span class="sm-sr">（規劃中）</span></a></div></details></details></details></nav>
+<header class="sm-head">
+  <p class="sm-eyebrow">identity/authentication</p>
+  <h1><span class="num">4.1</span> Authentication <span class="badge badge-ready">已完成</span></h1>
+  <p class="question sm-q"><span aria-hidden="true">❯</span> 網站如何確認並持續記得使用者？</p>
+</header>
+<aside class="sm-aside" aria-label="本節輔助"><nav class="sm-outline" aria-label="本節內容"><p class="sm-ph">本節內容</p><ol><li><a href="#login-flow" title="4.1.1 登入的每一步"><span class="num">4.1.1</span>登入的每一步</a></li><li><a href="#username-enumeration" title="4.1.2 失敗訊息透露帳號是否存在"><span class="num">4.1.2</span>失敗訊息透露帳號是否存在</a></li><li><a href="#brute-force" title="4.1.3 猜密碼與嘗試次數"><span class="num">4.1.3</span>猜密碼與嘗試次數</a></li><li><a href="#password-storage" title="4.1.4 密碼在伺服器上怎麼存"><span class="num">4.1.4</span>密碼在伺服器上怎麼存</a></li><li><a href="#mfa" title="4.1.5 第二個因素"><span class="num">4.1.5</span>第二個因素</a></li><li><a href="#password-reset" title="4.1.6 重設密碼的流程"><span class="num">4.1.6</span>重設密碼的流程</a></li><li><a href="#session-after-login" title="4.1.7 登入之後的 Session"><span class="num">4.1.7</span>登入之後的 Session</a></li><li><a href="#limits" title="4.1.8 成立的前提"><span class="num">4.1.8</span>成立的前提</a></li><li><a href="#fix" title="4.1.9 修補"><span class="num">4.1.9</span>修補</a></li><li><a href="#information-disclosure" title="4.1.10 Information disclosure"><span class="num">4.1.10</span>Information disclosure</a></li><li><a href="#summary" title="4.1.11 小結"><span class="num">4.1.11</span>小結</a></li></ol></nav><section class="sm-locator" aria-label="系統地圖定位"><p class="sm-ph">系統地圖</p><a class="sm-mini-link" href="../../index.html#map-identity" aria-label="在首頁的系統地圖上看第 4 章的位置"><svg class="sm-map sm-map-mini" viewBox="0 143 748 421" aria-hidden="true" focusable="false" preserveAspectRatio="xMidYMid meet" style="aspect-ratio:748/421"><line class="sm-edge" x1="200" y1="330" x2="290" y2="330"/><line class="sm-edge sm-dash" x1="440" y1="330" x2="530" y2="330"/><line class="sm-edge sm-threat-edge" x1="110" y1="100" x2="110" y2="255"/><line class="sm-edge sm-dash" x1="625" y1="100" x2="625" y2="150"/><line class="sm-edge" x1="625" y1="546" x2="625" y2="570"/><line class="sm-edge" x1="720" y1="325" x2="765" y2="325"/><line class="sm-edge" x1="765" y1="325" x2="765" y2="48"/><line class="sm-edge sm-dash" x1="765" y1="325" x2="765" y2="538"/><line class="sm-edge" x1="765" y1="48" x2="810" y2="48"/><line class="sm-edge" x1="765" y1="118" x2="810" y2="118"/><line class="sm-edge" x1="765" y1="188" x2="810" y2="188"/><line class="sm-edge sm-dash" x1="765" y1="328" x2="810" y2="328"/><line class="sm-edge sm-dash" x1="765" y1="398" x2="810" y2="398"/><line class="sm-edge sm-dash" x1="765" y1="468" x2="810" y2="468"/><line class="sm-edge sm-dash" x1="765" y1="538" x2="810" y2="538"/><g class="sm-n sm-threat off" data-ch="cross-site"><rect class="sm-box" x="20" y="20" width="180" height="80" rx="8"/><text class="sm-mini-t" x="110.0" y="62.0" text-anchor="middle" dominant-baseline="central" font-size="53">5</text></g><g class="sm-n sm-frame off" data-ch="web-http"><rect class="sm-box" x="20" y="255" width="180" height="150" rx="10"/><text class="sm-mini-t" x="50" y="285" text-anchor="middle" dominant-baseline="central" font-size="48">1</text></g><g class="sm-n sm-node off" data-ch="browser-output"><rect class="sm-box" x="36" y="322" width="148" height="64" rx="8"/><text class="sm-mini-t" x="110.0" y="356.0" text-anchor="middle" dominant-baseline="central" font-size="51">3</text></g><g class="sm-n sm-node sm-p2 off" data-ch="proxy-cache"><rect class="sm-box" x="290" y="240" width="150" height="180" rx="8"/><text class="sm-mini-t" x="365.0" y="332.0" text-anchor="middle" dominant-baseline="central" font-size="53">10</text></g><g class="sm-n sm-frame" aria-hidden="true"><rect class="sm-box" x="530" y="150" width="190" height="396" rx="10"/></g><g class="sm-n sm-node on" data-ch="identity"><rect class="sm-box" x="546" y="194" width="158" height="56" rx="8"/><text class="sm-mini-t" x="625.0" y="224.0" text-anchor="middle" dominant-baseline="central" font-size="45">4</text></g><g class="sm-n sm-node sm-p2 off" data-ch="apis"><rect class="sm-box" x="546" y="262" width="158" height="56" rx="8"/><text class="sm-mini-t" x="625.0" y="292.0" text-anchor="middle" dominant-baseline="central" font-size="45">8</text></g><g class="sm-n sm-node sm-p2 off" data-ch="llm"><rect class="sm-box" x="546" y="330" width="158" height="56" rx="8"/><text class="sm-mini-t" x="625.0" y="360.0" text-anchor="middle" dominant-baseline="central" font-size="45">11</text></g><g class="sm-n sm-node off" data-ch="logic-timing"><rect class="sm-box" x="546" y="398" width="158" height="56" rx="8"/><text class="sm-mini-t" x="625.0" y="428.0" text-anchor="middle" dominant-baseline="central" font-size="45">6</text></g><g class="sm-n sm-node sm-p2 off" data-ch="server-actions"><rect class="sm-box" x="546" y="466" width="158" height="56" rx="8"/><text class="sm-mini-t" x="625.0" y="496.0" text-anchor="middle" dominant-baseline="central" font-size="45">7</text></g><g class="sm-n sm-node sm-p2 off" data-ch="delegated-identity"><rect class="sm-box" x="530" y="20" width="190" height="80" rx="8"/><text class="sm-mini-t" x="625.0" y="62.0" text-anchor="middle" dominant-baseline="central" font-size="53">9</text></g><g class="sm-n sm-node off" data-ch="logic-timing"><rect class="sm-box" x="530" y="570" width="190" height="56" rx="8"/><text class="sm-mini-t" x="625.0" y="600.0" text-anchor="middle" dominant-baseline="central" font-size="45">6</text></g><g class="sm-n sm-node off" data-ch="server-input"><rect class="sm-box" x="810" y="20" width="170" height="56" rx="8"/><text class="sm-mini-t" x="895.0" y="50.0" text-anchor="middle" dominant-baseline="central" font-size="45">2</text></g><g class="sm-n sm-node off" data-ch="server-input"><rect class="sm-box" x="810" y="90" width="170" height="56" rx="8"/><text class="sm-mini-t" x="895.0" y="120.0" text-anchor="middle" dominant-baseline="central" font-size="45">2</text></g><g class="sm-n sm-node off" data-ch="server-input"><rect class="sm-box" x="810" y="160" width="170" height="56" rx="8"/><text class="sm-mini-t" x="895.0" y="190.0" text-anchor="middle" dominant-baseline="central" font-size="45">2</text></g><g class="sm-n sm-node sm-p2 off" data-ch="server-actions"><rect class="sm-box" x="810" y="300" width="170" height="56" rx="8"/><text class="sm-mini-t" x="895.0" y="330.0" text-anchor="middle" dominant-baseline="central" font-size="45">7</text></g><g class="sm-n sm-node sm-p2 off" data-ch="server-actions"><rect class="sm-box" x="810" y="370" width="170" height="56" rx="8"/><text class="sm-mini-t" x="895.0" y="400.0" text-anchor="middle" dominant-baseline="central" font-size="45">7</text></g><g class="sm-n sm-node sm-p2 off" data-ch="server-actions"><rect class="sm-box" x="810" y="440" width="170" height="56" rx="8"/><text class="sm-mini-t" x="895.0" y="470.0" text-anchor="middle" dominant-baseline="central" font-size="45">7</text></g><g class="sm-n sm-node sm-p2 off" data-ch="server-actions"><rect class="sm-box" x="810" y="510" width="170" height="56" rx="8"/><text class="sm-mini-t" x="895.0" y="540.0" text-anchor="middle" dominant-baseline="central" font-size="45">7</text></g><g class="sm-n sm-pill off" data-ch="web-http"><rect class="sm-pill-box" x="213" y="306" width="64" height="48" rx="24"/><text class="sm-mini-t" x="245" y="332" text-anchor="middle" dominant-baseline="central" font-size="38">1</text></g><g class="sm-n sm-pill off" data-ch="web-http"><rect class="sm-pill-box" x="453" y="306" width="64" height="48" rx="24"/><text class="sm-mini-t" x="485" y="332" text-anchor="middle" dominant-baseline="central" font-size="38">1</text></g><g class="sm-n sm-pill off" data-ch="cross-site"><rect class="sm-pill-box" x="78" y="153" width="64" height="48" rx="24"/><text class="sm-mini-t" x="110" y="179" text-anchor="middle" dominant-baseline="central" font-size="38">5</text></g><g class="sm-n sm-pill off" data-ch="delegated-identity"><rect class="sm-pill-box" x="593" y="101" width="64" height="48" rx="24"/><text class="sm-mini-t" x="625" y="127" text-anchor="middle" dominant-baseline="central" font-size="38">9</text></g></svg></a><p class="sm-cap">位置：第 4 章　網站如何知道你是誰、允許你做什麼</p><ul class="sm-chips sm-comps" aria-label="本章元件"><li>Auth／Session</li></ul><p class="sm-mini-hint">點地圖：到首頁地圖看這一章</p></section></aside>
+<main id="main" class="sm-doc" tabindex="-1">
+<article class="content sm-article">
+<p>在 <a href="../../web-http/http-session/index.html#login-exchange">HTTP Requests and Sessions</a> 那一節，登入只是一筆 <code>POST /login</code>：送出帳號密碼，拿回一個 Session Cookie，之後每筆請求都靠它代表你。實際的網站在這一筆前後還有很多步驟：輸錯密碼時顯示的訊息、連續輸錯後的限制、手機上的驗證碼、「忘記密碼」寄來的連結、讓你下次免輸入的「記住我」。每一步都在回答同一個問題：送出這筆請求的人，是不是他自稱的那個帳號的主人。任何一步答錯，別人就能以你的身分操作。</p>
+
+<h2 id="login-flow"><span class="num">4.1.1</span> 登入的每一步</h2>
+<p><strong>身分驗證</strong>（authentication）是確認「你是誰」的過程。確認之後網站還要決定「你能做什麼」，那叫授權（authorization），屬於下一節 Access Control 的範圍。這一節只看前者。</p>
+<p>網站拿來確認身分的證據稱為<strong>因素</strong>（factor），通常分成三類：</p>
+<ul>
+  <li>知道的東西：密碼、PIN 碼。</li>
+  <li>擁有的東西：手機上的驗證器 App、實體安全金鑰，或能收到簡訊的手機。</li>
+  <li>本身的特徵：指紋、臉部等生物特徵，通常在你的裝置上比對，不直接送給網站。</li>
+</ul>
+<p>只用密碼登入是單一因素。<strong>多因素驗證</strong>（multi-factor authentication，MFA）要求來自不同類別的因素；只有兩個因素時常稱為 2FA（two-factor authentication）。同一類的兩樣東西，例如密碼加上一個安全提問，仍然都是「知道的東西」，不算兩個因素。寄到信箱的驗證碼也不能直接算成第二個因素：信箱往往只靠另一組密碼保護，打得開信箱不代表持有另一個裝置。</p>
+<p>把整段登入看成狀態的轉換，比較容易看出每一步該檢查什麼：</p>
+
+<figure id="auth-flow">
+  <svg viewBox="0 0 720 300" role="img" aria-labelledby="auth-flow-t" style="color:var(--text)">
+    <title id="auth-flow-t">登入的狀態轉換：未登入，帳號密碼正確後進入等待第二因素，第二因素正確後換發新的 Session 成為已登入，登出或到期後 Session 失效；另外有重設密碼與記住我兩個入口</title>
+    <defs>
+      <marker id="af-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+        <path d="M0 0 L10 5 L0 10 z" fill="currentColor"/>
+      </marker>
+    </defs>
+    <g stroke="currentColor" stroke-width="1.4">
+      <rect x="10" y="60" width="110" height="50" rx="8" fill="var(--surface)"/>
+      <rect x="200" y="60" width="130" height="50" rx="8" fill="var(--surface)"/>
+      <rect x="410" y="60" width="130" height="50" rx="8" fill="var(--accent-soft)"/>
+      <rect x="610" y="60" width="100" height="50" rx="8" fill="var(--surface)"/>
+      <rect x="10" y="210" width="150" height="50" rx="8" fill="var(--surface)" stroke-dasharray="5 3"/>
+      <rect x="400" y="210" width="150" height="50" rx="8" fill="var(--surface)" stroke-dasharray="5 3"/>
+    </g>
+    <g font-size="14" font-weight="700" text-anchor="middle" fill="currentColor">
+      <text x="65" y="90">未登入</text>
+      <text x="265" y="90">等待第二因素</text>
+      <text x="475" y="90">已登入</text>
+      <text x="660" y="90">已失效</text>
+      <text x="85" y="232">重設密碼</text>
+      <text x="475" y="232">「記住我」</text>
+    </g>
+    <g font-size="11" text-anchor="middle" fill="currentColor" opacity=".75">
+      <text x="85" y="250">憑寄出的 token</text>
+      <text x="475" y="250">憑長效 token</text>
+    </g>
+    <g stroke="currentColor" stroke-width="1.8" fill="none">
+      <path d="M122 85 H196" marker-end="url(#af-arrow)"/>
+      <path d="M332 85 H406" marker-end="url(#af-arrow)"/>
+      <path d="M542 85 H606" marker-end="url(#af-arrow)"/>
+      <path d="M65 206 V114" marker-end="url(#af-arrow)"/>
+      <path d="M475 206 V114" marker-end="url(#af-arrow)"/>
+    </g>
+    <g font-size="12" text-anchor="middle" fill="currentColor">
+      <text x="160" y="50">帳號密碼</text>
+      <text x="160" y="35">①</text>
+      <text x="370" y="35">②</text>
+      <text x="370" y="50">第二因素</text>
+      <text x="575" y="35">③</text>
+      <text x="575" y="50">登出、到期</text>
+    </g>
+    <g font-size="12" fill="currentColor">
+      <text x="74" y="165">④ 改好密碼後回到登入</text>
+      <text x="484" y="165">⑤ token 有效就直接登入</text>
+    </g>
+    <text x="486" y="132" font-size="11" fill="currentColor" opacity=".75">進入時換發新的 Session 識別字</text>
+    <text x="200" y="132" font-size="11" fill="currentColor" opacity=".75">伺服器記住：是哪個帳號、還差一步</text>
+  </svg>
+  <figcaption><span class="fig-num">圖 4.1.1-1</span> 登入的狀態轉換。上排是主要路徑，下排的重設密碼與「記住我」是另外兩個入口</figcaption>
+</figure>
+
+<p>每個箭頭都是伺服器端的一道檢查，狀態也由伺服器保存在 Session 裡。瀏覽器手上只有 Session 識別字，看不到也不該能改「目前在哪個狀態」。</p>
+<ul>
+  <li>①：伺服器比對帳號與密碼。沒有啟用第二因素的帳號，這一步通過就直接進入「已登入」。</li>
+  <li>②：伺服器比對第二因素，比對的必須是剛才通過第一步的那個帳號。</li>
+  <li>③：登出或閒置過久時，伺服器讓這個 Session 失效。只刪掉瀏覽器上的 Cookie 不夠，伺服器端的紀錄也要作廢。</li>
+  <li>④ 與 ⑤：重設密碼與「記住我」都能讓人取得帳號的控制權，卻完全不經過密碼比對。它們的檢查要和正門一樣嚴格。</li>
+</ul>
+<p>攻擊者要冒用一個帳號，只需要找到其中檢查最弱的一個箭頭。</p>
+
+<h2 id="username-enumeration"><span class="num">4.1.2</span> 失敗訊息透露帳號是否存在</h2>
+<p>登入失敗時，網站可能回「帳號不存在」，也可能回「密碼錯誤」。對使用者來說這很貼心，對攻擊者則多回答了一個問題：這個帳號存在嗎。從回應的差異判斷哪些帳號存在，稱為<strong>帳號列舉</strong>（username enumeration）。</p>
+
+<h3>逐筆比較三個請求</h3>
+<p>以 <code>shop.example.com</code> 的登入表單為例。先用一個確定不存在的帳號和一個隨便的錯密碼送出，作為基準：</p>
+<pre data-lang="http"><code># 請求 A：不存在的帳號
+POST /login HTTP/1.1
+Host: shop.example.com
+Content-Type: application/x-www-form-urlencoded
+
+username=demo-missing&amp;password=wrong-pass
+
+# 回應 A
+HTTP/1.1 200 OK
+（其他標頭略）
+… &lt;p class="error"&gt;Invalid username&lt;/p&gt; …</code></pre>
+<p>接著密碼保持不變，只把帳號換成另一個值：</p>
+<pre data-lang="http"><code># 請求 B：只換帳號
+POST /login HTTP/1.1
+Host: shop.example.com
+Content-Type: application/x-www-form-urlencoded
+
+username=demo-member&amp;password=wrong-pass
+
+# 回應 B
+HTTP/1.1 200 OK
+（其他標頭略）
+… &lt;p class="error"&gt;Incorrect password&lt;/p&gt; …</code></pre>
+<p>兩筆請求只差在 <code>username</code>，所以訊息的差異來自帳號。「Incorrect password」等於告訴你：這個帳號存在，只是密碼不對。把請求 B 原樣再送一次（請求 C），訊息相同，表示這個差異至少能重現。這還不夠下結論：帳號鎖定、限速或表單隱藏欄位裡的一次性值，都可能讓回應在一段時間內停在同一種樣子，A 和 B 也可能剛好落在某個狀態改變的前後。要確定差異只來自帳號，在授權的環境裡用已知的帳號，每次都從相同的狀態出發（重新取得表單的一次性值，失敗次數也還沒累積），把 A、B 交錯送出幾次，結果穩定分成兩組才算數。</p>
+<p>測試者若要找出未知的帳號，會固定密碼，把帳號依序換成 <code>[候選帳號]</code>，看哪一個的回應落在 B 那一組。方括號代表被換掉的那段輸入。找到存在的帳號之後，下一步才是反過來固定帳號、換密碼。</p>
+<p>列舉的結果只是一個帳號名稱。它縮小了之後要猜的範圍，但還沒有證明任何密碼，也還沒登入任何帳號。要判斷是否真的登入成功，看的是之後的帳號頁顯示誰的資料，單看 <code>302</code> 不夠（見 <a href="../../web-http/http-session/index.html#login-exchange">HTTP Requests and Sessions</a>）。</p>
+
+<h3>訊息相同時的其他差異</h3>
+<p>把兩種訊息統一成同一句話，只封住了最明顯的一個差異。回應還有很多地方會因帳號存在與否而不同：</p>
+<ul>
+  <li>狀態碼：文字相同，但不存在的帳號回 <code>200</code>，錯密碼回 <code>403</code>。</li>
+  <li>長度與細節：兩句話看起來一樣，其中一句卻多一個句點或空白，或頁面某處多了一個欄位。比較時要看回應原文，不能只看畫面。</li>
+  <li>時間：處理不存在的帳號比處理存在的帳號快。</li>
+  <li>其他頁面：註冊頁回「這個帳號已被使用」，重設密碼頁回「找不到這個 email」，同樣回答了帳號是否存在。</li>
+</ul>
+<p>時間差異的成因可以從伺服器的處理流程看出來：</p>
+
+<figure id="enum-timing">
+  <svg viewBox="0 0 720 270" role="img" aria-labelledby="enum-timing-t" style="color:var(--text)">
+    <title id="enum-timing-t">登入處理的兩條路徑：帳號不存在時查不到就立刻回應；帳號存在時還要計算密碼雜湊再比對，因此回應較慢</title>
+    <defs>
+      <marker id="et-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+        <path d="M0 0 L10 5 L0 10 z" fill="currentColor"/>
+      </marker>
+    </defs>
+    <g stroke="currentColor" stroke-width="1.4">
+      <rect x="10" y="100" width="130" height="50" rx="8" fill="var(--surface)"/>
+      <rect x="200" y="100" width="150" height="50" rx="8" fill="var(--surface)"/>
+      <rect x="420" y="30" width="130" height="44" rx="8" fill="var(--surface)"/>
+      <rect x="420" y="176" width="130" height="44" rx="8" fill="var(--accent-soft)"/>
+      <rect x="600" y="176" width="110" height="44" rx="8" fill="var(--surface)"/>
+    </g>
+    <g font-size="13" text-anchor="middle" fill="currentColor">
+      <text x="75" y="122">收到帳號、密碼</text>
+      <text x="75" y="140" font-size="11" opacity=".75">POST /login</text>
+      <text x="275" y="130">用帳號查使用者</text>
+      <text x="485" y="57">回「登入失敗」</text>
+      <text x="485" y="203">計算密碼雜湊</text>
+      <text x="655" y="203">比對後回應</text>
+    </g>
+    <g stroke="currentColor" stroke-width="1.8" fill="none">
+      <path d="M142 125 H196" marker-end="url(#et-arrow)"/>
+      <path d="M352 115 L416 60" marker-end="url(#et-arrow)"/>
+      <path d="M352 135 L416 190" marker-end="url(#et-arrow)"/>
+      <path d="M552 198 H596" marker-end="url(#et-arrow)"/>
+    </g>
+    <g font-size="12" fill="currentColor">
+      <text x="355" y="72">查不到</text>
+      <text x="318" y="185">查到了</text>
+    </g>
+    <g fill="currentColor" opacity=".55">
+      <rect x="570" y="40" width="30" height="14"/>
+      <rect x="420" y="240" width="250" height="14"/>
+    </g>
+    <g font-size="11" fill="currentColor">
+      <text x="606" y="52">很快回應</text>
+      <text x="420" y="234">多出計算雜湊的時間</text>
+    </g>
+  </svg>
+  <figcaption><span class="fig-num">圖 4.1.2-1</span> 同一支登入程式的兩條路徑：只有查到帳號時才計算密碼雜湊，存在的帳號因此回應得比較慢</figcaption>
+</figure>
+
+<p>密碼雜湊（下面「密碼在伺服器上怎麼存」會說明）刻意設計成計算很慢，所以「有沒有算雜湊」會在回應時間上留下痕跡。時間會受網路與伺服器負載影響，一次量測不算數；判讀方式和 <a href="../../server-input/sql-injection-observation/index.html#blind">UNION and Blind SQL Injection 的時間訊號</a>相同，要重複量測，並和已知不存在的帳號比較。</p>
+
+<h2 id="brute-force"><span class="num">4.1.3</span> 猜密碼與嘗試次數</h2>
+<p>反覆嘗試不同的帳號密碼組合，直到猜中為止，稱為<strong>暴力破解</strong>（brute-force attack）。這類嘗試通常由程式自動送出，猜的也不是隨機字串，而是常見密碼，或從其他網站外洩的帳號密碼組合。許多人在不同網站重複使用密碼，所以把外洩組合拿到另一個網站逐一試，常常有效，這種做法稱為<strong>撞庫</strong>（credential stuffing）。</p>
+<p>網站無法阻止別人送出登入請求，能控制的是每個帳號、每個來源在一段時間內可以失敗幾次。常見的做法各有代價：</p>
+<table>
+  <thead><tr><th>做法</th><th>擋得住什麼</th><th>代價與漏洞</th></tr></thead>
+  <tbody>
+    <tr><td>帳號鎖定（account lockout）：同一帳號連續失敗若干次就暫停登入</td><td>針對單一帳號的大量猜測</td><td>任何人都能故意輸錯，把別人的帳號鎖住，變成阻斷服務。攻擊者也可以對很多帳號各試一兩個常見密碼，每個帳號都沒達到鎖定門檻。</td></tr>
+    <tr><td>依來源 IP 位址限速</td><td>同一來源的大量請求</td><td>攻擊者可以分散到許多位址送出。網站若從使用者可修改的標頭讀取「來源位址」，限制就形同虛設。</td></tr>
+    <tr><td>失敗計數在某些事件後歸零</td><td>（本意是讓正常使用者登入後不受舊的失敗次數影響）</td><td>如果攻擊者用自己的帳號成功登入一次就能讓計數歸零，他就可以穿插著登入自己的帳號，繞過次數限制。</td></tr>
+  </tbody>
+</table>
+<p>NIST（美國國家標準與技術研究院）的數位身分指引 <a href="https://pages.nist.gov/800-63-4/sp800-63b.html">SP 800-63B-4</a> 要求驗證端限制失敗次數，並且分開計算帳號上的每一個驗證器（authenticator），例如這個帳號的密碼，或綁定的某一支驗證器 App。同一個驗證器連續失敗最多 100 次，網站可以訂得更低；達到上限就停用這個驗證器，使用者要重新綁定或重設後才能再用。100 是在猜中機率與帳號復原的麻煩之間取捨：NIST 在說明這條規定時，以六位數的十進位一次性驗證碼為例。以六位數驗證碼來算，100 次猜中的機率是 100／1,000,000＝萬分之一。密碼的情況不同，前 100 個常見密碼就可能猜中，所以這個上限要搭配下一小節的密碼規則，先排除常見與外洩過的密碼才有意義。計數跟著驗證器走，換一個新的 Session、要求重發驗證碼或重新開始登入，都不該讓它歸零。還沒到上限時，網站也可以逐步拉長等待時間、要求額外驗證，或通知帳號主人。</p>
+
+<h2 id="password-storage"><span class="num">4.1.4</span> 密碼在伺服器上怎麼存</h2>
+<p>伺服器要比對密碼，卻不該保存密碼本身。資料庫一旦外洩，明文密碼會讓所有帳號立刻失守，還會連累使用者在其他網站的同一組密碼。</p>
+<h3>雜湊與 salt</h3>
+<p><strong>雜湊</strong>（hash）是一種單向的計算：同樣的輸入永遠得到同樣的輸出，但從輸出推不回輸入。網站註冊時只保存密碼的雜湊值；登入時把收到的密碼用同樣方法計算一次，比較結果是否相同。</p>
+<p>只做雜湊還不夠。兩個使用者用了同一個密碼，雜湊值就相同；攻擊者還能事先為常見密碼算好一張對照表。所以每個密碼計算前要先混入一段隨機、每個帳號各不相同的值，稱為 <strong>salt</strong>，和雜湊值一起保存。SP 800-63B-4 要求 salt 至少 32 位元。</p>
+<h3>為什麼要慢</h3>
+<p>拿到外洩雜湊值的攻擊者，可以在自己的電腦上不停猜測、計算、比對，網站的嘗試限制完全管不到，這稱為離線猜測。SHA-256 之類一般用途的雜湊函式設計得很快，一般電腦每秒就能算大量次數，對離線猜測幾乎沒有阻力。</p>
+<p>密碼專用的雜湊演算法刻意讓每次計算花費可調整的時間與記憶體。正常登入只算一次，多花一點時間無感；攻擊者要算上億次，成本就成倍增加。OWASP（Open Worldwide Application Security Project，維護 Web 安全指引的非營利社群）的 <a href="https://cheatsheetseries.owasp.org/cheatsheets/Password_Storage_Cheat_Sheet.html">Password Storage Cheat Sheet</a> 依優先順序建議：</p>
+<ul>
+  <li>Argon2id：最低設定為 19 MiB 記憶體、2 次迭代、平行度 1。</li>
+  <li>無法使用 Argon2id 時用 scrypt：CPU／記憶體成本參數至少 2<sup>17</sup>，區塊大小 8，平行度 1。</li>
+  <li>只能用 bcrypt 的舊系統：工作因子（work factor）至少 10。多數 bcrypt 實作只處理密碼的前 72 個位元組（byte），之後的部分直接忽略。位元組和字元要分開算：英文字母一個佔 1 個位元組，中文字在常用的 UTF-8 編碼下佔 3 個，24 個中文字就用完了，還不到下面「至少允許 64 個字元」的一半。這類系統要明確處理過長的密碼，不能默默截斷，並規劃遷移到上面的演算法。</li>
+  <li>需要符合 FIPS-140 規範時用 PBKDF2：以 HMAC-SHA-256 為內部函式，迭代至少 600,000 次。</li>
+</ul>
+<p>這些數字是下限，會隨硬體進步調高。SP 800-63B-4 也建議在驗證端效能負擔得起的範圍內把成本盡量拉高；實際的值要在自己的伺服器上依登入負載量測後決定。salt 以外，還可以加一把與資料庫分開保管的金鑰（OWASP 稱為 pepper），讓只偷到資料庫的人無法單獨驗證猜測。</p>
+<h3>密碼規則</h3>
+<p>SP 800-63B-4 對密碼本身的要求和許多網站的習慣不同：</p>
+<ul>
+  <li>密碼作為唯一因素時至少 15 個字元；作為多因素中的一個時至少 8 個字元。應允許至少 64 個字元。</li>
+  <li>不得強制「大小寫、數字、符號都要有」這類組合規則，也不得要求定期更換；有證據顯示密碼外洩時才強制更換。</li>
+  <li>設定或更換密碼時，要和一份常見、可預期或已外洩的密碼清單比對，命中就要求另選，並說明原因。</li>
+</ul>
+
+<h2 id="mfa"><span class="num">4.1.5</span> 第二個因素</h2>
+<p>常見的第二因素是一組短的一次性驗證碼，由手機上的驗證器 App 產生，或由網站以簡訊寄送。驗證器 App 多半採用 <a href="https://www.rfc-editor.org/rfc/rfc6238">TOTP</a>（Time-based One-Time Password，RFC 6238）：綁定時網站和 App 共享一把祕密金鑰，之後雙方各自用這把金鑰和目前的時間區段（常見每 30 秒一段）算出同樣的數字，所以不用連線也能對上。位數由設定決定，常見是 6 位。不論驗證碼從哪裡來，伺服器都要像上面的狀態圖那樣，在第一步通過後記住「哪個帳號、還差第二因素」，等第二步通過才進入已登入。</p>
+<p>流程裡多了第二步，伺服器上的每條路卻未必都經過它。下圖是一個正確的設計和兩種常見的缺陷：</p>
+
+<figure id="mfa-pending">
+  <svg viewBox="0 0 720 300" role="img" aria-labelledby="mfa-pending-t" style="color:var(--text)">
+    <title id="mfa-pending-t">三種兩步驟登入的比較：正確設計在第一步後把 Session 標成待驗證，第二步從 Session 取帳號；缺陷一在第一步後就標成已登入；缺陷二在第二步從請求欄位取帳號</title>
+    <g font-size="13" font-weight="700" fill="currentColor">
+      <text x="150" y="22">第一步之後的 Session</text>
+      <text x="380" y="22">第二步驗證誰</text>
+      <text x="580" y="22">結果</text>
+    </g>
+    <g stroke="currentColor" stroke-width="1.2">
+      <rect x="10" y="36" width="700" height="76" rx="6" fill="var(--accent-soft)"/>
+      <rect x="10" y="122" width="700" height="76" rx="6" fill="var(--surface)"/>
+      <rect x="10" y="208" width="700" height="76" rx="6" fill="var(--surface)"/>
+    </g>
+    <g font-size="13" font-weight="700" fill="currentColor">
+      <text x="22" y="64">正確設計</text>
+      <text x="22" y="150">缺陷一</text>
+      <text x="22" y="236">缺陷二</text>
+    </g>
+    <g style="font-family:var(--font-mono)" font-size="12" fill="currentColor">
+      <text x="150" y="64">user: wiener</text>
+      <text x="150" y="84">state: 待第二因素</text>
+      <text x="150" y="150">user: wiener</text>
+      <text x="150" y="170">state: 已登入</text>
+      <text x="150" y="236">user: wiener</text>
+      <text x="150" y="256">state: 待第二因素</text>
+      <text x="380" y="256">account=[被換掉的帳號識別值]</text>
+    </g>
+    <g font-size="12" fill="currentColor">
+      <text x="380" y="64">Session 裡的 wiener</text>
+      <text x="380" y="84">驗證碼錯誤不改變狀態</text>
+      <text x="380" y="150">（直接跳過第二步）</text>
+      <text x="380" y="170">請求帳號頁</text>
+      <text x="380" y="236">請求欄位指定的帳號</text>
+      <text x="580" y="64">兩步都過才登入</text>
+      <text x="580" y="150">只憑密碼就進入</text>
+      <text x="580" y="170">帳號頁</text>
+      <text x="580" y="236">以另一個帳號的</text>
+      <text x="580" y="256">驗證碼流程登入</text>
+    </g>
+  </svg>
+  <figcaption><span class="fig-num">圖 4.1.5-1</span> 兩步驟登入的三種寫法：正確的設計讓第二步只能完成 Session 裡那個帳號的登入</figcaption>
+</figure>
+
+<h3>第一步就給了已登入的 Session</h3>
+<p>有些網站在密碼正確時就把 Session 標成已登入，再把瀏覽器導向輸入驗證碼的頁面。驗證碼頁只是畫面上的下一步，伺服器的其他頁面並沒有檢查它是否完成。知道密碼的人直接請求帳號頁，就跳過了第二因素。這時多因素只存在於使用者看到的流程，伺服器上的狀態並沒有「還差一步」這回事。</p>
+<h3>第二步由請求決定帳號</h3>
+<p>另一種缺陷是第二步從請求中的欄位或 Cookie 讀取「要驗證哪個帳號」，例如一個存放帳號名稱的 Cookie。攻擊者先用自己的帳號通過第一步，再把這個值改成 <code>[被換掉的帳號識別值]</code>，第二步就變成在驗證別人的帳號。若網站還會為該帳號產生新的驗證碼，而驗證碼只有 6 位數（共 100 萬種組合），又沒有限制嘗試次數，猜中只是時間問題。這時攻擊者連對方的密碼都不需要。</p>
+<p>兩種缺陷的共同點是第二步與第一步沒有綁在一起：伺服器沒有在 Session 中記下「這個 Session 已經用哪個帳號通過第一步」，並以此為唯一依據。</p>
+
+<h2 id="password-reset"><span class="num">4.1.6</span> 重設密碼的流程</h2>
+<p>忘記密碼時，網站要在不知道舊密碼的情況下，確認提出要求的人是帳號主人。常見的做法是寄一封含連結的郵件：能打開那個信箱的人，就被當成帳號主人。連結中帶著一個 <strong>token</strong>，也就是伺服器產生、只交給信箱主人的一次性憑證。</p>
+
+<figure id="reset-flow">
+  <svg viewBox="0 0 720 370" role="img" aria-labelledby="reset-flow-t" style="color:var(--text)">
+    <title id="reset-flow-t">重設密碼的時序：瀏覽器送出帳號，網站產生 token 並記下帳號與期限，透過郵件寄出連結；使用者開啟連結後送出新密碼與 token，網站檢查 token 後只修改它所綁定帳號的密碼並作廢 token</title>
+    <defs>
+      <marker id="rs-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+        <path d="M0 0 L10 5 L0 10 z" fill="currentColor"/>
+      </marker>
+    </defs>
+    <g stroke="currentColor" stroke-width="1.2" fill="var(--accent-soft)">
+      <rect x="20" y="10" width="140" height="36" rx="5"/>
+      <rect x="290" y="10" width="140" height="36" rx="5"/>
+      <rect x="560" y="10" width="140" height="36" rx="5"/>
+    </g>
+    <g font-size="14" text-anchor="middle" fill="currentColor">
+      <text x="90" y="33">瀏覽器</text>
+      <text x="360" y="33">網站</text>
+      <text x="630" y="33">使用者的信箱</text>
+    </g>
+    <g stroke="currentColor" stroke-width="1" stroke-dasharray="4 4" opacity=".5">
+      <path d="M90 46 V360 M360 46 V360 M630 46 V360"/>
+    </g>
+    <g stroke="currentColor" stroke-width="1.6" fill="none">
+      <path d="M92 80 H356" marker-end="url(#rs-arrow)"/>
+      <path d="M362 150 H626" marker-end="url(#rs-arrow)"/>
+      <path d="M628 190 H94" marker-end="url(#rs-arrow)" stroke-dasharray="6 3"/>
+      <path d="M92 240 H356" marker-end="url(#rs-arrow)"/>
+    </g>
+    <g font-size="12" text-anchor="middle" fill="currentColor">
+      <text x="224" y="72">① 送出帳號或 email</text>
+      <text x="494" y="142">③ 寄出含 token 的連結</text>
+      <text x="360" y="182">④ 使用者點開連結</text>
+      <text x="224" y="232">⑤ 新密碼 + token</text>
+    </g>
+    <g font-size="12" fill="currentColor">
+      <text x="372" y="102">② 產生隨機 token，記下：</text>
+      <text x="386" y="120">綁定的帳號、到期時間、未使用</text>
+      <text x="372" y="268">⑥ 檢查 token：存在、未過期、未用過</text>
+      <text x="372" y="290">⑦ 修改 token 綁定帳號的密碼</text>
+      <text x="372" y="312">⑧ 作廢 token，讓該帳號的</text>
+      <text x="386" y="330">其他 Session 失效</text>
+    </g>
+    <text x="10" y="364" font-size="11" fill="currentColor" opacity=".75">實線為送往網站或信箱的訊息，虛線為使用者取得郵件內容。</text>
+  </svg>
+  <figcaption><span class="fig-num">圖 4.1.6-1</span> 重設密碼的流程：要修改哪個帳號，只由伺服器記錄的 token 決定</figcaption>
+</figure>
+
+<p>這條流程繞過了密碼，所以 token 就等於帳號的鑰匙。常見的缺陷都出在 token 或它與帳號的對應：</p>
+<ul>
+  <li>token 可以預測：由帳號名稱、時間戳記或遞增編號算出來，攻擊者不必收信就能自己算出別人的 token。</li>
+  <li>最後一步沒有檢查 token：⑤ 送出時，伺服器只在 ④ 開啟頁面時檢查過 token，收到新密碼時卻沒有再查，甚至在 token 欄位空白時照樣接受。</li>
+  <li>帳號由請求決定：⑤ 的表單帶著一個隱藏欄位寫明「要改哪個帳號」，伺服器照著改。攻擊者用自己帳號拿到的有效 token，搭配 <code>[被換掉的帳號識別值]</code>，就能改掉別人的密碼。</li>
+  <li>token 不會失效：沒有到期時間，或用過一次還能再用，舊郵件、瀏覽紀錄中留下的連結就一直有效。</li>
+  <li>連結被送到別處：網站依請求中的 <code>Host</code> 標頭組出連結的網域，請求被竄改時，信中的連結就指向別人的伺服器，使用者一點，token 就送到那裡。這和主機名稱的信任有關，Host Headers and Web Caches 那一節會再看到。</li>
+</ul>
+<p>重設頁面本身也會洩漏帳號是否存在：「已寄出重設信」和「找不到這個帳號」兩種回應，與登入時的列舉相同。</p>
+
+<h2 id="session-after-login"><span class="num">4.1.7</span> 登入之後的 Session</h2>
+<p>所有檢查都通過後，網站要把「這個人已經登入」交給一個 Session 保存。這一步本身也會出錯。</p>
+<h3>登入時換發新的識別字</h3>
+<p>很多網站在你第一次造訪時就建立 Session，登入時再把身分寫進去（<a href="../../web-http/http-session/index.html#session-model">HTTP Requests and Sessions</a> 提過這種設計）。如果登入前後沿用同一個 Session 識別字，而攻擊者有辦法讓受害者使用一個攻擊者事先知道的識別字，受害者登入之後，攻擊者手上的那個識別字也就成了已登入的 Session。這稱為 <strong>Session fixation</strong>（Session 固定）。修補方式是登入成功（以及權限提升）時產生新的識別字，並讓舊的失效。</p>
+<h3>登出要讓伺服器端失效</h3>
+<p>登出時若只叫瀏覽器刪掉 Cookie，伺服器的 Session 表裡那筆紀錄仍然有效。之前被複製到別處的識別字，例如留在代理紀錄或共用電腦上的，仍然能用來請求帳號頁。登出、閒置逾時與修改密碼時，都要在伺服器端作廢 Session。</p>
+<h3>「記住我」</h3>
+<p>「記住我」讓瀏覽器保存一個有效期很長的 token，Session 過期後網站憑它直接讓你登入。這個 token 的效力等於密碼，所以它必須是伺服器產生的隨機值，伺服器端記錄它屬於哪個帳號、何時到期，並能單獨撤銷。若 token 是由帳號名稱、時間或密碼的快速雜湊直接算出來的，任何知道算法的人都能替別的帳號算出一個，或從偷來的 token 反推、離線猜出密碼。</p>
+<h3>修改密碼的頁面</h3>
+<p>修改密碼的功能通常要求輸入目前的密碼。這個比對和登入一樣是一道密碼檢查，同樣需要統一的錯誤訊息與次數限制；若頁面還從請求欄位讀取「要改哪個帳號」，就和重設流程的缺陷相同。</p>
+
+<h2 id="limits"><span class="num">4.1.8</span> 成立的前提</h2>
+<ul>
+  <li>帳號列舉需要可重現的差異。只出現一次的不同，可能來自表單一次性值過期、限速或伺服器負載；網站啟用帳號鎖定後，回應也可能隨嘗試次數改變。</li>
+  <li>列舉之後能不能猜中密碼，取決於密碼強度與嘗試限制；網站若只能用 email 登入，而 email 本來就公開，列舉帶來的新資訊就很少。</li>
+  <li>第一種 MFA 缺陷（第一步就給了已登入的 Session）需要先知道帳號的密碼；第二種缺陷則需要攻擊者有自己的帳號，能走完第一步。</li>
+  <li>重設流程的缺陷，多半需要攻擊者能先合法拿到自己帳號的 token，或能讓網站替受害者發出重設信。</li>
+  <li>Session fixation 需要攻擊者能讓受害者使用他事先知道的識別字；網站若在登入時換發新的識別字，這條路就不存在。</li>
+</ul>
+
+<h2 id="fix"><span class="num">4.1.9</span> 修補</h2>
+<h3>統一的失敗回應</h3>
+<p>登入、註冊、重設密碼的失敗回應，不論帳號是否存在、是否被鎖定，對外都用同一段文字、同一個狀態碼與同樣的頁面結構。例如登入失敗一律回「帳號或密碼錯誤」，重設頁一律回「如果這個 email 已註冊，你會收到一封重設信」。處理時間也要一致：帳號不存在時，也拿收到的密碼和一組預先準備的假雜湊值（含 salt 與相同的參數）跑一次同樣的驗證計算，讓回應時間一致。詳細原因寫進伺服器端有存取控制的紀錄，紀錄裡不要寫入使用者送來的密碼。這些做法與 <a href="https://cheatsheetseries.owasp.org/cheatsheets/Authentication_Cheat_Sheet.html">OWASP Authentication Cheat Sheet</a> 的建議一致。</p>
+<h3>限制嘗試</h3>
+<p>同時依帳號與來源計算失敗次數，失敗計數不因登入其他帳號而歸零。逐步拉長等待時間，比永久鎖定更不容易被拿來鎖別人；被鎖定的使用者仍能走重設密碼流程取回帳號。驗證碼與重設 token 的檢查也要限制次數。來源位址只取自可信的網路設定，不讀使用者能改的標頭。</p>
+<h3>安全地保存密碼</h3>
+<p>依前面「密碼在伺服器上怎麼存」：每個密碼各自加 salt，用 Argon2id、scrypt、bcrypt 或 PBKDF2 這類刻意放慢的演算法，參數不低於 OWASP 的建議值，並隨硬體進步調高。新密碼要和常見與外洩密碼清單比對。</p>
+<h3>把第二因素綁在同一個 Session 上</h3>
+<p>第一步通過後，伺服器在 Session 裡記下帳號與「待第二因素」的狀態；所有需要登入的頁面只接受「已登入」狀態。第二步要驗證的帳號只從 Session 取得，不讀請求中的任何帳號欄位。驗證碼有效期短、用過即作廢。錯誤次數算在帳號的這個驗證器上，達到上限就停用它（見<a href="#brute-force">猜密碼與嘗試次數</a>）。也可以另外讓這次登入從頭來過，但重新登入或重發驗證碼都不能讓計數歸零。</p>
+<h3>重設 token 的條件</h3>
+<p><a href="https://cheatsheetseries.owasp.org/cheatsheets/Forgot_Password_Cheat_Sheet.html">OWASP Forgot Password Cheat Sheet</a> 列出的條件包括：</p>
+<ul>
+  <li>用密碼學安全的亂數產生器產生，長度足以抵抗猜測。</li>
+  <li>伺服器端記錄它綁定的帳號，最後一步只依 token 找出帳號。</li>
+  <li>設定到期時間，只能使用一次，用過或重設完成後立即作廢；伺服器端可以只存 token 的雜湊值，資料庫外洩時 token 不會跟著外洩。</li>
+  <li>連結的網域寫在設定中，不由請求的 <code>Host</code> 標頭決定；重設頁面設定 <code>Referrer-Policy: no-referrer</code>，避免 token 隨 <code>Referer</code> 標頭送到第三方網站。</li>
+  <li>重設完成後，讓該帳號既有的 Session 失效（或讓使用者選擇）。</li>
+</ul>
+<h3>Session 的換發與失效</h3>
+<p>登入與權限提升時換發新的 Session 識別字；登出、逾時、修改或重設密碼時，在伺服器端作廢 Session 與「記住我」token。Session 識別字與「記住我」token 都用隨機值，Cookie 加上 <code>Secure</code>（只經 HTTPS 傳送）與 <code>HttpOnly</code>。<code>SameSite</code> 屬性與跨站請求有關，留到 CSRF, CORS, and Cross-Site Trust 那一節討論。</p>
+<h3>多因素驗證</h3>
+<p>密碼終究可能被猜中或外洩，正確實作的多因素驗證讓光有密碼不足以登入。一次性驗證碼是使用者看得到、能轉述的數字，假網站騙到之後可以立刻拿去真網站輸入。安全金鑰與 passkey 使用的 <a href="https://www.w3.org/TR/webauthn-3/#relying-party-identifier">WebAuthn</a>（Web Authentication，瀏覽器提供的公開金鑰登入標準）不同，每個憑證綁定一個網域（稱為 RP ID，relying party identifier），瀏覽器只讓相符的網站使用它，伺服器還會檢查簽章資料裡記錄的 origin。假網站的網域對不上，就拿不到可轉用的登入證明，所以這類因素稱為抗釣魚（phishing-resistant）。</p>
+
+<h2 id="information-disclosure"><span class="num">4.1.10</span> Information disclosure</h2>
+<p>從回應的差異讀出多餘的資訊，這套觀察方法在 <a href="../../web-http/web-basics/index.html#error-disclosure">Seeing the Web Through the Browser 的「錯誤訊息與資訊揭露」</a>介紹過。帳號列舉就是登入功能上的資訊揭露：網站多回答了「這個帳號存在」。登入相關功能附近還有其他常見的洩漏：</p>
+<ul>
+  <li>公開的個人頁面、留言作者、文章署名直接顯示登入用的帳號名稱。</li>
+  <li>回應或 HTML 註解中出現管理員、客服人員的 email。</li>
+  <li>登入請求格式不對時，回應帶出程式的錯誤細節，例如資料表名稱、驗證元件與版本。</li>
+  <li>登入失敗的詳細原因被寫進對外可讀的紀錄或除錯頁面。</li>
+</ul>
+<p>一個帳號名稱、一個 email，或錯誤頁上的版本號，本身都沒有讓任何人登入，只是縮小了後續猜測的範圍。評估影響時，把多知道的資訊和已經證明能做到的事分開寫。</p>
+
+<h2 id="summary"><span class="num">4.1.11</span> 小結</h2>
+<ul>
+  <li>身分驗證是一段由伺服器保存狀態的流程：帳號密碼、第二因素、換發 Session、失效；重設密碼與「記住我」是另外兩個入口，檢查要和正門一樣嚴格。</li>
+  <li>失敗回應在文字、狀態碼、長度、時間或其他頁面上的任何可重現差異，都可能洩漏帳號是否存在；列舉只得到帳號名稱，還沒有登入任何帳號。</li>
+  <li>嘗試限制要同時考慮帳號與來源，並防止鎖定被拿來鎖住別人；密碼以加 salt 的慢速雜湊保存，讓外洩的資料庫難以離線猜測。</li>
+  <li>MFA 與重設流程的常見缺陷，是最後一步沒有綁定前一步：第二因素要只驗證 Session 裡的帳號，重設要只修改 token 綁定的帳號。</li>
+  <li>登入時換發新的 Session 識別字，登出與改密碼時在伺服器端作廢 Session。</li>
+</ul>
+<p>PortSwigger Academy 的 <a href="https://portswigger.net/web-security/authentication">Authentication</a> 主題有對應的 Lab，只在 Lab 或其他獲明確授權的系統上測試：</p>
+<ul>
+  <li><a href="https://portswigger.net/web-security/authentication/password-based/lab-username-enumeration-via-different-responses">Username enumeration via different responses</a>：從失敗訊息的差異找出存在的帳號。</li>
+  <li><a href="https://portswigger.net/web-security/authentication/password-based/lab-username-enumeration-via-response-timing">Username enumeration via response timing</a>：訊息相同時，用回應時間區分帳號。</li>
+  <li><a href="https://portswigger.net/web-security/authentication/password-based/lab-broken-bruteforce-protection-ip-block">Broken brute-force protection, IP block</a>：找出失敗計數在什麼情況下歸零。</li>
+  <li><a href="https://portswigger.net/web-security/authentication/multi-factor/lab-2fa-simple-bypass">2FA simple bypass</a>：第一步之後的 Session 是否已被當成登入。</li>
+  <li><a href="https://portswigger.net/web-security/authentication/multi-factor/lab-2fa-broken-logic">2FA broken logic</a>：第二步從哪裡決定要驗證的帳號。</li>
+  <li><a href="https://portswigger.net/web-security/authentication/other-mechanisms/lab-password-reset-broken-logic">Password reset broken logic</a>：重設的最後一步檢查了什麼、依什麼決定帳號。</li>
+  <li><a href="https://portswigger.net/web-security/authentication/other-mechanisms/lab-brute-forcing-a-stay-logged-in-cookie">Brute-forcing a stay-logged-in cookie</a>：「記住我」token 是怎麼算出來的。</li>
+</ul>
+<p>到這裡，網站已經知道每筆請求代表哪個帳號。知道是誰之後，還要決定這個人能讀哪些資料、能做哪些動作。<a href="../../web-http/http-session/index.html#idor-intuition">HTTP Requests and Sessions 的「身分與目標」</a>已經看過，一筆請求同時帶著目前身分與想操作的目標，伺服器若只確認了前者，就可能把別人的資料交出去。下一節 <a href="../access-control/index.html">Access Control</a> 從這個區分出發，看角色、物件與多步驟操作上的授權檢查。</p>
+
+</article>
+<nav class="pager" aria-label="上下節"><a class="prev" href="../../browser-output/xss-context-dom/index.html"><small>← prev</small><span class="num">3.2</span> Output Contexts and DOM-Based XSS</a><a class="next" href="../../identity/access-control/index.html"><small>next →</small><span class="num">4.2</span> Access Control</a></nav>
+</main>
+</div>
+<footer class="sm-status"><span class="sm-s-main">26 sections</span><span class="sm-s-list"><span class="sm-s-planned">規劃中 12</span> <span class="sm-s-draft">草稿 3</span> <span class="sm-s-ready">已完成 11</span></span><span class="sm-s-end">系統地圖</span></footer>
+<script src="../../assets/theme/theme.js?v=d288e31038"></script>
+</body>
+</html>
