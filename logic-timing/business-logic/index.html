@@ -5,30 +5,29 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>6.1 Business Logic Vulnerabilities｜Web 安全</title>
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Crect width='16' height='16' rx='3' fill='%23070c12'/%3E%3Crect x='1.5' y='1.5' width='13' height='13' rx='2.5' fill='none' stroke='%2336e0cc' stroke-width='1.4'/%3E%3Cpath d='M5 8 L11 5 M5 8 L11 11' stroke='%2336e0cc' stroke-width='1.2' fill='none'/%3E%3Ccircle cx='5' cy='8' r='1.6' fill='%2336e0cc'/%3E%3Ccircle cx='11' cy='5' r='1.6' fill='%2336e0cc'/%3E%3Ccircle cx='11' cy='11' r='1.6' fill='%2336e0cc'/%3E%3C/svg%3E">
-<link rel="stylesheet" href="../../assets/style.css?v=d288e31038">
-<link rel="stylesheet" href="../../assets/theme/theme.css?v=d288e31038">
+<link rel="stylesheet" href="../../assets/style.css?v=c574a6a9e8">
+<link rel="stylesheet" href="../../assets/theme/theme.css?v=c574a6a9e8">
 <script>(function(){var m=null;try{m=localStorage.getItem("web-security:motion")}catch(e){}if(m!=="on"&&m!=="off"){m="on";try{if(matchMedia("(prefers-reduced-motion: reduce)").matches)m="off"}catch(e){}}document.documentElement.setAttribute("data-motion",m)})()</script>
 </head>
 <body class="page-section sm-body">
 <a class="skip" href="#main">跳到正文</a>
 <header class="sm-top"><a class="sm-brand" href="../../index.html"><svg class="sm-logo" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><rect x="1" y="1" width="14" height="14" rx="3" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M5 8 L11 5 M5 8 L11 11" stroke="currentColor" stroke-width="1.3" fill="none"/><circle cx="5" cy="8" r="1.7" fill="currentColor"/><circle cx="11" cy="5" r="1.7" fill="currentColor"/><circle cx="11" cy="11" r="1.7" fill="currentColor"/></svg><span class="sm-brand-t">web-security</span></a><nav class="sm-path" aria-label="目前位置"><ol><li class="sm-p-root"><a href="../../index.html">web-security</a></li><li class="sm-p-ch split"><a href="../../logic-timing/index.html">6<span class="sm-p-title">&nbsp;問題藏在流程與時間裡</span></a></li><li class=""><span aria-current="page">6.1</span></li></ol></nav><a class="sm-toplink" href="../../index.html#map">map</a><a class="sm-toplink" href="../../chapters/index.html">chapters</a><button type="button" class="sm-toplink sm-motion" aria-pressed="true" hidden>動畫：開</button></header>
 <div class="sm-shell">
-<nav class="sm-tree" aria-label="教材瀏覽器"><details class="sm-tree-wrap" open><summary class="sm-tree-sum">EXPLORER／教材目錄</summary><p class="sm-tree-h" aria-hidden="true">EXPLORER</p><details class="sm-partd" open><summary class="sm-part">第一部分：輸入如何穿過網站</summary><details class="sm-folder"><summary><a class="sm-chlink" href="../../web-http/index.html" title="第 1 章 Web 與 HTTP"><span class="num">1</span><span class="sm-fname">Web 與 HTTP</span></a></summary><div class="sm-files"><a class="sm-file" href="../../web-http/web-basics/index.html" title="1.1 Seeing the Web Through the Browser"><span class="num">1.1</span><span class="sm-fname">Seeing the Web Through the Browser</span><span class="sm-st sm-st-ready" aria-hidden="true"></span><span class="sm-sr">（已完成）</span></a><a class="sm-file" href="../../web-http/http-session/index.html" title="1.2 HTTP Requests and Sessions"><span class="num">1.2</span><span class="sm-fname">HTTP Requests and Sessions</span><span class="sm-st sm-st-ready" aria-hidden="true"></span><span class="sm-sr">（已完成）</span></a></div></details><details class="sm-folder"><summary><a class="sm-chlink" href="../../server-input/index.html" title="第 2 章 伺服器如何處理使用者輸入"><span class="num">2</span><span class="sm-fname">伺服器如何處理使用者輸入</span></a></summary><div class="sm-files"><a class="sm-file" href="../../server-input/path-traversal/index.html" title="2.1 Path Traversal"><span class="num">2.1</span><span class="sm-fname">Path Traversal</span><span class="sm-st sm-st-ready" aria-hidden="true"></span><span class="sm-sr">（已完成）</span></a><a class="sm-file" href="../../server-input/file-upload/index.html" title="2.2 File Upload Vulnerabilities"><span class="num">2.2</span><span class="sm-fname">File Upload Vulnerabilities</span><span class="sm-st sm-st-ready" aria-hidden="true"></span><span class="sm-sr">（已完成）</span></a><a class="sm-file" href="../../server-input/sql-injection/index.html" title="2.3 SQL Injection Basics"><span class="num">2.3</span><span class="sm-fname">SQL Injection Basics</span><span class="sm-st sm-st-ready" aria-hidden="true"></span><span class="sm-sr">（已完成）</span></a><a class="sm-file" href="../../server-input/sql-injection-observation/index.html" title="2.4 UNION and Blind SQL Injection"><span class="num">2.4</span><span class="sm-fname">UNION and Blind SQL Injection</span><span class="sm-st sm-st-ready" aria-hidden="true"></span><span class="sm-sr">（已完成）</span></a><a class="sm-file" href="../../server-input/command-injection/index.html" title="2.5 OS Command Injection"><span class="num">2.5</span><span class="sm-fname">OS Command Injection</span><span class="sm-st sm-st-ready" aria-hidden="true"></span><span class="sm-sr">（已完成）</span></a></div></details><details class="sm-folder"><summary><a class="sm-chlink" href="../../browser-output/index.html" title="第 3 章 伺服器的輸出如何在瀏覽器中變成程式"><span class="num">3</span><span class="sm-fname">伺服器的輸出如何在瀏覽器中變成程式</span></a></summary><div class="sm-files"><a class="sm-file" href="../../browser-output/xss-basics/index.html" title="3.1 Cross-Site Scripting Basics"><span class="num">3.1</span><span class="sm-fname">Cross-Site Scripting Basics</span><span class="sm-st sm-st-ready" aria-hidden="true"></span><span class="sm-sr">（已完成）</span></a><a class="sm-file" href="../../browser-output/xss-context-dom/index.html" title="3.2 Output Contexts and DOM-Based XSS"><span class="num">3.2</span><span class="sm-fname">Output Contexts and DOM-Based XSS</span><span class="sm-st sm-st-ready" aria-hidden="true"></span><span class="sm-sr">（已完成）</span></a></div></details><details class="sm-folder"><summary><a class="sm-chlink" href="../../identity/index.html" title="第 4 章 網站如何知道你是誰、允許你做什麼"><span class="num">4</span><span class="sm-fname">網站如何知道你是誰、允許你做什麼</span></a></summary><div class="sm-files"><a class="sm-file" href="../../identity/authentication/index.html" title="4.1 Authentication"><span class="num">4.1</span><span class="sm-fname">Authentication</span><span class="sm-st sm-st-ready" aria-hidden="true"></span><span class="sm-sr">（已完成）</span></a><a class="sm-file" href="../../identity/access-control/index.html" title="4.2 Access Control"><span class="num">4.2</span><span class="sm-fname">Access Control</span><span class="sm-st sm-st-ready" aria-hidden="true"></span><span class="sm-sr">（已完成）</span></a></div></details><details class="sm-folder"><summary><a class="sm-chlink" href="../../cross-site/index.html" title="第 5 章 網站之間如何利用瀏覽器的信任"><span class="num">5</span><span class="sm-fname">網站之間如何利用瀏覽器的信任</span></a></summary><div class="sm-files"><a class="sm-file" href="../../cross-site/cross-site-trust/index.html" title="5.1 CSRF, CORS, and Cross-Site Trust"><span class="num">5.1</span><span class="sm-fname">CSRF, CORS, and Cross-Site Trust</span><span class="sm-st sm-st-draft" aria-hidden="true"></span><span class="sm-sr">（草稿）</span></a></div></details><details class="sm-folder" open><summary><a class="sm-chlink" href="../../logic-timing/index.html" title="第 6 章 問題藏在流程與時間裡"><span class="num">6</span><span class="sm-fname">問題藏在流程與時間裡</span></a></summary><div class="sm-files"><a class="sm-file" href="../../logic-timing/business-logic/index.html" aria-current="page" title="6.1 Business Logic Vulnerabilities"><span class="num">6.1</span><span class="sm-fname">Business Logic Vulnerabilities</span><span class="sm-st sm-st-draft" aria-hidden="true"></span><span class="sm-sr">（草稿）</span></a><a class="sm-file" href="../../logic-timing/race-conditions/index.html" title="6.2 Race Conditions"><span class="num">6.2</span><span class="sm-fname">Race Conditions</span><span class="sm-st sm-st-draft" aria-hidden="true"></span><span class="sm-sr">（草稿）</span></a></div></details></details><details class="sm-partd" open><summary class="sm-part">第二部分：多元件系統的信任邊界</summary><details class="sm-folder"><summary><a class="sm-chlink" href="../../server-actions/index.html" title="第 7 章 伺服器把資料交給其他元件之後"><span class="num">7</span><span class="sm-fname">伺服器把資料交給其他元件之後</span></a></summary><div class="sm-files"><a class="sm-file is-planned" href="../../server-actions/ssrf/index.html" title="7.1 Server-Side Request Forgery"><span class="num">7.1</span><span class="sm-fname">Server-Side Request Forgery</span><span class="sm-st sm-st-planned" aria-hidden="true"></span><span class="sm-sr">（規劃中）</span></a><a class="sm-file is-planned" href="../../server-actions/xxe/index.html" title="7.2 XML External Entity Injection"><span class="num">7.2</span><span class="sm-fname">XML External Entity Injection</span><span class="sm-st sm-st-planned" aria-hidden="true"></span><span class="sm-sr">（規劃中）</span></a><a class="sm-file is-planned" href="../../server-actions/ssti/index.html" title="7.3 Server-Side Template Injection"><span class="num">7.3</span><span class="sm-fname">Server-Side Template Injection</span><span class="sm-st sm-st-planned" aria-hidden="true"></span><span class="sm-sr">（規劃中）</span></a><a class="sm-file is-planned" href="../../server-actions/deserialization/index.html" title="7.4 Insecure Deserialization"><span class="num">7.4</span><span class="sm-fname">Insecure Deserialization</span><span class="sm-st sm-st-planned" aria-hidden="true"></span><span class="sm-sr">（規劃中）</span></a><a class="sm-file is-planned" href="../../server-actions/prototype-pollution/index.html" title="7.5 Prototype Pollution"><span class="num">7.5</span><span class="sm-fname">Prototype Pollution</span><span class="sm-st sm-st-planned" aria-hidden="true"></span><span class="sm-sr">（規劃中）</span></a></div></details><details class="sm-folder"><summary><a class="sm-chlink" href="../../apis/index.html" title="第 8 章 網站變成 API 之後"><span class="num">8</span><span class="sm-fname">網站變成 API 之後</span></a></summary><div class="sm-files"><a class="sm-file is-planned" href="../../apis/api-testing/index.html" title="8.1 API Attack Surface"><span class="num">8.1</span><span class="sm-fname">API Attack Surface</span><span class="sm-st sm-st-planned" aria-hidden="true"></span><span class="sm-sr">（規劃中）</span></a><a class="sm-file is-planned" href="../../apis/graphql-websockets/index.html" title="8.2 GraphQL and WebSockets"><span class="num">8.2</span><span class="sm-fname">GraphQL and WebSockets</span><span class="sm-st sm-st-planned" aria-hidden="true"></span><span class="sm-sr">（規劃中）</span></a></div></details><details class="sm-folder"><summary><a class="sm-chlink" href="../../delegated-identity/index.html" title="第 9 章 身分跨越網站與元件之後"><span class="num">9</span><span class="sm-fname">身分跨越網站與元件之後</span></a></summary><div class="sm-files"><a class="sm-file is-planned" href="../../delegated-identity/jwt/index.html" title="9.1 JSON Web Tokens"><span class="num">9.1</span><span class="sm-fname">JSON Web Tokens</span><span class="sm-st sm-st-planned" aria-hidden="true"></span><span class="sm-sr">（規劃中）</span></a><a class="sm-file is-planned" href="../../delegated-identity/oauth/index.html" title="9.2 OAuth and Third-Party Login"><span class="num">9.2</span><span class="sm-fname">OAuth and Third-Party Login</span><span class="sm-st sm-st-planned" aria-hidden="true"></span><span class="sm-sr">（規劃中）</span></a></div></details><details class="sm-folder"><summary><a class="sm-chlink" href="../../proxy-cache/index.html" title="第 10 章 Proxy、Cache 與後端看到的不一樣"><span class="num">10</span><span class="sm-fname">Proxy、Cache 與後端看到的不一樣</span></a></summary><div class="sm-files"><a class="sm-file is-planned" href="../../proxy-cache/host-cache/index.html" title="10.1 Host Headers and Web Caches"><span class="num">10.1</span><span class="sm-fname">Host Headers and Web Caches</span><span class="sm-st sm-st-planned" aria-hidden="true"></span><span class="sm-sr">（規劃中）</span></a><a class="sm-file is-planned" href="../../proxy-cache/request-smuggling/index.html" title="10.2 HTTP Request Smuggling"><span class="num">10.2</span><span class="sm-fname">HTTP Request Smuggling</span><span class="sm-st sm-st-planned" aria-hidden="true"></span><span class="sm-sr">（規劃中）</span></a></div></details><details class="sm-folder"><summary><a class="sm-chlink" href="../../llm/index.html" title="第 11 章 把信任模型套到新元件：Web LLM"><span class="num">11</span><span class="sm-fname">把信任模型套到新元件：Web LLM</span></a></summary><div class="sm-files"><a class="sm-file is-planned" href="../../llm/llm-attacks/index.html" title="11.1 Web LLM Attacks"><span class="num">11.1</span><span class="sm-fname">Web LLM Attacks</span><span class="sm-st sm-st-planned" aria-hidden="true"></span><span class="sm-sr">（規劃中）</span></a></div></details></details></details></nav>
+<nav class="sm-tree" aria-label="教材瀏覽器"><details class="sm-tree-wrap" open><summary class="sm-tree-sum">EXPLORER／教材目錄</summary><p class="sm-tree-h" aria-hidden="true">EXPLORER</p><details class="sm-partd" open><summary class="sm-part">第一部分：輸入如何穿過網站</summary><details class="sm-folder"><summary><a class="sm-chlink" href="../../web-http/index.html" title="第 1 章 Web 與 HTTP"><span class="num">1</span><span class="sm-fname">Web 與 HTTP</span></a></summary><div class="sm-files"><a class="sm-file" href="../../web-http/web-basics/index.html" title="1.1 Seeing the Web Through the Browser"><span class="num">1.1</span><span class="sm-fname">Seeing the Web Through the Browser</span><span class="sm-st sm-st-ready" aria-hidden="true"></span><span class="sm-sr">（已完成）</span></a><a class="sm-file" href="../../web-http/http-session/index.html" title="1.2 HTTP Requests and Sessions"><span class="num">1.2</span><span class="sm-fname">HTTP Requests and Sessions</span><span class="sm-st sm-st-ready" aria-hidden="true"></span><span class="sm-sr">（已完成）</span></a></div></details><details class="sm-folder"><summary><a class="sm-chlink" href="../../server-input/index.html" title="第 2 章 伺服器如何處理使用者輸入"><span class="num">2</span><span class="sm-fname">伺服器如何處理使用者輸入</span></a></summary><div class="sm-files"><a class="sm-file" href="../../server-input/path-traversal/index.html" title="2.1 Path Traversal"><span class="num">2.1</span><span class="sm-fname">Path Traversal</span><span class="sm-st sm-st-ready" aria-hidden="true"></span><span class="sm-sr">（已完成）</span></a><a class="sm-file" href="../../server-input/file-upload/index.html" title="2.2 File Upload Vulnerabilities"><span class="num">2.2</span><span class="sm-fname">File Upload Vulnerabilities</span><span class="sm-st sm-st-ready" aria-hidden="true"></span><span class="sm-sr">（已完成）</span></a><a class="sm-file" href="../../server-input/sql-injection/index.html" title="2.3 SQL Injection Basics"><span class="num">2.3</span><span class="sm-fname">SQL Injection Basics</span><span class="sm-st sm-st-ready" aria-hidden="true"></span><span class="sm-sr">（已完成）</span></a><a class="sm-file" href="../../server-input/sql-injection-observation/index.html" title="2.4 UNION and Blind SQL Injection"><span class="num">2.4</span><span class="sm-fname">UNION and Blind SQL Injection</span><span class="sm-st sm-st-ready" aria-hidden="true"></span><span class="sm-sr">（已完成）</span></a><a class="sm-file" href="../../server-input/command-injection/index.html" title="2.5 OS Command Injection"><span class="num">2.5</span><span class="sm-fname">OS Command Injection</span><span class="sm-st sm-st-ready" aria-hidden="true"></span><span class="sm-sr">（已完成）</span></a></div></details><details class="sm-folder"><summary><a class="sm-chlink" href="../../browser-output/index.html" title="第 3 章 伺服器的輸出如何在瀏覽器中變成程式"><span class="num">3</span><span class="sm-fname">伺服器的輸出如何在瀏覽器中變成程式</span></a></summary><div class="sm-files"><a class="sm-file" href="../../browser-output/xss-basics/index.html" title="3.1 Cross-Site Scripting Basics"><span class="num">3.1</span><span class="sm-fname">Cross-Site Scripting Basics</span><span class="sm-st sm-st-ready" aria-hidden="true"></span><span class="sm-sr">（已完成）</span></a><a class="sm-file" href="../../browser-output/xss-context-dom/index.html" title="3.2 Output Contexts and DOM-Based XSS"><span class="num">3.2</span><span class="sm-fname">Output Contexts and DOM-Based XSS</span><span class="sm-st sm-st-ready" aria-hidden="true"></span><span class="sm-sr">（已完成）</span></a></div></details><details class="sm-folder"><summary><a class="sm-chlink" href="../../identity/index.html" title="第 4 章 網站如何知道你是誰、允許你做什麼"><span class="num">4</span><span class="sm-fname">網站如何知道你是誰、允許你做什麼</span></a></summary><div class="sm-files"><a class="sm-file" href="../../identity/authentication/index.html" title="4.1 Authentication"><span class="num">4.1</span><span class="sm-fname">Authentication</span><span class="sm-st sm-st-ready" aria-hidden="true"></span><span class="sm-sr">（已完成）</span></a><a class="sm-file" href="../../identity/access-control/index.html" title="4.2 Access Control"><span class="num">4.2</span><span class="sm-fname">Access Control</span><span class="sm-st sm-st-ready" aria-hidden="true"></span><span class="sm-sr">（已完成）</span></a></div></details><details class="sm-folder"><summary><a class="sm-chlink" href="../../cross-site/index.html" title="第 5 章 網站之間如何利用瀏覽器的信任"><span class="num">5</span><span class="sm-fname">網站之間如何利用瀏覽器的信任</span></a></summary><div class="sm-files"><a class="sm-file" href="../../cross-site/cross-site-trust/index.html" title="5.1 CSRF, CORS, and Cross-Site Trust"><span class="num">5.1</span><span class="sm-fname">CSRF, CORS, and Cross-Site Trust</span><span class="sm-st sm-st-ready" aria-hidden="true"></span><span class="sm-sr">（已完成）</span></a></div></details><details class="sm-folder" open><summary><a class="sm-chlink" href="../../logic-timing/index.html" title="第 6 章 問題藏在流程與時間裡"><span class="num">6</span><span class="sm-fname">問題藏在流程與時間裡</span></a></summary><div class="sm-files"><a class="sm-file" href="../../logic-timing/business-logic/index.html" aria-current="page" title="6.1 Business Logic Vulnerabilities"><span class="num">6.1</span><span class="sm-fname">Business Logic Vulnerabilities</span><span class="sm-st sm-st-ready" aria-hidden="true"></span><span class="sm-sr">（已完成）</span></a><a class="sm-file" href="../../logic-timing/race-conditions/index.html" title="6.2 Race Conditions"><span class="num">6.2</span><span class="sm-fname">Race Conditions</span><span class="sm-st sm-st-ready" aria-hidden="true"></span><span class="sm-sr">（已完成）</span></a></div></details></details><details class="sm-partd" open><summary class="sm-part">第二部分：多元件系統的信任邊界</summary><details class="sm-folder"><summary><a class="sm-chlink" href="../../server-actions/index.html" title="第 7 章 伺服器把資料交給其他元件之後"><span class="num">7</span><span class="sm-fname">伺服器把資料交給其他元件之後</span></a></summary><div class="sm-files"><a class="sm-file is-planned" href="../../server-actions/ssrf/index.html" title="7.1 Server-Side Request Forgery"><span class="num">7.1</span><span class="sm-fname">Server-Side Request Forgery</span><span class="sm-st sm-st-planned" aria-hidden="true"></span><span class="sm-sr">（規劃中）</span></a><a class="sm-file is-planned" href="../../server-actions/xxe/index.html" title="7.2 XML External Entity Injection"><span class="num">7.2</span><span class="sm-fname">XML External Entity Injection</span><span class="sm-st sm-st-planned" aria-hidden="true"></span><span class="sm-sr">（規劃中）</span></a><a class="sm-file is-planned" href="../../server-actions/ssti/index.html" title="7.3 Server-Side Template Injection"><span class="num">7.3</span><span class="sm-fname">Server-Side Template Injection</span><span class="sm-st sm-st-planned" aria-hidden="true"></span><span class="sm-sr">（規劃中）</span></a><a class="sm-file is-planned" href="../../server-actions/deserialization/index.html" title="7.4 Insecure Deserialization"><span class="num">7.4</span><span class="sm-fname">Insecure Deserialization</span><span class="sm-st sm-st-planned" aria-hidden="true"></span><span class="sm-sr">（規劃中）</span></a><a class="sm-file is-planned" href="../../server-actions/prototype-pollution/index.html" title="7.5 Prototype Pollution"><span class="num">7.5</span><span class="sm-fname">Prototype Pollution</span><span class="sm-st sm-st-planned" aria-hidden="true"></span><span class="sm-sr">（規劃中）</span></a></div></details><details class="sm-folder"><summary><a class="sm-chlink" href="../../apis/index.html" title="第 8 章 網站變成 API 之後"><span class="num">8</span><span class="sm-fname">網站變成 API 之後</span></a></summary><div class="sm-files"><a class="sm-file is-planned" href="../../apis/api-testing/index.html" title="8.1 API Attack Surface"><span class="num">8.1</span><span class="sm-fname">API Attack Surface</span><span class="sm-st sm-st-planned" aria-hidden="true"></span><span class="sm-sr">（規劃中）</span></a><a class="sm-file is-planned" href="../../apis/graphql-websockets/index.html" title="8.2 GraphQL and WebSockets"><span class="num">8.2</span><span class="sm-fname">GraphQL and WebSockets</span><span class="sm-st sm-st-planned" aria-hidden="true"></span><span class="sm-sr">（規劃中）</span></a></div></details><details class="sm-folder"><summary><a class="sm-chlink" href="../../delegated-identity/index.html" title="第 9 章 身分跨越網站與元件之後"><span class="num">9</span><span class="sm-fname">身分跨越網站與元件之後</span></a></summary><div class="sm-files"><a class="sm-file is-planned" href="../../delegated-identity/jwt/index.html" title="9.1 JSON Web Tokens"><span class="num">9.1</span><span class="sm-fname">JSON Web Tokens</span><span class="sm-st sm-st-planned" aria-hidden="true"></span><span class="sm-sr">（規劃中）</span></a><a class="sm-file is-planned" href="../../delegated-identity/oauth/index.html" title="9.2 OAuth and Third-Party Login"><span class="num">9.2</span><span class="sm-fname">OAuth and Third-Party Login</span><span class="sm-st sm-st-planned" aria-hidden="true"></span><span class="sm-sr">（規劃中）</span></a></div></details><details class="sm-folder"><summary><a class="sm-chlink" href="../../proxy-cache/index.html" title="第 10 章 Proxy、Cache 與後端看到的不一樣"><span class="num">10</span><span class="sm-fname">Proxy、Cache 與後端看到的不一樣</span></a></summary><div class="sm-files"><a class="sm-file is-planned" href="../../proxy-cache/host-cache/index.html" title="10.1 Host Headers and Web Caches"><span class="num">10.1</span><span class="sm-fname">Host Headers and Web Caches</span><span class="sm-st sm-st-planned" aria-hidden="true"></span><span class="sm-sr">（規劃中）</span></a><a class="sm-file is-planned" href="../../proxy-cache/request-smuggling/index.html" title="10.2 HTTP Request Smuggling"><span class="num">10.2</span><span class="sm-fname">HTTP Request Smuggling</span><span class="sm-st sm-st-planned" aria-hidden="true"></span><span class="sm-sr">（規劃中）</span></a></div></details><details class="sm-folder"><summary><a class="sm-chlink" href="../../llm/index.html" title="第 11 章 把信任模型套到新元件：Web LLM"><span class="num">11</span><span class="sm-fname">把信任模型套到新元件：Web LLM</span></a></summary><div class="sm-files"><a class="sm-file is-planned" href="../../llm/llm-attacks/index.html" title="11.1 Web LLM Attacks"><span class="num">11.1</span><span class="sm-fname">Web LLM Attacks</span><span class="sm-st sm-st-planned" aria-hidden="true"></span><span class="sm-sr">（規劃中）</span></a></div></details></details></details></nav>
 <header class="sm-head">
   <p class="sm-eyebrow">logic-timing/business-logic</p>
-  <h1><span class="num">6.1</span> Business Logic Vulnerabilities <span class="badge badge-draft">草稿</span></h1>
+  <h1><span class="num">6.1</span> Business Logic Vulnerabilities <span class="badge badge-ready">已完成</span></h1>
   <p class="question sm-q"><span aria-hidden="true">❯</span> 每筆 request 都合法，組起來就一定合理嗎？</p>
 </header>
-<aside class="sm-aside" aria-label="本節輔助"><nav class="sm-outline" aria-label="本節內容"><p class="sm-ph">本節內容</p><ol><li><a href="#logic-vs-injection" title="6.1.1 格式合法的請求"><span class="num">6.1.1</span>格式合法的請求</a></li><li><a href="#shop-flow" title="6.1.2 一家商店的購物流程"><span class="num">6.1.2</span>一家商店的購物流程</a></li><li><a href="#client-side-trust" title="6.1.3 前端送來的價格"><span class="num">6.1.3</span>前端送來的價格</a></li><li><a href="#unconventional-input" title="6.1.4 伺服器沒想到的數值"><span class="num">6.1.4</span>伺服器沒想到的數值</a></li><li><a href="#workflow" title="6.1.5 不照順序走的使用者"><span class="num">6.1.5</span>不照順序走的使用者</a></li><li><a href="#domain-rules" title="6.1.6 商店自己的規則"><span class="num">6.1.6</span>商店自己的規則</a></li><li><a href="#client-state" title="6.1.7 讓使用者端決定的狀態"><span class="num">6.1.7</span>讓使用者端決定的狀態</a></li><li><a href="#finding" title="6.1.8 怎麼找出來"><span class="num">6.1.8</span>怎麼找出來</a></li><li><a href="#fix" title="6.1.9 怎麼修補"><span class="num">6.1.9</span>怎麼修補</a></li><li><a href="#summary" title="6.1.10 小結"><span class="num">6.1.10</span>小結</a></li></ol></nav><section class="sm-locator" aria-label="系統地圖定位"><p class="sm-ph">系統地圖</p><a class="sm-mini-link" href="../../index.html#map-logic-timing" aria-label="在首頁的系統地圖上看第 6 章的位置"><svg class="sm-map sm-map-mini" viewBox="518 143 230 497" aria-hidden="true" focusable="false" preserveAspectRatio="xMidYMid meet" style="aspect-ratio:230/497"><line class="sm-edge" x1="200" y1="330" x2="290" y2="330"/><line class="sm-edge sm-dash" x1="440" y1="330" x2="530" y2="330"/><line class="sm-edge sm-threat-edge" x1="110" y1="100" x2="110" y2="255"/><line class="sm-edge sm-dash" x1="625" y1="100" x2="625" y2="150"/><line class="sm-edge" x1="625" y1="546" x2="625" y2="570"/><line class="sm-edge" x1="720" y1="325" x2="765" y2="325"/><line class="sm-edge" x1="765" y1="325" x2="765" y2="48"/><line class="sm-edge sm-dash" x1="765" y1="325" x2="765" y2="538"/><line class="sm-edge" x1="765" y1="48" x2="810" y2="48"/><line class="sm-edge" x1="765" y1="118" x2="810" y2="118"/><line class="sm-edge" x1="765" y1="188" x2="810" y2="188"/><line class="sm-edge sm-dash" x1="765" y1="328" x2="810" y2="328"/><line class="sm-edge sm-dash" x1="765" y1="398" x2="810" y2="398"/><line class="sm-edge sm-dash" x1="765" y1="468" x2="810" y2="468"/><line class="sm-edge sm-dash" x1="765" y1="538" x2="810" y2="538"/><g class="sm-n sm-threat off" data-ch="cross-site"><rect class="sm-box" x="20" y="20" width="180" height="80" rx="8"/><text class="sm-mini-t" x="110.0" y="62.0" text-anchor="middle" dominant-baseline="central" font-size="16">5</text></g><g class="sm-n sm-frame off" data-ch="web-http"><rect class="sm-box" x="20" y="255" width="180" height="150" rx="10"/><text class="sm-mini-t" x="50" y="285" text-anchor="middle" dominant-baseline="central" font-size="16">1</text></g><g class="sm-n sm-node off" data-ch="browser-output"><rect class="sm-box" x="36" y="322" width="148" height="64" rx="8"/><text class="sm-mini-t" x="110.0" y="356.0" text-anchor="middle" dominant-baseline="central" font-size="16">3</text></g><g class="sm-n sm-node sm-p2 off" data-ch="proxy-cache"><rect class="sm-box" x="290" y="240" width="150" height="180" rx="8"/><text class="sm-mini-t" x="365.0" y="332.0" text-anchor="middle" dominant-baseline="central" font-size="16">10</text></g><g class="sm-n sm-frame" aria-hidden="true"><rect class="sm-box" x="530" y="150" width="190" height="396" rx="10"/></g><g class="sm-n sm-node off" data-ch="identity"><rect class="sm-box" x="546" y="194" width="158" height="56" rx="8"/><text class="sm-mini-t" x="625.0" y="224.0" text-anchor="middle" dominant-baseline="central" font-size="16">4</text></g><g class="sm-n sm-node sm-p2 off" data-ch="apis"><rect class="sm-box" x="546" y="262" width="158" height="56" rx="8"/><text class="sm-mini-t" x="625.0" y="292.0" text-anchor="middle" dominant-baseline="central" font-size="16">8</text></g><g class="sm-n sm-node sm-p2 off" data-ch="llm"><rect class="sm-box" x="546" y="330" width="158" height="56" rx="8"/><text class="sm-mini-t" x="625.0" y="360.0" text-anchor="middle" dominant-baseline="central" font-size="16">11</text></g><g class="sm-n sm-node on" data-ch="logic-timing"><rect class="sm-box" x="546" y="398" width="158" height="56" rx="8"/><text class="sm-mini-t" x="625.0" y="428.0" text-anchor="middle" dominant-baseline="central" font-size="16">6</text></g><g class="sm-n sm-node sm-p2 off" data-ch="server-actions"><rect class="sm-box" x="546" y="466" width="158" height="56" rx="8"/><text class="sm-mini-t" x="625.0" y="496.0" text-anchor="middle" dominant-baseline="central" font-size="16">7</text></g><g class="sm-n sm-node sm-p2 off" data-ch="delegated-identity"><rect class="sm-box" x="530" y="20" width="190" height="80" rx="8"/><text class="sm-mini-t" x="625.0" y="62.0" text-anchor="middle" dominant-baseline="central" font-size="16">9</text></g><g class="sm-n sm-node on" data-ch="logic-timing"><rect class="sm-box" x="530" y="570" width="190" height="56" rx="8"/><text class="sm-mini-t" x="625.0" y="600.0" text-anchor="middle" dominant-baseline="central" font-size="16">6</text></g><g class="sm-n sm-node off" data-ch="server-input"><rect class="sm-box" x="810" y="20" width="170" height="56" rx="8"/><text class="sm-mini-t" x="895.0" y="50.0" text-anchor="middle" dominant-baseline="central" font-size="16">2</text></g><g class="sm-n sm-node off" data-ch="server-input"><rect class="sm-box" x="810" y="90" width="170" height="56" rx="8"/><text class="sm-mini-t" x="895.0" y="120.0" text-anchor="middle" dominant-baseline="central" font-size="16">2</text></g><g class="sm-n sm-node off" data-ch="server-input"><rect class="sm-box" x="810" y="160" width="170" height="56" rx="8"/><text class="sm-mini-t" x="895.0" y="190.0" text-anchor="middle" dominant-baseline="central" font-size="16">2</text></g><g class="sm-n sm-node sm-p2 off" data-ch="server-actions"><rect class="sm-box" x="810" y="300" width="170" height="56" rx="8"/><text class="sm-mini-t" x="895.0" y="330.0" text-anchor="middle" dominant-baseline="central" font-size="16">7</text></g><g class="sm-n sm-node sm-p2 off" data-ch="server-actions"><rect class="sm-box" x="810" y="370" width="170" height="56" rx="8"/><text class="sm-mini-t" x="895.0" y="400.0" text-anchor="middle" dominant-baseline="central" font-size="16">7</text></g><g class="sm-n sm-node sm-p2 off" data-ch="server-actions"><rect class="sm-box" x="810" y="440" width="170" height="56" rx="8"/><text class="sm-mini-t" x="895.0" y="470.0" text-anchor="middle" dominant-baseline="central" font-size="16">7</text></g><g class="sm-n sm-node sm-p2 off" data-ch="server-actions"><rect class="sm-box" x="810" y="510" width="170" height="56" rx="8"/><text class="sm-mini-t" x="895.0" y="540.0" text-anchor="middle" dominant-baseline="central" font-size="16">7</text></g><g class="sm-n sm-pill off" data-ch="web-http"><rect class="sm-pill-box" x="213" y="306" width="64" height="48" rx="24"/><text class="sm-mini-t" x="245" y="332" text-anchor="middle" dominant-baseline="central" font-size="14">1</text></g><g class="sm-n sm-pill off" data-ch="web-http"><rect class="sm-pill-box" x="453" y="306" width="64" height="48" rx="24"/><text class="sm-mini-t" x="485" y="332" text-anchor="middle" dominant-baseline="central" font-size="14">1</text></g><g class="sm-n sm-pill off" data-ch="cross-site"><rect class="sm-pill-box" x="78" y="153" width="64" height="48" rx="24"/><text class="sm-mini-t" x="110" y="179" text-anchor="middle" dominant-baseline="central" font-size="14">5</text></g><g class="sm-n sm-pill off" data-ch="delegated-identity"><rect class="sm-pill-box" x="593" y="101" width="64" height="48" rx="24"/><text class="sm-mini-t" x="625" y="127" text-anchor="middle" dominant-baseline="central" font-size="14">9</text></g></svg></a><p class="sm-cap">位置：第 6 章　問題藏在流程與時間裡</p><ul class="sm-chips sm-comps" aria-label="本章元件"><li>Business logic</li><li>Shared state</li></ul><p class="sm-mini-hint">點地圖：到首頁地圖看這一章</p></section></aside>
+<aside class="sm-aside" aria-label="本節輔助"><nav class="sm-outline" aria-label="本節內容"><p class="sm-ph">本節內容</p><ol><li><a href="#logic-vs-injection" title="6.1.1 語法照常解讀的請求"><span class="num">6.1.1</span>語法照常解讀的請求</a></li><li><a href="#shop-flow" title="6.1.2 一家商店的購物流程"><span class="num">6.1.2</span>一家商店的購物流程</a></li><li><a href="#client-side-trust" title="6.1.3 前端送來的價格"><span class="num">6.1.3</span>前端送來的價格</a></li><li><a href="#unconventional-input" title="6.1.4 伺服器沒想到的數值"><span class="num">6.1.4</span>伺服器沒想到的數值</a></li><li><a href="#workflow" title="6.1.5 不照順序走的使用者"><span class="num">6.1.5</span>不照順序走的使用者</a></li><li><a href="#domain-rules" title="6.1.6 商店自己的規則"><span class="num">6.1.6</span>商店自己的規則</a></li><li><a href="#client-state" title="6.1.7 讓使用者端決定的狀態"><span class="num">6.1.7</span>讓使用者端決定的狀態</a></li><li><a href="#finding" title="6.1.8 怎麼找出來"><span class="num">6.1.8</span>怎麼找出來</a></li><li><a href="#fix" title="6.1.9 防禦手法"><span class="num">6.1.9</span>防禦手法</a></li><li><a href="#summary" title="6.1.10 小結"><span class="num">6.1.10</span>小結</a></li></ol></nav><section class="sm-locator" aria-label="系統地圖定位"><p class="sm-ph">系統地圖</p><a class="sm-mini-link" href="../../index.html#map-logic-timing" aria-label="在首頁的系統地圖上看第 6 章的位置"><svg class="sm-map sm-map-mini" viewBox="518 143 230 497" aria-hidden="true" focusable="false" preserveAspectRatio="xMidYMid meet" style="aspect-ratio:230/497"><line class="sm-edge" x1="200" y1="330" x2="290" y2="330"/><line class="sm-edge sm-dash" x1="440" y1="330" x2="530" y2="330"/><line class="sm-edge sm-threat-edge" x1="110" y1="100" x2="110" y2="255"/><line class="sm-edge sm-dash" x1="625" y1="100" x2="625" y2="150"/><line class="sm-edge" x1="625" y1="546" x2="625" y2="570"/><line class="sm-edge" x1="720" y1="325" x2="765" y2="325"/><line class="sm-edge" x1="765" y1="325" x2="765" y2="48"/><line class="sm-edge sm-dash" x1="765" y1="325" x2="765" y2="538"/><line class="sm-edge" x1="765" y1="48" x2="810" y2="48"/><line class="sm-edge" x1="765" y1="118" x2="810" y2="118"/><line class="sm-edge" x1="765" y1="188" x2="810" y2="188"/><line class="sm-edge sm-dash" x1="765" y1="328" x2="810" y2="328"/><line class="sm-edge sm-dash" x1="765" y1="398" x2="810" y2="398"/><line class="sm-edge sm-dash" x1="765" y1="468" x2="810" y2="468"/><line class="sm-edge sm-dash" x1="765" y1="538" x2="810" y2="538"/><g class="sm-n sm-threat off" data-ch="cross-site"><rect class="sm-box" x="20" y="20" width="180" height="80" rx="8"/><text class="sm-mini-t" x="110.0" y="62.0" text-anchor="middle" dominant-baseline="central" font-size="16">5</text></g><g class="sm-n sm-frame off" data-ch="web-http"><rect class="sm-box" x="20" y="255" width="180" height="150" rx="10"/><text class="sm-mini-t" x="50" y="285" text-anchor="middle" dominant-baseline="central" font-size="16">1</text></g><g class="sm-n sm-node off" data-ch="browser-output"><rect class="sm-box" x="36" y="322" width="148" height="64" rx="8"/><text class="sm-mini-t" x="110.0" y="356.0" text-anchor="middle" dominant-baseline="central" font-size="16">3</text></g><g class="sm-n sm-node sm-p2 off" data-ch="proxy-cache"><rect class="sm-box" x="290" y="240" width="150" height="180" rx="8"/><text class="sm-mini-t" x="365.0" y="332.0" text-anchor="middle" dominant-baseline="central" font-size="16">10</text></g><g class="sm-n sm-frame" aria-hidden="true"><rect class="sm-box" x="530" y="150" width="190" height="396" rx="10"/></g><g class="sm-n sm-node off" data-ch="identity"><rect class="sm-box" x="546" y="194" width="158" height="56" rx="8"/><text class="sm-mini-t" x="625.0" y="224.0" text-anchor="middle" dominant-baseline="central" font-size="16">4</text></g><g class="sm-n sm-node sm-p2 off" data-ch="apis"><rect class="sm-box" x="546" y="262" width="158" height="56" rx="8"/><text class="sm-mini-t" x="625.0" y="292.0" text-anchor="middle" dominant-baseline="central" font-size="16">8</text></g><g class="sm-n sm-node sm-p2 off" data-ch="llm"><rect class="sm-box" x="546" y="330" width="158" height="56" rx="8"/><text class="sm-mini-t" x="625.0" y="360.0" text-anchor="middle" dominant-baseline="central" font-size="16">11</text></g><g class="sm-n sm-node on" data-ch="logic-timing"><rect class="sm-box" x="546" y="398" width="158" height="56" rx="8"/><text class="sm-mini-t" x="625.0" y="428.0" text-anchor="middle" dominant-baseline="central" font-size="16">6</text></g><g class="sm-n sm-node sm-p2 off" data-ch="server-actions"><rect class="sm-box" x="546" y="466" width="158" height="56" rx="8"/><text class="sm-mini-t" x="625.0" y="496.0" text-anchor="middle" dominant-baseline="central" font-size="16">7</text></g><g class="sm-n sm-node sm-p2 off" data-ch="delegated-identity"><rect class="sm-box" x="530" y="20" width="190" height="80" rx="8"/><text class="sm-mini-t" x="625.0" y="62.0" text-anchor="middle" dominant-baseline="central" font-size="16">9</text></g><g class="sm-n sm-node on" data-ch="logic-timing"><rect class="sm-box" x="530" y="570" width="190" height="56" rx="8"/><text class="sm-mini-t" x="625.0" y="600.0" text-anchor="middle" dominant-baseline="central" font-size="16">6</text></g><g class="sm-n sm-node off" data-ch="server-input"><rect class="sm-box" x="810" y="20" width="170" height="56" rx="8"/><text class="sm-mini-t" x="895.0" y="50.0" text-anchor="middle" dominant-baseline="central" font-size="16">2</text></g><g class="sm-n sm-node off" data-ch="server-input"><rect class="sm-box" x="810" y="90" width="170" height="56" rx="8"/><text class="sm-mini-t" x="895.0" y="120.0" text-anchor="middle" dominant-baseline="central" font-size="16">2</text></g><g class="sm-n sm-node off" data-ch="server-input"><rect class="sm-box" x="810" y="160" width="170" height="56" rx="8"/><text class="sm-mini-t" x="895.0" y="190.0" text-anchor="middle" dominant-baseline="central" font-size="16">2</text></g><g class="sm-n sm-node sm-p2 off" data-ch="server-actions"><rect class="sm-box" x="810" y="300" width="170" height="56" rx="8"/><text class="sm-mini-t" x="895.0" y="330.0" text-anchor="middle" dominant-baseline="central" font-size="16">7</text></g><g class="sm-n sm-node sm-p2 off" data-ch="server-actions"><rect class="sm-box" x="810" y="370" width="170" height="56" rx="8"/><text class="sm-mini-t" x="895.0" y="400.0" text-anchor="middle" dominant-baseline="central" font-size="16">7</text></g><g class="sm-n sm-node sm-p2 off" data-ch="server-actions"><rect class="sm-box" x="810" y="440" width="170" height="56" rx="8"/><text class="sm-mini-t" x="895.0" y="470.0" text-anchor="middle" dominant-baseline="central" font-size="16">7</text></g><g class="sm-n sm-node sm-p2 off" data-ch="server-actions"><rect class="sm-box" x="810" y="510" width="170" height="56" rx="8"/><text class="sm-mini-t" x="895.0" y="540.0" text-anchor="middle" dominant-baseline="central" font-size="16">7</text></g><g class="sm-n sm-pill off" data-ch="web-http"><rect class="sm-pill-box" x="213" y="306" width="64" height="48" rx="24"/><text class="sm-mini-t" x="245" y="332" text-anchor="middle" dominant-baseline="central" font-size="14">1</text></g><g class="sm-n sm-pill off" data-ch="web-http"><rect class="sm-pill-box" x="453" y="306" width="64" height="48" rx="24"/><text class="sm-mini-t" x="485" y="332" text-anchor="middle" dominant-baseline="central" font-size="14">1</text></g><g class="sm-n sm-pill off" data-ch="cross-site"><rect class="sm-pill-box" x="78" y="153" width="64" height="48" rx="24"/><text class="sm-mini-t" x="110" y="179" text-anchor="middle" dominant-baseline="central" font-size="14">5</text></g><g class="sm-n sm-pill off" data-ch="delegated-identity"><rect class="sm-pill-box" x="593" y="101" width="64" height="48" rx="24"/><text class="sm-mini-t" x="625" y="127" text-anchor="middle" dominant-baseline="central" font-size="14">9</text></g></svg></a><p class="sm-cap">位置：第 6 章　問題藏在流程與時間裡</p><ul class="sm-chips sm-comps" aria-label="本章元件"><li>Business logic</li><li>Shared state</li></ul><p class="sm-mini-hint">點地圖：到首頁地圖看這一章</p></section></aside>
 <main id="main" class="sm-doc" tabindex="-1">
 <article class="content sm-article">
-<p class="notice">本節是草稿，內容仍在撰寫與查核中。</p><p>wiener 登入了自己的帳號，在 <code>shop.example.com</code> 把一個旅行背包放進自己的購物車，親手按下結帳。<a href="../../identity/access-control/index.html">Access Control</a> 會問的「他有沒有權限做這件事」，答案是有；上一章 <a href="../../cross-site/cross-site-trust/index.html">CSRF, CORS, and Cross-Site Trust</a> 會問的「這是不是他本人的意思」，答案也是有。可是他的帳戶只剩 100 元，背包要 1,250 元，訂單卻成立了。每一筆請求的身分、權限、意圖、格式都沒問題，出錯的是另一件事：以這張訂單目前的狀態，網站該不該讓它往下走。</p>
+<svg class="icon-sprite" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" style="position:absolute;width:0;height:0;overflow:hidden"><symbol id="icon-cart" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 13h30l-4 15H16z" fill="var(--icon-commerce)"/><path d="M4 7h6l7 23h21" fill="none"/><circle cx="19" cy="38.5" r="3.5" fill="var(--icon-commerce-soft)"/><circle cx="35" cy="38.5" r="3.5" fill="var(--icon-commerce-soft)"/></symbol><symbol id="icon-credit-card" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="9" width="42" height="30" rx="9" fill="var(--icon-commerce-soft)"/><path d="M4 20h40" stroke-width="7"/><path d="M11 31h8M26 31h4" stroke-width="3.2"/><rect x="3" y="9" width="42" height="30" rx="9" fill="none"/></symbol><symbol id="icon-cross" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="24" cy="24" r="19" fill="var(--icon-bad-soft)"/><path d="M17 17l14 14M31 17L17 31" stroke="var(--icon-bad)" stroke-width="4.6"/></symbol><symbol id="icon-invoice" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 6a4 4 0 0 1 4-4h18a4 4 0 0 1 4 4v38l-4.3-3-4.3 3-4.4-3-4.3 3-4.4-3-4.3 3z" fill="var(--icon-commerce-soft)"/><path d="M17 12h14M17 19h14M17 26h7"/><path d="M17 33h14" stroke="var(--icon-commerce)" stroke-width="4"/></symbol><symbol id="icon-order" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M24 4l17 9v21l-17 10L7 34V13z" fill="var(--icon-commerce-soft)"/><path d="M24 4l17 9-17 9-17-9z" fill="var(--icon-commerce)"/><path d="M24 22v22"/><path d="M15.5 8.5l17 9" stroke="var(--icon-commerce-soft)" stroke-width="3.2"/></symbol><symbol id="icon-warning" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M24 5c1.7 0 3.1.9 4 2.4L43 34c1.8 3.3-.5 7.5-4.3 7.5H9.3C5.5 41.5 3.2 37.3 5 34L20 7.4C20.9 5.9 22.3 5 24 5z" fill="var(--icon-warn)" fill-opacity=".85"/><path d="M24 17v10" stroke-width="4"/><circle cx="24" cy="34" r="2" fill="currentColor" stroke="none"/></symbol></svg><p>wiener 登入了自己的帳號，在 <code>shop.example.com</code> 把一個旅行背包放進自己的購物車，親手按下結帳。<a href="../../identity/access-control/index.html">Access Control</a> 會問的「他有沒有權限做這件事」，答案是有；上一章 <a href="../../cross-site/cross-site-trust/index.html">CSRF, CORS, and Cross-Site Trust</a> 會問的「這是不是他本人的意思」，答案也是有。可是他的帳戶只剩 100 元，背包要 1,250 元，訂單卻成立了。每一筆請求的身分、權限、意圖、格式都沒問題，出錯的是另一件事：以這張訂單目前的狀態，網站該不該讓它往下走。</p>
 
-<h2 id="logic-vs-injection"><span class="num">6.1.1</span> 格式合法的請求</h2>
-<p>第 2 章的注入類漏洞有一個共同的樣子：使用者送來的資料被接進查詢、指令或頁面，越過了資料和語法之間的界線。<a href="../../server-input/sql-injection/index.html#where-it-breaks">SQL Injection</a> 的輸入裡有引號，XSS 的輸入裡有標籤。找這類問題時，可以盯著那些會改變語法的字元。</p>
-<p><strong>業務邏輯漏洞</strong>（business logic vulnerability，也叫 logic flaw）沒有這種字元。數量欄位收到一個整數，優惠碼欄位收到一個存在的優惠碼，確認頁收到一筆普通的 <code>GET</code>，每一個值都在網站預期的格式之內，任何一個解析器都不會出錯。問題出在網站對使用者行為的假設：假設價格欄位會原封不動送回來、假設數量是正數、假設有人走到確認頁之前一定已經付了錢。使用者不照這些假設做，網站就把合法的功能組合成設計者沒想過的結果。</p>
+<h2 id="logic-vs-injection"><span class="num">6.1.1</span> 語法照常解讀的請求</h2>
+<p>第 2、3 章的注入類漏洞有一個共同的樣子：使用者送來的資料被接進查詢、指令或頁面，改變了它們的語法解讀。在 <a href="../../server-input/sql-injection/index.html#where-it-breaks">SQL Injection</a> 裡，資料庫把一部分資料當成 SQL 語法執行；在 <a href="../../browser-output/xss-basics/index.html">XSS</a> 裡，瀏覽器把一部分資料當成標記或腳本。</p>
+<p><strong>業務邏輯漏洞</strong>（business logic vulnerability，也叫 logic flaw）不必改變任何語法。數量欄位收到一個整數，優惠碼欄位收到一個存在的優惠碼，確認頁收到一筆普通的 <code>GET</code>，解析器照常解讀每一個值，被違反的是業務規則。問題出在網站對使用者行為的假設：假設價格欄位會原封不動送回來、假設數量是正數、假設有人走到確認頁之前一定已經付了錢。使用者不照這些假設做，網站就把合法的功能組合成設計者沒想過的結果。</p>
 <p>這類問題和特定的程式語言、框架無關，掃描器也很難找到。掃描器能認出一段跑進 SQL 語法的輸入，卻不知道這家商店規定「優惠券每筆訂單只能用一次」。要判斷一筆請求有沒有問題，得先知道這個網站的業務規則。</p>
-<p>兩個詞貫穿這一節：</p>
 <dl>
   <dt>狀態（state）</dt>
   <dd>伺服器記錄「事情進行到哪裡」的資料，例如一張訂單目前是待付款、已付款或已出貨，帳戶餘額剩多少，哪張優惠券已經用過。</dd>
@@ -37,7 +36,7 @@
 </dl>
 
 <h2 id="shop-flow"><span class="num">6.1.2</span> 一家商店的購物流程</h2>
-<p>這一節的例子都發生在同一家商店 <code>shop.example.com</code>。每位顧客有一筆商店餘額，wiener 目前有 100 元；商品有咖啡豆（80 元）、帆布袋（20 元）、旅行背包（1,250 元）。從瀏覽器看，購物分成幾個畫面；從伺服器看，是幾筆各自獨立的請求：</p>
+<p>例子都發生在同一家商店 <code>shop.example.com</code>。每位顧客有一筆商店餘額，wiener 目前有 100 元；商品有咖啡豆（80 元）、帆布袋（20 元）、旅行背包（1,250 元）。從瀏覽器看，購物分成幾個畫面；從伺服器看，是幾筆各自獨立的請求：</p>
 <ol>
   <li>加入購物車：<code>POST /cart</code>，送出商品編號與數量。</li>
   <li>套用優惠碼：<code>POST /cart/coupon</code>。</li>
@@ -47,7 +46,7 @@
 <p>一張訂單在這個流程裡依序經過幾個狀態，每一次轉換都有進入條件：</p>
 
 <figure id="order-states">
-  <svg viewBox="0 0 740 250" role="img" aria-labelledby="order-states-t" style="color:var(--text)">
+  <svg viewBox="0 0 740 290" role="img" aria-labelledby="order-states-t" style="color:var(--text)">
     <title id="order-states-t">訂單依序經過購物車、待付款、已付款、已出貨四個狀態，每個狀態寫著進入條件。上方虛線表示付款後回頭修改購物車，下方虛線表示從購物車直接打開確認頁跳到已出貨，兩條都應被伺服器拒絕</title>
     <defs>
       <marker id="os-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
@@ -55,37 +54,43 @@
       </marker>
     </defs>
     <g stroke="currentColor" stroke-width="1.2">
-      <rect x="10" y="70" width="150" height="86" rx="5" fill="var(--surface)"/>
-      <rect x="200" y="70" width="150" height="86" rx="5" fill="var(--accent-soft)"/>
-      <rect x="390" y="70" width="150" height="86" rx="5" fill="var(--accent-soft)"/>
-      <rect x="580" y="70" width="150" height="86" rx="5" fill="var(--accent-soft)"/>
+      <rect x="10" y="56" width="150" height="140" rx="10" fill="var(--surface)"/>
+      <rect x="200" y="56" width="150" height="140" rx="10" fill="var(--accent-soft)"/>
+      <rect x="390" y="56" width="150" height="140" rx="10" fill="var(--accent-soft)"/>
+      <rect x="580" y="56" width="150" height="140" rx="10" fill="var(--accent-soft)"/>
     </g>
+    <use href="#icon-cart" x="61" y="64" width="48" height="48"/>
+    <use href="#icon-invoice" x="251" y="64" width="48" height="48"/>
+    <use href="#icon-credit-card" x="441" y="64" width="48" height="48"/>
+    <use href="#icon-order" x="631" y="64" width="48" height="48"/>
     <g font-size="14" font-weight="700" fill="currentColor" text-anchor="middle">
-      <text x="85" y="96">購物車</text>
-      <text x="275" y="96">待付款</text>
-      <text x="465" y="96">已付款</text>
-      <text x="655" y="96">已出貨</text>
+      <text x="85" y="130">購物車</text>
+      <text x="275" y="130">待付款</text>
+      <text x="465" y="130">已付款</text>
+      <text x="655" y="130">已出貨</text>
     </g>
     <g font-size="11" fill="currentColor" text-anchor="middle">
-      <text x="85" y="120">可增減商品與數量</text>
-      <text x="85" y="138">可套用優惠碼</text>
-      <text x="275" y="120">總額由伺服器</text>
-      <text x="275" y="138">依商品資料算出</text>
-      <text x="465" y="120">總額不超過餘額</text>
-      <text x="465" y="138">且已扣款</text>
-      <text x="655" y="120">伺服器有這張訂單</text>
-      <text x="655" y="138">的付款紀錄</text>
+      <text x="85" y="152">可增減商品與數量</text>
+      <text x="85" y="170">可套用優惠碼</text>
+      <text x="275" y="152">總額由伺服器</text>
+      <text x="275" y="170">依商品資料算出</text>
+      <text x="465" y="152">總額不超過餘額</text>
+      <text x="465" y="170">且已扣款</text>
+      <text x="655" y="152">伺服器有這張訂單</text>
+      <text x="655" y="170">的付款紀錄</text>
     </g>
     <g stroke="currentColor" stroke-width="1.6" fill="none">
-      <path d="M160 113 H198" marker-end="url(#os-arrow)"/>
-      <path d="M350 113 H388" marker-end="url(#os-arrow)"/>
-      <path d="M540 113 H578" marker-end="url(#os-arrow)"/>
-      <path d="M465 70 V40 H85 V68" marker-end="url(#os-arrow)" stroke-dasharray="6 4"/>
-      <path d="M85 156 V196 H655 V158" marker-end="url(#os-arrow)" stroke-dasharray="6 4"/>
+      <path d="M160 100 H198" marker-end="url(#os-arrow)"/>
+      <path d="M350 100 H388" marker-end="url(#os-arrow)"/>
+      <path d="M540 100 H578" marker-end="url(#os-arrow)"/>
+      <path d="M465 56 V34 H85 V54" marker-end="url(#os-arrow)" stroke-dasharray="6 4"/>
+      <path d="M85 196 V236 H655 V198" marker-end="url(#os-arrow)" stroke-dasharray="6 4"/>
     </g>
+    <use href="#icon-cross" x="498" y="20" width="28" height="28"/>
+    <use href="#icon-cross" x="520" y="222" width="28" height="28"/>
     <g font-size="12" fill="currentColor" text-anchor="middle">
-      <text x="275" y="30">付款後回頭修改購物車：應拒絕</text>
-      <text x="370" y="218">從購物車直接打開確認頁：應拒絕</text>
+      <text x="275" y="24">付款後回頭修改購物車：應拒絕</text>
+      <text x="370" y="262">從購物車直接打開確認頁：應拒絕</text>
     </g>
   </svg>
   <figcaption><span class="fig-num">圖 6.1.2-1</span> 訂單的四個狀態與各自的進入條件；實線是允許的轉換，虛線是伺服器必須擋下的轉換</figcaption>
@@ -103,13 +108,13 @@
 
 <h2 id="client-side-trust"><span class="num">6.1.3</span> 前端送來的價格</h2>
 <p>商品頁的「加入購物車」按鈕是一張表單。為了讓購物車頁面不必再查一次商品資料，開發者把價格放進隱藏欄位，一起送出：</p>
-<pre data-lang="http"><code># 把一個旅行背包加入購物車
-POST /cart HTTP/1.1
-Host: shop.example.com
-Cookie: session=DEMO123
-Content-Type: application/x-www-form-urlencoded
+<pre data-lang="http"><code><span class="tok-comment"># 把一個旅行背包加入購物車</span>
+<span class="tok-method">POST</span> <span class="tok-path">/cart</span> <span class="tok-keyword">HTTP/1.1</span>
+<span class="tok-header">Host</span>: <span class="tok-host">shop.example.com</span>
+<span class="tok-header">Cookie</span>: <span class="tok-attr">session</span>=<span class="tok-value">DEMO123</span>
+<span class="tok-header">Content-Type</span>: application/x-www-form-urlencoded
 
-productId=7&amp;quantity=1&amp;price=125000</code></pre>
+<span class="tok-param">productId</span>=<span class="tok-value">7</span>&amp;<span class="tok-param">quantity</span>=<span class="tok-value">1</span>&amp;<span class="tok-param">price</span>=<span class="tok-value">125000</span></code></pre>
 <p><code>price</code> 以「分」為單位，125000 就是 1,250 元。伺服器把這三個值存進購物車，結帳時用購物車裡的 <code>price</code> 計算總額。</p>
 <p>隱藏欄位不顯示在畫面上，但它和其他欄位一樣是請求本體的一部分。在 1.2 用過的 Burp 裡攔下這筆請求，把 <code>price</code> 換成 <code>[改小的價格]</code> 再送出（方括號代表被換掉的那段輸入），伺服器收到的就是新的值。購物車顯示背包只要幾元，結帳時的總額不超過 100 元，餘額檢查通過，訂單成立。</p>
 <p>前端的各種限制都屬於同一類：數量欄位的 <code>max="99"</code>、JavaScript 檢查「數量必須大於 0」、灰掉的「套用」按鈕。這些限制只約束在瀏覽器裡操作畫面的人。請求一旦離開瀏覽器，就能在 Burp 裡改寫或重新送出，伺服器只看得到請求本身。<a href="../../identity/access-control/index.html#client-controlled-role">Access Control 的「由使用者送來的角色」</a>是同一個錯誤用在權限上，這裡用在價格上。</p>
@@ -118,33 +123,32 @@ productId=7&amp;quantity=1&amp;price=125000</code></pre>
 <p>修掉價格欄位之後，伺服器改從商品資料取單價，只收商品編號與數量。數量仍然由使用者決定，而開發者可能只想過「使用者會填 1、2、3」。</p>
 
 <h3>負的數量</h3>
-<p>假設伺服器只檢查數量是整數，沒有檢查範圍。wiener 的購物車裡已經有一個背包，他再送一筆 <code>POST /cart</code>，商品是帆布袋，數量是 <code>[負數]</code>。伺服器照單全收：</p>
+<p>假設伺服器只檢查數量是整數，沒有檢查範圍。wiener 的購物車裡已經有一個背包，他再送一筆 <code>POST /cart</code>，商品是帆布袋，數量是 <code>[負的數量]</code>。伺服器照單全收：</p>
 <table>
   <thead><tr><th>品項</th><th>單價</th><th>數量</th><th>小計</th></tr></thead>
   <tbody>
     <tr><td>旅行背包</td><td>1,250</td><td>1</td><td>1,250</td></tr>
-    <tr><td>帆布袋</td><td>20</td><td>−60</td><td>−1,200</td></tr>
-    <tr><td colspan="3">總額</td><td>50</td></tr>
+    <tr><td>帆布袋</td><td>20</td><td>[負的數量]</td><td>負數</td></tr>
+    <tr><td colspan="3">總額</td><td>1,250 減去帆布袋那一行抵掉的金額</td></tr>
   </tbody>
 </table>
-<p>總額 50 元不超過餘額，結帳通過。若伺服器另外檢查「總額不能是負數」，這張購物車也過得了關，因為總額仍是正的。負的那一行抵銷了背包的價格，背包出貨了，那 −60 個帆布袋當然寄不出去。被違反的是「數量是 1 到 99 的整數」這一條，而總額的檢查看不出來。</p>
+<p>負的那一行抵銷了一部分背包的價格。抵掉之後的總額若不超過餘額，結帳就通過；若伺服器另外檢查「總額不能是負數」，只要總額仍是正的，這張購物車也過得了關。背包出貨了，負數個帆布袋當然寄不出去。被違反的是「數量是 1 到 99 的整數」這一條，而總額的檢查看不出來。</p>
 
 <h3>大到繞回來的總額</h3>
-<p>這次伺服器檢查了每次加入的數量必須在 1 到 99 之間，但沒有限制購物車裡同一商品累積的總數，而且用 32 位元有號整數，以「分」為單位存總額。32 位元有號整數能表示的範圍是 −2,147,483,648 到 2,147,483,647；計算結果超過上限時，大多數語言的固定寬度整數不會報錯，會發生<strong>整數溢位</strong>（integer overflow）：從最小值那一端繼續往上算，像里程表跑過最大值後歸零。</p>
-<p>每次加入 99 個背包，重複送很多次，購物車裡的背包數量持續增加，總額也跟著變化：</p>
+<p>這次伺服器檢查了每次加入的數量必須在 1 到 99 之間，但沒有限制購物車裡同一商品累積的總數，而且以「分」為單位，把總額存在 32 位元有號整數裡。32 位元有號整數能表示的範圍是 −2,147,483,648 到 2,147,483,647。計算結果超過上限時會發生<strong>整數溢位</strong>（integer overflow），接下來怎樣取決於語言的運算規則。Java 的 <code>int</code> 運算不報錯，結果直接<strong>回繞</strong>（wrap around）：從最小值那一端繼續往上算，像里程表跑過最大值後歸零。Rust 在開啟溢位檢查時會中止程式；資料庫欄位與型別轉換各有自己的錯誤處理。這裡的商店程式採用前一種規則，溢位後回繞：</p>
 <table>
-  <thead><tr><th>背包數量</th><th>數學上的總額（元）</th><th>存進 32 位元整數後（元）</th></tr></thead>
+  <thead><tr><th>數學上的結果</th><th>存進 32 位元有號整數後</th></tr></thead>
   <tbody>
-    <tr><td>1,000</td><td>1,250,000.00</td><td>1,250,000.00</td></tr>
-    <tr><td>17,179</td><td>21,473,750.00</td><td>21,473,750.00</td></tr>
-    <tr><td>17,180</td><td>21,475,000.00</td><td>−21,474,672.96</td></tr>
-    <tr><td>34,359</td><td>42,948,750.00</td><td>−922.96</td></tr>
-    <tr><td>34,360</td><td>42,950,000.00</td><td>327.04</td></tr>
+    <tr><td>2,147,483,647</td><td>2,147,483,647</td></tr>
+    <tr><td>2,147,483,648</td><td>−2,147,483,648</td></tr>
+    <tr><td>3,000,000,000</td><td>−1,294,967,296</td></tr>
+    <tr><td>4,294,967,296</td><td>0</td></tr>
   </tbody>
 </table>
+<p>每一列的規則相同：結果超出範圍時，加上或減去 2<sup>32</sup>（4,294,967,296），直到落回範圍內。</p>
 
 <figure id="overflow-wrap">
-  <svg viewBox="0 0 720 220" role="img" aria-labelledby="overflow-wrap-t" style="color:var(--text)">
+  <svg viewBox="0 0 720 236" role="img" aria-labelledby="overflow-wrap-t" style="color:var(--text)">
     <title id="overflow-wrap-t">一條數線表示 32 位元有號整數的範圍，左端是負二十一億多分，右端是正二十一億多分。背包數量增加時總額往右走，超過右端後從左端出現，再往右走回 0 附近</title>
     <defs>
       <marker id="ow-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
@@ -157,52 +161,56 @@ productId=7&amp;quantity=1&amp;price=125000</code></pre>
       <path d="M360 112 V128"/>
       <path d="M680 112 V128"/>
       <path d="M680 104 C680 30, 40 30, 40 104" marker-end="url(#ow-arrow)" stroke-dasharray="6 4"/>
-      <path d="M380 140 H660" marker-end="url(#ow-arrow)"/>
-      <path d="M60 172 H350" marker-end="url(#ow-arrow)"/>
+      <path d="M420 156 H660" marker-end="url(#ow-arrow)"/>
+      <path d="M100 196 H350" marker-end="url(#ow-arrow)"/>
     </g>
+    <use href="#icon-warning" x="244" y="24" width="28" height="28"/>
+    <use href="#icon-cart" x="372" y="140" width="32" height="32"/>
+    <use href="#icon-cart" x="52" y="180" width="32" height="32"/>
     <g fill="currentColor" font-size="12" text-anchor="middle">
       <text x="360" y="44">超過上限，從最小值繼續算</text>
-      <text x="40" y="104" style="font-family:var(--font-mono)" text-anchor="start" dx="6">−2,147,483,648</text>
+      <text x="40" y="104" style="font-family:var(--font-mono)" text-anchor="start" dx="14">−2,147,483,648</text>
       <text x="680" y="104" style="font-family:var(--font-mono)" text-anchor="end" dx="-6">2,147,483,647</text>
       <text x="360" y="104" style="font-family:var(--font-mono)">0</text>
-      <text x="520" y="158">數量 1 → 17,179：總額正常增加</text>
-      <text x="205" y="194">數量 17,180 → 34,360：從負數爬回 0 附近</text>
-      <text x="360" y="212" font-size="11" opacity=".75">數線上的值以「分」為單位</text>
+      <text x="540" y="146">總額在上限以內：正常增加</text>
+      <text x="225" y="186">超過上限之後：從負數往 0 爬回</text>
+      <text x="360" y="226" font-size="11" opacity=".75">數線上的值以「分」為單位</text>
     </g>
   </svg>
   <figcaption><span class="fig-num">圖 6.1.4-1</span> 32 位元有號整數的範圍是一條首尾相接的數線；總額跑過右端，就從左端的負數重新出現</figcaption>
 </figure>
 
-<p>購物車裡有三萬多個背包，系統算出的總額卻是 327.04 元，餘額檢查和「總額不小於 0」的檢查都會通過。每一筆請求的數量都在 1 到 99 之間，單看任何一筆都合法；出錯的是累積起來的結果。有些語言（例如 Python）的整數不會溢位，資料庫欄位、其他語言寫的服務或轉成固定寬度的地方仍可能會。</p>
+<p>購物車裡的背包累積到 <code>[讓總價回繞的數量]</code> 時，系統存下的總額可能是一個很大的負數，也可能是一個看起來普通的正數，和這些背包的實際價格已經沒有關係。金額一旦失真，餘額檢查和「總額不小於 0」的檢查比較的都是錯的數字，結帳的判斷也就不再可靠。每一筆請求的數量都在 1 到 99 之間，單看任何一筆都合法；出錯的是累積起來的結果。Python 的整數沒有固定寬度，不會溢位，但資料庫欄位、其他語言寫的服務或轉成固定寬度的地方仍可能會。</p>
 
-<h3>被截短的字串</h3>
-<p>同樣的落差也發生在字串上。商店規定電子郵件網域是 <code>@staff.example.com</code> 的帳號可以進入員工頁面。註冊時，伺服器寄一封確認信到使用者填的地址，使用者點了信中的連結才算完成註冊；資料庫的 email 欄位最多存 255 個字元，超過的部分直接截掉，不報錯。</p>
-<p>兩段程式各自看到不同的地址。寄確認信時，程式用的是完整的字串：一段很長的前綴，第 255 個字元剛好落在 <code>@staff.example.com</code> 的結尾，後面再接上一個屬於使用者自己、收得到信的網域。信寄到使用者自己的信箱，註冊完成。存進資料庫時，後面那段被截掉，留下的地址以 <code>@staff.example.com</code> 結尾。之後判斷能否進入員工頁面時，程式讀的是資料庫裡的版本。</p>
-<p>確認信驗證的是一個地址，權限判斷用的是另一個。檢查時的值和最後保存、使用的值不一致，前面的檢查就失去意義。</p>
+<h3>檢查之後才被轉換的字串</h3>
+<p>同樣的落差也發生在字串上。註冊功能要求使用者名稱不可重複，流程大致是三步：用原樣的名稱查資料庫有沒有同名帳號，沒有就通過；把名稱轉成小寫，方便日後登入時不分大小寫比對；把轉換後的名稱寫入新帳號。</p>
+<table>
+  <thead><tr><th>步驟</th><th>名稱</th><th>結果</th></tr></thead>
+  <tbody>
+    <tr><td>輸入</td><td><code>Alice</code></td><td>使用者填的原樣名稱</td></tr>
+    <tr><td>查重複（區分大小寫）</td><td><code>Alice</code></td><td>資料庫裡已有別人以 <code>alice</code> 註冊，沒有 <code>Alice</code>，檢查通過</td></tr>
+    <tr><td>轉小寫</td><td><code>alice</code></td><td>與既有帳號的名稱相同</td></tr>
+    <tr><td>寫入</td><td><code>alice</code></td><td>兩個帳號共用同一個名稱：登入或重設密碼時分不出是誰，也可能覆蓋既有資料</td></tr>
+  </tbody>
+</table>
+<p>檢查驗證的是 <code>Alice</code>，之後使用的是 <code>alice</code>。每一步單看都合理，錯在檢查和使用拿到的不是同一個值。</p>
+<p>其他會在驗證後改變字串的處理，同樣值得檢查：欄位長度超過上限時的截斷、Unicode 正規化、去除前後空白。凡是儲存前後兩個值可能不相等的地方，都要把驗證放在轉換之後。</p>
 
 <h2 id="workflow"><span class="num">6.1.5</span> 不照順序走的使用者</h2>
 <p>流程的每一步是一筆獨立的請求，瀏覽器照畫面順序送，請求本身卻沒有順序。<a href="../../identity/access-control/index.html#multi-step">Access Control 的多步驟流程</a>和 <a href="../../identity/authentication/index.html#mfa">Authentication 的第二個因素</a>都看過跳過中間步驟的情況；購物流程裡有更多種變化。</p>
 
 <h3>跳過結帳</h3>
 <p>正常結帳時，<code>POST /cart/checkout</code> 核對總額與餘額，成功就扣款、建立訂單，再把瀏覽器導向確認頁：</p>
-<pre data-lang="http"><code># 結帳成功後，瀏覽器被導向這裡
-GET /cart/order-confirmation?order-confirmed=true HTTP/1.1
-Host: shop.example.com
-Cookie: session=DEMO123</code></pre>
-<p>如果確認頁的處理程式看到 <code>order-confirmed=true</code>，就把目前購物車裡的商品當成已售出、安排出貨，那麼結帳的檢查只擋住了走正常畫面的人。wiener 先用便宜的咖啡豆走一遍正常購買，在 HTTP history 記下這筆確認請求；再把背包放進購物車，不按結帳，直接重送那筆確認請求：</p>
-<table>
-  <thead><tr><th>起始狀態</th><th>動作</th><th>應有的結果</th><th>確認頁自己完成訂單時</th></tr></thead>
-  <tbody>
-    <tr><td>餘額 100，購物車 80（咖啡豆）</td><td>結帳</td><td>完成，餘額 20</td><td>完成，餘額 20</td></tr>
-    <tr><td>餘額 20，購物車 1,250（背包）</td><td>結帳</td><td>拒絕，餘額不足</td><td>拒絕，餘額不足</td></tr>
-    <tr><td>同上</td><td>直接送出確認請求</td><td>不改變任何狀態</td><td>背包出貨，餘額仍是 20</td></tr>
-  </tbody>
-</table>
-<p>只測前兩列，網站看起來一切正常。確認頁能被打開，不表示付款發生過；付款有沒有成功，要由伺服器保存的紀錄回答。</p>
+<pre data-lang="http"><code><span class="tok-comment"># 結帳成功後，瀏覽器被導向這裡</span>
+<span class="tok-method">GET</span> <span class="tok-path">/cart/order-confirmation</span>?<span class="tok-param">order-confirmed</span>=<span class="tok-value">true</span> <span class="tok-keyword">HTTP/1.1</span>
+<span class="tok-header">Host</span>: <span class="tok-host">shop.example.com</span>
+<span class="tok-header">Cookie</span>: <span class="tok-attr">session</span>=<span class="tok-value">DEMO123</span></code></pre>
+<p>如果確認頁的處理程式看到 <code>order-confirmed=true</code>，就把目前購物車裡的商品當成已售出、安排出貨，那麼真正完成訂單的是確認頁。結帳時的總額與餘額檢查仍然存在，確認頁卻沒有回頭確認它們發生過：這個處理程式少了「這張訂單在伺服器上有成功付款的紀錄」這項檢查。只測正常購買與餘額不足的情況，網站看起來一切正常。確認頁能被打開，不表示付款發生過；付款有沒有成功，要由伺服器保存的紀錄回答。</p>
 
 <h3>重複同一步</h3>
-<p>同一筆請求送兩次，網站該怎麼反應，取決於這筆請求代表什麼。使用者網路斷線後重送同一筆付款，應該只扣一次款、只出一次貨；這叫<strong>冪等性</strong>（idempotency）：同一個業務操作執行一次和執行多次，結果相同。常見做法是讓每次結帳帶一個伺服器發出的、只能用一次的識別值，同一個識別值第二次出現時，回傳第一次的結果，不再執行一次。冪等的對象是「同一個操作」：顧客隔天再買一次同樣的商品是一筆新交易，不該被當成重送而擋掉，也不該和昨天那筆共用付款紀錄。</p>
-<p>確認頁就是一個例子。如果每次載入確認頁都出一次貨，使用者重新整理頁面就會多收到一份。</p>
+<p>同一筆請求送兩次，網站該怎麼反應，取決於這筆請求代表什麼。使用者網路斷線後重送同一筆付款，應該只扣一次款、只出一次貨；這叫<strong>冪等性</strong>（idempotency）：同一個業務操作執行一次和執行多次，結果相同。</p>
+<p>常見做法是讓每個業務操作帶一個識別值（idempotency key），重送時沿用同一個值：伺服器把識別值和這次操作的參數綁在一起記錄，同一個識別值再出現時，回傳第一次的結果，不再執行一次。兩筆帶同一識別值的請求同時抵達時，伺服器要以原子方式先保留這個識別值，只讓其中一筆真正執行。識別值可以由伺服器發給頁面，也可以由客戶端產生。冪等的對象是「同一個操作」：顧客隔天再買一次同樣的商品是一筆新交易，不該被當成重送而擋掉，也不該和昨天那筆共用付款紀錄。</p>
+<p>確認頁也有這個問題：每次載入都出一次貨的話，使用者重新整理頁面就會多收到一份。</p>
 
 <h3>換順序與在步驟之間改內容</h3>
 <p>另一種情況是步驟都做了，但順序或中間的資料變了。wiener 把一個咖啡豆放進購物車並結帳，伺服器扣款 80 元，訂單變成已付款；接著他在出貨前送出 <code>POST /cart</code>，把數量改成 10。若出貨步驟讀的是購物車目前的內容，沒有在付款當下鎖定訂單內容，付 80 元就會收到 10 包。<a href="#order-states">訂單狀態圖</a>上方那條虛線就是這種轉換。</p>
@@ -211,16 +219,18 @@ Cookie: session=DEMO123</code></pre>
 <h2 id="domain-rules"><span class="num">6.1.6</span> 商店自己的規則</h2>
 <p>有些規則只屬於這家商店的業務，例如折扣怎麼算、優惠券能不能並用。這些規則每家店都不同，漏洞也只有懂這門生意的人看得出來。</p>
 
-<h3>條件消失，折扣還在</h3>
-<p>商店有「滿 1,000 元打九折」的活動。wiener 的購物車有一個背包（1,250 元），符合條件，他按下套用，購物車記下「已打九折」。接著他把背包換成咖啡豆。如果折扣只在套用的那一刻檢查門檻，之後購物車內容怎麼變都沿用「已打九折」，咖啡豆也會打九折，雖然總額遠低於 1,000 元。條件在套用時成立，結帳時已經不成立。</p>
+<h3>折扣的適用條件變了，還要重算</h3>
+<p>商店有一張優惠碼 <code>BOOK15</code>，只適用於「書籍」分類的商品，折扣金額為符合條件商品小計的 15%。折扣的適用條件是購物車的內容，而購物車在套用優惠碼之後仍然可以改。假設程式在套用的那一刻，檢查購物車裡至少有一本書，就把折扣率 <code>cart.discount = 0.15</code> 記在購物車上，之後計算總額一律從原價扣掉小計的這個比例。</p>
+<p>wiener 先放一本書，套用成功，再把書移除，加進一台咖啡機。購物車記著折扣比例，咖啡機也被扣掉 15%。申請折扣時的條件成立，結帳時條件已經不成立，程式卻沒有重新判斷。</p>
+<p>這類規則可以用一個問題來檢查：折扣依賴哪些輸入（商品分類、會員身分、訂單金額、日期），這些輸入一變，折扣是否重算。把折扣存成固定比例，輸入一變就失效；存成「套用了哪張優惠碼」，每次計算總額時再依當下的內容判斷，就不會出現這種落差。重算時還要只對符合條件的商品計算：只因購物車裡有一本書，就替整車打折，即使每次都重算，也不符合「僅限書籍」的規則。</p>
 
 <h3>輪流使用兩張優惠券</h3>
 <p>商店發了兩張優惠券，每張折 10%，規則是同一張券在同一張訂單只能用一次。程式的檢查寫成「這次送來的券是不是和上一次套用的那張相同」：</p>
-<pre data-lang="python"><code># 不安全的做法：只和上一張比較
-if code == cart.last_coupon:
-    return error("優惠券已使用")
-cart.apply_discount(code)
-cart.last_coupon = code</code></pre>
+<pre data-lang="python"><code><span class="tok-comment"># 不安全的做法：只和上一張比較</span>
+<span class="tok-keyword">if</span> code == cart.<span class="tok-attr">last_coupon</span>:
+    <span class="tok-keyword">return</span> <span class="tok-func">error</span>(<span class="tok-string">"優惠券已使用"</span>)
+cart.<span class="tok-func">apply_discount</span>(code)
+cart.<span class="tok-attr">last_coupon</span> = code</code></pre>
 <p>連續套用 A 兩次會被擋下；先 A、再 B、再 A，第三次比較的是 A 和 B，不相同，於是放行。A 和 B 輪流送，折扣就一直累加。規則說的是「用過的券」，程式只記住了「最後一張」。</p>
 
 <h3>可以兌現的折扣</h3>
@@ -228,7 +238,7 @@ cart.last_coupon = code</code></pre>
 
 <h2 id="client-state"><span class="num">6.1.7</span> 讓使用者端決定的狀態</h2>
 <p>有些網站把流程進行到哪裡交給使用者保管：隱藏欄位裡的 <code>step=3</code>、Cookie 裡的 <code>discount_applied=true</code>、付款服務導回網站時網址上的 <code>paid=true</code>。之後的請求帶著這些值，伺服器讀到「已付款」就當作已付款。</p>
-<p>這和前面的價格欄位是同一個錯誤，只是被交出去的換成了狀態。<code>paid=true</code> 是請求裡的一段文字，任何人都能自己寫上。付款是否成功，要由伺服器向付款服務查證，或接收付款服務直接送到伺服器、可以驗證來源的通知，再寫進伺服器自己的訂單紀錄；瀏覽器帶回來的值只能用來決定要顯示哪一頁。</p>
+<p>這和前面的價格欄位是同一個錯誤，只是被交出去的換成了狀態。<code>paid=true</code> 是請求裡的一段文字，任何人都能自己寫上。付款是否成功，要由伺服器向付款服務查證，或接收付款服務直接送到伺服器、可以驗證來源的通知，再寫進伺服器自己的訂單紀錄；瀏覽器帶回來的值只能用來決定要顯示哪一頁。來源可信的通知仍要逐項比對：這筆付款對應的是哪張訂單、金額與幣別是否等於應付金額、付款狀態是不是成功。同一筆付款的通知重複送達時，只入帳、出貨一次。</p>
 
 <h2 id="finding"><span class="num">6.1.8</span> 怎麼找出來</h2>
 <p>邏輯漏洞沒有固定的特徵字串，找它要從規則出發：</p>
@@ -240,73 +250,74 @@ cart.last_coupon = code</code></pre>
 </ol>
 <p>每次測試前記下起始的餘額與購物車內容。購物車裡留著上一次的商品，或餘額已經變了，就無法判斷差異來自哪一步。</p>
 
-<h2 id="fix"><span class="num">6.1.9</span> 怎麼修補</h2>
+<h2 id="fix"><span class="num">6.1.9</span> 防禦手法</h2>
 <h3>伺服器端重新計算</h3>
 <p>凡是影響金額、權限或狀態的值，都由伺服器從自己的資料算出，請求只提供「使用者想要什麼」：</p>
-<pre data-lang="python"><code>def add_to_cart(cart, product_id, quantity):
-    product = db.get_product(product_id)        # 單價取自商品資料
-    if product is None:
-        return error("商品不存在")
-    if not isinstance(quantity, int) or not 1 &lt;= quantity &lt;= 99:
-        return error("數量必須是 1 到 99")
-    if cart.quantity_of(product_id) + quantity &gt; 99:
-        return error("同一商品最多 99 件")
-    cart.add(product.id, quantity)              # 不存使用者送來的價格
+<pre data-lang="python"><code><span class="tok-keyword">def</span> <span class="tok-func">add_to_cart</span>(cart, product_id, quantity):
+    product = db.<span class="tok-func">get_product</span>(product_id)        <span class="tok-comment"># 單價取自商品資料</span>
+    <span class="tok-keyword">if</span> product <span class="tok-keyword">is</span> <span class="tok-keyword">None</span>:
+        <span class="tok-keyword">return</span> <span class="tok-func">error</span>(<span class="tok-string">"商品不存在"</span>)
+    <span class="tok-keyword">if</span> <span class="tok-keyword">not</span> <span class="tok-func">isinstance</span>(quantity, int) <span class="tok-keyword">or</span> <span class="tok-keyword">not</span> <span class="tok-number">1</span> &lt;= quantity &lt;= <span class="tok-number">99</span>:
+        <span class="tok-keyword">return</span> <span class="tok-func">error</span>(<span class="tok-string">"數量必須是 1 到 99"</span>)
+    <span class="tok-keyword">if</span> cart.<span class="tok-func">quantity_of</span>(product_id) + quantity &gt; <span class="tok-number">99</span>:
+        <span class="tok-keyword">return</span> <span class="tok-func">error</span>(<span class="tok-string">"同一商品最多 99 件"</span>)
+    cart.<span class="tok-func">add</span>(product.<span class="tok-attr">id</span>, quantity)              <span class="tok-comment"># 不存使用者送來的價格</span>
 
-def cart_total(cart):
-    # 每次需要總額時重算；金額用不會溢位的整數或十進位型別
-    subtotal = sum(db.get_product(i.product_id).price_cents * i.quantity
-                   for i in cart.items)
-    return apply_discounts(cart, subtotal)      # 折扣也在這裡依目前內容重新判斷</code></pre>
-<p>累積的數量也有上限，金額使用不會溢位的型別，資料庫欄位也要容得下最大的合法總額。折扣在每次計算總額時重新判斷門檻，購物車內容一變，條件不符的折扣自然消失。優惠券的檢查改成查「這張訂單用過的券的集合」。</p>
+<span class="tok-keyword">def</span> <span class="tok-func">cart_total</span>(cart):
+    <span class="tok-comment"># 每次需要總額時重算；金額用不會溢位的整數或十進位型別</span>
+    subtotal = <span class="tok-func">sum</span>(db.<span class="tok-func">get_product</span>(i.<span class="tok-attr">product_id</span>).<span class="tok-attr">price_cents</span> * i.<span class="tok-attr">quantity</span>
+                   <span class="tok-keyword">for</span> i <span class="tok-keyword">in</span> cart.<span class="tok-attr">items</span>)
+    <span class="tok-keyword">return</span> <span class="tok-func">apply_discounts</span>(cart, subtotal)      <span class="tok-comment"># 折扣也在這裡依目前內容重新判斷</span></code></pre>
+<p>累積的數量也有上限，金額使用不會溢位的型別，資料庫欄位也要容得下最大的合法總額。折扣在每次計算總額時依當下的內容重新判斷適用條件，購物車內容一變，條件不符的折扣自然消失。優惠券的檢查改成查「這張訂單用過的券的集合」。</p>
 
 <h3>把流程寫成明確的狀態機</h3>
 <p>訂單的狀態存在伺服器，所有轉換都經過同一個函式，由它檢查目前狀態與進入條件：</p>
 <pre data-lang="python"><code>ALLOWED = {
-    "cart":    {"pending"},
-    "pending": {"paid", "cancelled"},
-    "paid":    {"shipped", "refunded"},
+    <span class="tok-string">"cart"</span>:    {<span class="tok-string">"pending"</span>},
+    <span class="tok-string">"pending"</span>: {<span class="tok-string">"paid"</span>, <span class="tok-string">"cancelled"</span>},
+    <span class="tok-string">"paid"</span>:    {<span class="tok-string">"shipped"</span>, <span class="tok-string">"refunded"</span>},
 }
 
-def transition(order, new_state):
-    if new_state not in ALLOWED.get(order.state, set()):
-        raise InvalidTransition(order.state, new_state)
-    if new_state == "paid" and not payments.confirmed(order.id):
-        raise InvalidTransition(order.state, new_state)
-    order.state = new_state
-    order.save()</code></pre>
+<span class="tok-keyword">def</span> <span class="tok-func">transition</span>(order, new_state):
+    <span class="tok-keyword">if</span> new_state <span class="tok-keyword">not</span> <span class="tok-keyword">in</span> ALLOWED.<span class="tok-func">get</span>(order.<span class="tok-attr">state</span>, <span class="tok-func">set</span>()):
+        <span class="tok-keyword">raise</span> <span class="tok-func">InvalidTransition</span>(order.<span class="tok-attr">state</span>, new_state)
+    <span class="tok-keyword">if</span> new_state == <span class="tok-string">"paid"</span> <span class="tok-keyword">and</span> <span class="tok-keyword">not</span> payments.<span class="tok-func">confirmed</span>(order.<span class="tok-attr">id</span>):
+        <span class="tok-keyword">raise</span> <span class="tok-func">InvalidTransition</span>(order.<span class="tok-attr">state</span>, new_state)
+    order.<span class="tok-attr">state</span> = new_state
+    order.<span class="tok-func">save</span>()</code></pre>
+<p><code>payments.confirmed</code> 查的是伺服器自己保存的付款紀錄：要有一筆付款服務回報為成功的付款，屬於這張訂單，金額與幣別等於訂單的應付金額。訂單已經是 <code>paid</code> 時，<code>ALLOWED</code> 不允許再轉成 <code>paid</code>，重複的付款通知因此不會讓同一張訂單入帳兩次。</p>
 <p>確認頁只讀取訂單目前的狀態並顯示出來，不負責把訂單變成已付款或安排出貨。結帳成立時，把商品、數量與金額複製成訂單內容並鎖定；之後修改購物車，只影響下一張訂單。每個會改變狀態的請求都檢查訂單屬於目前登入的使用者，這是 4.2 的授權檢查，和狀態檢查一起做。</p>
 
 <h3>不變條件寫成測試</h3>
 <p>前面列的不變條件可以直接變成自動化測試。除了測正常流程，也測每一種不該發生的轉換與數值：</p>
-<pre data-lang="python"><code>def test_confirmation_does_not_complete_unpaid_order():
-    cart = make_cart(user="wiener", balance=20, items=[("backpack", 1)])
-    get("/cart/order-confirmation", user="wiener")
-    assert balance("wiener") == 20
-    assert orders_of("wiener") == []
+<pre data-lang="python"><code><span class="tok-keyword">def</span> <span class="tok-func">test_confirmation_does_not_complete_unpaid_order</span>():
+    cart = <span class="tok-func">make_cart</span>(user=<span class="tok-string">"wiener"</span>, balance=<span class="tok-number">20</span>, items=[(<span class="tok-string">"backpack"</span>, <span class="tok-number">1</span>)])
+    <span class="tok-func">get</span>(<span class="tok-string">"/cart/order-confirmation"</span>, user=<span class="tok-string">"wiener"</span>)
+    <span class="tok-keyword">assert</span> <span class="tok-func">balance</span>(<span class="tok-string">"wiener"</span>) == <span class="tok-number">20</span>
+    <span class="tok-keyword">assert</span> <span class="tok-func">orders_of</span>(<span class="tok-string">"wiener"</span>) == []
 
-def test_quantity_out_of_range_is_rejected():
-    for q in (0, -1, 100):
-        assert post_cart("wiener", "tote", q).status == 400
+<span class="tok-keyword">def</span> <span class="tok-func">test_quantity_out_of_range_is_rejected</span>():
+    <span class="tok-keyword">for</span> q <span class="tok-keyword">in</span> (<span class="tok-number">0</span>, -<span class="tok-number">1</span>, <span class="tok-number">100</span>):
+        <span class="tok-keyword">assert</span> <span class="tok-func">post_cart</span>(<span class="tok-string">"wiener"</span>, <span class="tok-string">"tote"</span>, q).<span class="tok-attr">status</span> == <span class="tok-number">400</span>
 
-def test_same_coupon_twice_in_one_order():
-    cart = make_cart(user="wiener", items=[("backpack", 1)])
-    for code in ("A", "B", "A"):
-        apply_coupon(cart, code)
-    assert cart.discount_percent == 20</code></pre>
+<span class="tok-keyword">def</span> <span class="tok-func">test_same_coupon_twice_in_one_order</span>():
+    cart = <span class="tok-func">make_cart</span>(user=<span class="tok-string">"wiener"</span>, items=[(<span class="tok-string">"backpack"</span>, <span class="tok-number">1</span>)])
+    <span class="tok-keyword">for</span> code <span class="tok-keyword">in</span> (<span class="tok-string">"A"</span>, <span class="tok-string">"B"</span>, <span class="tok-string">"A"</span>):
+        <span class="tok-func">apply_coupon</span>(cart, code)
+    <span class="tok-keyword">assert</span> cart.<span class="tok-attr">discount_percent</span> == <span class="tok-number">20</span></code></pre>
 <p>正式環境也可以在寫入資料庫前再檢查一次關鍵條件（例如餘額不小於 0），違反就中止這筆交易並留下紀錄。這不能取代前面的修補，但能讓漏掉的情況在造成損失前被擋下來。</p>
 
 <h3>檢查和使用同一個值</h3>
-<p>字串截斷那類問題，要讓檢查的值和最後保存、使用的值一致：輸入超過欄位長度就拒絕，不要默默截斷；需要正規化（例如轉小寫）的值，先正規化再檢查，存的也是檢查過的那一份。</p>
+<p>檢查之後才轉換字串的問題，要讓檢查的值和最後保存、使用的值一致：需要正規化（例如轉小寫、Unicode 正規化）的值，先正規化再檢查，存的也是檢查過的那一份；輸入超過欄位長度就拒絕，不要默默截斷。</p>
 
 <h3>把假設寫下來</h3>
 <p>多數邏輯漏洞來自沒說出口的假設：「數量一定是正的」「到得了確認頁就是付過錢」「券只會一張一張輪流用」。設計流程時，把每一步依賴的前提寫進文件，再推演使用者不照這個前提做時，伺服器會發生什麼事。PortSwigger 的 <a href="https://portswigger.net/web-security/logic-flaws">Business logic vulnerabilities</a> 主題頁也把「了解業務領域」和「記錄每一步的假設」列為主要的預防方式。</p>
 
 <h2 id="summary"><span class="num">6.1.10</span> 小結</h2>
 <ul>
-  <li>業務邏輯漏洞的每一筆請求格式都合法，錯在網站對使用者行為的假設；找它要先寫出業務規則與不變條件，不是找特殊字元。</li>
+  <li>注入類漏洞改變語法的解讀，業務邏輯漏洞違反業務規則，錯在網站對使用者行為的假設；找它要先寫出業務規則與不變條件。</li>
   <li>價格、數量、狀態旗標若由請求決定，使用者就能改寫；前端的隱藏欄位、輸入限制與灰掉的按鈕不約束直接送出的請求。</li>
-  <li>負數、累積到溢位的數量、被截短的字串，讓單筆看似合法的值累積或轉換成違反規則的結果。</li>
+  <li>負數、累積到溢位的數量、檢查後才被轉換的字串，讓單筆看似合法的值累積或轉換成違反規則的結果。</li>
   <li>流程的每一步都可能被跳過、重送、換順序；折扣與優惠券的條件要在結帳時依當下內容重新判斷。</li>
   <li>修補：金額與狀態在伺服器端計算與保存，用明確的狀態機控制轉換，把不變條件寫成測試，檢查與使用同一個值。</li>
 </ul>
@@ -327,7 +338,7 @@ def test_same_coupon_twice_in_one_order():
 <nav class="pager" aria-label="上下節"><a class="prev" href="../../cross-site/cross-site-trust/index.html"><small>← prev</small><span class="num">5.1</span> CSRF, CORS, and Cross-Site Trust</a><a class="next" href="../../logic-timing/race-conditions/index.html"><small>next →</small><span class="num">6.2</span> Race Conditions</a></nav>
 </main>
 </div>
-<footer class="sm-status"><span class="sm-s-main">26 sections</span><span class="sm-s-list"><span class="sm-s-planned">規劃中 12</span> <span class="sm-s-draft">草稿 3</span> <span class="sm-s-ready">已完成 11</span></span><span class="sm-s-end">系統地圖</span></footer>
-<script src="../../assets/theme/theme.js?v=d288e31038"></script>
+<footer class="sm-status"><span class="sm-s-main">26 sections</span><span class="sm-s-list"><span class="sm-s-planned">規劃中 12</span> <span class="sm-s-draft">草稿 0</span> <span class="sm-s-ready">已完成 14</span></span><span class="sm-s-end">系統地圖</span></footer>
+<script src="../../assets/theme/theme.js?v=c574a6a9e8"></script>
 </body>
 </html>

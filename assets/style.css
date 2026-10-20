@@ -21,6 +21,8 @@
   --warning-bg: #fbeadf;
   --topbar-bg: #ffffff;
   --topbar-text: #1f2328;
+  --tok-keyword: #6b3fb5; --tok-string: #0b6b3a; --tok-number: #9a4600; --tok-comment: #5b6670;
+  --tok-attr: #1d5fb8; --tok-func: #765400; --tok-path: #00675f; --tok-error: #b3261e; --tok-placeholder: #a0156a;
   --font-body: "Noto Sans TC", "PingFang TC", "Microsoft JhengHei", system-ui, sans-serif;
   --font-heading: var(--font-body);
   --font-mono: "JetBrains Mono", "SFMono-Regular", Consolas, monospace;
@@ -29,6 +31,21 @@
   --sidebar-width: 23rem;
   --content-width: 50rem;
   --radius: 8px;
+  --icon-user: #2b6cb8; --icon-user-soft: #bcd7f5;
+  --icon-attacker: #c53a3a; --icon-attacker-soft: #f6c3c3;
+  --icon-admin: #7b4fc4; --icon-admin-soft: #d9c8f3;
+  --icon-support: #0a7f93; --icon-support-soft: #b0e1ea;
+  --icon-server: #2c8a47; --icon-server-soft: #bfe6c9;
+  --icon-data: #0b8576; --icon-data-soft: #aee6da;
+  --icon-file: #9a7200; --icon-file-soft: #fbe7a0;
+  --icon-cred: #8a5a22; --icon-cred-soft: #e4cfa8;
+  --icon-commerce: #d1590a; --icon-commerce-soft: #fbcfa8;
+  --icon-neutral: #5d6670; --icon-neutral-soft: #d9dce0;
+  --icon-ok: #2c8a47; --icon-ok-soft: #bfe6c9;
+  --icon-bad: #c53a3a; --icon-bad-soft: #f6c3c3;
+  --icon-warn: #d1590a; --icon-warn-soft: #fbcfa8;
+  --icon-accent: #d97706;
+  --icon-fill: #fdecc8;
   color-scheme: light;
 }
 @media (prefers-color-scheme: dark) {
@@ -54,6 +71,23 @@
     --warning-bg: #3b2a20;
     --topbar-bg: #1c1f23;
     --topbar-text: #e6e3dc;
+    --tok-keyword: #c9aaff; --tok-string: #8fdca0; --tok-number: #ffb870; --tok-comment: #9ba3ac;
+    --tok-attr: #7fb0eb; --tok-func: #e8cb74; --tok-path: #6edccf; --tok-error: #ff9a94; --tok-placeholder: #ff9ee0;
+    --icon-user: #6fa8ee; --icon-user-soft: #2f4a70;
+    --icon-attacker: #f07c7c; --icon-attacker-soft: #6a3438;
+    --icon-admin: #b898f2; --icon-admin-soft: #4a3f73;
+    --icon-support: #4cc3d8; --icon-support-soft: #1f5663;
+    --icon-server: #68c688; --icon-server-soft: #2f5a42;
+    --icon-data: #40c7b0; --icon-data-soft: #1f5a54;
+    --icon-file: #e8c545; --icon-file-soft: #625217;
+    --icon-cred: #d9a468; --icon-cred-soft: #5a4430;
+    --icon-commerce: #f49a58; --icon-commerce-soft: #6e4020;
+    --icon-neutral: #a3abb5; --icon-neutral-soft: #454b52;
+    --icon-ok: #68c688; --icon-ok-soft: #2f5a42;
+    --icon-bad: #f07c7c; --icon-bad-soft: #6a3438;
+    --icon-warn: #f49a58; --icon-warn-soft: #6e4020;
+    --icon-accent: #f2b84b;
+    --icon-fill: #4a3d28;
     color-scheme: dark;
   }
 }
@@ -64,7 +98,22 @@
   --ready: #86d49b; --ready-bg: #1e3526;
   --heading: #e6e3dc; --note: #7fb0eb; --note-bg: #1d2a3a;
   --warning: #f0a77c; --warning-bg: #3b2a20;
-  --topbar-bg: #1c1f23; --topbar-text: #e6e3dc; color-scheme: dark;
+  --topbar-bg: #1c1f23; --topbar-text: #e6e3dc; --icon-accent: #f2b84b; --icon-fill: #4a3d28; color-scheme: dark;
+  --icon-user: #6fa8ee; --icon-user-soft: #2f4a70;
+  --icon-attacker: #f07c7c; --icon-attacker-soft: #6a3438;
+  --icon-admin: #b898f2; --icon-admin-soft: #4a3f73;
+  --icon-support: #4cc3d8; --icon-support-soft: #1f5663;
+  --icon-server: #68c688; --icon-server-soft: #2f5a42;
+  --icon-data: #40c7b0; --icon-data-soft: #1f5a54;
+  --icon-file: #e8c545; --icon-file-soft: #625217;
+  --icon-cred: #d9a468; --icon-cred-soft: #5a4430;
+  --icon-commerce: #f49a58; --icon-commerce-soft: #6e4020;
+  --icon-neutral: #a3abb5; --icon-neutral-soft: #454b52;
+  --icon-ok: #68c688; --icon-ok-soft: #2f5a42;
+  --icon-bad: #f07c7c; --icon-bad-soft: #6a3438;
+  --icon-warn: #f49a58; --icon-warn-soft: #6e4020;
+  --tok-keyword: #c9aaff; --tok-string: #8fdca0; --tok-number: #ffb870; --tok-comment: #9ba3ac;
+  --tok-attr: #7fb0eb; --tok-func: #e8cb74; --tok-path: #6edccf; --tok-error: #ff9a94; --tok-placeholder: #ff9ee0;
 }
 
 * { box-sizing: border-box; }
@@ -124,6 +173,7 @@ h1, h2, h3, h4 { font-family: var(--font-heading); color: var(--heading); }
 h1 { font-size: 1.8rem; line-height: 1.35; margin: .3rem 0 .6rem; }
 h2 { font-size: 1.35rem; line-height: 1.4; margin: 2.4rem 0 .8rem; padding-top: .4rem; scroll-margin-top: 4rem; }
 h3 { font-size: 1.1rem; margin: 1.8rem 0 .6rem; scroll-margin-top: 4rem; }
+h4 { font-size: 1rem; margin: 1.4rem 0 .5rem; scroll-margin-top: 4rem; }
 .crumbs { margin: 0; font-size: .85rem; color: var(--muted); }
 .question { margin: .2rem 0 0; color: var(--muted); }
 
@@ -208,6 +258,20 @@ pre[data-lang]::before {
   font-size: .72rem; text-transform: uppercase; letter-spacing: .08em; color: var(--muted);
 }
 
+/* syntax highlighting: spans are added at build time by tools/highlight.py; colours come from --tok-* */
+.tok-keyword, .tok-method, .tok-scheme, .tok-tag { color: var(--tok-keyword); }
+.tok-string, .tok-value { color: var(--tok-string); }
+.tok-number, .tok-status { color: var(--tok-number); }
+.tok-comment { color: var(--tok-comment); }
+.tok-attr, .tok-header, .tok-param, .tok-flag { color: var(--tok-attr); }
+.tok-func, .tok-command { color: var(--tok-func); }
+.tok-path, .tok-host, .tok-entity { color: var(--tok-path); }
+.tok-error { color: var(--tok-error); font-weight: 700; }
+.tok-placeholder {
+  color: var(--tok-placeholder); background: color-mix(in srgb, var(--tok-placeholder) 16%, transparent);
+  border-bottom: 1px dashed var(--tok-placeholder); border-radius: 2px;
+}
+
 .pager {
   display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;
   margin-top: 3rem; padding-top: 1.2rem; border-top: 1px solid var(--border);
@@ -234,3 +298,10 @@ pre[data-lang]::before {
   .pager { grid-template-columns: 1fr; }
   .pager .next { text-align: left; }
 }
+
+/* Shared SVG icon library (site/assets/icons/). Icons use currentColor plus --icon-accent. */
+.icon { display: inline-block; flex: none; vertical-align: middle; color: var(--text); }
+.icon-grid { list-style: none; margin: 1rem 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(8.5rem, 1fr)); gap: .6rem; }
+.icon-grid li { display: flex; flex-direction: column; align-items: center; gap: .35rem; padding: .8rem .4rem .6rem; border: 1px solid var(--border); border-radius: 8px; background: var(--surface); }
+.icon-grid .icon-sizes { display: flex; align-items: flex-end; gap: .7rem; }
+.icon-grid span { font: .78rem/1.3 ui-monospace, SFMono-Regular, Menlo, monospace; color: var(--muted); }

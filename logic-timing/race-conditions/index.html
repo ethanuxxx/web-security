@@ -5,31 +5,31 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>6.2 Race Conditions｜Web 安全</title>
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Crect width='16' height='16' rx='3' fill='%23070c12'/%3E%3Crect x='1.5' y='1.5' width='13' height='13' rx='2.5' fill='none' stroke='%2336e0cc' stroke-width='1.4'/%3E%3Cpath d='M5 8 L11 5 M5 8 L11 11' stroke='%2336e0cc' stroke-width='1.2' fill='none'/%3E%3Ccircle cx='5' cy='8' r='1.6' fill='%2336e0cc'/%3E%3Ccircle cx='11' cy='5' r='1.6' fill='%2336e0cc'/%3E%3Ccircle cx='11' cy='11' r='1.6' fill='%2336e0cc'/%3E%3C/svg%3E">
-<link rel="stylesheet" href="../../assets/style.css?v=d288e31038">
-<link rel="stylesheet" href="../../assets/theme/theme.css?v=d288e31038">
+<link rel="stylesheet" href="../../assets/style.css?v=c574a6a9e8">
+<link rel="stylesheet" href="../../assets/theme/theme.css?v=c574a6a9e8">
 <script>(function(){var m=null;try{m=localStorage.getItem("web-security:motion")}catch(e){}if(m!=="on"&&m!=="off"){m="on";try{if(matchMedia("(prefers-reduced-motion: reduce)").matches)m="off"}catch(e){}}document.documentElement.setAttribute("data-motion",m)})()</script>
 </head>
 <body class="page-section sm-body">
 <a class="skip" href="#main">跳到正文</a>
 <header class="sm-top"><a class="sm-brand" href="../../index.html"><svg class="sm-logo" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><rect x="1" y="1" width="14" height="14" rx="3" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M5 8 L11 5 M5 8 L11 11" stroke="currentColor" stroke-width="1.3" fill="none"/><circle cx="5" cy="8" r="1.7" fill="currentColor"/><circle cx="11" cy="5" r="1.7" fill="currentColor"/><circle cx="11" cy="11" r="1.7" fill="currentColor"/></svg><span class="sm-brand-t">web-security</span></a><nav class="sm-path" aria-label="目前位置"><ol><li class="sm-p-root"><a href="../../index.html">web-security</a></li><li class="sm-p-ch split"><a href="../../logic-timing/index.html">6<span class="sm-p-title">&nbsp;問題藏在流程與時間裡</span></a></li><li class=""><span aria-current="page">6.2</span></li></ol></nav><a class="sm-toplink" href="../../index.html#map">map</a><a class="sm-toplink" href="../../chapters/index.html">chapters</a><button type="button" class="sm-toplink sm-motion" aria-pressed="true" hidden>動畫：開</button></header>
 <div class="sm-shell">
-<nav class="sm-tree" aria-label="教材瀏覽器"><details class="sm-tree-wrap" open><summary class="sm-tree-sum">EXPLORER／教材目錄</summary><p class="sm-tree-h" aria-hidden="true">EXPLORER</p><details class="sm-partd" open><summary class="sm-part">第一部分：輸入如何穿過網站</summary><details class="sm-folder"><summary><a class="sm-chlink" href="../../web-http/index.html" title="第 1 章 Web 與 HTTP"><span class="num">1</span><span class="sm-fname">Web 與 HTTP</span></a></summary><div class="sm-files"><a class="sm-file" href="../../web-http/web-basics/index.html" title="1.1 Seeing the Web Through the Browser"><span class="num">1.1</span><span class="sm-fname">Seeing the Web Through the Browser</span><span class="sm-st sm-st-ready" aria-hidden="true"></span><span class="sm-sr">（已完成）</span></a><a class="sm-file" href="../../web-http/http-session/index.html" title="1.2 HTTP Requests and Sessions"><span class="num">1.2</span><span class="sm-fname">HTTP Requests and Sessions</span><span class="sm-st sm-st-ready" aria-hidden="true"></span><span class="sm-sr">（已完成）</span></a></div></details><details class="sm-folder"><summary><a class="sm-chlink" href="../../server-input/index.html" title="第 2 章 伺服器如何處理使用者輸入"><span class="num">2</span><span class="sm-fname">伺服器如何處理使用者輸入</span></a></summary><div class="sm-files"><a class="sm-file" href="../../server-input/path-traversal/index.html" title="2.1 Path Traversal"><span class="num">2.1</span><span class="sm-fname">Path Traversal</span><span class="sm-st sm-st-ready" aria-hidden="true"></span><span class="sm-sr">（已完成）</span></a><a class="sm-file" href="../../server-input/file-upload/index.html" title="2.2 File Upload Vulnerabilities"><span class="num">2.2</span><span class="sm-fname">File Upload Vulnerabilities</span><span class="sm-st sm-st-ready" aria-hidden="true"></span><span class="sm-sr">（已完成）</span></a><a class="sm-file" href="../../server-input/sql-injection/index.html" title="2.3 SQL Injection Basics"><span class="num">2.3</span><span class="sm-fname">SQL Injection Basics</span><span class="sm-st sm-st-ready" aria-hidden="true"></span><span class="sm-sr">（已完成）</span></a><a class="sm-file" href="../../server-input/sql-injection-observation/index.html" title="2.4 UNION and Blind SQL Injection"><span class="num">2.4</span><span class="sm-fname">UNION and Blind SQL Injection</span><span class="sm-st sm-st-ready" aria-hidden="true"></span><span class="sm-sr">（已完成）</span></a><a class="sm-file" href="../../server-input/command-injection/index.html" title="2.5 OS Command Injection"><span class="num">2.5</span><span class="sm-fname">OS Command Injection</span><span class="sm-st sm-st-ready" aria-hidden="true"></span><span class="sm-sr">（已完成）</span></a></div></details><details class="sm-folder"><summary><a class="sm-chlink" href="../../browser-output/index.html" title="第 3 章 伺服器的輸出如何在瀏覽器中變成程式"><span class="num">3</span><span class="sm-fname">伺服器的輸出如何在瀏覽器中變成程式</span></a></summary><div class="sm-files"><a class="sm-file" href="../../browser-output/xss-basics/index.html" title="3.1 Cross-Site Scripting Basics"><span class="num">3.1</span><span class="sm-fname">Cross-Site Scripting Basics</span><span class="sm-st sm-st-ready" aria-hidden="true"></span><span class="sm-sr">（已完成）</span></a><a class="sm-file" href="../../browser-output/xss-context-dom/index.html" title="3.2 Output Contexts and DOM-Based XSS"><span class="num">3.2</span><span class="sm-fname">Output Contexts and DOM-Based XSS</span><span class="sm-st sm-st-ready" aria-hidden="true"></span><span class="sm-sr">（已完成）</span></a></div></details><details class="sm-folder"><summary><a class="sm-chlink" href="../../identity/index.html" title="第 4 章 網站如何知道你是誰、允許你做什麼"><span class="num">4</span><span class="sm-fname">網站如何知道你是誰、允許你做什麼</span></a></summary><div class="sm-files"><a class="sm-file" href="../../identity/authentication/index.html" title="4.1 Authentication"><span class="num">4.1</span><span class="sm-fname">Authentication</span><span class="sm-st sm-st-ready" aria-hidden="true"></span><span class="sm-sr">（已完成）</span></a><a class="sm-file" href="../../identity/access-control/index.html" title="4.2 Access Control"><span class="num">4.2</span><span class="sm-fname">Access Control</span><span class="sm-st sm-st-ready" aria-hidden="true"></span><span class="sm-sr">（已完成）</span></a></div></details><details class="sm-folder"><summary><a class="sm-chlink" href="../../cross-site/index.html" title="第 5 章 網站之間如何利用瀏覽器的信任"><span class="num">5</span><span class="sm-fname">網站之間如何利用瀏覽器的信任</span></a></summary><div class="sm-files"><a class="sm-file" href="../../cross-site/cross-site-trust/index.html" title="5.1 CSRF, CORS, and Cross-Site Trust"><span class="num">5.1</span><span class="sm-fname">CSRF, CORS, and Cross-Site Trust</span><span class="sm-st sm-st-draft" aria-hidden="true"></span><span class="sm-sr">（草稿）</span></a></div></details><details class="sm-folder" open><summary><a class="sm-chlink" href="../../logic-timing/index.html" title="第 6 章 問題藏在流程與時間裡"><span class="num">6</span><span class="sm-fname">問題藏在流程與時間裡</span></a></summary><div class="sm-files"><a class="sm-file" href="../../logic-timing/business-logic/index.html" title="6.1 Business Logic Vulnerabilities"><span class="num">6.1</span><span class="sm-fname">Business Logic Vulnerabilities</span><span class="sm-st sm-st-draft" aria-hidden="true"></span><span class="sm-sr">（草稿）</span></a><a class="sm-file" href="../../logic-timing/race-conditions/index.html" aria-current="page" title="6.2 Race Conditions"><span class="num">6.2</span><span class="sm-fname">Race Conditions</span><span class="sm-st sm-st-draft" aria-hidden="true"></span><span class="sm-sr">（草稿）</span></a></div></details></details><details class="sm-partd" open><summary class="sm-part">第二部分：多元件系統的信任邊界</summary><details class="sm-folder"><summary><a class="sm-chlink" href="../../server-actions/index.html" title="第 7 章 伺服器把資料交給其他元件之後"><span class="num">7</span><span class="sm-fname">伺服器把資料交給其他元件之後</span></a></summary><div class="sm-files"><a class="sm-file is-planned" href="../../server-actions/ssrf/index.html" title="7.1 Server-Side Request Forgery"><span class="num">7.1</span><span class="sm-fname">Server-Side Request Forgery</span><span class="sm-st sm-st-planned" aria-hidden="true"></span><span class="sm-sr">（規劃中）</span></a><a class="sm-file is-planned" href="../../server-actions/xxe/index.html" title="7.2 XML External Entity Injection"><span class="num">7.2</span><span class="sm-fname">XML External Entity Injection</span><span class="sm-st sm-st-planned" aria-hidden="true"></span><span class="sm-sr">（規劃中）</span></a><a class="sm-file is-planned" href="../../server-actions/ssti/index.html" title="7.3 Server-Side Template Injection"><span class="num">7.3</span><span class="sm-fname">Server-Side Template Injection</span><span class="sm-st sm-st-planned" aria-hidden="true"></span><span class="sm-sr">（規劃中）</span></a><a class="sm-file is-planned" href="../../server-actions/deserialization/index.html" title="7.4 Insecure Deserialization"><span class="num">7.4</span><span class="sm-fname">Insecure Deserialization</span><span class="sm-st sm-st-planned" aria-hidden="true"></span><span class="sm-sr">（規劃中）</span></a><a class="sm-file is-planned" href="../../server-actions/prototype-pollution/index.html" title="7.5 Prototype Pollution"><span class="num">7.5</span><span class="sm-fname">Prototype Pollution</span><span class="sm-st sm-st-planned" aria-hidden="true"></span><span class="sm-sr">（規劃中）</span></a></div></details><details class="sm-folder"><summary><a class="sm-chlink" href="../../apis/index.html" title="第 8 章 網站變成 API 之後"><span class="num">8</span><span class="sm-fname">網站變成 API 之後</span></a></summary><div class="sm-files"><a class="sm-file is-planned" href="../../apis/api-testing/index.html" title="8.1 API Attack Surface"><span class="num">8.1</span><span class="sm-fname">API Attack Surface</span><span class="sm-st sm-st-planned" aria-hidden="true"></span><span class="sm-sr">（規劃中）</span></a><a class="sm-file is-planned" href="../../apis/graphql-websockets/index.html" title="8.2 GraphQL and WebSockets"><span class="num">8.2</span><span class="sm-fname">GraphQL and WebSockets</span><span class="sm-st sm-st-planned" aria-hidden="true"></span><span class="sm-sr">（規劃中）</span></a></div></details><details class="sm-folder"><summary><a class="sm-chlink" href="../../delegated-identity/index.html" title="第 9 章 身分跨越網站與元件之後"><span class="num">9</span><span class="sm-fname">身分跨越網站與元件之後</span></a></summary><div class="sm-files"><a class="sm-file is-planned" href="../../delegated-identity/jwt/index.html" title="9.1 JSON Web Tokens"><span class="num">9.1</span><span class="sm-fname">JSON Web Tokens</span><span class="sm-st sm-st-planned" aria-hidden="true"></span><span class="sm-sr">（規劃中）</span></a><a class="sm-file is-planned" href="../../delegated-identity/oauth/index.html" title="9.2 OAuth and Third-Party Login"><span class="num">9.2</span><span class="sm-fname">OAuth and Third-Party Login</span><span class="sm-st sm-st-planned" aria-hidden="true"></span><span class="sm-sr">（規劃中）</span></a></div></details><details class="sm-folder"><summary><a class="sm-chlink" href="../../proxy-cache/index.html" title="第 10 章 Proxy、Cache 與後端看到的不一樣"><span class="num">10</span><span class="sm-fname">Proxy、Cache 與後端看到的不一樣</span></a></summary><div class="sm-files"><a class="sm-file is-planned" href="../../proxy-cache/host-cache/index.html" title="10.1 Host Headers and Web Caches"><span class="num">10.1</span><span class="sm-fname">Host Headers and Web Caches</span><span class="sm-st sm-st-planned" aria-hidden="true"></span><span class="sm-sr">（規劃中）</span></a><a class="sm-file is-planned" href="../../proxy-cache/request-smuggling/index.html" title="10.2 HTTP Request Smuggling"><span class="num">10.2</span><span class="sm-fname">HTTP Request Smuggling</span><span class="sm-st sm-st-planned" aria-hidden="true"></span><span class="sm-sr">（規劃中）</span></a></div></details><details class="sm-folder"><summary><a class="sm-chlink" href="../../llm/index.html" title="第 11 章 把信任模型套到新元件：Web LLM"><span class="num">11</span><span class="sm-fname">把信任模型套到新元件：Web LLM</span></a></summary><div class="sm-files"><a class="sm-file is-planned" href="../../llm/llm-attacks/index.html" title="11.1 Web LLM Attacks"><span class="num">11.1</span><span class="sm-fname">Web LLM Attacks</span><span class="sm-st sm-st-planned" aria-hidden="true"></span><span class="sm-sr">（規劃中）</span></a></div></details></details></details></nav>
+<nav class="sm-tree" aria-label="教材瀏覽器"><details class="sm-tree-wrap" open><summary class="sm-tree-sum">EXPLORER／教材目錄</summary><p class="sm-tree-h" aria-hidden="true">EXPLORER</p><details class="sm-partd" open><summary class="sm-part">第一部分：輸入如何穿過網站</summary><details class="sm-folder"><summary><a class="sm-chlink" href="../../web-http/index.html" title="第 1 章 Web 與 HTTP"><span class="num">1</span><span class="sm-fname">Web 與 HTTP</span></a></summary><div class="sm-files"><a class="sm-file" href="../../web-http/web-basics/index.html" title="1.1 Seeing the Web Through the Browser"><span class="num">1.1</span><span class="sm-fname">Seeing the Web Through the Browser</span><span class="sm-st sm-st-ready" aria-hidden="true"></span><span class="sm-sr">（已完成）</span></a><a class="sm-file" href="../../web-http/http-session/index.html" title="1.2 HTTP Requests and Sessions"><span class="num">1.2</span><span class="sm-fname">HTTP Requests and Sessions</span><span class="sm-st sm-st-ready" aria-hidden="true"></span><span class="sm-sr">（已完成）</span></a></div></details><details class="sm-folder"><summary><a class="sm-chlink" href="../../server-input/index.html" title="第 2 章 伺服器如何處理使用者輸入"><span class="num">2</span><span class="sm-fname">伺服器如何處理使用者輸入</span></a></summary><div class="sm-files"><a class="sm-file" href="../../server-input/path-traversal/index.html" title="2.1 Path Traversal"><span class="num">2.1</span><span class="sm-fname">Path Traversal</span><span class="sm-st sm-st-ready" aria-hidden="true"></span><span class="sm-sr">（已完成）</span></a><a class="sm-file" href="../../server-input/file-upload/index.html" title="2.2 File Upload Vulnerabilities"><span class="num">2.2</span><span class="sm-fname">File Upload Vulnerabilities</span><span class="sm-st sm-st-ready" aria-hidden="true"></span><span class="sm-sr">（已完成）</span></a><a class="sm-file" href="../../server-input/sql-injection/index.html" title="2.3 SQL Injection Basics"><span class="num">2.3</span><span class="sm-fname">SQL Injection Basics</span><span class="sm-st sm-st-ready" aria-hidden="true"></span><span class="sm-sr">（已完成）</span></a><a class="sm-file" href="../../server-input/sql-injection-observation/index.html" title="2.4 UNION and Blind SQL Injection"><span class="num">2.4</span><span class="sm-fname">UNION and Blind SQL Injection</span><span class="sm-st sm-st-ready" aria-hidden="true"></span><span class="sm-sr">（已完成）</span></a><a class="sm-file" href="../../server-input/command-injection/index.html" title="2.5 OS Command Injection"><span class="num">2.5</span><span class="sm-fname">OS Command Injection</span><span class="sm-st sm-st-ready" aria-hidden="true"></span><span class="sm-sr">（已完成）</span></a></div></details><details class="sm-folder"><summary><a class="sm-chlink" href="../../browser-output/index.html" title="第 3 章 伺服器的輸出如何在瀏覽器中變成程式"><span class="num">3</span><span class="sm-fname">伺服器的輸出如何在瀏覽器中變成程式</span></a></summary><div class="sm-files"><a class="sm-file" href="../../browser-output/xss-basics/index.html" title="3.1 Cross-Site Scripting Basics"><span class="num">3.1</span><span class="sm-fname">Cross-Site Scripting Basics</span><span class="sm-st sm-st-ready" aria-hidden="true"></span><span class="sm-sr">（已完成）</span></a><a class="sm-file" href="../../browser-output/xss-context-dom/index.html" title="3.2 Output Contexts and DOM-Based XSS"><span class="num">3.2</span><span class="sm-fname">Output Contexts and DOM-Based XSS</span><span class="sm-st sm-st-ready" aria-hidden="true"></span><span class="sm-sr">（已完成）</span></a></div></details><details class="sm-folder"><summary><a class="sm-chlink" href="../../identity/index.html" title="第 4 章 網站如何知道你是誰、允許你做什麼"><span class="num">4</span><span class="sm-fname">網站如何知道你是誰、允許你做什麼</span></a></summary><div class="sm-files"><a class="sm-file" href="../../identity/authentication/index.html" title="4.1 Authentication"><span class="num">4.1</span><span class="sm-fname">Authentication</span><span class="sm-st sm-st-ready" aria-hidden="true"></span><span class="sm-sr">（已完成）</span></a><a class="sm-file" href="../../identity/access-control/index.html" title="4.2 Access Control"><span class="num">4.2</span><span class="sm-fname">Access Control</span><span class="sm-st sm-st-ready" aria-hidden="true"></span><span class="sm-sr">（已完成）</span></a></div></details><details class="sm-folder"><summary><a class="sm-chlink" href="../../cross-site/index.html" title="第 5 章 網站之間如何利用瀏覽器的信任"><span class="num">5</span><span class="sm-fname">網站之間如何利用瀏覽器的信任</span></a></summary><div class="sm-files"><a class="sm-file" href="../../cross-site/cross-site-trust/index.html" title="5.1 CSRF, CORS, and Cross-Site Trust"><span class="num">5.1</span><span class="sm-fname">CSRF, CORS, and Cross-Site Trust</span><span class="sm-st sm-st-ready" aria-hidden="true"></span><span class="sm-sr">（已完成）</span></a></div></details><details class="sm-folder" open><summary><a class="sm-chlink" href="../../logic-timing/index.html" title="第 6 章 問題藏在流程與時間裡"><span class="num">6</span><span class="sm-fname">問題藏在流程與時間裡</span></a></summary><div class="sm-files"><a class="sm-file" href="../../logic-timing/business-logic/index.html" title="6.1 Business Logic Vulnerabilities"><span class="num">6.1</span><span class="sm-fname">Business Logic Vulnerabilities</span><span class="sm-st sm-st-ready" aria-hidden="true"></span><span class="sm-sr">（已完成）</span></a><a class="sm-file" href="../../logic-timing/race-conditions/index.html" aria-current="page" title="6.2 Race Conditions"><span class="num">6.2</span><span class="sm-fname">Race Conditions</span><span class="sm-st sm-st-ready" aria-hidden="true"></span><span class="sm-sr">（已完成）</span></a></div></details></details><details class="sm-partd" open><summary class="sm-part">第二部分：多元件系統的信任邊界</summary><details class="sm-folder"><summary><a class="sm-chlink" href="../../server-actions/index.html" title="第 7 章 伺服器把資料交給其他元件之後"><span class="num">7</span><span class="sm-fname">伺服器把資料交給其他元件之後</span></a></summary><div class="sm-files"><a class="sm-file is-planned" href="../../server-actions/ssrf/index.html" title="7.1 Server-Side Request Forgery"><span class="num">7.1</span><span class="sm-fname">Server-Side Request Forgery</span><span class="sm-st sm-st-planned" aria-hidden="true"></span><span class="sm-sr">（規劃中）</span></a><a class="sm-file is-planned" href="../../server-actions/xxe/index.html" title="7.2 XML External Entity Injection"><span class="num">7.2</span><span class="sm-fname">XML External Entity Injection</span><span class="sm-st sm-st-planned" aria-hidden="true"></span><span class="sm-sr">（規劃中）</span></a><a class="sm-file is-planned" href="../../server-actions/ssti/index.html" title="7.3 Server-Side Template Injection"><span class="num">7.3</span><span class="sm-fname">Server-Side Template Injection</span><span class="sm-st sm-st-planned" aria-hidden="true"></span><span class="sm-sr">（規劃中）</span></a><a class="sm-file is-planned" href="../../server-actions/deserialization/index.html" title="7.4 Insecure Deserialization"><span class="num">7.4</span><span class="sm-fname">Insecure Deserialization</span><span class="sm-st sm-st-planned" aria-hidden="true"></span><span class="sm-sr">（規劃中）</span></a><a class="sm-file is-planned" href="../../server-actions/prototype-pollution/index.html" title="7.5 Prototype Pollution"><span class="num">7.5</span><span class="sm-fname">Prototype Pollution</span><span class="sm-st sm-st-planned" aria-hidden="true"></span><span class="sm-sr">（規劃中）</span></a></div></details><details class="sm-folder"><summary><a class="sm-chlink" href="../../apis/index.html" title="第 8 章 網站變成 API 之後"><span class="num">8</span><span class="sm-fname">網站變成 API 之後</span></a></summary><div class="sm-files"><a class="sm-file is-planned" href="../../apis/api-testing/index.html" title="8.1 API Attack Surface"><span class="num">8.1</span><span class="sm-fname">API Attack Surface</span><span class="sm-st sm-st-planned" aria-hidden="true"></span><span class="sm-sr">（規劃中）</span></a><a class="sm-file is-planned" href="../../apis/graphql-websockets/index.html" title="8.2 GraphQL and WebSockets"><span class="num">8.2</span><span class="sm-fname">GraphQL and WebSockets</span><span class="sm-st sm-st-planned" aria-hidden="true"></span><span class="sm-sr">（規劃中）</span></a></div></details><details class="sm-folder"><summary><a class="sm-chlink" href="../../delegated-identity/index.html" title="第 9 章 身分跨越網站與元件之後"><span class="num">9</span><span class="sm-fname">身分跨越網站與元件之後</span></a></summary><div class="sm-files"><a class="sm-file is-planned" href="../../delegated-identity/jwt/index.html" title="9.1 JSON Web Tokens"><span class="num">9.1</span><span class="sm-fname">JSON Web Tokens</span><span class="sm-st sm-st-planned" aria-hidden="true"></span><span class="sm-sr">（規劃中）</span></a><a class="sm-file is-planned" href="../../delegated-identity/oauth/index.html" title="9.2 OAuth and Third-Party Login"><span class="num">9.2</span><span class="sm-fname">OAuth and Third-Party Login</span><span class="sm-st sm-st-planned" aria-hidden="true"></span><span class="sm-sr">（規劃中）</span></a></div></details><details class="sm-folder"><summary><a class="sm-chlink" href="../../proxy-cache/index.html" title="第 10 章 Proxy、Cache 與後端看到的不一樣"><span class="num">10</span><span class="sm-fname">Proxy、Cache 與後端看到的不一樣</span></a></summary><div class="sm-files"><a class="sm-file is-planned" href="../../proxy-cache/host-cache/index.html" title="10.1 Host Headers and Web Caches"><span class="num">10.1</span><span class="sm-fname">Host Headers and Web Caches</span><span class="sm-st sm-st-planned" aria-hidden="true"></span><span class="sm-sr">（規劃中）</span></a><a class="sm-file is-planned" href="../../proxy-cache/request-smuggling/index.html" title="10.2 HTTP Request Smuggling"><span class="num">10.2</span><span class="sm-fname">HTTP Request Smuggling</span><span class="sm-st sm-st-planned" aria-hidden="true"></span><span class="sm-sr">（規劃中）</span></a></div></details><details class="sm-folder"><summary><a class="sm-chlink" href="../../llm/index.html" title="第 11 章 把信任模型套到新元件：Web LLM"><span class="num">11</span><span class="sm-fname">把信任模型套到新元件：Web LLM</span></a></summary><div class="sm-files"><a class="sm-file is-planned" href="../../llm/llm-attacks/index.html" title="11.1 Web LLM Attacks"><span class="num">11.1</span><span class="sm-fname">Web LLM Attacks</span><span class="sm-st sm-st-planned" aria-hidden="true"></span><span class="sm-sr">（規劃中）</span></a></div></details></details></details></nav>
 <header class="sm-head">
   <p class="sm-eyebrow">logic-timing/race-conditions</p>
-  <h1><span class="num">6.2</span> Race Conditions <span class="badge badge-draft">草稿</span></h1>
+  <h1><span class="num">6.2</span> Race Conditions <span class="badge badge-ready">已完成</span></h1>
   <p class="question sm-q"><span aria-hidden="true">❯</span> 兩筆 request 同時通過檢查會怎樣？</p>
 </header>
-<aside class="sm-aside" aria-label="本節輔助"><nav class="sm-outline" aria-label="本節內容"><p class="sm-ph">本節內容</p><ol><li><a href="#race-window" title="6.2.1 檢查與更新之間"><span class="num">6.2.1</span>檢查與更新之間</a></li><li><a href="#limit-overrun" title="6.2.2 超過次數與額度的限制"><span class="num">6.2.2</span>超過次數與額度的限制</a></li><li><a href="#timing" title="6.2.3 為什麼難以重現"><span class="num">6.2.3</span>為什麼難以重現</a></li><li><a href="#probing" title="6.2.4 先依序，再平行"><span class="num">6.2.4</span>先依序，再平行</a></li><li><a href="#multi-endpoint" title="6.2.5 跨端點的競態"><span class="num">6.2.5</span>跨端點的競態</a></li><li><a href="#single-endpoint" title="6.2.6 同一個端點、不同的值"><span class="num">6.2.6</span>同一個端點、不同的值</a></li><li><a href="#hidden-states" title="6.2.7 請求內部的暫時狀態"><span class="num">6.2.7</span>請求內部的暫時狀態</a></li><li><a href="#failed-defences" title="6.2.8 縮短時間差不算修補"><span class="num">6.2.8</span>縮短時間差不算修補</a></li><li><a href="#fix" title="6.2.9 讓檢查與寫入不可分割"><span class="num">6.2.9</span>讓檢查與寫入不可分割</a></li><li><a href="#summary" title="6.2.10 小結"><span class="num">6.2.10</span>小結</a></li></ol></nav><section class="sm-locator" aria-label="系統地圖定位"><p class="sm-ph">系統地圖</p><a class="sm-mini-link" href="../../index.html#map-logic-timing" aria-label="在首頁的系統地圖上看第 6 章的位置"><svg class="sm-map sm-map-mini" viewBox="518 143 230 497" aria-hidden="true" focusable="false" preserveAspectRatio="xMidYMid meet" style="aspect-ratio:230/497"><line class="sm-edge" x1="200" y1="330" x2="290" y2="330"/><line class="sm-edge sm-dash" x1="440" y1="330" x2="530" y2="330"/><line class="sm-edge sm-threat-edge" x1="110" y1="100" x2="110" y2="255"/><line class="sm-edge sm-dash" x1="625" y1="100" x2="625" y2="150"/><line class="sm-edge" x1="625" y1="546" x2="625" y2="570"/><line class="sm-edge" x1="720" y1="325" x2="765" y2="325"/><line class="sm-edge" x1="765" y1="325" x2="765" y2="48"/><line class="sm-edge sm-dash" x1="765" y1="325" x2="765" y2="538"/><line class="sm-edge" x1="765" y1="48" x2="810" y2="48"/><line class="sm-edge" x1="765" y1="118" x2="810" y2="118"/><line class="sm-edge" x1="765" y1="188" x2="810" y2="188"/><line class="sm-edge sm-dash" x1="765" y1="328" x2="810" y2="328"/><line class="sm-edge sm-dash" x1="765" y1="398" x2="810" y2="398"/><line class="sm-edge sm-dash" x1="765" y1="468" x2="810" y2="468"/><line class="sm-edge sm-dash" x1="765" y1="538" x2="810" y2="538"/><g class="sm-n sm-threat off" data-ch="cross-site"><rect class="sm-box" x="20" y="20" width="180" height="80" rx="8"/><text class="sm-mini-t" x="110.0" y="62.0" text-anchor="middle" dominant-baseline="central" font-size="16">5</text></g><g class="sm-n sm-frame off" data-ch="web-http"><rect class="sm-box" x="20" y="255" width="180" height="150" rx="10"/><text class="sm-mini-t" x="50" y="285" text-anchor="middle" dominant-baseline="central" font-size="16">1</text></g><g class="sm-n sm-node off" data-ch="browser-output"><rect class="sm-box" x="36" y="322" width="148" height="64" rx="8"/><text class="sm-mini-t" x="110.0" y="356.0" text-anchor="middle" dominant-baseline="central" font-size="16">3</text></g><g class="sm-n sm-node sm-p2 off" data-ch="proxy-cache"><rect class="sm-box" x="290" y="240" width="150" height="180" rx="8"/><text class="sm-mini-t" x="365.0" y="332.0" text-anchor="middle" dominant-baseline="central" font-size="16">10</text></g><g class="sm-n sm-frame" aria-hidden="true"><rect class="sm-box" x="530" y="150" width="190" height="396" rx="10"/></g><g class="sm-n sm-node off" data-ch="identity"><rect class="sm-box" x="546" y="194" width="158" height="56" rx="8"/><text class="sm-mini-t" x="625.0" y="224.0" text-anchor="middle" dominant-baseline="central" font-size="16">4</text></g><g class="sm-n sm-node sm-p2 off" data-ch="apis"><rect class="sm-box" x="546" y="262" width="158" height="56" rx="8"/><text class="sm-mini-t" x="625.0" y="292.0" text-anchor="middle" dominant-baseline="central" font-size="16">8</text></g><g class="sm-n sm-node sm-p2 off" data-ch="llm"><rect class="sm-box" x="546" y="330" width="158" height="56" rx="8"/><text class="sm-mini-t" x="625.0" y="360.0" text-anchor="middle" dominant-baseline="central" font-size="16">11</text></g><g class="sm-n sm-node on" data-ch="logic-timing"><rect class="sm-box" x="546" y="398" width="158" height="56" rx="8"/><text class="sm-mini-t" x="625.0" y="428.0" text-anchor="middle" dominant-baseline="central" font-size="16">6</text></g><g class="sm-n sm-node sm-p2 off" data-ch="server-actions"><rect class="sm-box" x="546" y="466" width="158" height="56" rx="8"/><text class="sm-mini-t" x="625.0" y="496.0" text-anchor="middle" dominant-baseline="central" font-size="16">7</text></g><g class="sm-n sm-node sm-p2 off" data-ch="delegated-identity"><rect class="sm-box" x="530" y="20" width="190" height="80" rx="8"/><text class="sm-mini-t" x="625.0" y="62.0" text-anchor="middle" dominant-baseline="central" font-size="16">9</text></g><g class="sm-n sm-node on" data-ch="logic-timing"><rect class="sm-box" x="530" y="570" width="190" height="56" rx="8"/><text class="sm-mini-t" x="625.0" y="600.0" text-anchor="middle" dominant-baseline="central" font-size="16">6</text></g><g class="sm-n sm-node off" data-ch="server-input"><rect class="sm-box" x="810" y="20" width="170" height="56" rx="8"/><text class="sm-mini-t" x="895.0" y="50.0" text-anchor="middle" dominant-baseline="central" font-size="16">2</text></g><g class="sm-n sm-node off" data-ch="server-input"><rect class="sm-box" x="810" y="90" width="170" height="56" rx="8"/><text class="sm-mini-t" x="895.0" y="120.0" text-anchor="middle" dominant-baseline="central" font-size="16">2</text></g><g class="sm-n sm-node off" data-ch="server-input"><rect class="sm-box" x="810" y="160" width="170" height="56" rx="8"/><text class="sm-mini-t" x="895.0" y="190.0" text-anchor="middle" dominant-baseline="central" font-size="16">2</text></g><g class="sm-n sm-node sm-p2 off" data-ch="server-actions"><rect class="sm-box" x="810" y="300" width="170" height="56" rx="8"/><text class="sm-mini-t" x="895.0" y="330.0" text-anchor="middle" dominant-baseline="central" font-size="16">7</text></g><g class="sm-n sm-node sm-p2 off" data-ch="server-actions"><rect class="sm-box" x="810" y="370" width="170" height="56" rx="8"/><text class="sm-mini-t" x="895.0" y="400.0" text-anchor="middle" dominant-baseline="central" font-size="16">7</text></g><g class="sm-n sm-node sm-p2 off" data-ch="server-actions"><rect class="sm-box" x="810" y="440" width="170" height="56" rx="8"/><text class="sm-mini-t" x="895.0" y="470.0" text-anchor="middle" dominant-baseline="central" font-size="16">7</text></g><g class="sm-n sm-node sm-p2 off" data-ch="server-actions"><rect class="sm-box" x="810" y="510" width="170" height="56" rx="8"/><text class="sm-mini-t" x="895.0" y="540.0" text-anchor="middle" dominant-baseline="central" font-size="16">7</text></g><g class="sm-n sm-pill off" data-ch="web-http"><rect class="sm-pill-box" x="213" y="306" width="64" height="48" rx="24"/><text class="sm-mini-t" x="245" y="332" text-anchor="middle" dominant-baseline="central" font-size="14">1</text></g><g class="sm-n sm-pill off" data-ch="web-http"><rect class="sm-pill-box" x="453" y="306" width="64" height="48" rx="24"/><text class="sm-mini-t" x="485" y="332" text-anchor="middle" dominant-baseline="central" font-size="14">1</text></g><g class="sm-n sm-pill off" data-ch="cross-site"><rect class="sm-pill-box" x="78" y="153" width="64" height="48" rx="24"/><text class="sm-mini-t" x="110" y="179" text-anchor="middle" dominant-baseline="central" font-size="14">5</text></g><g class="sm-n sm-pill off" data-ch="delegated-identity"><rect class="sm-pill-box" x="593" y="101" width="64" height="48" rx="24"/><text class="sm-mini-t" x="625" y="127" text-anchor="middle" dominant-baseline="central" font-size="14">9</text></g></svg></a><p class="sm-cap">位置：第 6 章　問題藏在流程與時間裡</p><ul class="sm-chips sm-comps" aria-label="本章元件"><li>Business logic</li><li>Shared state</li></ul><p class="sm-mini-hint">點地圖：到首頁地圖看這一章</p></section></aside>
+<aside class="sm-aside" aria-label="本節輔助"><nav class="sm-outline" aria-label="本節內容"><p class="sm-ph">本節內容</p><ol><li><a href="#race-window" title="6.2.1 檢查與更新之間"><span class="num">6.2.1</span>檢查與更新之間</a></li><li><a href="#limit-overrun" title="6.2.2 超過次數與額度的限制"><span class="num">6.2.2</span>超過次數與額度的限制</a></li><li><a href="#timing" title="6.2.3 為什麼難以重現"><span class="num">6.2.3</span>為什麼難以重現</a></li><li><a href="#probing" title="6.2.4 先依序，再平行"><span class="num">6.2.4</span>先依序，再平行</a></li><li><a href="#multi-endpoint" title="6.2.5 跨端點的競態"><span class="num">6.2.5</span>跨端點的競態</a></li><li><a href="#single-endpoint" title="6.2.6 同一個端點、不同的值"><span class="num">6.2.6</span>同一個端點、不同的值</a></li><li><a href="#hidden-states" title="6.2.7 請求內部的暫時狀態"><span class="num">6.2.7</span>請求內部的暫時狀態</a></li><li><a href="#fix" title="6.2.8 防禦手法"><span class="num">6.2.8</span>防禦手法</a></li><li><a href="#summary" title="6.2.9 小結"><span class="num">6.2.9</span>小結</a></li></ol></nav><section class="sm-locator" aria-label="系統地圖定位"><p class="sm-ph">系統地圖</p><a class="sm-mini-link" href="../../index.html#map-logic-timing" aria-label="在首頁的系統地圖上看第 6 章的位置"><svg class="sm-map sm-map-mini" viewBox="518 143 230 497" aria-hidden="true" focusable="false" preserveAspectRatio="xMidYMid meet" style="aspect-ratio:230/497"><line class="sm-edge" x1="200" y1="330" x2="290" y2="330"/><line class="sm-edge sm-dash" x1="440" y1="330" x2="530" y2="330"/><line class="sm-edge sm-threat-edge" x1="110" y1="100" x2="110" y2="255"/><line class="sm-edge sm-dash" x1="625" y1="100" x2="625" y2="150"/><line class="sm-edge" x1="625" y1="546" x2="625" y2="570"/><line class="sm-edge" x1="720" y1="325" x2="765" y2="325"/><line class="sm-edge" x1="765" y1="325" x2="765" y2="48"/><line class="sm-edge sm-dash" x1="765" y1="325" x2="765" y2="538"/><line class="sm-edge" x1="765" y1="48" x2="810" y2="48"/><line class="sm-edge" x1="765" y1="118" x2="810" y2="118"/><line class="sm-edge" x1="765" y1="188" x2="810" y2="188"/><line class="sm-edge sm-dash" x1="765" y1="328" x2="810" y2="328"/><line class="sm-edge sm-dash" x1="765" y1="398" x2="810" y2="398"/><line class="sm-edge sm-dash" x1="765" y1="468" x2="810" y2="468"/><line class="sm-edge sm-dash" x1="765" y1="538" x2="810" y2="538"/><g class="sm-n sm-threat off" data-ch="cross-site"><rect class="sm-box" x="20" y="20" width="180" height="80" rx="8"/><text class="sm-mini-t" x="110.0" y="62.0" text-anchor="middle" dominant-baseline="central" font-size="16">5</text></g><g class="sm-n sm-frame off" data-ch="web-http"><rect class="sm-box" x="20" y="255" width="180" height="150" rx="10"/><text class="sm-mini-t" x="50" y="285" text-anchor="middle" dominant-baseline="central" font-size="16">1</text></g><g class="sm-n sm-node off" data-ch="browser-output"><rect class="sm-box" x="36" y="322" width="148" height="64" rx="8"/><text class="sm-mini-t" x="110.0" y="356.0" text-anchor="middle" dominant-baseline="central" font-size="16">3</text></g><g class="sm-n sm-node sm-p2 off" data-ch="proxy-cache"><rect class="sm-box" x="290" y="240" width="150" height="180" rx="8"/><text class="sm-mini-t" x="365.0" y="332.0" text-anchor="middle" dominant-baseline="central" font-size="16">10</text></g><g class="sm-n sm-frame" aria-hidden="true"><rect class="sm-box" x="530" y="150" width="190" height="396" rx="10"/></g><g class="sm-n sm-node off" data-ch="identity"><rect class="sm-box" x="546" y="194" width="158" height="56" rx="8"/><text class="sm-mini-t" x="625.0" y="224.0" text-anchor="middle" dominant-baseline="central" font-size="16">4</text></g><g class="sm-n sm-node sm-p2 off" data-ch="apis"><rect class="sm-box" x="546" y="262" width="158" height="56" rx="8"/><text class="sm-mini-t" x="625.0" y="292.0" text-anchor="middle" dominant-baseline="central" font-size="16">8</text></g><g class="sm-n sm-node sm-p2 off" data-ch="llm"><rect class="sm-box" x="546" y="330" width="158" height="56" rx="8"/><text class="sm-mini-t" x="625.0" y="360.0" text-anchor="middle" dominant-baseline="central" font-size="16">11</text></g><g class="sm-n sm-node on" data-ch="logic-timing"><rect class="sm-box" x="546" y="398" width="158" height="56" rx="8"/><text class="sm-mini-t" x="625.0" y="428.0" text-anchor="middle" dominant-baseline="central" font-size="16">6</text></g><g class="sm-n sm-node sm-p2 off" data-ch="server-actions"><rect class="sm-box" x="546" y="466" width="158" height="56" rx="8"/><text class="sm-mini-t" x="625.0" y="496.0" text-anchor="middle" dominant-baseline="central" font-size="16">7</text></g><g class="sm-n sm-node sm-p2 off" data-ch="delegated-identity"><rect class="sm-box" x="530" y="20" width="190" height="80" rx="8"/><text class="sm-mini-t" x="625.0" y="62.0" text-anchor="middle" dominant-baseline="central" font-size="16">9</text></g><g class="sm-n sm-node on" data-ch="logic-timing"><rect class="sm-box" x="530" y="570" width="190" height="56" rx="8"/><text class="sm-mini-t" x="625.0" y="600.0" text-anchor="middle" dominant-baseline="central" font-size="16">6</text></g><g class="sm-n sm-node off" data-ch="server-input"><rect class="sm-box" x="810" y="20" width="170" height="56" rx="8"/><text class="sm-mini-t" x="895.0" y="50.0" text-anchor="middle" dominant-baseline="central" font-size="16">2</text></g><g class="sm-n sm-node off" data-ch="server-input"><rect class="sm-box" x="810" y="90" width="170" height="56" rx="8"/><text class="sm-mini-t" x="895.0" y="120.0" text-anchor="middle" dominant-baseline="central" font-size="16">2</text></g><g class="sm-n sm-node off" data-ch="server-input"><rect class="sm-box" x="810" y="160" width="170" height="56" rx="8"/><text class="sm-mini-t" x="895.0" y="190.0" text-anchor="middle" dominant-baseline="central" font-size="16">2</text></g><g class="sm-n sm-node sm-p2 off" data-ch="server-actions"><rect class="sm-box" x="810" y="300" width="170" height="56" rx="8"/><text class="sm-mini-t" x="895.0" y="330.0" text-anchor="middle" dominant-baseline="central" font-size="16">7</text></g><g class="sm-n sm-node sm-p2 off" data-ch="server-actions"><rect class="sm-box" x="810" y="370" width="170" height="56" rx="8"/><text class="sm-mini-t" x="895.0" y="400.0" text-anchor="middle" dominant-baseline="central" font-size="16">7</text></g><g class="sm-n sm-node sm-p2 off" data-ch="server-actions"><rect class="sm-box" x="810" y="440" width="170" height="56" rx="8"/><text class="sm-mini-t" x="895.0" y="470.0" text-anchor="middle" dominant-baseline="central" font-size="16">7</text></g><g class="sm-n sm-node sm-p2 off" data-ch="server-actions"><rect class="sm-box" x="810" y="510" width="170" height="56" rx="8"/><text class="sm-mini-t" x="895.0" y="540.0" text-anchor="middle" dominant-baseline="central" font-size="16">7</text></g><g class="sm-n sm-pill off" data-ch="web-http"><rect class="sm-pill-box" x="213" y="306" width="64" height="48" rx="24"/><text class="sm-mini-t" x="245" y="332" text-anchor="middle" dominant-baseline="central" font-size="14">1</text></g><g class="sm-n sm-pill off" data-ch="web-http"><rect class="sm-pill-box" x="453" y="306" width="64" height="48" rx="24"/><text class="sm-mini-t" x="485" y="332" text-anchor="middle" dominant-baseline="central" font-size="14">1</text></g><g class="sm-n sm-pill off" data-ch="cross-site"><rect class="sm-pill-box" x="78" y="153" width="64" height="48" rx="24"/><text class="sm-mini-t" x="110" y="179" text-anchor="middle" dominant-baseline="central" font-size="14">5</text></g><g class="sm-n sm-pill off" data-ch="delegated-identity"><rect class="sm-pill-box" x="593" y="101" width="64" height="48" rx="24"/><text class="sm-mini-t" x="625" y="127" text-anchor="middle" dominant-baseline="central" font-size="14">9</text></g></svg></a><p class="sm-cap">位置：第 6 章　問題藏在流程與時間裡</p><ul class="sm-chips sm-comps" aria-label="本章元件"><li>Business logic</li><li>Shared state</li></ul><p class="sm-mini-hint">點地圖：到首頁地圖看這一章</p></section></aside>
 <main id="main" class="sm-doc" tabindex="-1">
 <article class="content sm-article">
-<p class="notice">本節是草稿，內容仍在撰寫與查核中。</p><p>一個購物網站規定：同一張優惠碼在同一個購物車只能用一次。你輸入優惠碼，折扣出現；再輸入一次，網站回「這張優惠碼已經用過」。照畫面一筆一筆操作，規則看起來沒有漏洞。<a href="../business-logic/index.html">Business Logic Vulnerabilities</a> 看的是請求的內容與順序，這一節多加一個變數：時間。如果兩筆套用優惠碼的請求幾乎同時抵達，伺服器會各自處理它們，兩邊的處理過程可能在時間上交錯。</p>
+<svg class="icon-sprite" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" style="position:absolute;width:0;height:0;overflow:hidden"><symbol id="icon-cart" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 13h30l-4 15H16z" fill="var(--icon-commerce)"/><path d="M4 7h6l7 23h21" fill="none"/><circle cx="19" cy="38.5" r="3.5" fill="var(--icon-commerce-soft)"/><circle cx="35" cy="38.5" r="3.5" fill="var(--icon-commerce-soft)"/></symbol><symbol id="icon-check" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="24" cy="24" r="19" fill="var(--icon-ok-soft)"/><path d="M14.5 24.5l7 7L34 17.5" stroke="var(--icon-ok)" stroke-width="4.6"/></symbol><symbol id="icon-coupon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 15a5 5 0 0 1 5-5h30a5 5 0 0 1 5 5v4a5 5 0 0 0 0 10v4a5 5 0 0 1-5 5H9a5 5 0 0 1-5-5v-4a5 5 0 0 0 0-10z" fill="var(--icon-commerce-soft)"/><path d="M30 17L18 31" stroke-width="3.2"/><circle cx="19" cy="19" r="3.3" fill="var(--icon-commerce)" stroke="none"/><circle cx="29" cy="29" r="3.3" fill="var(--icon-commerce)" stroke="none"/></symbol><symbol id="icon-cross" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="24" cy="24" r="19" fill="var(--icon-bad-soft)"/><path d="M17 17l14 14M31 17L17 31" stroke="var(--icon-bad)" stroke-width="4.6"/></symbol><symbol id="icon-envelope" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="9" width="40" height="30" rx="9" fill="var(--icon-commerce-soft)"/><path d="M7 15l17 13 17-13" fill="var(--icon-commerce)"/></symbol><symbol id="icon-external-service" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="24" cy="24" r="19" fill="var(--icon-server-soft)"/><ellipse cx="24" cy="24" rx="8.5" ry="19" fill="var(--icon-server)"/><path d="M5 24h38M8.5 14h31M8.5 34h31"/></symbol><symbol id="icon-eye" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 24c5-10 12-15 21-15s16 5 21 15c-5 10-12 15-21 15S8 34 3 24z" fill="var(--icon-neutral-soft)"/><circle cx="24" cy="24" r="9" fill="var(--icon-neutral)"/><circle cx="24" cy="24" r="3.5" fill="currentColor" stroke="none"/><circle cx="27" cy="21" r="1.6" fill="var(--icon-neutral-soft)" stroke="none"/></symbol><symbol id="icon-invoice" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 6a4 4 0 0 1 4-4h18a4 4 0 0 1 4 4v38l-4.3-3-4.3 3-4.4-3-4.3 3-4.4-3-4.3 3z" fill="var(--icon-commerce-soft)"/><path d="M17 12h14M17 19h14M17 26h7"/><path d="M17 33h14" stroke="var(--icon-commerce)" stroke-width="4"/></symbol><symbol id="icon-lock" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 22v-7a9 9 0 0 1 18 0v7" fill="none" stroke-width="4"/><rect x="8" y="20" width="32" height="23" rx="8" fill="var(--icon-cred-soft)"/><circle cx="24" cy="30" r="3.5" fill="var(--icon-cred)" stroke="none"/><path d="M24 32v5" stroke="var(--icon-cred)" stroke-width="3.4"/></symbol><symbol id="icon-server" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="4.5" width="38" height="11.5" rx="5.75" fill="var(--icon-server-soft)"/><circle cx="12.5" cy="10.25" r="2.3" fill="var(--icon-server)" stroke="none"/><path d="M20 10.25h14"/><rect x="5" y="18.25" width="38" height="11.5" rx="5.75" fill="var(--icon-server-soft)"/><circle cx="12.5" cy="24.0" r="2.3" fill="var(--icon-server)" stroke="none"/><path d="M20 24.0h14"/><rect x="5" y="32" width="38" height="11.5" rx="5.75" fill="var(--icon-server-soft)"/><circle cx="12.5" cy="37.75" r="2.3" fill="var(--icon-server)" stroke="none"/><path d="M20 37.75h14"/></symbol><symbol id="icon-session" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="10" width="40" height="32" rx="9" fill="var(--icon-cred-soft)"/><rect x="18" y="4" width="12" height="9" rx="4" fill="var(--icon-cred)"/><circle cx="15" cy="23" r="4.5" fill="var(--icon-cred)"/><path d="M8.5 36c.5-4 3-5.5 6.5-5.5s6 1.5 6.5 5.5"/><path d="M27 22h11M27 29h11M27 36h6"/></symbol><symbol id="icon-terminal" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="6" width="40" height="36" rx="9" fill="var(--icon-server-soft)"/><path d="M4 17h40"/><circle cx="11" cy="11.5" r="1.8" fill="currentColor" stroke="none"/><circle cx="17.5" cy="11.5" r="1.8" fill="currentColor" stroke="none"/><path d="M12 24l6 5-6 5" stroke="var(--icon-server)" stroke-width="3.6"/><path d="M23 35h11" stroke="var(--icon-server)" stroke-width="3.6"/></symbol><symbol id="icon-timer" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="24" cy="27" r="16" fill="var(--icon-neutral-soft)"/><path d="M24 27V15a12 12 0 0 1 12 12z" fill="var(--icon-neutral)" stroke="none"/><path d="M24 27V18"/><path d="M19 5h10M24 5v6M38 11l3-3"/><circle cx="24" cy="27" r="1.8" fill="currentColor" stroke="none"/></symbol><symbol id="icon-unlock" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 22v-7a9 9 0 0 1 17-4" fill="none" stroke-width="4"/><rect x="8" y="20" width="32" height="23" rx="8" fill="var(--icon-cred-soft)"/><circle cx="24" cy="30" r="3.5" fill="var(--icon-cred)" stroke="none"/><path d="M24 32v5" stroke="var(--icon-cred)" stroke-width="3.4"/></symbol><symbol id="icon-warning" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M24 5c1.7 0 3.1.9 4 2.4L43 34c1.8 3.3-.5 7.5-4.3 7.5H9.3C5.5 41.5 3.2 37.3 5 34L20 7.4C20.9 5.9 22.3 5 24 5z" fill="var(--icon-warn)" fill-opacity=".85"/><path d="M24 17v10" stroke-width="4"/><circle cx="24" cy="34" r="2" fill="currentColor" stroke="none"/></symbol></svg><p>一個購物網站規定：同一張優惠碼在同一個購物車只能用一次。你輸入優惠碼，折扣出現；再輸入一次，網站回「這張優惠碼已經用過」。照畫面一筆一筆操作，規則看起來沒有漏洞。<a href="../business-logic/index.html">Business Logic Vulnerabilities</a> 看的是請求的內容與順序，這一節多加一個變數：時間。如果兩筆套用優惠碼的請求幾乎同時抵達，伺服器會各自處理它們，兩邊的處理過程可能在時間上交錯。</p>
 
 <h2 id="race-window"><span class="num">6.2.1</span> 檢查與更新之間</h2>
 <p>套用優惠碼的程式通常分三步：查這個購物車有沒有用過這張優惠碼；沒用過就把折扣加上去；最後記下「已使用」。三步之間各隔幾毫秒，用來查資料庫、計算金額、寫入資料。</p>
 <p>網站伺服器同時處理許多請求，每筆請求由各自的執行緒或行程負責。兩筆請求讀寫同一份資料（這裡是同一個購物車的優惠碼紀錄），這份資料就是它們的<strong>共享狀態</strong>（shared state）。兩筆請求一前一後處理，第二筆看到的是第一筆寫完的結果；兩筆同時處理，第二筆可能在第一筆寫入之前就做了讀取。</p>
 
 <figure id="race-timeline">
-  <svg viewBox="0 0 720 360" role="img" aria-labelledby="race-timeline-t" style="color:var(--text)">
+  <svg viewBox="0 0 720 388" role="img" aria-labelledby="race-timeline-t" style="color:var(--text)">
     <title id="race-timeline-t">同一張優惠碼的兩筆請求。左邊依序處理：A 讀到未使用、套用折扣、標記已使用，B 之後讀到已使用而被拒絕，折扣一次。右邊交錯處理：A 和 B 都在 A 標記之前讀到未使用，兩者都套用折扣，折扣兩次</title>
     <defs>
       <marker id="rt-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
@@ -37,84 +37,103 @@
       </marker>
     </defs>
     <g stroke="currentColor" stroke-width="1.2" fill="none">
-      <rect x="10" y="8" width="340" height="324" rx="6"/>
-      <rect x="370" y="8" width="340" height="324" rx="6"/>
+      <rect x="10" y="8" width="340" height="344" rx="8"/>
+      <rect x="370" y="8" width="340" height="344" rx="8"/>
     </g>
-    <rect x="376" y="56" width="328" height="198" rx="4" fill="var(--accent-soft)"/>
+    <rect x="376" y="74" width="328" height="198" rx="4" fill="var(--accent-soft)" stroke="currentColor" stroke-width="1" stroke-dasharray="5 4"/>
     <g font-size="13" font-weight="700" fill="currentColor" text-anchor="middle">
       <text x="180" y="30">依序處理</text>
       <text x="540" y="30">交錯處理</text>
-      <text x="115" y="50" font-size="12">請求 A</text>
-      <text x="265" y="50" font-size="12">請求 B</text>
-      <text x="475" y="50" font-size="12">請求 A</text>
-      <text x="625" y="50" font-size="12">請求 B</text>
+      <text x="125" y="54" font-size="12">請求 A</text>
+      <text x="275" y="54" font-size="12">請求 B</text>
+      <text x="485" y="54" font-size="12">請求 A</text>
+      <text x="635" y="54" font-size="12">請求 B</text>
     </g>
-    <text x="22" y="72" font-size="11" fill="currentColor" opacity=".75">時間</text>
-    <path d="M32 80 V284" stroke="currentColor" stroke-width="1.4" fill="none" marker-end="url(#rt-arrow)" opacity=".75"/>
-    <g stroke="currentColor" stroke-width="1.2" fill="var(--surface)">
-      <rect x="50" y="60" width="130" height="28" rx="4"/>
-      <rect x="50" y="100" width="130" height="28" rx="4"/>
-      <rect x="50" y="140" width="130" height="28" rx="4"/>
-      <rect x="200" y="180" width="130" height="28" rx="4"/>
-      <rect x="200" y="220" width="130" height="28" rx="4"/>
-      <rect x="410" y="60" width="130" height="28" rx="4"/>
-      <rect x="560" y="100" width="130" height="28" rx="4"/>
-      <rect x="410" y="140" width="130" height="28" rx="4"/>
-      <rect x="560" y="180" width="130" height="28" rx="4"/>
-      <rect x="410" y="220" width="130" height="28" rx="4"/>
-      <rect x="560" y="260" width="130" height="28" rx="4"/>
+    <use href="#icon-envelope" x="78" y="36" width="24" height="24"/>
+    <use href="#icon-envelope" x="228" y="36" width="24" height="24"/>
+    <use href="#icon-envelope" x="438" y="36" width="24" height="24"/>
+    <use href="#icon-envelope" x="588" y="36" width="24" height="24"/>
+    <text x="22" y="90" font-size="11" fill="currentColor" opacity=".75">時間</text>
+    <path d="M32 98 V302" stroke="currentColor" stroke-width="1.4" fill="none" marker-end="url(#rt-arrow)" opacity=".75"/>
+    <g transform="translate(0 18)">
+      <g stroke="currentColor" stroke-width="1.2" fill="var(--surface)">
+        <rect x="50" y="60" width="130" height="28" rx="6"/>
+        <rect x="50" y="100" width="130" height="28" rx="6"/>
+        <rect x="50" y="140" width="130" height="28" rx="6"/>
+        <rect x="200" y="180" width="130" height="28" rx="6"/>
+        <rect x="200" y="220" width="130" height="28" rx="6" stroke-dasharray="5 3"/>
+        <rect x="410" y="60" width="130" height="28" rx="6"/>
+        <rect x="560" y="100" width="130" height="28" rx="6"/>
+        <rect x="410" y="140" width="130" height="28" rx="6"/>
+        <rect x="560" y="180" width="130" height="28" rx="6"/>
+        <rect x="410" y="220" width="130" height="28" rx="6"/>
+        <rect x="560" y="260" width="130" height="28" rx="6"/>
+      </g>
+      <use href="#icon-eye" x="55" y="62" width="24" height="24"/>
+      <use href="#icon-coupon" x="55" y="102" width="24" height="24"/>
+      <use href="#icon-check" x="55" y="142" width="24" height="24"/>
+      <use href="#icon-eye" x="205" y="182" width="24" height="24"/>
+      <use href="#icon-cross" x="205" y="222" width="24" height="24"/>
+      <use href="#icon-eye" x="415" y="62" width="24" height="24"/>
+      <use href="#icon-eye" x="565" y="102" width="24" height="24"/>
+      <use href="#icon-coupon" x="415" y="142" width="24" height="24"/>
+      <use href="#icon-coupon" x="565" y="182" width="24" height="24"/>
+      <use href="#icon-check" x="415" y="222" width="24" height="24"/>
+      <use href="#icon-check" x="565" y="262" width="24" height="24"/>
+      <g font-size="12" fill="currentColor" text-anchor="middle">
+        <text x="128" y="79">讀取：未使用</text>
+        <text x="128" y="119">套用折扣</text>
+        <text x="128" y="159">標記已使用</text>
+        <text x="278" y="199">讀取：已使用</text>
+        <text x="278" y="239">拒絕</text>
+        <text x="488" y="79">讀取：未使用</text>
+        <text x="638" y="119">讀取：未使用</text>
+        <text x="488" y="159">套用折扣</text>
+        <text x="638" y="199">套用折扣</text>
+        <text x="488" y="239">標記已使用</text>
+        <text x="638" y="279">標記已使用</text>
+      </g>
     </g>
-    <g font-size="12" fill="currentColor" text-anchor="middle">
-      <text x="115" y="79">讀取：未使用</text>
-      <text x="115" y="119">套用折扣</text>
-      <text x="115" y="159">標記已使用</text>
-      <text x="265" y="199">讀取：已使用</text>
-      <text x="265" y="239">拒絕</text>
-      <text x="475" y="79">讀取：未使用</text>
-      <text x="625" y="119">讀取：未使用</text>
-      <text x="475" y="159">套用折扣</text>
-      <text x="625" y="199">套用折扣</text>
-      <text x="475" y="239">標記已使用</text>
-      <text x="625" y="279">標記已使用</text>
-    </g>
+    <use href="#icon-check" x="106" y="318" width="24" height="24"/>
+    <use href="#icon-warning" x="466" y="318" width="24" height="24"/>
     <g font-size="13" font-weight="700" fill="currentColor" text-anchor="middle">
-      <text x="180" y="318">結果：折扣 1 次</text>
-      <text x="540" y="318">結果：折扣 2 次</text>
+      <text x="200" y="336">結果：折扣 1 次</text>
+      <text x="560" y="336">結果：折扣 2 次</text>
     </g>
-    <text x="360" y="352" font-size="11" fill="currentColor" text-anchor="middle" opacity=".8">淡色區：A 讀到「未使用」到寫下「已使用」之間，B 的讀取落在這裡就看不到 A 的結果</text>
+    <text x="360" y="376" font-size="11" fill="currentColor" text-anchor="middle" opacity=".8">淡色區：A 讀到「未使用」到寫下「已使用」之間，B 的讀取落在這裡就看不到 A 的結果</text>
   </svg>
   <figcaption><span class="fig-num">圖 6.2.1-1</span> 同一張優惠碼的兩筆請求：依序處理時第二筆被拒絕；交錯處理時兩筆都在標記之前讀到「未使用」，折扣加了兩次</figcaption>
 </figure>
 
 <p>右邊兩筆請求各自的步驟都沒有錯：讀到未使用，所以套用折扣，最後標記。錯在交錯之後的組合。最後資料庫裡的「已使用」紀錄只寫了一份（或寫了兩份相同的），折扣卻加了兩次。</p>
 <p>這類問題稱為<strong>競態條件</strong>（race condition）：結果取決於多筆處理之間的時間先後，而程式沒有控制這個先後。上面的例子屬於最常見的一種，叫 TOCTOU（time-of-check to time-of-use，檢查時與使用時不一致）：做決定時讀到的狀態，到了動手時已經不是那樣。從檢查到寫入之間、允許另一筆請求插進來的那段時間，稱為 <strong>race window</strong>。它常常只有幾毫秒，甚至更短，但只要第二筆請求的讀取落在其中，就會讀到舊的狀態。</p>
-<p>要注意判斷的對象是業務規則有沒有被打破。兩筆請求都回應「已套用」，不代表折扣真的加了兩次；要回頭看購物車的折扣與總額。反過來，回應看起來都正常，也要看最後的狀態才知道有沒有出事。</p>
+<p>判斷要看業務規則有沒有被打破，不能只看回應。兩筆請求都回「已套用」，折扣不一定真的加了兩次；回應都正常，也不表示沒事。要回頭看購物車的折扣與總額。</p>
 
 <h2 id="limit-overrun"><span class="num">6.2.2</span> 超過次數與額度的限制</h2>
 <p>優惠碼重複使用屬於 <strong>limit overrun</strong>（超過上限）：網站規定某件事最多做幾次、最多用多少額度，平行送出的請求讓實際次數超過規定。下面這段處理程式就有這個問題：</p>
-<pre data-lang="python"><code># 先查、再寫：查詢與寫入之間沒有任何保護
-def apply_coupon(cart_id, code):
-    used = db.fetch_one(
-        "SELECT 1 FROM cart_coupons WHERE cart_id = %s AND code = %s",
+<pre data-lang="python"><code><span class="tok-comment"># 先查、再寫：查詢與寫入之間沒有任何保護</span>
+<span class="tok-keyword">def</span> <span class="tok-func">apply_coupon</span>(cart_id, code):
+    used = db.<span class="tok-func">fetch_one</span>(
+        <span class="tok-string">"SELECT 1 FROM cart_coupons WHERE cart_id = %s AND code = %s"</span>,
         (cart_id, code))
-    if used:
-        return "這張優惠碼已經用過"
-    discount = lookup_discount(code)
-    db.execute("UPDATE carts SET discount = discount + %s WHERE id = %s",
+    <span class="tok-keyword">if</span> used:
+        <span class="tok-keyword">return</span> <span class="tok-string">"這張優惠碼已經用過"</span>
+    discount = <span class="tok-func">lookup_discount</span>(code)
+    db.<span class="tok-func">execute</span>(<span class="tok-string">"UPDATE carts SET discount = discount + %s WHERE id = %s"</span>,
                (discount, cart_id))
-    db.execute("INSERT INTO cart_coupons (cart_id, code) VALUES (%s, %s)",
+    db.<span class="tok-func">execute</span>(<span class="tok-string">"INSERT INTO cart_coupons (cart_id, code) VALUES (%s, %s)"</span>,
                (cart_id, code))
-    return "已套用"</code></pre>
+    <span class="tok-keyword">return</span> <span class="tok-string">"已套用"</span></code></pre>
 <p>第一個 <code>SELECT</code> 是檢查，最後的 <code>INSERT</code> 才讓檢查生效。兩筆請求都在對方 <code>INSERT</code> 之前執行 <code>SELECT</code>，就都會走到加折扣那一行。</p>
 
 <h3>餘額超用</h3>
 <p>帳戶或禮物卡餘額是同樣的結構，只是限制換成金額。假設帳戶有 100 元，扣款的程式先讀出餘額、在程式裡算出新餘額，再寫回：</p>
-<pre data-lang="python"><code>balance = db.fetch_value("SELECT balance FROM accounts WHERE id = %s", (account_id,))
-if balance &lt; amount:
-    return "餘額不足"
-db.execute("UPDATE accounts SET balance = %s WHERE id = %s",
+<pre data-lang="python"><code>balance = db.<span class="tok-func">fetch_value</span>(<span class="tok-string">"SELECT balance FROM accounts WHERE id = %s"</span>, (account_id,))
+<span class="tok-keyword">if</span> balance &lt; amount:
+    <span class="tok-keyword">return</span> <span class="tok-string">"餘額不足"</span>
+db.<span class="tok-func">execute</span>(<span class="tok-string">"UPDATE accounts SET balance = %s WHERE id = %s"</span>,
            (balance - amount, account_id))
-pay_out(amount)</code></pre>
+<span class="tok-func">pay_out</span>(amount)</code></pre>
 <p>兩筆 80 元的提領同時進來：</p>
 <table>
   <thead><tr><th>時點</th><th>提領 A</th><th>提領 B</th><th>資料庫中的餘額</th></tr></thead>
@@ -135,12 +154,12 @@ pay_out(amount)</code></pre>
 <p>所以同一個漏洞，有時十次才碰到一次，有時一次就成功；一輪沒有重現，不能據此判斷沒有競態。</p>
 
 <h3>讓請求同時湊齊</h3>
-<p>伺服器要收到一筆請求的最後一個位元組，才會開始處理它。利用這一點，可以把每筆請求的大部分先送過去，只留下最後一小段，等所有請求的前段都到了，再把各自的最後一段一起送出。這樣一來，前段在網路上花了多少時間都不影響結果，影響「何時湊齊」的只剩最後一段。</p>
-<p>在 HTTP/1.1，每條 TCP 連線同一時間只處理一筆請求，所以要開多條連線，各送一筆請求的前段，最後一段再分別在各條連線上送出，稱為 last-byte synchronization（最後位元組同步）。各條連線上的最後一段仍各自經歷網路抖動。</p>
-<p>HTTP/2 允許多筆請求共用同一條 TCP 連線：每筆請求被切成許多 frame（訊框），交錯在同一條連線上傳送，稱為多工（multiplexing）。因此可以在一條連線上先送出每筆請求的前段，再把 20 到 30 筆請求的最後一個 frame 塞進同一個 TCP 封包。一個封包要嘛整個到達，要嘛整個沒到，這些請求就在同一刻湊齊，網路抖動對它們之間的時間差不再有影響。PortSwigger 的研究稱這種做法為 <strong>single-packet attack</strong>（單封包攻擊），Burp Suite 的 Repeater 以「平行送出一組分頁」的功能實作了它。</p>
+<p>伺服器可以在請求還沒收完時就開始解析，但許多應用程式要等整筆請求到齊，才進入讀資料庫、檢查狀態這些會碰到 race window 的處理。在這個前提下，可以把每筆請求的大部分先送過去，只留下最後一小段，等所有請求的前段都到了，再把各自的最後一段一起送出。這樣一來，前段在網路上花了多少時間都不影響結果，影響「何時湊齊」的只剩觸發處理的最後一段。</p>
+<p>在 HTTP/1.1，Burp 為每筆請求各開一條連線，先送前段，最後一段再在各條連線上同時送出，稱為 last-byte synchronization（最後位元組同步）。各條連線上的最後一段仍各自經歷網路抖動。</p>
+<p>HTTP/2 允許多筆請求共用同一條 TCP 連線：每筆請求被切成許多 frame（訊框），交錯在同一條連線上傳送，稱為多工（multiplexing）。因此可以在一條連線上先送出每筆請求的前段，再把多筆請求的最後一個 frame 塞進同一個 TCP 封包；PortSwigger 的研究一次約放 20 到 30 筆。一個封包要嘛整個到達，要嘛整個沒到，這些請求就在同一刻湊齊，網路抖動對它們之間的時間差不再有影響。PortSwigger 的研究稱這種做法為 <strong>single-packet attack</strong>（單封包攻擊），Burp Suite 的 Repeater 以「平行送出一組分頁」的功能實作了它。</p>
 
 <figure id="single-packet">
-  <svg viewBox="0 0 720 300" role="img" aria-labelledby="single-packet-t" style="color:var(--text)">
+  <svg viewBox="0 0 770 310" role="img" aria-labelledby="single-packet-t" style="color:var(--text)">
     <title id="single-packet-t">上半部：三筆請求各自送出，因網路延遲不同，在伺服器端湊齊的時間彼此相差數毫秒。下半部：三筆請求的前段先送到伺服器等待，最後一段放進同一個 TCP 封包，三筆請求在同一刻湊齊</title>
     <defs>
       <marker id="sp-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
@@ -151,53 +170,56 @@ pay_out(amount)</code></pre>
       <text x="10" y="22">各自送出</text>
       <text x="10" y="168">前段先送，最後一段放進同一個封包</text>
     </g>
-    <g stroke="currentColor" stroke-width="1.2">
-      <rect x="10" y="40" width="110" height="64" rx="5" fill="var(--surface)"/>
-      <rect x="10" y="190" width="110" height="80" rx="5" fill="var(--surface)"/>
-      <rect x="140" y="188" width="110" height="22" rx="3" fill="var(--surface)" opacity=".85"/>
-      <rect x="140" y="219" width="110" height="22" rx="3" fill="var(--surface)" opacity=".85"/>
-      <rect x="140" y="250" width="110" height="22" rx="3" fill="var(--surface)" opacity=".85"/>
-      <rect x="280" y="196" width="150" height="70" rx="5" fill="var(--accent-soft)"/>
-    </g>
+    <use href="#icon-terminal" x="34" y="48" width="48" height="48"/>
+    <use href="#icon-terminal" x="34" y="207" width="48" height="48"/>
+    <use href="#icon-server" x="702" y="48" width="48" height="48"/>
+    <use href="#icon-server" x="702" y="207" width="48" height="48"/>
     <g font-size="13" fill="currentColor" text-anchor="middle">
-      <text x="65" y="77">用戶端</text>
-      <text x="65" y="235">用戶端</text>
-      <text x="355" y="224">一個 TCP 封包</text>
+      <text x="58" y="112">用戶端</text>
+      <text x="58" y="272">用戶端</text>
+      <text x="726" y="112">伺服器</text>
+      <text x="726" y="272">伺服器</text>
+    </g>
+    <g stroke="currentColor" stroke-width="1.2">
+      <rect x="140" y="188" width="110" height="22" rx="5" fill="var(--surface)" opacity=".85"/>
+      <rect x="140" y="219" width="110" height="22" rx="5" fill="var(--surface)" opacity=".85"/>
+      <rect x="140" y="250" width="110" height="22" rx="5" fill="var(--surface)" opacity=".85"/>
+      <rect x="280" y="196" width="150" height="70" rx="8" fill="var(--accent-soft)"/>
     </g>
     <g font-size="11" fill="currentColor" text-anchor="middle">
       <text x="195" y="203">A 的前段</text>
       <text x="195" y="234">B 的前段</text>
       <text x="195" y="265">C 的前段</text>
       <text x="355" y="246">A、B、C 的最後一段</text>
-      <text x="195" y="286" opacity=".75">已在伺服器端等待</text>
+      <text x="195" y="288" opacity=".75">已在伺服器端等待</text>
     </g>
+    <text x="355" y="224" font-size="13" fill="currentColor" text-anchor="middle">一個 TCP 封包</text>
     <g stroke="currentColor" stroke-width="1.6" fill="none">
-      <path d="M200 72 H700" marker-end="url(#sp-arrow)"/>
-      <path d="M460 231 H700" marker-end="url(#sp-arrow)"/>
-      <path d="M122 72 H190" stroke-dasharray="4 3"/>
+      <path d="M200 72 H696" marker-end="url(#sp-arrow)"/>
+      <path d="M460 231 H696" marker-end="url(#sp-arrow)"/>
+      <path d="M90 72 H190" stroke-dasharray="4 3"/>
+      <path d="M90 231 H138" stroke-dasharray="4 3"/>
       <path d="M432 231 H452" stroke-dasharray="4 3"/>
     </g>
-    <g fill="currentColor">
-      <circle cx="270" cy="72" r="5"/>
-      <circle cx="430" cy="72" r="5"/>
-      <circle cx="620" cy="72" r="5"/>
-      <circle cx="574" cy="231" r="5"/>
-      <circle cx="580" cy="231" r="5" opacity=".7"/>
-      <circle cx="586" cy="231" r="5" opacity=".5"/>
-    </g>
+    <use href="#icon-envelope" x="258" y="60" width="24" height="24"/>
+    <use href="#icon-envelope" x="418" y="60" width="24" height="24"/>
+    <use href="#icon-envelope" x="608" y="60" width="24" height="24"/>
+    <use href="#icon-envelope" x="548" y="219" width="24" height="24"/>
+    <use href="#icon-envelope" x="562" y="219" width="24" height="24"/>
+    <use href="#icon-envelope" x="576" y="219" width="24" height="24"/>
     <g font-size="12" fill="currentColor" text-anchor="middle">
-      <text x="270" y="58">A</text>
-      <text x="430" y="58">B</text>
-      <text x="620" y="58">C</text>
-      <text x="580" y="217">A、B、C</text>
+      <text x="270" y="54">A</text>
+      <text x="430" y="54">B</text>
+      <text x="620" y="54">C</text>
+      <text x="574" y="213">A、B、C</text>
     </g>
     <g font-size="11" fill="currentColor" opacity=".8">
-      <text x="200" y="100">伺服器收到完整請求的時間</text>
+      <text x="200" y="104">伺服器收到完整請求的時間</text>
       <text x="470" y="258">三筆請求在同一刻湊齊</text>
     </g>
-    <path d="M270 116 H620" stroke="currentColor" stroke-width="1" fill="none"/>
-    <path d="M270 110 V122 M620 110 V122" stroke="currentColor" stroke-width="1" fill="none"/>
-    <text x="445" y="136" font-size="11" fill="currentColor" text-anchor="middle">相差數毫秒，可能比 race window 還長</text>
+    <path d="M270 120 H620" stroke="currentColor" stroke-width="1" fill="none"/>
+    <path d="M270 114 V126 M620 114 V126" stroke="currentColor" stroke-width="1" fill="none"/>
+    <text x="445" y="140" font-size="11" fill="currentColor" text-anchor="middle">相差數毫秒，可能比 race window 還長</text>
   </svg>
   <figcaption><span class="fig-num">圖 6.2.3-1</span> 各自送出的請求受網路抖動影響，抵達時間散開；把最後一段放進同一個封包，請求就在同一刻湊齊</figcaption>
 </figure>
@@ -205,7 +227,7 @@ pay_out(amount)</code></pre>
 <p>Single-packet attack 消除的是網路造成的時間差。伺服器內部的抖動仍在，所以一次送出多筆請求會比只送兩筆容易碰到 race window：即使利用漏洞只需要兩筆，探測時多送一些，交錯的機會就大一些。</p>
 
 <h3>以 Session 為單位的鎖</h3>
-<p>有些框架會讓同一個 Session 的請求排隊處理。PHP 內建的 Session 處理在請求開啟 Session 時取得一把鎖，直到請求結束或明確關閉 Session 才釋放，同一個 Session 的請求因此一次只跑一筆。帶著同一個 Session Cookie 平行送出的請求，在伺服器上被排成了一列，看起來就像沒有競態。這把鎖只保護同一個 Session 內的請求；換成兩個不同的 Session 各送一筆，就不會互相等待。所以測試時若所有請求都被依序處理，可以改用不同的 Session 再比較一次。</p>
+<p>有些框架會讓同一個 Session 的請求排隊處理。PHP 預設的檔案式 Session 處理器在請求開啟 Session 時取得一把鎖，直到請求結束或明確關閉 Session 才釋放，同一個 Session 的請求因此一次只跑一筆。帶著同一個 Session Cookie 平行送出的請求，在伺服器上被排成了一列，看起來就像沒有競態。這把鎖只保護同一個 Session 內的請求；換成兩個不同的 Session 各送一筆，就不會互相等待。所以測試時若所有請求都被依序處理，可以改用不同的 Session 再比較一次。</p>
 <p>反過來，有些情況必須用同一個 Session：優惠碼的例子裡，購物車是依 Session 找到的，兩筆請求要作用在同一個購物車，就得帶同一個 Session Cookie。用哪種 Session 組合，取決於要測的共享狀態屬於誰。</p>
 
 <h2 id="probing"><span class="num">6.2.4</span> 先依序，再平行</h2>
@@ -226,55 +248,78 @@ pay_out(amount)</code></pre>
 </ul>
 
 <h2 id="single-endpoint"><span class="num">6.2.6</span> 同一個端點、不同的值</h2>
-<p>同一個端點也可能在帶著不同參數的請求之間發生競態。這類問題常出在把好幾個欄位分開寫進 Session 的處理程式。以重設密碼為例，假設處理程式這樣寫：</p>
+<p>同一個端點也可能在帶著不同參數的請求之間發生競態。這類問題常出在把一組相關的欄位分開寫進 Session 的處理程式。以結帳前的運費試算為例，假設 <code>POST /cart/shipping</code> 的處理程式這樣寫，而且兩個欄位各自寫進其他請求立刻看得到的共享 Session 儲存，沒有把這段流程串行化的鎖：</p>
 <ol>
-  <li>把請求裡的使用者名稱寫進 Session：<code>session["reset_user"] = username</code>。</li>
-  <li>產生一個隨機 token，也寫進 Session：<code>session["reset_token"] = token</code>。</li>
-  <li>把含有 token 的重設連結寄到這個使用者名稱的電子郵件信箱。</li>
+  <li>把請求裡的寄送目的地寫進 Session：<code>session["ship_to"] = destination</code>。</li>
+  <li>向物流公司的報價服務查詢這個目的地的運費，這一步要透過網路，花的時間比其他步驟長。</li>
+  <li>把查到的運費寫進 Session：<code>session["ship_fee"] = fee</code>。</li>
 </ol>
-<p>之後使用者點連結回來，伺服器比對連結中的 token 與 Session 中的 <code>reset_token</code>，相符就讓他替 <code>reset_user</code> 設定新密碼。依序處理時，Session 裡的使用者與 token 一定成對。攻擊者 wiener 用同一個 Session，同時送出兩筆重設請求，一筆填自己的名字，一筆填 carlos：</p>
+<p>這個漏洞只在兩個欄位分別寫入、而且寫入立刻被其他請求看到時才成立。同一個 Session 的鎖若涵蓋整段流程（見上文「以 Session 為單位的鎖」），兩筆請求會排隊，不會交錯；框架若在請求內只改本地副本、結束時整份 Session 一次寫回，結果就是最後寫回的那一份，不會出現 B 的目的地配 A 的運費。</p>
+<p>結帳頁之後直接讀 Session：收貨地址用 <code>ship_to</code>，運費用 <code>ship_fee</code>。依序處理時，兩個欄位一定成對。攻擊者用同一個 Session 同時送出兩筆試算請求，一筆選國內（運費 60 元），一筆選海外（運費 480 元）：</p>
 
 <figure id="session-mix">
-  <svg viewBox="0 0 720 300" role="img" aria-labelledby="session-mix-t" style="color:var(--text)">
-    <title id="session-mix-t">同一個 Session 中兩筆重設密碼請求交錯。A 寫入使用者 wiener，B 寫入使用者 carlos，B 寫入 token T2 並寄給 carlos，A 寫入 token T1 並寄給 wiener。最後 Session 的使用者是 carlos、token 是 T1，而 T1 在 wiener 的信箱裡</title>
-    <g font-size="13" font-weight="700" fill="currentColor" text-anchor="middle">
-      <text x="125" y="24">請求 A（username=wiener）</text>
-      <text x="355" y="24">請求 B（username=carlos）</text>
-      <text x="600" y="24">之後的 Session 內容</text>
+  <svg viewBox="0 0 720 340" role="img" aria-labelledby="session-mix-t" style="color:var(--text)">
+    <title id="session-mix-t">同一個 Session 中兩筆運費試算請求在時間軸上交錯。請求 A 選國內，先寫入目的地，查報價較久，最後才寫入運費 60；請求 B 選海外，目的地在 A 之後寫入，報價查得較快，運費 480 先寫入。最後 Session 的目的地是海外，運費卻是 A 的 60</title>
+    <defs>
+      <marker id="sm-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+        <path d="M0 0 L10 5 L0 10 z" fill="currentColor"/>
+      </marker>
+    </defs>
+    <use href="#icon-envelope" x="20" y="4" width="24" height="24"/>
+    <use href="#icon-envelope" x="20" y="84" width="24" height="24"/>
+    <g font-size="13" font-weight="700" fill="currentColor">
+      <text x="52" y="22">請求 A（國內）</text>
+      <text x="52" y="102">請求 B（海外）</text>
     </g>
     <g stroke="currentColor" stroke-width="1.2" fill="var(--surface)">
-      <rect x="20" y="40" width="210" height="34" rx="4"/>
-      <rect x="250" y="86" width="210" height="34" rx="4"/>
-      <rect x="250" y="132" width="210" height="34" rx="4"/>
-      <rect x="20" y="178" width="210" height="34" rx="4"/>
-      <rect x="490" y="40" width="220" height="34" rx="4"/>
-      <rect x="490" y="86" width="220" height="34" rx="4"/>
-      <rect x="490" y="132" width="220" height="34" rx="4"/>
-      <rect x="490" y="178" width="220" height="34" rx="4" fill="var(--accent-soft)"/>
+      <rect x="20" y="32" width="110" height="34" rx="6"/>
+      <rect x="130" y="32" width="320" height="34" rx="6" stroke-dasharray="5 4" fill="none"/>
+      <rect x="450" y="32" width="130" height="34" rx="6"/>
+      <rect x="190" y="112" width="110" height="34" rx="6"/>
+      <rect x="300" y="112" width="60" height="34" rx="6" stroke-dasharray="5 4" fill="none"/>
+      <rect x="360" y="112" width="130" height="34" rx="6"/>
     </g>
+    <use href="#icon-external-service" x="140" y="37" width="24" height="24"/>
+    <use href="#icon-external-service" x="304" y="117" width="24" height="24"/>
+    <use href="#icon-invoice" x="456" y="37" width="24" height="24"/>
+    <use href="#icon-invoice" x="366" y="117" width="24" height="24"/>
     <g font-size="12" fill="currentColor" text-anchor="middle">
-      <text x="125" y="62">寫入 reset_user = wiener</text>
-      <text x="355" y="108">寫入 reset_user = carlos</text>
-      <text x="355" y="154">寫入 token = T2，寄給 carlos</text>
-      <text x="125" y="200">寫入 token = T1，寄給 wiener</text>
+      <text x="75" y="54">ship_to = 國內</text>
+      <text x="310" y="54">向報價服務查詢（較慢）</text>
+      <text x="530" y="54">ship_fee = 60</text>
+      <text x="245" y="134">ship_to = 海外</text>
+      <text x="344" y="134" opacity=".75">查詢</text>
+      <text x="441" y="134">ship_fee = 480</text>
     </g>
-    <g font-size="12" fill="currentColor" text-anchor="middle">
-      <text x="600" y="62" style="font-family:var(--font-mono)">user=wiener</text>
-      <text x="600" y="108" style="font-family:var(--font-mono)">user=carlos</text>
-      <text x="600" y="154" style="font-family:var(--font-mono)">user=carlos token=T2</text>
-      <text x="600" y="200" style="font-family:var(--font-mono)">user=carlos token=T1</text>
+    <path d="M20 176 H700" stroke="currentColor" stroke-width="1.4" marker-end="url(#sm-arrow)"/>
+    <text x="700" y="196" font-size="11" text-anchor="end" fill="currentColor" opacity=".75">時間</text>
+    <g stroke="currentColor" stroke-width="1.2" fill="var(--surface)">
+      <rect x="20" y="206" width="160" height="34" rx="6"/>
+      <rect x="190" y="206" width="160" height="34" rx="6"/>
+      <rect x="360" y="206" width="170" height="34" rx="6"/>
+      <rect x="540" y="206" width="170" height="34" rx="6" fill="var(--accent-soft)" stroke-dasharray="6 3" stroke-width="1.6"/>
     </g>
-    <rect x="20" y="232" width="690" height="50" rx="5" fill="none" stroke="currentColor" stroke-width="1.2" stroke-dasharray="5 4"/>
+    <use href="#icon-warning" x="546" y="211" width="24" height="24"/>
+    <g font-size="12" fill="currentColor" text-anchor="middle" style="font-family:var(--font-mono)">
+      <text x="100" y="228">to=國內</text>
+      <text x="270" y="228">to=海外</text>
+      <text x="445" y="228">to=海外 fee=480</text>
+      <text x="637" y="228">to=海外 fee=60</text>
+    </g>
+    <use href="#icon-session" x="20" y="248" width="26" height="26"/>
+    <text x="52" y="266" font-size="11" fill="currentColor" opacity=".75">Session 的內容隨時間的變化</text>
+    <rect x="20" y="284" width="690" height="46" rx="8" fill="none" stroke="currentColor" stroke-width="1.2" stroke-dasharray="5 4"/>
+    <use href="#icon-cart" x="30" y="293" width="28" height="28"/>
     <g font-size="12" fill="currentColor">
-      <text x="34" y="253">wiener 的信箱收到 T1；Session 裡，T1 配的卻是 carlos。</text>
-      <text x="34" y="272">wiener 用 T1 的連結回到這個 Session，就能替 carlos 設定新密碼。</text>
+      <text x="68" y="302">結帳頁讀到的是海外的收貨地址，搭配國內的運費 60 元。</text>
+      <text x="68" y="319">每一步各自正確，兩個欄位卻來自不同請求。</text>
     </g>
   </svg>
-  <figcaption><span class="fig-num">圖 6.2.6-1</span> 兩筆重設請求在同一個 Session 裡交錯，Session 最後的使用者來自 B、token 來自 A，原本應該成對的兩個欄位被拆開</figcaption>
+  <figcaption><span class="fig-num">圖 6.2.6-1</span> 兩筆試算請求在同一個 Session 上交錯：目的地以 B 為準，A 先寫入目的地，報價較慢，最後才寫入運費，原本成對的兩個欄位被拆開</figcaption>
 </figure>
 
-<p>每一步各自正確，最後 Session 裡的兩個欄位卻來自不同的請求。結果是 wiener 拿到一個能替 carlos 重設密碼的連結。只有在交錯剛好是這個順序時才會發生，所以需要像上一小節那樣平行送出多組請求來探測。</p>
-<p>和郵件有關的操作特別值得檢查。很多網站把寄信交給背景工作，回應先送回去，信稍後才寄出，處理時間拉長，race window 也跟著變寬。</p>
+<p>只有在交錯剛好是這個順序時，才會留下錯配的結果：A 先開始、卻因為報價較慢而最後寫入。所以要像「先依序，再平行」那樣，平行送出多組請求來探測，並在結帳頁確認實際讀到的兩個值。最後攻擊者以 60 元付款，貨品寄往海外。</p>
+<p>處理過程中要呼叫外部服務、等待佇列或背景工作的操作，間隔本來就長，race window 也跟著變寬，特別值得檢查。</p>
 
 <h2 id="hidden-states"><span class="num">6.2.7</span> 請求內部的暫時狀態</h2>
 <p>一筆請求在伺服器裡可能經過好幾個中間狀態，只是它們存在的時間很短，平常觀察不到。<a href="../../identity/authentication/index.html#mfa">Authentication 的「第二個因素」</a>談過，第一步通過後 Session 應該標成「還差第二因素」。如果處理程式先把 Session 設成已登入，下一行才補上「還需要第二因素」的標記，這兩行之間就有一段時間 Session 是完整登入的狀態。和登入請求平行送出一筆讀取帳號頁的請求，就可能落在這段時間裡。</p>
@@ -286,98 +331,111 @@ pay_out(amount)</code></pre>
 <h3>以時間產生的 token</h3>
 <p>有些 token 只依據高解析度的時間戳記產生，沒有其他隨機來源。兩筆請求若在同一刻被處理，會拿到相同的 token。平行送出一筆替自己帳號、一筆替別人帳號的重設請求，自己信箱收到的 token 就可能和別人的一樣。這是 token 產生方式的問題，平行請求只是讓它被利用的手段；修補是改用密碼學安全的隨機數產生 token。</p>
 
-<h2 id="failed-defences"><span class="num">6.2.8</span> 縮短時間差不算修補</h2>
-<table>
-  <thead><tr><th>做法</th><th>為什麼失效</th></tr></thead>
-  <tbody>
-    <tr><td>把程式寫得更快，讓檢查和寫入靠得更近</td><td>Race window 變窄，但仍存在。single-packet attack 讓請求在同一刻湊齊，窄窗口照樣碰得到。</td></tr>
-    <tr><td>在前端把按鈕停用，防止重複點擊</td><td>請求可以不經過頁面直接送出，前端的限制管不到。</td></tr>
-    <tr><td>在處理程式裡加一段隨機延遲</td><td>只改變交錯發生的機率，沒有阻止交錯；多送幾輪就會碰到。</td></tr>
-    <tr><td>把程式包進一個交易（transaction），其他不變</td><td>交易的隔離等級不夠時，兩邊的讀取仍然互不等待，見下一小節。</td></tr>
-    <tr><td>只靠以 Session 為單位的鎖</td><td>只讓同一個 Session 的請求排隊；不同 Session 的請求作用在同一個帳戶或商品上時，鎖管不到。</td></tr>
-  </tbody>
-</table>
-
-<h2 id="fix"><span class="num">6.2.9</span> 讓檢查與寫入不可分割</h2>
+<h2 id="fix"><span class="num">6.2.8</span> 防禦手法</h2>
+<h3 id="fix-effective">有效的防禦</h3>
 <p>修補的目標是讓「檢查狀態」和「依結果寫入」成為一個<strong>原子操作</strong>（atomic operation）：在其他請求看來，它要嘛整個還沒發生，要嘛整個已經完成，中間沒有可以插進來的時刻。這件事交給資料庫做，因為共享狀態本來就在資料庫裡，資料庫也有現成的機制。</p>
 
-<h3>把條件寫進更新語句</h3>
+<h4>把條件寫進更新語句</h4>
 <p>最直接的做法是把檢查放進同一條更新語句的條件裡，讓資料庫一次完成：</p>
-<pre data-lang="sql"><code>-- 餘額足夠才扣款；檢查與扣款是同一條語句
-UPDATE accounts
-SET balance = balance - 80
-WHERE id = 7 AND balance &gt;= 80;
--- 受影響的列數為 0：餘額不足，拒絕這筆提領</code></pre>
-<p>資料庫更新一列時會先鎖住它。第二筆 <code>UPDATE</code> 要等第一筆所屬的交易結束，才能看到更新後的餘額 20，這時條件不成立，受影響的列數是 0。應用程式依受影響的列數決定是否付款，就不會再有兩次 80 元的提領。</p>
+<pre data-lang="sql"><code><span class="tok-comment">-- 餘額足夠才扣款；檢查與扣款是同一條語句</span>
+<span class="tok-keyword">UPDATE</span> accounts
+<span class="tok-keyword">SET</span> balance = balance - <span class="tok-number">80</span>
+<span class="tok-keyword">WHERE</span> id = <span class="tok-number">7</span> <span class="tok-keyword">AND</span> balance &gt;= <span class="tok-number">80</span>;
+<span class="tok-comment">-- 受影響的列數為 0：餘額不足，拒絕這筆提領</span></code></pre>
+<p>資料庫更新一列時會先鎖住它。在 PostgreSQL 預設的 Read Committed 下，第二筆 <code>UPDATE</code> 要等第一筆所屬的交易結束；第一筆提交後，它對更新後的餘額 20 重新判斷 <code>WHERE</code> 條件，條件不成立，受影響的列數是 0。應用程式依受影響的列數決定是否付款，就不會再有兩次 80 元的提領。</p>
 
-<h3>唯一性約束</h3>
+<h4>唯一性約束</h4>
 <p>「同一個購物車同一張優惠碼只能出現一次」可以直接寫成資料表的規則：</p>
-<pre data-lang="sql"><code>ALTER TABLE cart_coupons
-  ADD CONSTRAINT one_use_per_cart UNIQUE (cart_id, code);</code></pre>
+<pre data-lang="sql"><code><span class="tok-keyword">ALTER</span> <span class="tok-keyword">TABLE</span> cart_coupons
+  <span class="tok-keyword">ADD</span> <span class="tok-keyword">CONSTRAINT</span> one_use_per_cart <span class="tok-keyword">UNIQUE</span> (cart_id, code);</code></pre>
 <p>套用優惠碼時先寫入使用紀錄，寫入成功才加折扣，兩件事放在同一個交易裡：</p>
-<pre data-lang="python"><code>def apply_coupon(cart_id, code):
-    try:
-        with db.transaction():
-            # 同一購物車、同一優惠碼只能有一列；第二筆會在這裡失敗
-            db.execute("INSERT INTO cart_coupons (cart_id, code) VALUES (%s, %s)",
+<pre data-lang="python"><code><span class="tok-keyword">def</span> <span class="tok-func">apply_coupon</span>(cart_id, code):
+    <span class="tok-keyword">try</span>:
+        <span class="tok-keyword">with</span> db.<span class="tok-func">transaction</span>():
+            <span class="tok-comment"># 同一購物車、同一優惠碼只能有一列；第二筆會在這裡失敗</span>
+            db.<span class="tok-func">execute</span>(<span class="tok-string">"INSERT INTO cart_coupons (cart_id, code) VALUES (%s, %s)"</span>,
                        (cart_id, code))
-            db.execute("UPDATE carts SET discount = discount + %s WHERE id = %s",
-                       (lookup_discount(code), cart_id))
-    except UniqueViolation:
-        return "這張優惠碼已經用過"
-    return "已套用"</code></pre>
-<p>兩筆請求同時寫入同一組 <code>(cart_id, code)</code> 時，資料庫只讓其中一筆成功，另一筆會等前一筆的交易結束，然後收到違反唯一性的錯誤，它的交易整個撤銷，折扣不會加上去。唯一性約束也適合當作縱深防禦：即使應用程式其他地方的檢查寫錯了，資料庫仍然不會存進第二份。</p>
+            db.<span class="tok-func">execute</span>(<span class="tok-string">"UPDATE carts SET discount = discount + %s WHERE id = %s"</span>,
+                       (<span class="tok-func">lookup_discount</span>(code), cart_id))
+    <span class="tok-keyword">except</span> UniqueViolation:
+        <span class="tok-keyword">return</span> <span class="tok-string">"這張優惠碼已經用過"</span>
+    <span class="tok-keyword">return</span> <span class="tok-string">"已套用"</span></code></pre>
+<p>兩筆請求同時寫入同一組 <code>(cart_id, code)</code> 時，後到的那筆會等前一筆的交易結束。前一筆提交了，後到的這筆收到違反唯一性的錯誤；前一筆撤銷了，這筆就能成功寫入。收到錯誤時，交易必須整筆撤銷，折扣與使用紀錄才會一起不生效。上面的 <code>db.transaction()</code> 在例外離開 <code>with</code> 區塊時撤銷整筆交易。</p>
+<p>MySQL InnoDB 的重複鍵錯誤本身通常只撤銷出錯的那條語句，程式若攔下錯誤後照樣提交，同一交易裡先前已執行的語句會留下來。唯一性約束也適合當作縱深防禦：即使應用程式其他地方的檢查寫錯了，資料庫仍然不會存進第二份。</p>
 
-<h3>交易與隔離等級</h3>
+<h4>交易與隔離等級</h4>
 <p><strong>交易</strong>（transaction）把幾個資料庫操作綁成一組，要嘛全部生效，要嘛全部撤銷。交易同時執行時彼此能看到多少，由<strong>隔離等級</strong>（isolation level）決定。常見的預設值並不會讓一般的讀取互相等待：PostgreSQL 預設是 Read Committed，MySQL 的 InnoDB 預設是 Repeatable Read，在這兩種設定下，兩個交易各自執行一般的 <code>SELECT</code>，都能讀到「還沒用過」，交錯照樣發生。所以只把開頭那段先查後寫的程式包進交易，問題還在。</p>
-<p>要讓第二筆請求等待，可以在讀取時明確上鎖。<code>SELECT ... FOR UPDATE</code> 會鎖住讀到的列，其他交易要讀取並鎖定或修改同一列時，必須等這個交易提交（commit）或撤銷。以優惠碼為例，要檢查的是「使用紀錄還不存在」，沒有列可以鎖；這時鎖住購物車那一列，讓同一個購物車的操作排隊：</p>
+<p>要讓第二筆請求等待，可以在讀取時明確上鎖。<code>SELECT ... FOR UPDATE</code> 會鎖住讀到的列，其他交易要讀取並鎖定或修改同一列時，必須等這個交易提交（commit）或撤銷。以優惠碼為例，要檢查的是「使用紀錄還不存在」，還沒有現存的紀錄列可以鎖；這時鎖住購物車那一列，讓同一個購物車的操作排隊。下圖以 PostgreSQL 的 Read Committed 為例：</p>
 
 <figure id="row-lock">
-  <svg viewBox="0 0 720 300" role="img" aria-labelledby="row-lock-t" style="color:var(--text)">
+  <svg viewBox="0 0 720 306" role="img" aria-labelledby="row-lock-t" style="color:var(--text)">
     <title id="row-lock-t">加上列鎖後的時間軸。A 鎖住購物車那一列並查無使用紀錄；B 要鎖同一列，開始等待；A 套用折扣、寫入紀錄並提交，釋放鎖；B 取得鎖，查到使用紀錄，拒絕</title>
     <defs>
       <marker id="rl-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
         <path d="M0 0 L10 5 L0 10 z" fill="currentColor"/>
       </marker>
     </defs>
+    <use href="#icon-envelope" x="186" y="6" width="24" height="24"/>
+    <use href="#icon-envelope" x="506" y="6" width="24" height="24"/>
     <g font-size="13" font-weight="700" fill="currentColor" text-anchor="middle">
-      <text x="240" y="24">請求 A</text>
-      <text x="560" y="24">請求 B</text>
+      <text x="250" y="24">請求 A</text>
+      <text x="570" y="24">請求 B</text>
     </g>
     <text x="22" y="56" font-size="11" fill="currentColor" opacity=".75">時間</text>
-    <path d="M32 64 V270" stroke="currentColor" stroke-width="1.4" fill="none" marker-end="url(#rl-arrow)" opacity=".75"/>
+    <path d="M32 64 V274" stroke="currentColor" stroke-width="1.4" fill="none" marker-end="url(#rl-arrow)" opacity=".75"/>
     <g stroke="currentColor" stroke-width="1.2" fill="var(--surface)">
-      <rect x="90" y="40" width="300" height="34" rx="4" fill="var(--accent-soft)"/>
-      <rect x="90" y="128" width="300" height="34" rx="4"/>
-      <rect x="90" y="172" width="300" height="34" rx="4"/>
-      <rect x="410" y="84" width="300" height="122" rx="4" stroke-dasharray="5 4" fill="none"/>
-      <rect x="410" y="216" width="300" height="34" rx="4" fill="var(--accent-soft)"/>
+      <rect x="90" y="40" width="300" height="34" rx="6" fill="var(--accent-soft)"/>
+      <rect x="90" y="128" width="300" height="34" rx="6"/>
+      <rect x="90" y="172" width="300" height="34" rx="6"/>
+      <rect x="410" y="84" width="300" height="122" rx="6" stroke-dasharray="5 4" fill="none"/>
+      <rect x="410" y="216" width="300" height="34" rx="6" fill="var(--accent-soft)"/>
     </g>
+    <use href="#icon-lock" x="98" y="45" width="24" height="24"/>
+    <use href="#icon-coupon" x="98" y="133" width="24" height="24"/>
+    <use href="#icon-unlock" x="98" y="177" width="24" height="24"/>
+    <use href="#icon-timer" x="544" y="94" width="32" height="32"/>
+    <use href="#icon-lock" x="418" y="221" width="24" height="24"/>
+    <use href="#icon-cross" x="680" y="221" width="24" height="24"/>
     <g font-size="12" fill="currentColor" text-anchor="middle">
-      <text x="240" y="62">鎖住購物車那一列，查無使用紀錄</text>
-      <text x="240" y="150">加上折扣，寫入使用紀錄</text>
-      <text x="240" y="194">提交，釋放鎖</text>
-      <text x="560" y="140">要鎖同一列，等待 A 結束</text>
+      <text x="250" y="62">鎖住購物車那一列，查無使用紀錄</text>
+      <text x="250" y="150">加上折扣，寫入使用紀錄</text>
+      <text x="250" y="194">提交，釋放鎖</text>
+      <text x="560" y="152">要鎖同一列，等待 A 結束</text>
       <text x="560" y="238">取得鎖，查到使用紀錄，拒絕</text>
     </g>
     <path d="M392 194 C420 194 440 214 452 214" stroke="currentColor" stroke-width="1.4" fill="none" stroke-dasharray="4 3" marker-end="url(#rl-arrow)"/>
-    <text x="360" y="285" font-size="12" fill="currentColor" text-anchor="middle">B 的檢查被推到 A 的寫入之後，兩者不再交錯</text>
+    <text x="360" y="290" font-size="12" fill="currentColor" text-anchor="middle">B 的檢查被推到 A 的寫入之後，兩者不再交錯</text>
   </svg>
-  <figcaption><span class="fig-num">圖 6.2.9-1</span> 加上列鎖之後，第二筆請求要等第一筆的交易提交，才能做自己的檢查；檢查與寫入之間不再有空隙</figcaption>
+  <figcaption><span class="fig-num">圖 6.2.8-1</span> 在 PostgreSQL 的 Read Committed 下加上列鎖之後，第二筆請求要等第一筆的交易提交，才能做自己的檢查；檢查與寫入之間不再有空隙</figcaption>
 </figure>
 
-<p>另一種做法是把隔離等級提高到 Serializable：資料庫保證結果等同於把交易一個接一個執行，偵測到無法這樣排列的交錯時，會讓其中一個交易失敗。應用程式要準備好處理這種失敗，通常是重試或回報錯誤。哪一種做法合適，取決於資料庫產品與功能的負載；共同點是讓資料庫負責排序，不靠程式碼的執行速度。</p>
+<p>B 取得鎖之後，下一條普通 <code>SELECT</code> 在 Read Committed 下會讀到 A 已提交的使用紀錄。MySQL InnoDB 預設的 Repeatable Read 不同：交易裡第一次普通讀取就建立快照，之後的普通 <code>SELECT</code> 都讀這份快照。如果 B 在上鎖之前已經讀過資料，就算等到了鎖，仍會讀到舊快照裡「沒有使用紀錄」。要讓這個做法在 InnoDB 上有效，鎖購物車列必須是交易裡的第一個讀取，或者查使用紀錄時也改用 <code>FOR UPDATE</code>、<code>FOR SHARE</code> 這類讀取最新版本的鎖定讀取。</p>
+<p>這個做法還要求每一條會檢查或改寫這個購物車優惠碼的程式路徑都先鎖同一列；只要有一條路徑沒鎖，它就不會排隊。前面的唯一性約束仍保留，當作最後一道防線。</p>
 
-<h3>Session 裡的狀態</h3>
-<p>重設密碼的例子錯在使用者和 token 分兩次寫進 Session，又和資料庫、郵件各走各的路。修補方式：</p>
+<p>另一種做法是把隔離等級提高到 Serializable：資料庫保證結果等同於把交易一個接一個執行，偵測到無法這樣排列的交錯時，會讓其中一個交易失敗。應用程式要準備好處理這種失敗，通常是重試或回報錯誤。</p>
+
+<h4>Session 裡的狀態</h4>
+<p>運費試算的例子錯在目的地與運費分兩次寫進 Session，中間還夾著一段外部查詢。修補方式：</p>
 <ul>
-  <li>重設 token 存在資料庫，和使用者那一列綁在一起，一次寫入；寄信時從同一筆紀錄取出收件者與 token，不從 Session 和請求分別湊。</li>
-  <li>不得不放在 Session 的相關欄位，一次一起更新。有些框架或 ORM（Object-Relational Mapping，把資料表對應成程式物件的函式庫）會把多次欄位修改分開寫出，要確認它們是一起生效的。</li>
-  <li>以 Session 為單位的鎖能讓同一個 Session 的請求排隊，保護只屬於這個 Session 的狀態。它不能用來保護資料庫裡的共享資料：餘額、庫存、優惠碼的使用次數，要用資料庫本身的原子操作保護。</li>
+  <li>不把推導出來的值存下來，也不在流程中途重讀會變動的目的地。結帳時只讀一次 <code>ship_to</code>，形成訂單快照，之後用同一份快照向報價服務取得運費（快取鍵也要包含目的地與計價條件）、計價並建單。若允許途中變更目的地，就比對版本，不符則拒絕或重新報價；重新報價也必須針對同一份目的地，否則仍可能配出海外目的地加國內運費。</li>
+  <li>不得不放在 Session 的相關欄位，一次一起更新，例如先在區域變數算出目的地與運費，再用一次寫入同時存入。有些框架或 ORM（Object-Relational Mapping，把資料表對應成程式物件的函式庫）會把多次欄位修改分開寫出，要確認它們是一起生效的，並且是原子保存。</li>
+  <li>以 Session 為單位的鎖能讓同一個 Session 的請求排隊，保護只屬於這個 Session 的狀態，而且只約束遵守同一把鎖的路徑。資料庫裡的共享資料，例如餘額、庫存、優惠碼的使用次數，要用資料庫本身的原子操作保護。</li>
 </ul>
 <p>部分構造的問題也是同樣的思路：物件要一次建立完整，或在完成之前不讓其他請求看到它；比對金鑰或 token 時，空值與未設定一律視為不相符。</p>
 
-<h2 id="summary"><span class="num">6.2.10</span> 小結</h2>
+<h3 id="fix-ineffective">無效的防禦</h3>
+<table>
+  <thead><tr><th>做法</th><th>為什麼失效</th></tr></thead>
+  <tbody>
+    <tr><td>把程式寫得更快，讓檢查和寫入靠得更近</td><td>Race window 變窄，但仍存在。single-packet attack 讓請求在同一刻湊齊，窄窗口照樣碰得到。</td></tr>
+    <tr><td>在前端把按鈕停用，防止重複點擊</td><td>請求可以不經過頁面直接送出，前端的限制管不到。</td></tr>
+    <tr><td>在處理程式裡加一段隨機延遲</td><td>只改變交錯發生的機率，沒有阻止交錯；多送幾輪就會碰到。</td></tr>
+    <tr><td>把程式包進一個交易（transaction），其他不變</td><td>交易的隔離等級不夠時，兩邊的讀取仍然互不等待，見前面的「交易與隔離等級」。</td></tr>
+    <tr><td>只靠以 Session 為單位的鎖</td><td>只讓同一個 Session 的請求排隊；不同 Session 的請求作用在同一個帳戶或商品上時，鎖管不到。</td></tr>
+  </tbody>
+</table>
+
+<h2 id="summary"><span class="num">6.2.9</span> 小結</h2>
 <ul>
   <li>競態發生在多筆請求讀寫同一份共享狀態、而檢查與寫入是兩個分開的動作時；從檢查到寫入的那段時間就是 race window。</li>
   <li>Limit overrun 讓優惠碼、禮物卡、餘額、嘗試次數超過限制；判斷影響要看最後的業務狀態，不看回應數量。</li>
@@ -390,7 +448,7 @@ WHERE id = 7 AND balance &gt;= 80;
   <li><a href="https://portswigger.net/web-security/race-conditions/lab-race-conditions-limit-overrun">Limit overrun race conditions</a>：比較依序與平行送出同一筆套用優惠碼的請求，並從購物車總額判斷結果。</li>
   <li><a href="https://portswigger.net/web-security/race-conditions/lab-race-conditions-bypassing-rate-limits">Bypassing rate limits via race conditions</a>：登入失敗次數的計數在平行請求下失效。</li>
   <li><a href="https://portswigger.net/web-security/race-conditions/lab-race-conditions-multi-endpoint">Multi-endpoint race conditions</a>：讓兩個不同端點的處理時點重疊。</li>
-  <li><a href="https://portswigger.net/web-security/race-conditions/lab-race-conditions-single-endpoint">Single-endpoint race conditions</a>：同一端點帶不同的值，觀察 Session 中成對的欄位被拆開。</li>
+  <li><a href="https://portswigger.net/web-security/race-conditions/lab-race-conditions-single-endpoint">Single-endpoint race conditions</a>：同一端點帶不同的值，觀察待確認的電子郵件地址與確認信內容之間的競態。</li>
   <li><a href="https://portswigger.net/web-security/race-conditions/lab-race-conditions-partial-construction">Partial construction race conditions</a>：在物件尚未建立完整的時間裡通過檢查。</li>
   <li><a href="https://portswigger.net/web-security/race-conditions/lab-race-conditions-exploiting-time-sensitive-vulnerabilities">Exploiting time-sensitive vulnerabilities</a>：辨認只依時間產生的 token。</li>
 </ul>
@@ -400,7 +458,7 @@ WHERE id = 7 AND balance &gt;= 80;
 <nav class="pager" aria-label="上下節"><a class="prev" href="../../logic-timing/business-logic/index.html"><small>← prev</small><span class="num">6.1</span> Business Logic Vulnerabilities</a><a class="next" href="../../server-actions/ssrf/index.html"><small>next →</small><span class="num">7.1</span> Server-Side Request Forgery</a></nav>
 </main>
 </div>
-<footer class="sm-status"><span class="sm-s-main">26 sections</span><span class="sm-s-list"><span class="sm-s-planned">規劃中 12</span> <span class="sm-s-draft">草稿 3</span> <span class="sm-s-ready">已完成 11</span></span><span class="sm-s-end">系統地圖</span></footer>
-<script src="../../assets/theme/theme.js?v=d288e31038"></script>
+<footer class="sm-status"><span class="sm-s-main">26 sections</span><span class="sm-s-list"><span class="sm-s-planned">規劃中 12</span> <span class="sm-s-draft">草稿 0</span> <span class="sm-s-ready">已完成 14</span></span><span class="sm-s-end">系統地圖</span></footer>
+<script src="../../assets/theme/theme.js?v=c574a6a9e8"></script>
 </body>
 </html>

@@ -5,24 +5,24 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>4.2 Access Control｜Web 安全</title>
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Crect width='16' height='16' rx='3' fill='%23070c12'/%3E%3Crect x='1.5' y='1.5' width='13' height='13' rx='2.5' fill='none' stroke='%2336e0cc' stroke-width='1.4'/%3E%3Cpath d='M5 8 L11 5 M5 8 L11 11' stroke='%2336e0cc' stroke-width='1.2' fill='none'/%3E%3Ccircle cx='5' cy='8' r='1.6' fill='%2336e0cc'/%3E%3Ccircle cx='11' cy='5' r='1.6' fill='%2336e0cc'/%3E%3Ccircle cx='11' cy='11' r='1.6' fill='%2336e0cc'/%3E%3C/svg%3E">
-<link rel="stylesheet" href="../../assets/style.css?v=d288e31038">
-<link rel="stylesheet" href="../../assets/theme/theme.css?v=d288e31038">
+<link rel="stylesheet" href="../../assets/style.css?v=c574a6a9e8">
+<link rel="stylesheet" href="../../assets/theme/theme.css?v=c574a6a9e8">
 <script>(function(){var m=null;try{m=localStorage.getItem("web-security:motion")}catch(e){}if(m!=="on"&&m!=="off"){m="on";try{if(matchMedia("(prefers-reduced-motion: reduce)").matches)m="off"}catch(e){}}document.documentElement.setAttribute("data-motion",m)})()</script>
 </head>
 <body class="page-section sm-body">
 <a class="skip" href="#main">跳到正文</a>
 <header class="sm-top"><a class="sm-brand" href="../../index.html"><svg class="sm-logo" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><rect x="1" y="1" width="14" height="14" rx="3" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M5 8 L11 5 M5 8 L11 11" stroke="currentColor" stroke-width="1.3" fill="none"/><circle cx="5" cy="8" r="1.7" fill="currentColor"/><circle cx="11" cy="5" r="1.7" fill="currentColor"/><circle cx="11" cy="11" r="1.7" fill="currentColor"/></svg><span class="sm-brand-t">web-security</span></a><nav class="sm-path" aria-label="目前位置"><ol><li class="sm-p-root"><a href="../../index.html">web-security</a></li><li class="sm-p-ch split"><a href="../../identity/index.html">4<span class="sm-p-title">&nbsp;網站如何知道你是誰、允許你做什麼</span></a></li><li class=""><span aria-current="page">4.2</span></li></ol></nav><a class="sm-toplink" href="../../index.html#map">map</a><a class="sm-toplink" href="../../chapters/index.html">chapters</a><button type="button" class="sm-toplink sm-motion" aria-pressed="true" hidden>動畫：開</button></header>
 <div class="sm-shell">
-<nav class="sm-tree" aria-label="教材瀏覽器"><details class="sm-tree-wrap" open><summary class="sm-tree-sum">EXPLORER／教材目錄</summary><p class="sm-tree-h" aria-hidden="true">EXPLORER</p><details class="sm-partd" open><summary class="sm-part">第一部分：輸入如何穿過網站</summary><details class="sm-folder"><summary><a class="sm-chlink" href="../../web-http/index.html" title="第 1 章 Web 與 HTTP"><span class="num">1</span><span class="sm-fname">Web 與 HTTP</span></a></summary><div class="sm-files"><a class="sm-file" href="../../web-http/web-basics/index.html" title="1.1 Seeing the Web Through the Browser"><span class="num">1.1</span><span class="sm-fname">Seeing the Web Through the Browser</span><span class="sm-st sm-st-ready" aria-hidden="true"></span><span class="sm-sr">（已完成）</span></a><a class="sm-file" href="../../web-http/http-session/index.html" title="1.2 HTTP Requests and Sessions"><span class="num">1.2</span><span class="sm-fname">HTTP Requests and Sessions</span><span class="sm-st sm-st-ready" aria-hidden="true"></span><span class="sm-sr">（已完成）</span></a></div></details><details class="sm-folder"><summary><a class="sm-chlink" href="../../server-input/index.html" title="第 2 章 伺服器如何處理使用者輸入"><span class="num">2</span><span class="sm-fname">伺服器如何處理使用者輸入</span></a></summary><div class="sm-files"><a class="sm-file" href="../../server-input/path-traversal/index.html" title="2.1 Path Traversal"><span class="num">2.1</span><span class="sm-fname">Path Traversal</span><span class="sm-st sm-st-ready" aria-hidden="true"></span><span class="sm-sr">（已完成）</span></a><a class="sm-file" href="../../server-input/file-upload/index.html" title="2.2 File Upload Vulnerabilities"><span class="num">2.2</span><span class="sm-fname">File Upload Vulnerabilities</span><span class="sm-st sm-st-ready" aria-hidden="true"></span><span class="sm-sr">（已完成）</span></a><a class="sm-file" href="../../server-input/sql-injection/index.html" title="2.3 SQL Injection Basics"><span class="num">2.3</span><span class="sm-fname">SQL Injection Basics</span><span class="sm-st sm-st-ready" aria-hidden="true"></span><span class="sm-sr">（已完成）</span></a><a class="sm-file" href="../../server-input/sql-injection-observation/index.html" title="2.4 UNION and Blind SQL Injection"><span class="num">2.4</span><span class="sm-fname">UNION and Blind SQL Injection</span><span class="sm-st sm-st-ready" aria-hidden="true"></span><span class="sm-sr">（已完成）</span></a><a class="sm-file" href="../../server-input/command-injection/index.html" title="2.5 OS Command Injection"><span class="num">2.5</span><span class="sm-fname">OS Command Injection</span><span class="sm-st sm-st-ready" aria-hidden="true"></span><span class="sm-sr">（已完成）</span></a></div></details><details class="sm-folder"><summary><a class="sm-chlink" href="../../browser-output/index.html" title="第 3 章 伺服器的輸出如何在瀏覽器中變成程式"><span class="num">3</span><span class="sm-fname">伺服器的輸出如何在瀏覽器中變成程式</span></a></summary><div class="sm-files"><a class="sm-file" href="../../browser-output/xss-basics/index.html" title="3.1 Cross-Site Scripting Basics"><span class="num">3.1</span><span class="sm-fname">Cross-Site Scripting Basics</span><span class="sm-st sm-st-ready" aria-hidden="true"></span><span class="sm-sr">（已完成）</span></a><a class="sm-file" href="../../browser-output/xss-context-dom/index.html" title="3.2 Output Contexts and DOM-Based XSS"><span class="num">3.2</span><span class="sm-fname">Output Contexts and DOM-Based XSS</span><span class="sm-st sm-st-ready" aria-hidden="true"></span><span class="sm-sr">（已完成）</span></a></div></details><details class="sm-folder" open><summary><a class="sm-chlink" href="../../identity/index.html" title="第 4 章 網站如何知道你是誰、允許你做什麼"><span class="num">4</span><span class="sm-fname">網站如何知道你是誰、允許你做什麼</span></a></summary><div class="sm-files"><a class="sm-file" href="../../identity/authentication/index.html" title="4.1 Authentication"><span class="num">4.1</span><span class="sm-fname">Authentication</span><span class="sm-st sm-st-ready" aria-hidden="true"></span><span class="sm-sr">（已完成）</span></a><a class="sm-file" href="../../identity/access-control/index.html" aria-current="page" title="4.2 Access Control"><span class="num">4.2</span><span class="sm-fname">Access Control</span><span class="sm-st sm-st-ready" aria-hidden="true"></span><span class="sm-sr">（已完成）</span></a></div></details><details class="sm-folder"><summary><a class="sm-chlink" href="../../cross-site/index.html" title="第 5 章 網站之間如何利用瀏覽器的信任"><span class="num">5</span><span class="sm-fname">網站之間如何利用瀏覽器的信任</span></a></summary><div class="sm-files"><a class="sm-file" href="../../cross-site/cross-site-trust/index.html" title="5.1 CSRF, CORS, and Cross-Site Trust"><span class="num">5.1</span><span class="sm-fname">CSRF, CORS, and Cross-Site Trust</span><span class="sm-st sm-st-draft" aria-hidden="true"></span><span class="sm-sr">（草稿）</span></a></div></details><details class="sm-folder"><summary><a class="sm-chlink" href="../../logic-timing/index.html" title="第 6 章 問題藏在流程與時間裡"><span class="num">6</span><span class="sm-fname">問題藏在流程與時間裡</span></a></summary><div class="sm-files"><a class="sm-file" href="../../logic-timing/business-logic/index.html" title="6.1 Business Logic Vulnerabilities"><span class="num">6.1</span><span class="sm-fname">Business Logic Vulnerabilities</span><span class="sm-st sm-st-draft" aria-hidden="true"></span><span class="sm-sr">（草稿）</span></a><a class="sm-file" href="../../logic-timing/race-conditions/index.html" title="6.2 Race Conditions"><span class="num">6.2</span><span class="sm-fname">Race Conditions</span><span class="sm-st sm-st-draft" aria-hidden="true"></span><span class="sm-sr">（草稿）</span></a></div></details></details><details class="sm-partd" open><summary class="sm-part">第二部分：多元件系統的信任邊界</summary><details class="sm-folder"><summary><a class="sm-chlink" href="../../server-actions/index.html" title="第 7 章 伺服器把資料交給其他元件之後"><span class="num">7</span><span class="sm-fname">伺服器把資料交給其他元件之後</span></a></summary><div class="sm-files"><a class="sm-file is-planned" href="../../server-actions/ssrf/index.html" title="7.1 Server-Side Request Forgery"><span class="num">7.1</span><span class="sm-fname">Server-Side Request Forgery</span><span class="sm-st sm-st-planned" aria-hidden="true"></span><span class="sm-sr">（規劃中）</span></a><a class="sm-file is-planned" href="../../server-actions/xxe/index.html" title="7.2 XML External Entity Injection"><span class="num">7.2</span><span class="sm-fname">XML External Entity Injection</span><span class="sm-st sm-st-planned" aria-hidden="true"></span><span class="sm-sr">（規劃中）</span></a><a class="sm-file is-planned" href="../../server-actions/ssti/index.html" title="7.3 Server-Side Template Injection"><span class="num">7.3</span><span class="sm-fname">Server-Side Template Injection</span><span class="sm-st sm-st-planned" aria-hidden="true"></span><span class="sm-sr">（規劃中）</span></a><a class="sm-file is-planned" href="../../server-actions/deserialization/index.html" title="7.4 Insecure Deserialization"><span class="num">7.4</span><span class="sm-fname">Insecure Deserialization</span><span class="sm-st sm-st-planned" aria-hidden="true"></span><span class="sm-sr">（規劃中）</span></a><a class="sm-file is-planned" href="../../server-actions/prototype-pollution/index.html" title="7.5 Prototype Pollution"><span class="num">7.5</span><span class="sm-fname">Prototype Pollution</span><span class="sm-st sm-st-planned" aria-hidden="true"></span><span class="sm-sr">（規劃中）</span></a></div></details><details class="sm-folder"><summary><a class="sm-chlink" href="../../apis/index.html" title="第 8 章 網站變成 API 之後"><span class="num">8</span><span class="sm-fname">網站變成 API 之後</span></a></summary><div class="sm-files"><a class="sm-file is-planned" href="../../apis/api-testing/index.html" title="8.1 API Attack Surface"><span class="num">8.1</span><span class="sm-fname">API Attack Surface</span><span class="sm-st sm-st-planned" aria-hidden="true"></span><span class="sm-sr">（規劃中）</span></a><a class="sm-file is-planned" href="../../apis/graphql-websockets/index.html" title="8.2 GraphQL and WebSockets"><span class="num">8.2</span><span class="sm-fname">GraphQL and WebSockets</span><span class="sm-st sm-st-planned" aria-hidden="true"></span><span class="sm-sr">（規劃中）</span></a></div></details><details class="sm-folder"><summary><a class="sm-chlink" href="../../delegated-identity/index.html" title="第 9 章 身分跨越網站與元件之後"><span class="num">9</span><span class="sm-fname">身分跨越網站與元件之後</span></a></summary><div class="sm-files"><a class="sm-file is-planned" href="../../delegated-identity/jwt/index.html" title="9.1 JSON Web Tokens"><span class="num">9.1</span><span class="sm-fname">JSON Web Tokens</span><span class="sm-st sm-st-planned" aria-hidden="true"></span><span class="sm-sr">（規劃中）</span></a><a class="sm-file is-planned" href="../../delegated-identity/oauth/index.html" title="9.2 OAuth and Third-Party Login"><span class="num">9.2</span><span class="sm-fname">OAuth and Third-Party Login</span><span class="sm-st sm-st-planned" aria-hidden="true"></span><span class="sm-sr">（規劃中）</span></a></div></details><details class="sm-folder"><summary><a class="sm-chlink" href="../../proxy-cache/index.html" title="第 10 章 Proxy、Cache 與後端看到的不一樣"><span class="num">10</span><span class="sm-fname">Proxy、Cache 與後端看到的不一樣</span></a></summary><div class="sm-files"><a class="sm-file is-planned" href="../../proxy-cache/host-cache/index.html" title="10.1 Host Headers and Web Caches"><span class="num">10.1</span><span class="sm-fname">Host Headers and Web Caches</span><span class="sm-st sm-st-planned" aria-hidden="true"></span><span class="sm-sr">（規劃中）</span></a><a class="sm-file is-planned" href="../../proxy-cache/request-smuggling/index.html" title="10.2 HTTP Request Smuggling"><span class="num">10.2</span><span class="sm-fname">HTTP Request Smuggling</span><span class="sm-st sm-st-planned" aria-hidden="true"></span><span class="sm-sr">（規劃中）</span></a></div></details><details class="sm-folder"><summary><a class="sm-chlink" href="../../llm/index.html" title="第 11 章 把信任模型套到新元件：Web LLM"><span class="num">11</span><span class="sm-fname">把信任模型套到新元件：Web LLM</span></a></summary><div class="sm-files"><a class="sm-file is-planned" href="../../llm/llm-attacks/index.html" title="11.1 Web LLM Attacks"><span class="num">11.1</span><span class="sm-fname">Web LLM Attacks</span><span class="sm-st sm-st-planned" aria-hidden="true"></span><span class="sm-sr">（規劃中）</span></a></div></details></details></details></nav>
+<nav class="sm-tree" aria-label="教材瀏覽器"><details class="sm-tree-wrap" open><summary class="sm-tree-sum">EXPLORER／教材目錄</summary><p class="sm-tree-h" aria-hidden="true">EXPLORER</p><details class="sm-partd" open><summary class="sm-part">第一部分：輸入如何穿過網站</summary><details class="sm-folder"><summary><a class="sm-chlink" href="../../web-http/index.html" title="第 1 章 Web 與 HTTP"><span class="num">1</span><span class="sm-fname">Web 與 HTTP</span></a></summary><div class="sm-files"><a class="sm-file" href="../../web-http/web-basics/index.html" title="1.1 Seeing the Web Through the Browser"><span class="num">1.1</span><span class="sm-fname">Seeing the Web Through the Browser</span><span class="sm-st sm-st-ready" aria-hidden="true"></span><span class="sm-sr">（已完成）</span></a><a class="sm-file" href="../../web-http/http-session/index.html" title="1.2 HTTP Requests and Sessions"><span class="num">1.2</span><span class="sm-fname">HTTP Requests and Sessions</span><span class="sm-st sm-st-ready" aria-hidden="true"></span><span class="sm-sr">（已完成）</span></a></div></details><details class="sm-folder"><summary><a class="sm-chlink" href="../../server-input/index.html" title="第 2 章 伺服器如何處理使用者輸入"><span class="num">2</span><span class="sm-fname">伺服器如何處理使用者輸入</span></a></summary><div class="sm-files"><a class="sm-file" href="../../server-input/path-traversal/index.html" title="2.1 Path Traversal"><span class="num">2.1</span><span class="sm-fname">Path Traversal</span><span class="sm-st sm-st-ready" aria-hidden="true"></span><span class="sm-sr">（已完成）</span></a><a class="sm-file" href="../../server-input/file-upload/index.html" title="2.2 File Upload Vulnerabilities"><span class="num">2.2</span><span class="sm-fname">File Upload Vulnerabilities</span><span class="sm-st sm-st-ready" aria-hidden="true"></span><span class="sm-sr">（已完成）</span></a><a class="sm-file" href="../../server-input/sql-injection/index.html" title="2.3 SQL Injection Basics"><span class="num">2.3</span><span class="sm-fname">SQL Injection Basics</span><span class="sm-st sm-st-ready" aria-hidden="true"></span><span class="sm-sr">（已完成）</span></a><a class="sm-file" href="../../server-input/sql-injection-observation/index.html" title="2.4 UNION and Blind SQL Injection"><span class="num">2.4</span><span class="sm-fname">UNION and Blind SQL Injection</span><span class="sm-st sm-st-ready" aria-hidden="true"></span><span class="sm-sr">（已完成）</span></a><a class="sm-file" href="../../server-input/command-injection/index.html" title="2.5 OS Command Injection"><span class="num">2.5</span><span class="sm-fname">OS Command Injection</span><span class="sm-st sm-st-ready" aria-hidden="true"></span><span class="sm-sr">（已完成）</span></a></div></details><details class="sm-folder"><summary><a class="sm-chlink" href="../../browser-output/index.html" title="第 3 章 伺服器的輸出如何在瀏覽器中變成程式"><span class="num">3</span><span class="sm-fname">伺服器的輸出如何在瀏覽器中變成程式</span></a></summary><div class="sm-files"><a class="sm-file" href="../../browser-output/xss-basics/index.html" title="3.1 Cross-Site Scripting Basics"><span class="num">3.1</span><span class="sm-fname">Cross-Site Scripting Basics</span><span class="sm-st sm-st-ready" aria-hidden="true"></span><span class="sm-sr">（已完成）</span></a><a class="sm-file" href="../../browser-output/xss-context-dom/index.html" title="3.2 Output Contexts and DOM-Based XSS"><span class="num">3.2</span><span class="sm-fname">Output Contexts and DOM-Based XSS</span><span class="sm-st sm-st-ready" aria-hidden="true"></span><span class="sm-sr">（已完成）</span></a></div></details><details class="sm-folder" open><summary><a class="sm-chlink" href="../../identity/index.html" title="第 4 章 網站如何知道你是誰、允許你做什麼"><span class="num">4</span><span class="sm-fname">網站如何知道你是誰、允許你做什麼</span></a></summary><div class="sm-files"><a class="sm-file" href="../../identity/authentication/index.html" title="4.1 Authentication"><span class="num">4.1</span><span class="sm-fname">Authentication</span><span class="sm-st sm-st-ready" aria-hidden="true"></span><span class="sm-sr">（已完成）</span></a><a class="sm-file" href="../../identity/access-control/index.html" aria-current="page" title="4.2 Access Control"><span class="num">4.2</span><span class="sm-fname">Access Control</span><span class="sm-st sm-st-ready" aria-hidden="true"></span><span class="sm-sr">（已完成）</span></a></div></details><details class="sm-folder"><summary><a class="sm-chlink" href="../../cross-site/index.html" title="第 5 章 網站之間如何利用瀏覽器的信任"><span class="num">5</span><span class="sm-fname">網站之間如何利用瀏覽器的信任</span></a></summary><div class="sm-files"><a class="sm-file" href="../../cross-site/cross-site-trust/index.html" title="5.1 CSRF, CORS, and Cross-Site Trust"><span class="num">5.1</span><span class="sm-fname">CSRF, CORS, and Cross-Site Trust</span><span class="sm-st sm-st-ready" aria-hidden="true"></span><span class="sm-sr">（已完成）</span></a></div></details><details class="sm-folder"><summary><a class="sm-chlink" href="../../logic-timing/index.html" title="第 6 章 問題藏在流程與時間裡"><span class="num">6</span><span class="sm-fname">問題藏在流程與時間裡</span></a></summary><div class="sm-files"><a class="sm-file" href="../../logic-timing/business-logic/index.html" title="6.1 Business Logic Vulnerabilities"><span class="num">6.1</span><span class="sm-fname">Business Logic Vulnerabilities</span><span class="sm-st sm-st-ready" aria-hidden="true"></span><span class="sm-sr">（已完成）</span></a><a class="sm-file" href="../../logic-timing/race-conditions/index.html" title="6.2 Race Conditions"><span class="num">6.2</span><span class="sm-fname">Race Conditions</span><span class="sm-st sm-st-ready" aria-hidden="true"></span><span class="sm-sr">（已完成）</span></a></div></details></details><details class="sm-partd" open><summary class="sm-part">第二部分：多元件系統的信任邊界</summary><details class="sm-folder"><summary><a class="sm-chlink" href="../../server-actions/index.html" title="第 7 章 伺服器把資料交給其他元件之後"><span class="num">7</span><span class="sm-fname">伺服器把資料交給其他元件之後</span></a></summary><div class="sm-files"><a class="sm-file is-planned" href="../../server-actions/ssrf/index.html" title="7.1 Server-Side Request Forgery"><span class="num">7.1</span><span class="sm-fname">Server-Side Request Forgery</span><span class="sm-st sm-st-planned" aria-hidden="true"></span><span class="sm-sr">（規劃中）</span></a><a class="sm-file is-planned" href="../../server-actions/xxe/index.html" title="7.2 XML External Entity Injection"><span class="num">7.2</span><span class="sm-fname">XML External Entity Injection</span><span class="sm-st sm-st-planned" aria-hidden="true"></span><span class="sm-sr">（規劃中）</span></a><a class="sm-file is-planned" href="../../server-actions/ssti/index.html" title="7.3 Server-Side Template Injection"><span class="num">7.3</span><span class="sm-fname">Server-Side Template Injection</span><span class="sm-st sm-st-planned" aria-hidden="true"></span><span class="sm-sr">（規劃中）</span></a><a class="sm-file is-planned" href="../../server-actions/deserialization/index.html" title="7.4 Insecure Deserialization"><span class="num">7.4</span><span class="sm-fname">Insecure Deserialization</span><span class="sm-st sm-st-planned" aria-hidden="true"></span><span class="sm-sr">（規劃中）</span></a><a class="sm-file is-planned" href="../../server-actions/prototype-pollution/index.html" title="7.5 Prototype Pollution"><span class="num">7.5</span><span class="sm-fname">Prototype Pollution</span><span class="sm-st sm-st-planned" aria-hidden="true"></span><span class="sm-sr">（規劃中）</span></a></div></details><details class="sm-folder"><summary><a class="sm-chlink" href="../../apis/index.html" title="第 8 章 網站變成 API 之後"><span class="num">8</span><span class="sm-fname">網站變成 API 之後</span></a></summary><div class="sm-files"><a class="sm-file is-planned" href="../../apis/api-testing/index.html" title="8.1 API Attack Surface"><span class="num">8.1</span><span class="sm-fname">API Attack Surface</span><span class="sm-st sm-st-planned" aria-hidden="true"></span><span class="sm-sr">（規劃中）</span></a><a class="sm-file is-planned" href="../../apis/graphql-websockets/index.html" title="8.2 GraphQL and WebSockets"><span class="num">8.2</span><span class="sm-fname">GraphQL and WebSockets</span><span class="sm-st sm-st-planned" aria-hidden="true"></span><span class="sm-sr">（規劃中）</span></a></div></details><details class="sm-folder"><summary><a class="sm-chlink" href="../../delegated-identity/index.html" title="第 9 章 身分跨越網站與元件之後"><span class="num">9</span><span class="sm-fname">身分跨越網站與元件之後</span></a></summary><div class="sm-files"><a class="sm-file is-planned" href="../../delegated-identity/jwt/index.html" title="9.1 JSON Web Tokens"><span class="num">9.1</span><span class="sm-fname">JSON Web Tokens</span><span class="sm-st sm-st-planned" aria-hidden="true"></span><span class="sm-sr">（規劃中）</span></a><a class="sm-file is-planned" href="../../delegated-identity/oauth/index.html" title="9.2 OAuth and Third-Party Login"><span class="num">9.2</span><span class="sm-fname">OAuth and Third-Party Login</span><span class="sm-st sm-st-planned" aria-hidden="true"></span><span class="sm-sr">（規劃中）</span></a></div></details><details class="sm-folder"><summary><a class="sm-chlink" href="../../proxy-cache/index.html" title="第 10 章 Proxy、Cache 與後端看到的不一樣"><span class="num">10</span><span class="sm-fname">Proxy、Cache 與後端看到的不一樣</span></a></summary><div class="sm-files"><a class="sm-file is-planned" href="../../proxy-cache/host-cache/index.html" title="10.1 Host Headers and Web Caches"><span class="num">10.1</span><span class="sm-fname">Host Headers and Web Caches</span><span class="sm-st sm-st-planned" aria-hidden="true"></span><span class="sm-sr">（規劃中）</span></a><a class="sm-file is-planned" href="../../proxy-cache/request-smuggling/index.html" title="10.2 HTTP Request Smuggling"><span class="num">10.2</span><span class="sm-fname">HTTP Request Smuggling</span><span class="sm-st sm-st-planned" aria-hidden="true"></span><span class="sm-sr">（規劃中）</span></a></div></details><details class="sm-folder"><summary><a class="sm-chlink" href="../../llm/index.html" title="第 11 章 把信任模型套到新元件：Web LLM"><span class="num">11</span><span class="sm-fname">把信任模型套到新元件：Web LLM</span></a></summary><div class="sm-files"><a class="sm-file is-planned" href="../../llm/llm-attacks/index.html" title="11.1 Web LLM Attacks"><span class="num">11.1</span><span class="sm-fname">Web LLM Attacks</span><span class="sm-st sm-st-planned" aria-hidden="true"></span><span class="sm-sr">（規劃中）</span></a></div></details></details></details></nav>
 <header class="sm-head">
   <p class="sm-eyebrow">identity/access-control</p>
   <h1><span class="num">4.2</span> Access Control <span class="badge badge-ready">已完成</span></h1>
   <p class="question sm-q"><span aria-hidden="true">❯</span> 已經登入，為什麼還能看到別人的資料？</p>
 </header>
-<aside class="sm-aside" aria-label="本節輔助"><nav class="sm-outline" aria-label="本節內容"><p class="sm-ph">本節內容</p><ol><li><a href="#authn-authz" title="4.2.1 知道是誰之後"><span class="num">4.2.1</span>知道是誰之後</a></li><li><a href="#escalation" title="4.2.2 水平與垂直越權"><span class="num">4.2.2</span>水平與垂直越權</a></li><li><a href="#idor" title="4.2.3 IDOR 的各種識別值"><span class="num">4.2.3</span>IDOR 的各種識別值</a></li><li><a href="#hidden-functions" title="4.2.4 只藏起來的管理功能"><span class="num">4.2.4</span>只藏起來的管理功能</a></li><li><a href="#client-controlled-role" title="4.2.5 由使用者送來的角色"><span class="num">4.2.5</span>由使用者送來的角色</a></li><li><a href="#multi-step" title="4.2.6 多步驟流程"><span class="num">4.2.6</span>多步驟流程</a></li><li><a href="#request-context" title="4.2.7 依請求附帶資訊做的檢查"><span class="num">4.2.7</span>依請求附帶資訊做的檢查</a></li><li><a href="#testing" title="4.2.8 用兩個帳號比對"><span class="num">4.2.8</span>用兩個帳號比對</a></li><li><a href="#failed-defences" title="4.2.9 靠不住的防禦"><span class="num">4.2.9</span>靠不住的防禦</a></li><li><a href="#fix" title="4.2.10 怎麼修補"><span class="num">4.2.10</span>怎麼修補</a></li><li><a href="#summary" title="4.2.11 小結"><span class="num">4.2.11</span>小結</a></li></ol></nav><section class="sm-locator" aria-label="系統地圖定位"><p class="sm-ph">系統地圖</p><a class="sm-mini-link" href="../../index.html#map-identity" aria-label="在首頁的系統地圖上看第 4 章的位置"><svg class="sm-map sm-map-mini" viewBox="0 143 748 421" aria-hidden="true" focusable="false" preserveAspectRatio="xMidYMid meet" style="aspect-ratio:748/421"><line class="sm-edge" x1="200" y1="330" x2="290" y2="330"/><line class="sm-edge sm-dash" x1="440" y1="330" x2="530" y2="330"/><line class="sm-edge sm-threat-edge" x1="110" y1="100" x2="110" y2="255"/><line class="sm-edge sm-dash" x1="625" y1="100" x2="625" y2="150"/><line class="sm-edge" x1="625" y1="546" x2="625" y2="570"/><line class="sm-edge" x1="720" y1="325" x2="765" y2="325"/><line class="sm-edge" x1="765" y1="325" x2="765" y2="48"/><line class="sm-edge sm-dash" x1="765" y1="325" x2="765" y2="538"/><line class="sm-edge" x1="765" y1="48" x2="810" y2="48"/><line class="sm-edge" x1="765" y1="118" x2="810" y2="118"/><line class="sm-edge" x1="765" y1="188" x2="810" y2="188"/><line class="sm-edge sm-dash" x1="765" y1="328" x2="810" y2="328"/><line class="sm-edge sm-dash" x1="765" y1="398" x2="810" y2="398"/><line class="sm-edge sm-dash" x1="765" y1="468" x2="810" y2="468"/><line class="sm-edge sm-dash" x1="765" y1="538" x2="810" y2="538"/><g class="sm-n sm-threat off" data-ch="cross-site"><rect class="sm-box" x="20" y="20" width="180" height="80" rx="8"/><text class="sm-mini-t" x="110.0" y="62.0" text-anchor="middle" dominant-baseline="central" font-size="53">5</text></g><g class="sm-n sm-frame off" data-ch="web-http"><rect class="sm-box" x="20" y="255" width="180" height="150" rx="10"/><text class="sm-mini-t" x="50" y="285" text-anchor="middle" dominant-baseline="central" font-size="48">1</text></g><g class="sm-n sm-node off" data-ch="browser-output"><rect class="sm-box" x="36" y="322" width="148" height="64" rx="8"/><text class="sm-mini-t" x="110.0" y="356.0" text-anchor="middle" dominant-baseline="central" font-size="51">3</text></g><g class="sm-n sm-node sm-p2 off" data-ch="proxy-cache"><rect class="sm-box" x="290" y="240" width="150" height="180" rx="8"/><text class="sm-mini-t" x="365.0" y="332.0" text-anchor="middle" dominant-baseline="central" font-size="53">10</text></g><g class="sm-n sm-frame" aria-hidden="true"><rect class="sm-box" x="530" y="150" width="190" height="396" rx="10"/></g><g class="sm-n sm-node on" data-ch="identity"><rect class="sm-box" x="546" y="194" width="158" height="56" rx="8"/><text class="sm-mini-t" x="625.0" y="224.0" text-anchor="middle" dominant-baseline="central" font-size="45">4</text></g><g class="sm-n sm-node sm-p2 off" data-ch="apis"><rect class="sm-box" x="546" y="262" width="158" height="56" rx="8"/><text class="sm-mini-t" x="625.0" y="292.0" text-anchor="middle" dominant-baseline="central" font-size="45">8</text></g><g class="sm-n sm-node sm-p2 off" data-ch="llm"><rect class="sm-box" x="546" y="330" width="158" height="56" rx="8"/><text class="sm-mini-t" x="625.0" y="360.0" text-anchor="middle" dominant-baseline="central" font-size="45">11</text></g><g class="sm-n sm-node off" data-ch="logic-timing"><rect class="sm-box" x="546" y="398" width="158" height="56" rx="8"/><text class="sm-mini-t" x="625.0" y="428.0" text-anchor="middle" dominant-baseline="central" font-size="45">6</text></g><g class="sm-n sm-node sm-p2 off" data-ch="server-actions"><rect class="sm-box" x="546" y="466" width="158" height="56" rx="8"/><text class="sm-mini-t" x="625.0" y="496.0" text-anchor="middle" dominant-baseline="central" font-size="45">7</text></g><g class="sm-n sm-node sm-p2 off" data-ch="delegated-identity"><rect class="sm-box" x="530" y="20" width="190" height="80" rx="8"/><text class="sm-mini-t" x="625.0" y="62.0" text-anchor="middle" dominant-baseline="central" font-size="53">9</text></g><g class="sm-n sm-node off" data-ch="logic-timing"><rect class="sm-box" x="530" y="570" width="190" height="56" rx="8"/><text class="sm-mini-t" x="625.0" y="600.0" text-anchor="middle" dominant-baseline="central" font-size="45">6</text></g><g class="sm-n sm-node off" data-ch="server-input"><rect class="sm-box" x="810" y="20" width="170" height="56" rx="8"/><text class="sm-mini-t" x="895.0" y="50.0" text-anchor="middle" dominant-baseline="central" font-size="45">2</text></g><g class="sm-n sm-node off" data-ch="server-input"><rect class="sm-box" x="810" y="90" width="170" height="56" rx="8"/><text class="sm-mini-t" x="895.0" y="120.0" text-anchor="middle" dominant-baseline="central" font-size="45">2</text></g><g class="sm-n sm-node off" data-ch="server-input"><rect class="sm-box" x="810" y="160" width="170" height="56" rx="8"/><text class="sm-mini-t" x="895.0" y="190.0" text-anchor="middle" dominant-baseline="central" font-size="45">2</text></g><g class="sm-n sm-node sm-p2 off" data-ch="server-actions"><rect class="sm-box" x="810" y="300" width="170" height="56" rx="8"/><text class="sm-mini-t" x="895.0" y="330.0" text-anchor="middle" dominant-baseline="central" font-size="45">7</text></g><g class="sm-n sm-node sm-p2 off" data-ch="server-actions"><rect class="sm-box" x="810" y="370" width="170" height="56" rx="8"/><text class="sm-mini-t" x="895.0" y="400.0" text-anchor="middle" dominant-baseline="central" font-size="45">7</text></g><g class="sm-n sm-node sm-p2 off" data-ch="server-actions"><rect class="sm-box" x="810" y="440" width="170" height="56" rx="8"/><text class="sm-mini-t" x="895.0" y="470.0" text-anchor="middle" dominant-baseline="central" font-size="45">7</text></g><g class="sm-n sm-node sm-p2 off" data-ch="server-actions"><rect class="sm-box" x="810" y="510" width="170" height="56" rx="8"/><text class="sm-mini-t" x="895.0" y="540.0" text-anchor="middle" dominant-baseline="central" font-size="45">7</text></g><g class="sm-n sm-pill off" data-ch="web-http"><rect class="sm-pill-box" x="213" y="306" width="64" height="48" rx="24"/><text class="sm-mini-t" x="245" y="332" text-anchor="middle" dominant-baseline="central" font-size="38">1</text></g><g class="sm-n sm-pill off" data-ch="web-http"><rect class="sm-pill-box" x="453" y="306" width="64" height="48" rx="24"/><text class="sm-mini-t" x="485" y="332" text-anchor="middle" dominant-baseline="central" font-size="38">1</text></g><g class="sm-n sm-pill off" data-ch="cross-site"><rect class="sm-pill-box" x="78" y="153" width="64" height="48" rx="24"/><text class="sm-mini-t" x="110" y="179" text-anchor="middle" dominant-baseline="central" font-size="38">5</text></g><g class="sm-n sm-pill off" data-ch="delegated-identity"><rect class="sm-pill-box" x="593" y="101" width="64" height="48" rx="24"/><text class="sm-mini-t" x="625" y="127" text-anchor="middle" dominant-baseline="central" font-size="38">9</text></g></svg></a><p class="sm-cap">位置：第 4 章　網站如何知道你是誰、允許你做什麼</p><ul class="sm-chips sm-comps" aria-label="本章元件"><li>Auth／Session</li></ul><p class="sm-mini-hint">點地圖：到首頁地圖看這一章</p></section></aside>
+<aside class="sm-aside" aria-label="本節輔助"><nav class="sm-outline" aria-label="本節內容"><p class="sm-ph">本節內容</p><ol><li><a href="#authn-authz" title="4.2.1 知道是誰之後"><span class="num">4.2.1</span>知道是誰之後</a></li><li><a href="#escalation" title="4.2.2 水平與垂直越權"><span class="num">4.2.2</span>水平與垂直越權</a></li><li><a href="#idor" title="4.2.3 IDOR 的各種識別值"><span class="num">4.2.3</span>IDOR 的各種識別值</a></li><li><a href="#hidden-functions" title="4.2.4 只藏起來的管理功能"><span class="num">4.2.4</span>只藏起來的管理功能</a></li><li><a href="#client-controlled-role" title="4.2.5 由使用者送來的角色"><span class="num">4.2.5</span>由使用者送來的角色</a></li><li><a href="#multi-step" title="4.2.6 多步驟流程"><span class="num">4.2.6</span>多步驟流程</a></li><li><a href="#request-context" title="4.2.7 依請求附帶資訊做的檢查"><span class="num">4.2.7</span>依請求附帶資訊做的檢查</a></li><li><a href="#testing" title="4.2.8 用兩個帳號比對"><span class="num">4.2.8</span>用兩個帳號比對</a></li><li><a href="#fix" title="4.2.9 防禦手法"><span class="num">4.2.9</span>防禦手法</a></li><li><a href="#summary" title="4.2.10 小結"><span class="num">4.2.10</span>小結</a></li></ol></nav><section class="sm-locator" aria-label="系統地圖定位"><p class="sm-ph">系統地圖</p><a class="sm-mini-link" href="../../index.html#map-identity" aria-label="在首頁的系統地圖上看第 4 章的位置"><svg class="sm-map sm-map-mini" viewBox="0 143 748 421" aria-hidden="true" focusable="false" preserveAspectRatio="xMidYMid meet" style="aspect-ratio:748/421"><line class="sm-edge" x1="200" y1="330" x2="290" y2="330"/><line class="sm-edge sm-dash" x1="440" y1="330" x2="530" y2="330"/><line class="sm-edge sm-threat-edge" x1="110" y1="100" x2="110" y2="255"/><line class="sm-edge sm-dash" x1="625" y1="100" x2="625" y2="150"/><line class="sm-edge" x1="625" y1="546" x2="625" y2="570"/><line class="sm-edge" x1="720" y1="325" x2="765" y2="325"/><line class="sm-edge" x1="765" y1="325" x2="765" y2="48"/><line class="sm-edge sm-dash" x1="765" y1="325" x2="765" y2="538"/><line class="sm-edge" x1="765" y1="48" x2="810" y2="48"/><line class="sm-edge" x1="765" y1="118" x2="810" y2="118"/><line class="sm-edge" x1="765" y1="188" x2="810" y2="188"/><line class="sm-edge sm-dash" x1="765" y1="328" x2="810" y2="328"/><line class="sm-edge sm-dash" x1="765" y1="398" x2="810" y2="398"/><line class="sm-edge sm-dash" x1="765" y1="468" x2="810" y2="468"/><line class="sm-edge sm-dash" x1="765" y1="538" x2="810" y2="538"/><g class="sm-n sm-threat off" data-ch="cross-site"><rect class="sm-box" x="20" y="20" width="180" height="80" rx="8"/><text class="sm-mini-t" x="110.0" y="62.0" text-anchor="middle" dominant-baseline="central" font-size="53">5</text></g><g class="sm-n sm-frame off" data-ch="web-http"><rect class="sm-box" x="20" y="255" width="180" height="150" rx="10"/><text class="sm-mini-t" x="50" y="285" text-anchor="middle" dominant-baseline="central" font-size="48">1</text></g><g class="sm-n sm-node off" data-ch="browser-output"><rect class="sm-box" x="36" y="322" width="148" height="64" rx="8"/><text class="sm-mini-t" x="110.0" y="356.0" text-anchor="middle" dominant-baseline="central" font-size="51">3</text></g><g class="sm-n sm-node sm-p2 off" data-ch="proxy-cache"><rect class="sm-box" x="290" y="240" width="150" height="180" rx="8"/><text class="sm-mini-t" x="365.0" y="332.0" text-anchor="middle" dominant-baseline="central" font-size="53">10</text></g><g class="sm-n sm-frame" aria-hidden="true"><rect class="sm-box" x="530" y="150" width="190" height="396" rx="10"/></g><g class="sm-n sm-node on" data-ch="identity"><rect class="sm-box" x="546" y="194" width="158" height="56" rx="8"/><text class="sm-mini-t" x="625.0" y="224.0" text-anchor="middle" dominant-baseline="central" font-size="45">4</text></g><g class="sm-n sm-node sm-p2 off" data-ch="apis"><rect class="sm-box" x="546" y="262" width="158" height="56" rx="8"/><text class="sm-mini-t" x="625.0" y="292.0" text-anchor="middle" dominant-baseline="central" font-size="45">8</text></g><g class="sm-n sm-node sm-p2 off" data-ch="llm"><rect class="sm-box" x="546" y="330" width="158" height="56" rx="8"/><text class="sm-mini-t" x="625.0" y="360.0" text-anchor="middle" dominant-baseline="central" font-size="45">11</text></g><g class="sm-n sm-node off" data-ch="logic-timing"><rect class="sm-box" x="546" y="398" width="158" height="56" rx="8"/><text class="sm-mini-t" x="625.0" y="428.0" text-anchor="middle" dominant-baseline="central" font-size="45">6</text></g><g class="sm-n sm-node sm-p2 off" data-ch="server-actions"><rect class="sm-box" x="546" y="466" width="158" height="56" rx="8"/><text class="sm-mini-t" x="625.0" y="496.0" text-anchor="middle" dominant-baseline="central" font-size="45">7</text></g><g class="sm-n sm-node sm-p2 off" data-ch="delegated-identity"><rect class="sm-box" x="530" y="20" width="190" height="80" rx="8"/><text class="sm-mini-t" x="625.0" y="62.0" text-anchor="middle" dominant-baseline="central" font-size="53">9</text></g><g class="sm-n sm-node off" data-ch="logic-timing"><rect class="sm-box" x="530" y="570" width="190" height="56" rx="8"/><text class="sm-mini-t" x="625.0" y="600.0" text-anchor="middle" dominant-baseline="central" font-size="45">6</text></g><g class="sm-n sm-node off" data-ch="server-input"><rect class="sm-box" x="810" y="20" width="170" height="56" rx="8"/><text class="sm-mini-t" x="895.0" y="50.0" text-anchor="middle" dominant-baseline="central" font-size="45">2</text></g><g class="sm-n sm-node off" data-ch="server-input"><rect class="sm-box" x="810" y="90" width="170" height="56" rx="8"/><text class="sm-mini-t" x="895.0" y="120.0" text-anchor="middle" dominant-baseline="central" font-size="45">2</text></g><g class="sm-n sm-node off" data-ch="server-input"><rect class="sm-box" x="810" y="160" width="170" height="56" rx="8"/><text class="sm-mini-t" x="895.0" y="190.0" text-anchor="middle" dominant-baseline="central" font-size="45">2</text></g><g class="sm-n sm-node sm-p2 off" data-ch="server-actions"><rect class="sm-box" x="810" y="300" width="170" height="56" rx="8"/><text class="sm-mini-t" x="895.0" y="330.0" text-anchor="middle" dominant-baseline="central" font-size="45">7</text></g><g class="sm-n sm-node sm-p2 off" data-ch="server-actions"><rect class="sm-box" x="810" y="370" width="170" height="56" rx="8"/><text class="sm-mini-t" x="895.0" y="400.0" text-anchor="middle" dominant-baseline="central" font-size="45">7</text></g><g class="sm-n sm-node sm-p2 off" data-ch="server-actions"><rect class="sm-box" x="810" y="440" width="170" height="56" rx="8"/><text class="sm-mini-t" x="895.0" y="470.0" text-anchor="middle" dominant-baseline="central" font-size="45">7</text></g><g class="sm-n sm-node sm-p2 off" data-ch="server-actions"><rect class="sm-box" x="810" y="510" width="170" height="56" rx="8"/><text class="sm-mini-t" x="895.0" y="540.0" text-anchor="middle" dominant-baseline="central" font-size="45">7</text></g><g class="sm-n sm-pill off" data-ch="web-http"><rect class="sm-pill-box" x="213" y="306" width="64" height="48" rx="24"/><text class="sm-mini-t" x="245" y="332" text-anchor="middle" dominant-baseline="central" font-size="38">1</text></g><g class="sm-n sm-pill off" data-ch="web-http"><rect class="sm-pill-box" x="453" y="306" width="64" height="48" rx="24"/><text class="sm-mini-t" x="485" y="332" text-anchor="middle" dominant-baseline="central" font-size="38">1</text></g><g class="sm-n sm-pill off" data-ch="cross-site"><rect class="sm-pill-box" x="78" y="153" width="64" height="48" rx="24"/><text class="sm-mini-t" x="110" y="179" text-anchor="middle" dominant-baseline="central" font-size="38">5</text></g><g class="sm-n sm-pill off" data-ch="delegated-identity"><rect class="sm-pill-box" x="593" y="101" width="64" height="48" rx="24"/><text class="sm-mini-t" x="625" y="127" text-anchor="middle" dominant-baseline="central" font-size="38">9</text></g></svg></a><p class="sm-cap">位置：第 4 章　網站如何知道你是誰、允許你做什麼</p><ul class="sm-chips sm-comps" aria-label="本章元件"><li>Auth／Session</li></ul><p class="sm-mini-hint">點地圖：到首頁地圖看這一章</p></section></aside>
 <main id="main" class="sm-doc" tabindex="-1">
 <article class="content sm-article">
-<p>在 <a href="../../web-http/http-session/index.html#idor-intuition">HTTP Requests and Sessions 的「身分與目標」</a>，同一個 Cookie 搭配不同的 <code>id</code>，伺服器就可能交出另一個帳號的資料。當時的問題只有一種：讀取別人的帳號頁。實際網站裡要判斷的事情多得多：一般會員能不能打開後台、能不能替自己加上管理員角色、能不能取消別人的訂單。上一節 Authentication 讓伺服器知道請求來自誰；這些問題都發生在知道是誰之後。</p>
+<svg class="icon-sprite" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" style="position:absolute;width:0;height:0;overflow:hidden"><symbol id="icon-admin" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 43c0-8 7-12 17-12s17 4 17 12z" fill="var(--icon-admin-soft)"/><circle cx="24" cy="23" r="10.5" fill="var(--icon-admin-soft)"/><path d="M13 14L12 4l8 5 4-6 4 6 8-5-1 10z" fill="var(--icon-admin)"/><circle cx="20" cy="24" r="1.9" fill="currentColor" stroke="none"/><circle cx="28" cy="24" r="1.9" fill="currentColor" stroke="none"/><path d="M21 28.5q3.0 2.5 6 0" stroke-width="2.2"/></symbol><symbol id="icon-attacker" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M24 4C14 4 9.5 11 9.5 18c0 4 1.5 7 4 9L7 43h34l-6.5-16c2.5-2 4-5 4-9C38.5 11 34 4 24 4z" fill="var(--icon-attacker)"/><ellipse cx="24" cy="20" rx="10" ry="9" fill="var(--icon-attacker-soft)"/><rect x="13.5" y="15.5" width="21" height="8" rx="4" fill="currentColor" stroke="none"/><path d="M17.5 19.5l3-1.2M30.5 19.5l-3-1.2" stroke="var(--icon-attacker-soft)" stroke-width="2.4"/><path d="M20 28q4 2.5 8-1" stroke-width="2.2"/></symbol><symbol id="icon-check" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="24" cy="24" r="19" fill="var(--icon-ok-soft)"/><path d="M14.5 24.5l7 7L34 17.5" stroke="var(--icon-ok)" stroke-width="4.6"/></symbol><symbol id="icon-credit-card" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="9" width="42" height="30" rx="9" fill="var(--icon-commerce-soft)"/><path d="M4 20h40" stroke-width="7"/><path d="M11 31h8M26 31h4" stroke-width="3.2"/><rect x="3" y="9" width="42" height="30" rx="9" fill="none"/></symbol><symbol id="icon-cross" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="24" cy="24" r="19" fill="var(--icon-bad-soft)"/><path d="M17 17l14 14M31 17L17 31" stroke="var(--icon-bad)" stroke-width="4.6"/></symbol><symbol id="icon-envelope" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="9" width="40" height="30" rx="9" fill="var(--icon-commerce-soft)"/><path d="M7 15l17 13 17-13" fill="var(--icon-commerce)"/></symbol><symbol id="icon-form" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="4" width="36" height="40" rx="9" fill="var(--icon-file-soft)"/><rect x="12" y="11" width="24" height="8" rx="4" fill="var(--bg)"/><rect x="12" y="23" width="24" height="8" rx="4" fill="var(--bg)"/><rect x="12" y="35" width="14" height="5" rx="2.5" fill="var(--icon-file)" stroke-width="2.4"/></symbol><symbol id="icon-invoice" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 6a4 4 0 0 1 4-4h18a4 4 0 0 1 4 4v38l-4.3-3-4.3 3-4.4-3-4.3 3-4.4-3-4.3 3z" fill="var(--icon-commerce-soft)"/><path d="M17 12h14M17 19h14M17 26h7"/><path d="M17 33h14" stroke="var(--icon-commerce)" stroke-width="4"/></symbol><symbol id="icon-order" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M24 4l17 9v21l-17 10L7 34V13z" fill="var(--icon-commerce-soft)"/><path d="M24 4l17 9-17 9-17-9z" fill="var(--icon-commerce)"/><path d="M24 22v22"/><path d="M15.5 8.5l17 9" stroke="var(--icon-commerce-soft)" stroke-width="3.2"/></symbol><symbol id="icon-shield" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M24 4.5l15 5.5a4 4 0 0 1 2.6 3.7V24c0 9.5-7 16.5-17.6 19.5C13.4 40.5 6.4 33.5 6.4 24V13.7A4 4 0 0 1 9 10z" fill="var(--icon-cred-soft)"/><path d="M16.5 24.5l5.5 5.5 10-11" stroke="var(--icon-cred)" stroke-width="4"/></symbol><symbol id="icon-support-agent" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 43c0-9 7-14 17-14s17 5 17 14z" fill="var(--icon-support-soft)"/><circle cx="24" cy="20" r="11" fill="var(--icon-support-soft)"/><path d="M11.5 20a12.5 12.5 0 0 1 25 0" fill="none"/><rect x="7.5" y="18.5" width="6" height="10" rx="3" fill="var(--icon-support)"/><rect x="34.5" y="18.5" width="6" height="10" rx="3" fill="var(--icon-support)"/><path d="M37.5 28.5q0 5-8 5" fill="none"/><circle cx="28" cy="33.5" r="2.6" fill="var(--icon-support)"/><circle cx="20" cy="21" r="1.9" fill="currentColor" stroke="none"/><circle cx="28" cy="21" r="1.9" fill="currentColor" stroke="none"/><path d="M21 25.5q3.0 2.5 6 0" stroke-width="2.2"/></symbol><symbol id="icon-user" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 43c0-9 7-14 17-14s17 5 17 14z" fill="var(--icon-user-soft)"/><circle cx="24" cy="17" r="12" fill="var(--icon-user-soft)"/><circle cx="19.5" cy="17" r="1.9" fill="currentColor" stroke="none"/><circle cx="28.5" cy="17" r="1.9" fill="currentColor" stroke="none"/><path d="M21 22.5q3.0 2.5 6 0" stroke-width="2.2"/></symbol></svg><p>在 <a href="../../web-http/http-session/index.html#idor-intuition">HTTP Requests and Sessions 的「身分與目標」</a>，同一個 Cookie 搭配不同的 <code>id</code>，伺服器就可能交出另一個帳號的資料。當時的問題只有一種：讀取別人的帳號頁。實際網站裡要判斷的事情多得多：一般會員能不能打開後台、能不能替自己加上管理員角色、能不能取消別人的訂單。上一節 Authentication 讓伺服器知道請求來自誰；這些問題都發生在知道是誰之後。</p>
 
 <h2 id="authn-authz"><span class="num">4.2.1</span> 知道是誰之後</h2>
 <p>網站處理一筆登入後的請求，依序靠三種機制：</p>
@@ -44,45 +44,14 @@
 
 <figure id="access-decision">
   <svg viewBox="0 0 720 250" role="img" aria-labelledby="access-decision-t" style="color:var(--text)">
-    <title id="access-decision-t">一筆讀取發票的請求被拆成執行者、目標、動作三項輸入，三者一起進入授權判斷；wiener 不是訂單 1042 的擁有者，所以結果是拒絕</title>
-    <defs>
-      <marker id="ad-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
-        <path d="M0 0 L10 5 L0 10 z" fill="currentColor"/>
-      </marker>
-    </defs>
-    <g stroke="currentColor" stroke-width="1.2">
-      <rect x="10" y="60" width="230" height="110" rx="5" fill="var(--surface)"/>
-      <rect x="290" y="20" width="220" height="52" rx="5" fill="var(--accent-soft)"/>
-      <rect x="290" y="94" width="220" height="52" rx="5" fill="var(--accent-soft)"/>
-      <rect x="290" y="168" width="220" height="52" rx="5" fill="var(--accent-soft)"/>
-      <rect x="560" y="80" width="150" height="80" rx="5" fill="var(--surface)"/>
-    </g>
-    <g fill="currentColor">
-      <text x="20" y="50" font-size="13" font-weight="700">請求</text>
-      <text x="20" y="90" font-size="12" style="font-family:var(--font-mono)">GET /orders/1042/invoice</text>
-      <text x="20" y="114" font-size="12" style="font-family:var(--font-mono)">Host: shop.example.com</text>
-      <text x="20" y="138" font-size="12" style="font-family:var(--font-mono)">Cookie: session=DEMO123</text>
-    </g>
-    <g font-size="13" fill="currentColor" text-anchor="middle">
-      <text x="400" y="42">執行者：wiener（顧客）</text>
-      <text x="400" y="61" font-size="11" opacity=".75">伺服器用 Session 識別字查表得知</text>
-      <text x="400" y="116">目標：訂單 1042</text>
-      <text x="400" y="135" font-size="11" opacity=".75">擁有者是 carlos</text>
-      <text x="400" y="190">動作：讀取發票</text>
-      <text x="400" y="209" font-size="11" opacity=".75">由方法與路徑決定</text>
-      <text x="635" y="106" font-weight="700">授權判斷</text>
-      <text x="635" y="126" font-size="12">wiener 不是擁有者</text>
-      <text x="635" y="146" font-size="12">結果：拒絕</text>
-    </g>
-    <g stroke="currentColor" stroke-width="1.6" fill="none">
-      <path d="M240 134 H262 V46 H288" marker-end="url(#ad-arrow)"/>
-      <path d="M240 86 H270 V120 H288" marker-end="url(#ad-arrow)"/>
-      <path d="M240 98 H254 V194 H288" marker-end="url(#ad-arrow)"/>
-      <path d="M510 46 H534 V104 H558" marker-end="url(#ad-arrow)"/>
-      <path d="M510 120 H558" marker-end="url(#ad-arrow)"/>
-      <path d="M510 194 H534 V136 H558" marker-end="url(#ad-arrow)"/>
-    </g>
-  </svg>
+<title id="access-decision-t">一筆讀取發票的請求被拆成執行者、目標、動作三項輸入，三者一起進入授權判斷；wiener 不是訂單 1042 的擁有者，所以結果是拒絕</title>
+<defs><marker id="ad-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="currentColor"/></marker></defs>
+<g stroke="currentColor" stroke-width="1.2"><rect x="10" y="60" width="230" height="110" rx="5" fill="var(--surface)"/><rect x="290" y="20" width="220" height="52" rx="5" fill="var(--accent-soft)"/><rect x="290" y="94" width="220" height="52" rx="5" fill="var(--accent-soft)"/><rect x="290" y="168" width="220" height="52" rx="5" fill="var(--accent-soft)"/><rect x="560" y="52" width="150" height="132" rx="5" fill="var(--surface)"/></g>
+<use href="#icon-envelope" x="58" y="24" width="30" height="30" style="color:var(--text)"/><use href="#icon-user" x="296" y="28" width="34" height="34" style="color:var(--text)"/><use href="#icon-order" x="296" y="102" width="34" height="34" style="color:var(--text)"/><use href="#icon-invoice" x="296" y="176" width="34" height="34" style="color:var(--text)"/><use href="#icon-shield" x="618" y="58" width="34" height="34" style="color:var(--text)"/><use href="#icon-cross" x="676" y="141" width="22" height="22" style="color:var(--text)"/>
+<g fill="currentColor"><text x="20" y="50" font-size="13" font-weight="700">請求</text><text x="20" y="90" font-size="12" style="font-family:var(--font-mono)">GET /orders/1042/invoice</text><text x="20" y="114" font-size="12" style="font-family:var(--font-mono)">Host: shop.example.com</text><text x="20" y="138" font-size="12" style="font-family:var(--font-mono)">Cookie: session=DEMO123</text></g>
+<g font-size="13" fill="currentColor" text-anchor="middle"><text x="422" y="42">執行者：wiener（顧客）</text><text x="422" y="61" font-size="11" opacity=".75">伺服器用 Session 識別字查表得知</text><text x="422" y="116">目標：訂單 1042</text><text x="422" y="135" font-size="11" opacity=".75">擁有者是 carlos</text><text x="422" y="190">動作：讀取發票</text><text x="422" y="209" font-size="11" opacity=".75">由方法與路徑決定</text><text x="635" y="116" font-weight="700">授權判斷</text><text x="635" y="136" font-size="12">wiener 不是擁有者</text><text x="635" y="158" font-size="12">結果：拒絕</text></g>
+<g stroke="currentColor" stroke-width="1.6" fill="none"><path d="M240 134 H262 V46 H288" marker-end="url(#ad-arrow)"/><path d="M240 86 H270 V120 H288" marker-end="url(#ad-arrow)"/><path d="M240 98 H254 V194 H288" marker-end="url(#ad-arrow)"/><path d="M510 46 H534 V104 H558" marker-end="url(#ad-arrow)"/><path d="M510 120 H558" marker-end="url(#ad-arrow)"/><path d="M510 194 H534 V136 H558" marker-end="url(#ad-arrow)"/></g>
+</svg>
   <figcaption><span class="fig-num">圖 4.2.1-1</span> 同一筆請求提供三項輸入：Cookie 經查表得到執行者，路徑指出目標，方法與路徑一起決定動作</figcaption>
 </figure>
 
@@ -100,42 +69,14 @@
 
 <figure id="escalation-axes">
   <svg viewBox="0 0 720 320" role="img" aria-labelledby="escalation-axes-t" style="color:var(--text)">
-    <title id="escalation-axes-t">下排是三個帳號的資料，上排是管理功能。wiener 往右讀 carlos 的資料是水平越權，往上用管理功能是垂直越權；若水平越權讀到管理員帳號頁並取得其憑證，就能再往上變成垂直越權</title>
-    <defs>
-      <marker id="ea-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
-        <path d="M0 0 L10 5 L0 10 z" fill="currentColor"/>
-      </marker>
-    </defs>
-    <g stroke="currentColor" stroke-width="1.2">
-      <rect x="30" y="20" width="660" height="60" rx="5" fill="var(--accent-soft)"/>
-      <rect x="30" y="200" width="160" height="60" rx="5" fill="var(--surface)"/>
-      <rect x="280" y="200" width="160" height="60" rx="5" fill="var(--surface)"/>
-      <rect x="530" y="200" width="160" height="60" rx="5" fill="var(--surface)"/>
-    </g>
-    <g font-size="13" fill="currentColor" text-anchor="middle">
-      <text x="360" y="45" font-weight="700">管理功能</text>
-      <text x="360" y="66" font-size="12" opacity=".8">刪除使用者、變更角色、檢視所有訂單</text>
-      <text x="110" y="226">wiener 的資料</text>
-      <text x="110" y="246" font-size="11" opacity=".75">發出請求的人</text>
-      <text x="360" y="226">carlos 的資料</text>
-      <text x="360" y="246" font-size="11" opacity=".75">同為顧客</text>
-      <text x="610" y="226">administrator</text>
-      <text x="610" y="246" font-size="11" opacity=".75">的帳號頁</text>
-    </g>
-    <g stroke="currentColor" stroke-width="1.6" fill="none">
-      <path d="M190 230 H278" marker-end="url(#ea-arrow)"/>
-      <path d="M110 200 V82" marker-end="url(#ea-arrow)"/>
-      <path d="M110 260 V290 H610 V262" marker-end="url(#ea-arrow)" stroke-dasharray="6 4"/>
-      <path d="M610 200 V82" marker-end="url(#ea-arrow)" stroke-dasharray="6 4"/>
-    </g>
-    <g font-size="13" fill="currentColor">
-      <text x="234" y="220" text-anchor="middle">水平越權</text>
-      <text x="120" y="146">垂直越權</text>
-      <text x="360" y="308" text-anchor="middle" font-size="12">水平越權的目標剛好是管理員</text>
-      <text x="600" y="140" text-anchor="end" font-size="12">取得管理員的憑證後</text>
-      <text x="600" y="158" text-anchor="end" font-size="12">變成垂直越權</text>
-    </g>
-  </svg>
+<title id="escalation-axes-t">下排是三個帳號的資料，上排是管理功能。wiener 往右讀 carlos 的資料是水平越權，往上用管理功能是垂直越權；若水平越權讀到管理員帳號頁並取得其憑證，就能再往上變成垂直越權</title>
+<defs><marker id="ea-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="currentColor"/></marker></defs>
+<g stroke="currentColor" stroke-width="1.2"><rect x="30" y="20" width="660" height="60" rx="5" fill="var(--accent-soft)"/><rect x="30" y="200" width="160" height="60" rx="5" fill="var(--surface)"/><rect x="280" y="200" width="160" height="60" rx="5" fill="var(--surface)"/><rect x="530" y="200" width="160" height="60" rx="5" fill="var(--surface)"/></g>
+<use href="#icon-admin" x="60" y="25" width="48" height="48" style="color:var(--text)"/><use href="#icon-attacker" x="36" y="210" width="40" height="40" style="color:var(--text)"/><use href="#icon-user" x="286" y="210" width="40" height="40" style="color:var(--text)"/><use href="#icon-admin" x="536" y="210" width="40" height="40" style="color:var(--text)"/>
+<g font-size="13" fill="currentColor" text-anchor="middle"><text x="375" y="45" font-weight="700">管理功能</text><text x="375" y="66" font-size="12" opacity=".8">刪除使用者、變更角色、檢視所有訂單</text><text x="140" y="226">wiener 的資料</text><text x="140" y="246" font-size="11" opacity=".75">發出請求的人</text><text x="390" y="226">carlos 的資料</text><text x="390" y="246" font-size="11" opacity=".75">同為顧客</text><text x="640" y="226">administrator</text><text x="640" y="246" font-size="11" opacity=".75">的帳號頁</text></g>
+<g stroke="currentColor" stroke-width="1.6" fill="none"><path d="M190 230 H278" marker-end="url(#ea-arrow)"/><path d="M110 200 V82" marker-end="url(#ea-arrow)"/><path d="M110 260 V290 H610 V262" marker-end="url(#ea-arrow)" stroke-dasharray="6 4"/><path d="M610 200 V82" marker-end="url(#ea-arrow)" stroke-dasharray="6 4"/></g>
+<g font-size="13" fill="currentColor"><text x="234" y="220" text-anchor="middle">水平越權</text><text x="120" y="146">垂直越權</text><text x="360" y="308" text-anchor="middle" font-size="12">水平越權的目標剛好是管理員</text><text x="600" y="140" text-anchor="end" font-size="12">取得管理員的憑證後</text><text x="600" y="158" text-anchor="end" font-size="12">變成垂直越權</text></g>
+</svg>
   <figcaption><span class="fig-num">圖 4.2.2-1</span> 水平越權跨到同層級的其他使用者，垂直越權跨到更高的角色；虛線是兩者串接的路徑</figcaption>
 </figure>
 
@@ -153,32 +94,31 @@
 
 <h3>一筆發票請求的推演</h3>
 <p>wiener 在 <code>shop.example.com</code> 下載自己的發票：</p>
-<pre data-lang="http"><code># wiener 下載自己的發票
-GET /orders/1041/invoice HTTP/1.1
-Host: shop.example.com
-Cookie: session=DEMO123</code></pre>
+<pre data-lang="http"><code><span class="tok-comment"># wiener 下載自己的發票</span>
+<span class="tok-method">GET</span> <span class="tok-path">/orders/1041/invoice</span> <span class="tok-keyword">HTTP/1.1</span>
+<span class="tok-header">Host</span>: <span class="tok-host">shop.example.com</span>
+<span class="tok-header">Cookie</span>: <span class="tok-attr">session</span>=<span class="tok-value">DEMO123</span></code></pre>
 <p>處理這個請求的程式可能這樣寫：</p>
-<pre data-lang="python"><code># 不安全的做法：只確認已登入
-user = current_user(request)      # 用 Session 識別字查表：wiener
-if user is None:
-    return redirect("/login")
+<pre data-lang="python"><code><span class="tok-comment"># 不安全的做法：只確認已登入</span>
+user = <span class="tok-func">current_user</span>(request)      <span class="tok-comment"># 用 Session 識別字查表：wiener</span>
+<span class="tok-keyword">if</span> user <span class="tok-keyword">is</span> <span class="tok-keyword">None</span>:
+    <span class="tok-keyword">return</span> <span class="tok-func">redirect</span>(<span class="tok-string">"/login"</span>)
 
-order = db.query("SELECT * FROM orders WHERE id = ?", order_id)
-return render_invoice(order)</code></pre>
+order = db.<span class="tok-func">query</span>(<span class="tok-string">"SELECT * FROM orders WHERE id = ?"</span>, order_id)
+<span class="tok-keyword">return</span> <span class="tok-func">render_invoice</span>(order)</code></pre>
 <p>查詢用了參數化的 <code>?</code>，不會有 SQL Injection；問題在查詢條件只有訂單編號。逐步看兩種請求：</p>
-<pre data-lang="text"><code>正常
-  請求路徑：    /orders/1041/invoice
-  執行者：      wiener（查表得知）
-  查詢條件：    id = 1041
-  查到的訂單：  1041，擁有者 wiener
-  回應：        wiener 的發票
-
-被操縱
-  請求路徑：    /orders/[別人的訂單編號]/invoice
-  執行者：      wiener（Cookie 沒變）
-  查詢條件：    id = [別人的訂單編號]
-  查到的訂單：  擁有者 carlos
-  回應：        carlos 的發票</code></pre>
+<table>
+  <thead>
+    <tr><th>項目</th><th>正常</th><th>被操縱</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>請求路徑</td><td><code>/orders/1041/invoice</code></td><td><code>/orders/[別人的訂單編號]/invoice</code></td></tr>
+    <tr><td>執行者</td><td>wiener（查表得知）</td><td>wiener（Cookie 沒變）</td></tr>
+    <tr><td>查詢條件</td><td><code>id = 1041</code></td><td><code>id = [別人的訂單編號]</code></td></tr>
+    <tr><td>查到的訂單</td><td>1041，擁有者 wiener</td><td>擁有者 carlos</td></tr>
+    <tr><td>回應</td><td>wiener 的發票</td><td>carlos 的發票</td></tr>
+  </tbody>
+</table>
 <p>方括號代表被換掉的那段輸入。兩次請求的執行者都是 wiener，程式也都確認了他已登入；第二次請求中，執行者與目標擁有者不同，程式卻從頭到尾沒有比較這兩項。</p>
 
 <h3>寫入與刪除也一樣</h3>
@@ -188,158 +128,156 @@ return render_invoice(order)</code></pre>
 <p>有些程式發現使用者無權存取時，回傳 <code>302</code> 把瀏覽器導回首頁，卻在同一份回應的本體裡已經放了目標帳號的頁面內容。瀏覽器照 <code>Location</code> 跳走，畫面上什麼都看不到；在 Burp 的 HTTP history 點開那一筆 <code>302</code>，本體裡就有資料。程式先產生了內容，最後才決定導向，資料在拒絕之前就已經寫進回應。</p>
 
 <h2 id="hidden-functions"><span class="num">4.2.4</span> 只藏起來的管理功能</h2>
-<p>垂直越權最直接的形式，是管理功能根本沒有檢查。管理員首頁有一個「管理後台」連結，一般會員的首頁沒有；設計者以為沒有連結就沒人進得去，伺服器處理 <code>/admin</code> 時卻沒有確認執行者的角色。</p>
-<p>沒有連結的網址仍然找得到：</p>
-<ul>
-  <li><code>robots.txt</code> 是寫給搜尋引擎爬蟲的規則檔，任何人都能讀。把後台路徑列進去「請爬蟲別收錄」，等於公開了它的位置。</li>
-  <li>前端程式決定要不要顯示管理選單時，程式碼本身會送到每一位使用者的瀏覽器：</li>
-</ul>
-<pre data-lang="javascript"><code>// 這段程式送給每一位使用者，不分角色
-if (currentUser.isAdmin) {
-  addMenuLink("管理後台", "/admin-console-7f3a");
-}</code></pre>
-<p>判斷是否顯示的條件在瀏覽器執行，網址字串則原原本本躺在程式碼裡。把後台改成難猜的網址，換來的只是「不容易被猜到」；網址出現在任何一份送給使用者的檔案裡，就失去作用。</p>
-<p>同樣的道理適用於所有只在前端做的檢查：灰掉的按鈕、隱藏的表單欄位、JavaScript 裡的 <code>if (isAdmin)</code>。這些都只決定畫面長什麼樣子。在 1.2 用過的 Repeater 裡，請求可以不經過任何畫面直接送出，伺服器收到的只有請求本身。</p>
+<p>垂直越權最直接的形式，是權限只體現在介面上。客服人員打開訂單 1041 時，頁面上多一顆「作廢發票」按鈕；顧客 wiener 打開同一筆訂單，只看得到發票與物流狀態。前端依需求「顧客不能作廢」把按鈕拿掉了，後端的 <code>POST /orders/1041/invoice/void</code> 卻只寫了「已登入就處理」。</p>
+<p>同一個功能，從兩條路徑進去，結果取決於後端有沒有檢查：</p>
+<table>
+  <thead><tr><th>操作路徑</th><th>客服人員</th><th>wiener（顧客）</th></tr></thead>
+  <tbody>
+    <tr><td>從畫面點「作廢發票」</td><td>送出請求，作廢成功</td><td>沒有按鈕，無從點起</td></tr>
+    <tr><td>直接送出 <code>POST /orders/1041/invoice/void</code></td><td>作廢成功</td><td>後端沒檢查角色時，一樣作廢成功</td></tr>
+  </tbody>
+</table>
+<p>第二列的 wiener 需要知道請求長什麼樣子，這比想像中容易取得。單頁應用程式的前端常把整個網站的 API 路徑和請求格式打包成同一份檔案，送給每一位使用者，不分角色；客服人員的操作畫面、說明文件、錯誤訊息裡的路徑，也都是可能外流的來源。按鈕不見了，只是這個使用者的畫面少了一個元素，請求本身的格式並不是祕密。把路徑改成難猜的字串也一樣：它只讓人晚一點發現，出現在任何一份送給使用者的內容裡就失去作用。</p>
+<p>同樣的道理適用於所有只在前端做的限制：灰掉的按鈕、隱藏的表單欄位、依角色決定顯示哪些選單的程式。它們只決定畫面長什麼樣子。在 1.2 用過的 Repeater 裡，請求可以不經過任何畫面直接送出，伺服器收到的只有請求本身。</p>
 
 <h2 id="client-controlled-role"><span class="num">4.2.5</span> 由使用者送來的角色</h2>
 <p>有些網站在登入時查出使用者的角色，接著把結果放到使用者手上：一個 Cookie、一個隱藏的表單欄位、網址的查詢參數。之後每次請求，伺服器讀這個值，沒有驗證它是否被改過就直接採信，決定要不要放行。</p>
-<pre data-lang="http"><code># 登入後，伺服器在 Cookie 裡記下角色
-GET /admin HTTP/1.1
-Host: shop.example.com
-Cookie: session=DEMO123; role=customer</code></pre>
-<p>Session 識別字指向伺服器端的資料，<code>role</code> 卻是一個由瀏覽器保管的值。在 Repeater 把它換成 <code>role=[被換掉的角色值]</code>，伺服器讀到的就是新的值（1.2 提過，Cookie 的值使用者看得到也改得動）。問題在伺服器直接相信這個值，和它放在 Cookie 裡無關：伺服器若在值後面附上只有自己算得出的簽章，收到時先驗證，被改過的值就會被認出來。更簡單的做法是不把角色交給瀏覽器，只從伺服器端的 Session 資料查（見<a href="#fix">怎麼修補</a>）。</p>
+<pre data-lang="http"><code><span class="tok-comment"># 登入後，伺服器在 Cookie 裡記下角色</span>
+<span class="tok-method">GET</span> <span class="tok-path">/admin</span> <span class="tok-keyword">HTTP/1.1</span>
+<span class="tok-header">Host</span>: <span class="tok-host">shop.example.com</span>
+<span class="tok-header">Cookie</span>: <span class="tok-attr">session</span>=<span class="tok-value">DEMO123</span>; <span class="tok-attr">role</span>=<span class="tok-value">customer</span></code></pre>
+<p>Session 識別字指向伺服器端的資料，<code>role</code> 卻是一個由瀏覽器保管的值。在 Repeater 把它換成 <code>role=[被換掉的角色值]</code>，伺服器讀到的就是新的值（1.2 提過，Cookie 的值使用者看得到也改得動）。問題在伺服器直接相信這個值，和它放在 Cookie 裡無關：伺服器若在值後面附上只有自己算得出的簽章，收到時先驗證，被改過的值就會被認出來。更簡單的做法是不把角色交給瀏覽器，只從伺服器端的 Session 資料查（見<a href="#fix">防禦手法</a>）。</p>
 
 <h3>多送一個欄位</h3>
 <p>另一種情況發生在更新個人資料。前端表單只送出電子郵件：</p>
-<pre data-lang="http"><code># 正常的更新請求
-POST /my-account/update HTTP/1.1
-Host: shop.example.com
-Cookie: session=DEMO123
-Content-Type: application/json
+<pre data-lang="http"><code><span class="tok-comment"># 正常的更新請求</span>
+<span class="tok-method">POST</span> <span class="tok-path">/my-account/update</span> <span class="tok-keyword">HTTP/1.1</span>
+<span class="tok-header">Host</span>: <span class="tok-host">shop.example.com</span>
+<span class="tok-header">Cookie</span>: <span class="tok-attr">session</span>=<span class="tok-value">DEMO123</span>
+<span class="tok-header">Content-Type</span>: application/json
 
-{"email": "wiener@example.com"}</code></pre>
+{<span class="tok-attr">"email"</span>: <span class="tok-string">"wiener@example.com"</span>}</code></pre>
 <p>若伺服器把收到的 JSON 欄位全部寫回使用者資料，請求本體多加上 <code>[額外加入的角色欄位]</code>，角色也會一起被寫入。這叫 <strong>mass assignment</strong>（大量指派）：程式本意只讓使用者改幾個欄位，卻照單全收。回應若把整筆使用者資料傳回來，往往連角色欄位的名稱都會出現在裡面。</p>
 
 <h2 id="multi-step"><span class="num">4.2.6</span> 多步驟流程</h2>
-<p>敏感操作常拆成幾個畫面。以管理員替使用者變更角色為例：</p>
+<p>敏感操作常拆成幾個畫面。以客服人員替訂單退款為例，網站規定只有客服人員能辦退款：</p>
 <ol>
-  <li>開啟管理頁：<code>GET /admin</code>，列出所有使用者。</li>
-  <li>選擇對象與新角色，送出：<code>POST /admin/roles</code>，伺服器回傳一個「確定要變更嗎？」的頁面。</li>
-  <li>按下確認：<code>POST /admin/roles/confirm</code>，伺服器把新角色寫進資料庫。</li>
+  <li>開啟訂單的處理頁：<code>GET /support/orders/1041</code>，顯示訂單內容與已付金額。</li>
+  <li>填入退款金額並送出：<code>POST /refunds</code>，伺服器回傳一個「確定退款嗎？」的頁面。</li>
+  <li>按下確認：<code>POST /refunds/confirm</code>，伺服器通知金流退款，並記錄在訂單上。</li>
 </ol>
 <p>對瀏覽器來說，這是使用者依序點擊三個畫面。對伺服器來說，這是三個獨立的請求，各由一段處理程式（handler）負責。瀏覽器照畫面順序走，不代表請求只能照這個順序來：知道第 3 步請求格式的人，可以跳過前兩步直接送出它。</p>
 
 <figure id="multi-step-checks">
-  <svg viewBox="0 0 720 310" role="img" aria-labelledby="multi-step-checks-t" style="color:var(--text)">
-    <title id="multi-step-checks-t">角色變更流程的三個請求。上排三步都檢查執行者是管理員；下排只有第一步檢查，一般使用者跳過前兩步直接送出確認請求，第三步照樣寫入角色</title>
-    <defs>
-      <marker id="ms-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
-        <path d="M0 0 L10 5 L0 10 z" fill="currentColor"/>
-      </marker>
-    </defs>
-    <g fill="currentColor" font-size="13" font-weight="700">
-      <text x="20" y="24">每一步都檢查執行者</text>
-      <text x="20" y="160">只有第一步檢查</text>
-    </g>
-    <g stroke="currentColor" stroke-width="1.2">
-      <rect x="20" y="36" width="200" height="72" rx="5" fill="var(--surface)"/>
-      <rect x="260" y="36" width="200" height="72" rx="5" fill="var(--surface)"/>
-      <rect x="500" y="36" width="200" height="72" rx="5" fill="var(--surface)"/>
-      <rect x="20" y="172" width="200" height="72" rx="5" fill="var(--surface)"/>
-      <rect x="260" y="172" width="200" height="72" rx="5" fill="var(--surface)" stroke-dasharray="5 4"/>
-      <rect x="500" y="172" width="200" height="72" rx="5" fill="var(--accent-soft)" stroke-dasharray="5 4"/>
-    </g>
-    <g font-size="13" fill="currentColor" text-anchor="middle">
-      <text x="120" y="58">1 開啟管理頁</text>
-      <text x="360" y="58">2 送出角色變更</text>
-      <text x="600" y="58">3 確認並寫入</text>
-      <text x="120" y="194">1 開啟管理頁</text>
-      <text x="360" y="194">2 送出角色變更</text>
-      <text x="600" y="194">3 確認並寫入</text>
-    </g>
-    <g font-size="12" fill="currentColor" text-anchor="middle" style="font-family:var(--font-mono)">
-      <text x="120" y="78" style="font-family:var(--font-mono)">GET /admin</text>
-      <text x="360" y="78" style="font-family:var(--font-mono)">POST /admin/roles</text>
-      <text x="600" y="78" style="font-family:var(--font-mono)">POST /admin/roles/confirm</text>
-      <text x="120" y="214" style="font-family:var(--font-mono)">GET /admin</text>
-      <text x="360" y="214" style="font-family:var(--font-mono)">POST /admin/roles</text>
-      <text x="600" y="214" style="font-family:var(--font-mono)">POST /admin/roles/confirm</text>
-    </g>
-    <g font-size="12" fill="currentColor" text-anchor="middle">
-      <text x="120" y="98">檢查：是管理員</text>
-      <text x="360" y="98">檢查：是管理員</text>
-      <text x="600" y="98">檢查：是管理員</text>
-      <text x="120" y="234">檢查：是管理員</text>
-      <text x="360" y="234" opacity=".8">未檢查</text>
-      <text x="600" y="234" font-weight="700">未檢查，照樣寫入</text>
-    </g>
-    <g stroke="currentColor" stroke-width="1.6" fill="none">
-      <path d="M220 72 H258" marker-end="url(#ms-arrow)"/>
-      <path d="M460 72 H498" marker-end="url(#ms-arrow)"/>
-      <path d="M220 208 H258" marker-end="url(#ms-arrow)"/>
-      <path d="M460 208 H498" marker-end="url(#ms-arrow)"/>
-      <path d="M120 296 H600 V246" marker-end="url(#ms-arrow)" stroke-dasharray="6 4"/>
-    </g>
-    <text x="130" y="284" font-size="12" fill="currentColor">一般使用者直接送出第 3 步的請求，跳過前兩步</text>
-  </svg>
-  <figcaption><span class="fig-num">圖 4.2.6-1</span> 上排每一步都檢查執行者；下排只有第 1 步檢查，直接送到第 3 步的請求照樣寫入角色</figcaption>
+  <svg viewBox="0 0 720 332" role="img" aria-labelledby="multi-step-checks-t" style="color:var(--text)">
+<title id="multi-step-checks-t">退款流程的三個請求。上排三步都檢查執行者是客服人員；下排只有第一步檢查，顧客跳過前兩步直接送出確認請求，第三步照樣執行退款</title>
+<defs><marker id="ms-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="currentColor"/></marker></defs>
+<g fill="currentColor" font-size="13" font-weight="700"><text x="20" y="24">每一步都檢查執行者</text><text x="20" y="160">只有第一步檢查</text></g>
+<use href="#icon-support-agent" x="150" y="2" width="28" height="28" style="color:var(--text)"/><use href="#icon-support-agent" x="122" y="138" width="28" height="28" style="color:var(--text)"/>
+<g stroke="currentColor" stroke-width="1.2"><rect x="20" y="36" width="200" height="72" rx="5" fill="var(--surface)"/><rect x="260" y="36" width="200" height="72" rx="5" fill="var(--surface)"/><rect x="500" y="36" width="200" height="72" rx="5" fill="var(--surface)"/><rect x="20" y="172" width="200" height="72" rx="5" fill="var(--surface)"/><rect x="260" y="172" width="200" height="72" rx="5" fill="var(--surface)" stroke-dasharray="5 4"/><rect x="500" y="172" width="200" height="72" rx="5" fill="var(--accent-soft)" stroke-dasharray="5 4"/></g>
+<use href="#icon-order" x="28" y="40" width="26" height="26" style="color:var(--text)"/><text x="120" y="56" font-size="13" fill="currentColor" text-anchor="middle">1 開啟訂單</text><text x="120" y="76" font-size="12" fill="currentColor" text-anchor="middle" style="font-family:var(--font-mono)">GET /support/orders/1041</text><use href="#icon-check" x="28" y="84" width="20" height="20" style="color:var(--text)"/><text x="120" y="98" font-size="12" fill="currentColor" text-anchor="middle">檢查：是客服人員</text><use href="#icon-form" x="268" y="40" width="26" height="26" style="color:var(--text)"/><text x="360" y="56" font-size="13" fill="currentColor" text-anchor="middle">2 送出退款金額</text><text x="360" y="76" font-size="12" fill="currentColor" text-anchor="middle" style="font-family:var(--font-mono)">POST /refunds</text><use href="#icon-check" x="268" y="84" width="20" height="20" style="color:var(--text)"/><text x="360" y="98" font-size="12" fill="currentColor" text-anchor="middle">檢查：是客服人員</text><use href="#icon-credit-card" x="508" y="40" width="26" height="26" style="color:var(--text)"/><text x="600" y="56" font-size="13" fill="currentColor" text-anchor="middle">3 確認並退款</text><text x="600" y="76" font-size="12" fill="currentColor" text-anchor="middle" style="font-family:var(--font-mono)">POST /refunds/confirm</text><use href="#icon-check" x="508" y="84" width="20" height="20" style="color:var(--text)"/><text x="600" y="98" font-size="12" fill="currentColor" text-anchor="middle">檢查：是客服人員</text>
+<use href="#icon-order" x="28" y="176" width="26" height="26" style="color:var(--text)"/><text x="120" y="192" font-size="13" fill="currentColor" text-anchor="middle">1 開啟訂單</text><text x="120" y="212" font-size="12" fill="currentColor" text-anchor="middle" style="font-family:var(--font-mono)">GET /support/orders/1041</text><use href="#icon-check" x="28" y="220" width="20" height="20" style="color:var(--text)"/><text x="120" y="234" font-size="12" fill="currentColor" text-anchor="middle">檢查：是客服人員</text><use href="#icon-form" x="268" y="176" width="26" height="26" style="color:var(--text)"/><text x="360" y="192" font-size="13" fill="currentColor" text-anchor="middle">2 送出退款金額</text><text x="360" y="212" font-size="12" fill="currentColor" text-anchor="middle" style="font-family:var(--font-mono)">POST /refunds</text><use href="#icon-cross" x="268" y="220" width="20" height="20" style="color:var(--text)"/><text x="360" y="234" font-size="12" fill="currentColor" text-anchor="middle" opacity=".8">未檢查</text><use href="#icon-credit-card" x="508" y="176" width="26" height="26" style="color:var(--text)"/><text x="600" y="192" font-size="13" fill="currentColor" text-anchor="middle">3 確認並退款</text><text x="600" y="212" font-size="12" fill="currentColor" text-anchor="middle" style="font-family:var(--font-mono)">POST /refunds/confirm</text><use href="#icon-cross" x="508" y="220" width="20" height="20" style="color:var(--text)"/><text x="600" y="234" font-size="12" fill="currentColor" text-anchor="middle" font-weight="700">未檢查，照樣退款</text>
+<g stroke="currentColor" stroke-width="1.6" fill="none"><path d="M220 72 H258" marker-end="url(#ms-arrow)"/><path d="M460 72 H498" marker-end="url(#ms-arrow)"/><path d="M220 208 H258" marker-end="url(#ms-arrow)"/><path d="M460 208 H498" marker-end="url(#ms-arrow)"/><path d="M84 292 H600 V246" marker-end="url(#ms-arrow)" stroke-dasharray="6 4"/></g>
+<use href="#icon-attacker" x="36" y="266" width="44" height="44" style="color:var(--text)"/>
+<text x="58" y="324" font-size="12" fill="currentColor" text-anchor="middle">顧客</text>
+<text x="130" y="282" font-size="12" fill="currentColor">顧客直接送出第 3 步的請求，跳過前兩步</text>
+</svg>
+  <figcaption><span class="fig-num">圖 4.2.6-1</span> 上排每一步都檢查執行者；下排只有第 1 步檢查，直接送到第 3 步的請求照樣執行退款</figcaption>
 </figure>
 
-<p>設計者在第 1 步確認了管理員身分，便假設能抵達第 3 步的人都通過了第 1 步。實際上第 3 步的請求只帶著 Cookie 和要變更的內容，裡面沒有任何東西證明前面的檢查做過。</p>
-<p>第 3 步的請求裡，Cookie 和 <code>username</code> 指的是不同的人：</p>
-<pre data-lang="http"><code># 第 3 步：管理員確認把 carlos 改成編輯者
-POST /admin/roles/confirm HTTP/1.1
-Host: shop.example.com
-Cookie: session=[管理員的 Session 識別字]
-Content-Type: application/x-www-form-urlencoded
+<p>設計者在第 1 步確認了客服身分，便假設能抵達第 3 步的人都通過了第 1 步。實際上第 3 步的請求只帶著 Cookie 和要變更的內容，裡面沒有任何東西證明前面的檢查做過。</p>
+<p>第 3 步的請求裡，Cookie 決定執行者，表單欄位決定退哪一筆、退多少：</p>
+<pre data-lang="http"><code><span class="tok-comment"># 第 3 步：客服人員確認替訂單 1041 退款</span>
+<span class="tok-method">POST</span> <span class="tok-path">/refunds/confirm</span> <span class="tok-keyword">HTTP/1.1</span>
+<span class="tok-header">Host</span>: <span class="tok-host">shop.example.com</span>
+<span class="tok-header">Cookie</span>: <span class="tok-attr">session</span>=<span class="tok-placeholder">[客服人員的 Session 識別字]</span>
+<span class="tok-header">Content-Type</span>: application/x-www-form-urlencoded
 
-username=carlos&amp;role=editor&amp;confirm=yes</code></pre>
-<p>Cookie 決定執行者，<code>username</code> 決定被變更的對象。管理員送出這筆請求是合法的管理操作。同樣格式的請求若由一般使用者送出，Cookie、<code>username</code>、<code>role</code> 三個值都換掉，就是一般使用者替自己升級：</p>
-<pre data-lang="http"><code># 一般使用者跳過前兩步，直接送出第 3 步
-POST /admin/roles/confirm HTTP/1.1
-Host: shop.example.com
-Cookie: session=[一般使用者的 Session 識別字]
-Content-Type: application/x-www-form-urlencoded
+<span class="tok-param">order</span>=<span class="tok-value">1041</span>&amp;<span class="tok-param">amount</span>=<span class="tok-value">1280</span>&amp;<span class="tok-param">confirm</span>=<span class="tok-value">yes</span></code></pre>
+<p>客服人員送出這筆請求是合法的辦理。顧客若跳過前兩步，只把 Cookie 換成自己的、其餘欄位照樣填入：</p>
+<pre data-lang="http"><code><span class="tok-comment"># 顧客直接送出第 3 步</span>
+<span class="tok-method">POST</span> <span class="tok-path">/refunds/confirm</span> <span class="tok-keyword">HTTP/1.1</span>
+<span class="tok-header">Host</span>: <span class="tok-host">shop.example.com</span>
+<span class="tok-header">Cookie</span>: <span class="tok-attr">session</span>=<span class="tok-placeholder">[顧客的 Session 識別字]</span>
+<span class="tok-header">Content-Type</span>: application/x-www-form-urlencoded
 
-username=[被變更的帳號]&amp;role=[想取得的角色]&amp;confirm=yes</code></pre>
-<p>若第 3 步不檢查執行者，這筆請求和管理員那筆走的是同一段程式。三種情況放在一起比較：</p>
+<span class="tok-param">order</span>=<span class="tok-placeholder">[訂單編號]</span>&amp;<span class="tok-param">amount</span>=<span class="tok-placeholder">[退款金額]</span>&amp;<span class="tok-param">confirm</span>=<span class="tok-value">yes</span></code></pre>
+<p>第 3 步不檢查執行者時，這筆請求和客服那筆走的是同一段程式。先從網站規定列出每個執行者應有的結果，再對照只有第 1 步檢查時的實際結果：</p>
 <table>
   <thead><tr><th>執行者</th><th>請求</th><th>應有的結果</th><th>只有第 1 步檢查時</th></tr></thead>
   <tbody>
-    <tr><td>administrator</td><td>開啟管理頁</td><td>允許</td><td>允許</td></tr>
-    <tr><td>wiener</td><td>開啟管理頁</td><td>拒絕</td><td>拒絕</td></tr>
-    <tr><td>wiener</td><td>直接送出第 3 步</td><td>拒絕</td><td>角色被改成管理員</td></tr>
+    <tr><td>客服人員</td><td>開啟訂單處理頁</td><td>允許</td><td>允許</td></tr>
+    <tr><td>wiener（顧客）</td><td>開啟訂單處理頁</td><td>拒絕</td><td>拒絕</td></tr>
+    <tr><td>wiener（顧客）</td><td>直接送出第 3 步</td><td>拒絕</td><td>款項退回，訂單上留下一筆退款紀錄</td></tr>
   </tbody>
 </table>
-<p>只測前兩列，網站看起來沒有問題。第三列的請求寫入的是角色，一旦成功，wiener 之後的每一筆請求都帶著管理員權限。</p>
+<p>只測前兩列，網站看起來沒有問題。第三列才碰到寫入退款的那一步；它執行成功時，沒有人經手的退款已經離開了帳上。</p>
 
 <h2 id="request-context"><span class="num">4.2.7</span> 依請求附帶資訊做的檢查</h2>
 <p>還有一類檢查只看請求「從哪裡來」或「怎麼送」，沒有看執行者是誰。</p>
 <h3>依 Referer 判斷</h3>
 <p><code>Referer</code> 標頭記錄使用者是從哪個頁面點過來的，瀏覽器通常會自動帶上，但可能依 Referrer Policy（控制要不要送、送多少的政策）省略，或縮短成只剩 origin（協定、網域與埠號）。有些網站對 <code>/admin</code> 本身做了角色檢查，對它底下的子功能卻只看 <code>Referer</code>：從 <code>/admin</code> 頁面點過來的，就當作是管理員。<code>Referer</code> 和 Cookie 一樣是請求裡的一個標頭，在 Repeater 裡可以寫成任何內容，伺服器無從分辨它是瀏覽器自動填的還是手動改的。</p>
 <h3>依方法或網址字面判斷</h3>
-<p>有些網站把存取規則放在應用程式前面的一層（例如反向代理或框架的路由設定），寫成「非管理員不得對 <code>/admin/roles</code> 送 <code>POST</code>」。規則本身沒錯，但後面的應用程式若也接受用 <code>GET</code> 加查詢參數完成同一個動作，那筆 <code>GET</code> 請求就不在規則範圍內。網址的比對也有同樣的落差：前面那層把 <code>/admin/roles</code> 和大小寫不同或結尾多一個斜線的寫法看成不同的路徑，應用程式卻把它們當成同一個功能。檢查規則和實際處理請求的程式各自解讀請求，兩邊對不上，就留下規則沒涵蓋到的請求。</p>
+<p>有些網站把存取規則放在應用程式前面的一層（例如反向代理或框架的路由設定），寫成「非客服人員不得對 <code>/refunds</code> 送 <code>POST</code>」。規則本身沒錯，但後面的應用程式若也接受用 <code>GET</code> 加查詢參數完成同一個動作，那筆 <code>GET</code> 請求就不在規則範圍內。網址的比對也有同樣的落差：前面那層把 <code>/refunds</code> 和大小寫不同或結尾多一個斜線的寫法看成不同的路徑，應用程式卻把它們當成同一個功能。檢查規則和實際處理請求的程式各自解讀請求，兩邊對不上，就留下規則沒涵蓋到的請求。</p>
 
 <h2 id="testing"><span class="num">4.2.8</span> 用兩個帳號比對</h2>
-<p>找存取控制問題，靠的是比對：同一筆請求，換不同的執行者送出，看結果是否符合規則。準備方式：</p>
-<ul>
-  <li>兩個角色不同的帳號，例如一個管理員、一個一般使用者；查水平越權則準備兩個同角色的帳號。</li>
-  <li>兩個互不干擾的瀏覽器工作階段，例如一個普通視窗、一個無痕視窗，各自登入，並記下各自的 Cookie 屬於誰。</li>
-</ul>
-<p>先用權限高的帳號走一遍正常流程，在 HTTP history 找出每一步的請求；再把這些請求的 Cookie 換成權限低的帳號，或乾脆拿掉 Cookie，逐一重送。把結果填進表格：每一列是一筆請求，每一欄是一種執行者，格子裡寫實際結果，再和應有的結果比較。</p>
+<p>找存取控制問題，靠的是比對：同一筆請求，換不同的執行者送出，看結果是否符合規則。做法從規則出發，不從頁面出發：</p>
+<ol>
+  <li>把網站的權限規則列成表，每一列是一個功能，每一欄是一種執行者，格子裡寫應有的結果：允許、拒絕，或只限自己的資料。</li>
+  <li>準備兩個角色不同的帳號，例如一個客服人員、一個顧客；查水平越權則準備兩個同角色的帳號。各自登入在互不干擾的瀏覽器工作階段（例如一個普通視窗、一個無痕視窗），並記下各自的 Cookie 屬於誰。</li>
+  <li>用有權限的帳號走完整個流程，在 HTTP history 找出每一步的請求。</li>
+  <li>表格的每一格對應一筆請求：用該欄的執行者送出（換成另一個帳號的 Cookie，或拿掉 Cookie），把實際結果填進格子，和應有的結果比較。</li>
+</ol>
 <p>判讀結果時常犯的錯：</p>
 <ul>
-  <li><code>200</code> 只表示伺服器回了內容，要看內容是否屬於目標、資料是否真的被改了。寫入類的請求，換回權限低的帳號重新載入頁面，確認角色或資料的實際狀態。</li>
-  <li>重送時誤留了管理員的 Cookie，成功只代表管理員能做管理員的事。每次送出前確認 Cookie 屬於哪個帳號。</li>
+  <li><code>200</code> 只表示伺服器回了內容，要看內容是否屬於目標、資料是否真的被改了。寫入類的請求，換回權限低的帳號重新載入頁面，確認金額、角色或訂單的實際狀態。</li>
+  <li>重送時誤留了高權限帳號的 Cookie，成功只代表它能做它被允許的事。每次送出前確認 Cookie 屬於哪個帳號。</li>
   <li>首頁或第一步拒絕了，不代表後面的步驟也會拒絕；每一筆請求都要單獨測。</li>
 </ul>
 
-<h2 id="failed-defences"><span class="num">4.2.9</span> 靠不住的防禦</h2>
+<h2 id="fix"><span class="num">4.2.9</span> 防禦手法</h2>
+<h3 id="fix-effective">有效的防禦</h3>
+<h4>每筆請求都在伺服器端判斷</h4>
+<p>授權判斷放在伺服器，對每一筆請求重新做，用的是伺服器用 Session 識別字查出來的執行者與角色。請求裡的角色欄位、<code>Referer</code>、「前一步已通過」之類的資訊都不拿來做決定。多步驟流程的每一步都要檢查，最後真正寫入資料的那一步尤其不能省。</p>
+<h4>預設拒絕</h4>
+<p>規則採<strong>預設拒絕</strong>（deny by default）：沒有明確規則允許的請求一律拒絕。新增一個功能卻忘了寫規則時，結果是誰都用不了，而不是誰都能用；前者在測試時馬上會被發現。</p>
+<h4>集中在一處檢查</h4>
+<p>讓每個 handler 各寫各的 <code>if</code>，總會有一個漏掉。較好的做法是把授權寫成全站共用的一個機制，每個功能宣告它需要什麼權限，由共用的程式在 handler 執行前檢查：</p>
+<pre data-lang="python"><code><span class="tok-comment"># 每個功能宣告需要的權限；require 在 handler 執行前</span>
+<span class="tok-comment"># 用 Session 查出的執行者檢查，沒有宣告權限的功能一律拒絕</span>
+<span class="tok-func">@require</span>(<span class="tok-string">"refunds:approve"</span>)
+<span class="tok-keyword">def</span> <span class="tok-func">confirm_refund</span>(request):
+    actor = <span class="tok-func">current_user</span>(request)                 <span class="tok-comment"># 來自 Session</span>
+    order = <span class="tok-func">find_order</span>(request.<span class="tok-attr">form</span>[<span class="tok-string">"order"</span>])
+    amount = <span class="tok-func">parse_amount</span>(request.<span class="tok-attr">form</span>[<span class="tok-string">"amount"</span>])
+
+    <span class="tok-keyword">if</span> amount > <span class="tok-func">refund_limit</span>(actor):              <span class="tok-comment"># 這位客服的單筆退款上限</span>
+        <span class="tok-keyword">return</span> <span class="tok-func">forbidden</span>()
+    <span class="tok-keyword">if</span> <span class="tok-keyword">not</span> <span class="tok-func">handles</span>(actor, order):                 <span class="tok-comment"># 訂單在不在他負責的範圍</span>
+        <span class="tok-keyword">return</span> <span class="tok-func">forbidden</span>()
+    <span class="tok-func">issue_refund</span>(order, amount)</code></pre>
+<p>這段比讀取多兩項授權檢查：金額有沒有超過執行者的核可上限，以及這筆訂單是否在他負責的範圍內。授權通過只代表這位客服有權辦退款，金額和訂單仍要由兩個輔助函式把關：<code>parse_amount</code> 拒絕無法解析或非正的金額；<code>issue_refund</code> 依伺服器上的訂單資料核對幣別、已付金額與剩餘可退金額，並讓重送或並行的請求不會重複扣用可退額度（見 <a href="../../logic-timing/business-logic/index.html">Business Logic Vulnerabilities</a> 與 <a href="../../logic-timing/race-conditions/index.html">Race Conditions</a>）。</p>
+<h4>把擁有者寫進查詢</h4>
+<p>針對特定資料的請求，讓查詢同時比對編號與擁有者，擁有者取自 Session：</p>
+<pre data-lang="python"><code>order = db.<span class="tok-func">query</span>(
+    <span class="tok-string">"SELECT * FROM orders WHERE id = ? AND owner_id = ?"</span>,
+    order_id, user.<span class="tok-attr">id</span>)        <span class="tok-comment"># user.id 來自 Session，不來自請求</span>
+<span class="tok-keyword">if</span> order <span class="tok-keyword">is</span> <span class="tok-keyword">None</span>:
+    <span class="tok-keyword">return</span> <span class="tok-func">not_found</span>()</code></pre>
+<p>不是 wiener 的訂單，查詢就查不到，後面的程式根本拿不到別人的資料。查不到時回 <code>404</code>，對方也無法從回應分辨「訂單不存在」和「訂單存在但不是你的」。「我的帳號」「我的訂單列表」這類只看自己資料的功能，乾脆不從請求讀使用者識別值，直接用 Session 查出的身分。</p>
+<p>單一擁有者只是最簡單的規則。共享文件、團隊帳號、客服人員代查訂單這類情況，需要明確寫出「誰和這筆資料是什麼關係、因此能做什麼」，同樣採預設拒絕。</p>
+<h4>只接受允許的欄位</h4>
+<p>更新資料時，程式列出這個功能允許修改的欄位（例如只有 <code>email</code>），其他欄位一律忽略。角色只能經由專門的、有權限檢查的管理功能變更。</p>
+<h4>把規則寫成測試</h4>
+<p>上一小節的比對表格可以直接變成自動化測試：每個功能、每種執行者（未登入、擁有者、同角色的其他使用者、管理員）各一個案例，寫明應有的結果。每次修改程式都跑一遍，新增的功能沒有對應的規則與測試，就不該上線。</p>
+<p>難猜的識別值、隱藏的連結仍然可以保留，它們讓資訊少外流一點，但都不能取代上面的檢查。OWASP 的 <a href="https://cheatsheetseries.owasp.org/cheatsheets/Authorization_Cheat_Sheet.html">Authorization Cheat Sheet</a> 整理了這些原則。</p>
+
+<h3 id="fix-ineffective">無效的防禦</h3>
 <table>
   <thead><tr><th>做法</th><th>為什麼不夠</th></tr></thead>
   <tbody>
     <tr><td>只在畫面上隱藏連結或按鈕</td><td>請求不經畫面也能送出，伺服器處理請求時沒有檢查</td></tr>
-    <tr><td>把後台放在難猜的網址</td><td>網址可能出現在前端程式、<code>robots.txt</code> 或其他回應中；拿到網址的人照樣能用</td></tr>
+    <tr><td>把後台放在難猜的網址</td><td>網址可能出現在打包後的前端程式、說明文件或錯誤訊息中；拿到網址的人照樣能用</td></tr>
     <tr><td>用 UUID 取代流水號</td><td>識別值變難猜，但可能在其他頁面公開；伺服器仍沒有比對擁有者</td></tr>
     <tr><td>把角色放在 Cookie 或隱藏欄位，不驗證是否被改過</td><td>這些值由使用者保管，伺服器沒有驗證完整性就直接採信，被改過也分辨不出來</td></tr>
     <tr><td>只在流程第一步檢查</td><td>後續步驟的請求可以直接送出，不必先經過第一步</td></tr>
@@ -349,43 +287,7 @@ username=[被變更的帳號]&amp;role=[想取得的角色]&amp;confirm=yes</cod
 </table>
 <p>這些做法都在依賴請求裡由使用者決定的東西，或依賴使用者「應該」照什麼順序操作。</p>
 
-<h2 id="fix"><span class="num">4.2.10</span> 怎麼修補</h2>
-<h3>每筆請求都在伺服器端判斷</h3>
-<p>授權判斷放在伺服器，對每一筆請求重新做，用的是伺服器用 Session 識別字查出來的執行者與角色。請求裡的角色欄位、<code>Referer</code>、「前一步已通過」之類的資訊都不拿來做決定。多步驟流程的每一步都要檢查，最後真正寫入資料的那一步尤其不能省。</p>
-<h3>預設拒絕</h3>
-<p>規則採<strong>預設拒絕</strong>（deny by default）：沒有明確規則允許的請求一律拒絕。新增一個功能卻忘了寫規則時，結果是誰都用不了，而不是誰都能用；前者在測試時馬上會被發現。</p>
-<h3>集中在一處檢查</h3>
-<p>讓每個 handler 各寫各的 <code>if</code>，總會有一個漏掉。較好的做法是把授權寫成全站共用的一個機制，每個功能宣告它需要什麼權限，由共用的程式在 handler 執行前檢查：</p>
-<pre data-lang="python"><code># 每個功能宣告需要的權限；require 在 handler 執行前
-# 用 Session 查出的執行者檢查，沒有宣告權限的功能一律拒絕
-@require("users:change-role")
-def confirm_role_change(request):
-    actor = current_user(request)                 # 來自 Session
-    target = find_user(request.form["username"])
-    new_role = request.form["role"]
-
-    if new_role not in assignable_roles(actor):   # 這個管理員能指派哪些角色
-        return forbidden()
-    if not manages(actor, target):                # 目標在不在他的管理範圍
-        return forbidden()
-    set_role(target, new_role)</code></pre>
-<p>角色變更比讀取資料多兩項檢查：執行者能指派哪些角色（一般管理員不一定能指派最高權限），以及目標帳號是否在他的管理範圍內。</p>
-<h3>把擁有者寫進查詢</h3>
-<p>針對特定資料的請求，讓查詢同時比對編號與擁有者，擁有者取自 Session：</p>
-<pre data-lang="python"><code>order = db.query(
-    "SELECT * FROM orders WHERE id = ? AND owner_id = ?",
-    order_id, user.id)        # user.id 來自 Session，不來自請求
-if order is None:
-    return not_found()</code></pre>
-<p>不是 wiener 的訂單，查詢就查不到，後面的程式根本拿不到別人的資料。查不到時回 <code>404</code>，對方也無法從回應分辨「訂單不存在」和「訂單存在但不是你的」。「我的帳號」「我的訂單列表」這類只看自己資料的功能，乾脆不從請求讀使用者識別值，直接用 Session 查出的身分。</p>
-<p>單一擁有者只是最簡單的規則。共享文件、團隊帳號、客服人員代查訂單這類情況，需要明確寫出「誰和這筆資料是什麼關係、因此能做什麼」，同樣採預設拒絕。</p>
-<h3>只接受允許的欄位</h3>
-<p>更新資料時，程式列出這個功能允許修改的欄位（例如只有 <code>email</code>），其他欄位一律忽略。角色只能經由專門的、有權限檢查的管理功能變更。</p>
-<h3>把規則寫成測試</h3>
-<p>上一小節的比對表格可以直接變成自動化測試：每個功能、每種執行者（未登入、擁有者、同角色的其他使用者、管理員）各一個案例，寫明應有的結果。每次修改程式都跑一遍，新增的功能沒有對應的規則與測試，就不該上線。</p>
-<p>難猜的識別值、隱藏的連結仍然可以保留，它們讓資訊少外流一點，但都不能取代上面的檢查。OWASP 的 <a href="https://cheatsheetseries.owasp.org/cheatsheets/Authorization_Cheat_Sheet.html">Authorization Cheat Sheet</a> 整理了這些原則。</p>
-
-<h2 id="summary"><span class="num">4.2.11</span> 小結</h2>
+<h2 id="summary"><span class="num">4.2.10</span> 小結</h2>
 <ul>
   <li>授權判斷需要執行者、目標、動作三項輸入；執行者只能取自伺服器用 Session 查到的身分，目標與動作來自請求，可以被改寫。</li>
   <li>水平越權跨到同層級的其他使用者，垂直越權跨到更高的角色；讀到管理員的憑證時，兩者會串在一起。</li>
@@ -408,7 +310,7 @@ if order is None:
 <nav class="pager" aria-label="上下節"><a class="prev" href="../../identity/authentication/index.html"><small>← prev</small><span class="num">4.1</span> Authentication</a><a class="next" href="../../cross-site/cross-site-trust/index.html"><small>next →</small><span class="num">5.1</span> CSRF, CORS, and Cross-Site Trust</a></nav>
 </main>
 </div>
-<footer class="sm-status"><span class="sm-s-main">26 sections</span><span class="sm-s-list"><span class="sm-s-planned">規劃中 12</span> <span class="sm-s-draft">草稿 3</span> <span class="sm-s-ready">已完成 11</span></span><span class="sm-s-end">系統地圖</span></footer>
-<script src="../../assets/theme/theme.js?v=d288e31038"></script>
+<footer class="sm-status"><span class="sm-s-main">26 sections</span><span class="sm-s-list"><span class="sm-s-planned">規劃中 12</span> <span class="sm-s-draft">草稿 0</span> <span class="sm-s-ready">已完成 14</span></span><span class="sm-s-end">系統地圖</span></footer>
+<script src="../../assets/theme/theme.js?v=c574a6a9e8"></script>
 </body>
 </html>
