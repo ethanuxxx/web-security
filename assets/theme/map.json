@@ -78,12 +78,13 @@
   "zoom_context": {
     "server-input": ["app", "cdn"],
     "browser-output": ["cdn"],
-    "identity": ["cdn", "browser"],
+    "identity": ["cdn", "internal"],
     "cross-site": ["cdn", "identity", "app"],
     "server-actions": ["cdn"],
     "apis": ["cdn", "fs"],
     "delegated-identity": ["identity", "app"],
     "proxy-cache": ["browser", "app"],
-    "llm": ["api", "identity"]
+    "llm": ["api", "identity", "cdn", "internal"],
+    "logic-timing": ["cdn", "internal"]
   }
 }

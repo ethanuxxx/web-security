@@ -217,6 +217,8 @@ figure { margin: 1.8rem 0; }
 figure svg, figure img { display: block; max-width: 100%; height: auto; margin: 0 auto; }
 figcaption { margin-top: .6rem; font-size: .9rem; color: var(--muted); text-align: center; }
 .fig-num { font-weight: 600; color: var(--text); margin-right: .3em; }
+caption { caption-side: top; text-align: left; padding: 0 0 .4rem; font-size: .9rem; color: var(--muted); }
+.tbl-num { font-weight: 600; color: var(--text); margin-right: .3em; }
 table { border-collapse: collapse; display: block; overflow-x: auto; margin: 1.2rem 0; }
 th, td { border: 1px solid var(--border); padding: .4rem .7rem; text-align: left; }
 .content th { background: var(--code-bg); color: var(--heading); font-weight: 600; }

@@ -226,14 +226,13 @@ button.sm-toplink[hidden] { display: none; }
   transform: rotate(-45deg); transition: transform .12s;
 }
 details[open] > .sm-part::before, details[open] > summary::before { transform: rotate(45deg); }
-.sm-folder > summary { display: flex; align-items: center; padding: .1rem .5rem .1rem .9rem; color: var(--muted); }
+.sm-folder > summary { cursor: pointer; display: flex; align-items: center; padding: .1rem .5rem .1rem .9rem; color: var(--muted); }
 .sm-chlink {
   flex: 1; min-width: 0; display: flex; gap: .4rem; align-items: baseline; padding: .22rem .35rem;
   color: var(--text); font-weight: 500; border-radius: 3px;
 }
 .sm-chlink .num { flex: none; min-width: .8rem; }
-.sm-chlink:hover, .sm-file:hover { background: var(--accent-soft); text-decoration: none; }
-.sm-chlink[aria-current="page"] { color: var(--accent); background: var(--accent-soft); }
+.sm-folder > summary:hover .sm-chlink, .sm-file:hover { background: var(--accent-soft); text-decoration: none; }
 .sm-files { margin: 0 .25rem 0 1.15rem; border-left: 1px solid var(--border); }
 .sm-file {
   display: flex; align-items: baseline; gap: .4rem; padding: .2rem .3rem .2rem .5rem;
@@ -277,7 +276,7 @@ details[open] > .sm-part::before, details[open] > summary::before { transform: r
   border-left: 2px solid transparent; margin-left: -1px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
 }
 .sm-outline a:hover { background: var(--accent-soft); text-decoration: none; border-left-color: var(--accent); }
-.sm-outline a:focus-visible, .sm-mini-link:focus-visible, .sm-card-a:focus-visible,
+.sm-outline a:focus-visible, .sm-mini-link:focus-visible,
 .sm-chrow a:focus-visible, .sm-tip a:focus-visible, .sm-btn:focus-visible, .pager a:focus-visible,
 .sm-sitem a:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
 .sm-outline .num { flex: none; }
@@ -348,24 +347,12 @@ details[open] > .sm-part::before, details[open] > summary::before { transform: r
 .sm-svgbox { position: relative; width: max(100%, 930px); }
 .sm-map-full { width: 100%; }
 .sm-map-zoom { margin: 0 auto; overflow: hidden; height: auto; width: clamp(calc(var(--vbw) * .92px), 100%, calc(var(--vbw) * 1.2px)); }
-.sm-zoom .sm-scroller {
-  background:
-    linear-gradient(90deg, var(--surface) 30%, transparent) left center / 36px 100% no-repeat local,
-    linear-gradient(270deg, var(--surface) 30%, transparent) right center / 36px 100% no-repeat local,
-    radial-gradient(farthest-side at 0 50%, rgba(0, 0, 0, .3), transparent) left center / 12px 100% no-repeat scroll,
-    radial-gradient(farthest-side at 100% 50%, rgba(0, 0, 0, .3), transparent) right center / 12px 100% no-repeat scroll,
-    linear-gradient(var(--grid) 1px, transparent 1px) 0 0 / 24px 24px,
-    linear-gradient(90deg, var(--grid) 1px, transparent 1px) 0 0 / 24px 24px;
-  background-color: var(--surface);
-}
-.sm-zoom-note { margin: 0; padding: .35rem .9rem; border-top: 1px solid var(--border); font: .72rem var(--font-mono); color: var(--muted); }
-.sm-zlist { display: none; }
 /* desktop: the text list lies invisibly over the svg; it only carries the #map-<chapter> anchors */
 .sm-stack { position: absolute; inset: 0; display: block; visibility: hidden; pointer-events: none; overflow: clip; padding: 0; }
 .sm-anchor { position: absolute; left: var(--ax); top: var(--ay); width: 1px; height: 1px; }
 
 /* ---------- window panels (map / zoom) ---------- */
-.sm-mapwrap, .sm-zoom {
+.sm-mapwrap {
   border: 1px solid var(--border); border-radius: 8px; background: var(--surface);
   box-shadow: 0 0 30px var(--glow); overflow: hidden;
 }
@@ -410,7 +397,7 @@ details[open] > .sm-part::before, details[open] > summary::before { transform: r
 .sm-tip-secs a:hover { color: var(--c-accent); }
 
 /* phone version of the map */
-.sm-stack, .sm-zlist { padding: .9rem 16px 1rem; }
+.sm-stack { padding: .9rem 16px 1rem; }
 .sm-scol + .sm-scol { margin-top: .9rem; }
 .sm-scol h3 { margin: 0 0 .5rem; padding: 0; border: 0; font: 700 .72rem var(--font-mono); letter-spacing: .06em; color: var(--muted); }
 .sm-scol h3::before { content: "# "; color: var(--accent); }
@@ -467,22 +454,6 @@ details[open] > .sm-part::before, details[open] > summary::before { transform: r
 .sm-seclist a { flex: 1; min-width: 0; display: flex; gap: .5rem; color: var(--text); }
 .sm-seclist a:hover { color: var(--accent); text-decoration: none; }
 .sm-seclist .num { flex: none; min-width: 1.7rem; }
-
-/* ---------- chapter page ---------- */
-.sm-zoom { margin: 1.4rem 0 1.8rem; }
-.sm-files-h { margin: 0 0 .7rem; padding: 0; border: 0; font: 700 .8rem var(--font-mono); letter-spacing: .12em; color: var(--muted); }
-.sm-files-h::before { content: "# "; color: var(--accent); }
-.sm-cards { list-style: none; margin: 0; padding: 0; }
-.sm-card { margin: 0 0 .7rem; background: var(--surface); border: 1px solid var(--border); border-left: 3px solid var(--accent); border-radius: var(--radius); }
-.sm-card.is-planned { border-left-style: dashed; border-left-color: var(--line); }
-.sm-card:hover { border-color: var(--accent); box-shadow: 0 0 16px var(--glow); }
-.sm-card-a { display: block; padding: .7rem 1rem .75rem; color: var(--text); }
-.sm-card-a:hover { text-decoration: none; }
-.sm-card-top { display: flex; flex-wrap: wrap; align-items: baseline; gap: .2rem .6rem; }
-.sm-card-t { font-weight: 700; font-size: 1.05rem; color: var(--heading); }
-.sm-card-top .badge { margin-left: auto; }
-.sm-card-q { display: block; margin-top: .15rem; color: var(--muted); font-size: .9rem; }
-.sm-card-q::before { content: "// "; font-family: var(--font-mono); color: var(--accent); }
 
 /* ---------- badges, pager ---------- */
 .badge { font-family: var(--font-mono); font-weight: 500; font-size: .68rem; border-radius: 3px; padding: 0 .4rem; border: 1px solid currentColor; letter-spacing: 0; white-space: nowrap; }
@@ -552,17 +523,6 @@ details[open] > .sm-part::before, details[open] > summary::before { transform: r
   .sm-stack { position: static; visibility: visible; pointer-events: auto; overflow: visible; }
   .sm-anchor { position: static; display: block; width: 0; height: 0; }
   .js .sm-tip { display: none; }
-}
-@media (max-width: 1179px) {
-  /* chapter page: the zoom svg would be smaller than ~11px text, so show the list instead */
-  .sm-zoom .sm-scroller, .sm-zoom-note { display: none; }
-  .sm-zlist { display: block; }
-  /* the component lists wrap into columns instead of one long stack (chapter 7 has 5 + 6 items) */
-  .sm-zlist .sm-scol ul { grid-template-columns: repeat(auto-fill, minmax(12.5rem, 1fr)); gap: .45rem .6rem; }
-  .sm-zlist .sm-sitem.is-nested { margin-left: 0; }
-  .sm-zlist .sm-sitem a { height: 100%; box-sizing: border-box; padding: .4rem .65rem; gap: .6rem; }
-  .sm-zlist .sm-stext { min-width: 0; }
-  .sm-zlist .sm-sname, .sm-zlist .sm-ssub { white-space: normal; overflow-wrap: anywhere; }
 }
 @media (max-width: 860px) {
   .sm-shell { grid-template-columns: minmax(0, 1fr); grid-template-areas: "tree" "head" "aside" "doc"; grid-template-rows: none; }
@@ -666,10 +626,11 @@ pre code { border: 0; color: inherit; }
 .content tbody tr:last-child td { border-bottom: 0; }
 .content tbody tr:nth-child(even) td { background: color-mix(in srgb, var(--code-bg) 55%, transparent); }
 .content tbody tr:hover td { background: var(--accent-soft); }
-.content td:first-child { white-space: nowrap; }
-/* table.wide: long first column, fill the text column and let every cell wrap */
+/* cells wrap so a table never grows wider than the text column; short first-column labels still fit on one line */
+.content td:first-child { min-width: 5.5em; }
 .content table.wide { width: 100%; }
-.content table.wide td:first-child { white-space: normal; }
+.content td code { overflow-wrap: anywhere; }
+.content td code.nw { white-space: nowrap; overflow-wrap: normal; }
 
 /* figure = diagram canvas */
 .content figure {
@@ -680,6 +641,8 @@ pre code { border: 0; color: inherit; }
 .content figure svg text { font-family: var(--font-body); }
 .content figcaption { margin-top: .7rem; padding-top: .5rem; border-top: 1px dashed var(--border); font-size: .88rem; text-align: left; }
 .fig-num { font-family: var(--font-mono); color: var(--accent); }
+.content caption { caption-side: top; text-align: left; padding: 0 0 .45rem; font-size: .85rem; color: var(--muted); }
+.tbl-num { font-family: var(--font-mono); color: var(--accent); margin-right: .3em; }
 
 .content dl { margin: 1.4em 0; }
 .content dt { margin-top: 1em; font: 700 .92rem var(--font-mono); color: var(--accent); }
