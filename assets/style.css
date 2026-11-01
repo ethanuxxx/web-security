@@ -12,8 +12,14 @@
   --planned-bg: #fbf3dc;
   --draft: #7a3e9d;
   --draft-bg: #f3e9f8;
+  --review: #0e6a9c;
+  --review-bg: #def0fa;
   --ready: #23753b;
   --ready-bg: #e3f4e7;
+  --practice: #ff6633;
+  --practice-bg: #fff1ea;
+  --on-practice: #1f2328;
+  --lamp-ready: #2a9150; --lamp-review: #b07300; --lamp-planned: #7d858f; --lamp-draft: #2f74c0;
   --heading: #1f2328;
   --note: #1f5fa8;
   --note-bg: #e8f0fa;
@@ -62,8 +68,14 @@
     --planned-bg: #3a3220;
     --draft: #d3a6ee;
     --draft-bg: #33263d;
+    --review: #7cc4ee;
+    --review-bg: #1a3040;
     --ready: #86d49b;
     --ready-bg: #1e3526;
+    --practice: #ff6633;
+    --practice-bg: #33201a;
+    --on-practice: #1f2328;
+    --lamp-ready: #4cc777; --lamp-review: #f0b93a; --lamp-planned: #8b949e; --lamp-draft: #6fb0f2;
     --heading: #e6e3dc;
     --note: #7fb0eb;
     --note-bg: #1d2a3a;
@@ -95,7 +107,10 @@
   --bg: #15171a; --surface: #1c1f23; --text: #e6e3dc; --muted: #a0a6ad;
   --border: #2f343a; --accent: #7fb0eb; --accent-soft: #1d2a3a; --code-bg: #23272c;
   --planned: #e2c26b; --planned-bg: #3a3220; --draft: #d3a6ee; --draft-bg: #33263d;
+  --review: #7cc4ee; --review-bg: #1a3040;
   --ready: #86d49b; --ready-bg: #1e3526;
+  --practice: #ff6633; --practice-bg: #33201a; --on-practice: #1f2328;
+  --lamp-ready: #4cc777; --lamp-review: #f0b93a; --lamp-planned: #8b949e; --lamp-draft: #6fb0f2;
   --heading: #e6e3dc; --note: #7fb0eb; --note-bg: #1d2a3a;
   --warning: #f0a77c; --warning-bg: #3b2a20;
   --topbar-bg: #1c1f23; --topbar-text: #e6e3dc; --icon-accent: #f2b84b; --icon-fill: #4a3d28; color-scheme: dark;
@@ -172,8 +187,8 @@ pre code { padding: 0; background: none; }
 h1, h2, h3, h4 { font-family: var(--font-heading); color: var(--heading); }
 h1 { font-size: 1.8rem; line-height: 1.35; margin: .3rem 0 .6rem; }
 h2 { font-size: 1.35rem; line-height: 1.4; margin: 2.4rem 0 .8rem; padding-top: .4rem; scroll-margin-top: 4rem; }
-h3 { font-size: 1.1rem; margin: 1.8rem 0 .6rem; scroll-margin-top: 4rem; }
-h4 { font-size: 1rem; margin: 1.4rem 0 .5rem; scroll-margin-top: 4rem; }
+h3 { font-size: 1.25rem; margin: 1.8rem 0 .6rem; scroll-margin-top: 4rem; }
+h4 { font-size: .98rem; margin: 1.4rem 0 .5rem; scroll-margin-top: 4rem; }
 .crumbs { margin: 0; font-size: .85rem; color: var(--muted); }
 .question { margin: .2rem 0 0; color: var(--muted); }
 
@@ -191,15 +206,22 @@ h4 { font-size: 1rem; margin: 1.4rem 0 .5rem; scroll-margin-top: 4rem; }
 .sec-list li:first-child { border-top: 0; }
 .sec-list .question { font-size: .9rem; }
 
+/* status lamp, no visible text: filled = written (ready green, review amber, draft blue), hollow grey = planned */
 .badge {
-  display: inline-block; vertical-align: middle;
-  font-size: .72rem; font-weight: 600; line-height: 1.6;
-  padding: 0 .5rem; border-radius: 999px;
+  display: inline-flex; align-items: center; vertical-align: middle; margin-left: .3em;
+  font-size: .72rem; font-weight: 500; line-height: 1.6; color: var(--muted); white-space: nowrap;
+  --lamp: var(--lamp-planned);
 }
 h1 .badge { font-size: .8rem; }
-.badge-planned { color: var(--planned); background: var(--planned-bg); }
-.badge-draft { color: var(--draft); background: var(--draft-bg); }
-.badge-ready { color: var(--ready); background: var(--ready-bg); }
+.lamp {
+  flex: none; width: .62em; height: .62em; border-radius: 50%;
+  background: var(--lamp); box-shadow: 0 0 0 .2em color-mix(in srgb, var(--lamp) 22%, transparent);
+}
+.badge-ready { --lamp: var(--lamp-ready); }
+.badge-review { --lamp: var(--lamp-review); }
+.badge-draft { --lamp: var(--lamp-draft); }
+.badge-planned .lamp { background: transparent; box-shadow: inset 0 0 0 .12em var(--lamp); }
+.lamp-label { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
 
 .notice, .placeholder {
   border-left: 4px solid var(--planned); background: var(--planned-bg);
@@ -222,6 +244,8 @@ caption { caption-side: top; text-align: left; padding: 0 0 .4rem; font-size: .9
 table { border-collapse: collapse; display: block; overflow-x: auto; margin: 1.2rem 0; }
 th, td { border: 1px solid var(--border); padding: .4rem .7rem; text-align: left; }
 .content th { background: var(--code-bg); color: var(--heading); font-weight: 600; }
+/* 防禦段的無效防禦表（id=ineffective-table，見 docs/writing-guide.md）：前兩欄短，不折行，多出的寬度留給第三欄 */
+#ineffective-table td:nth-child(-n+2) { white-space: nowrap; }
 .content tbody tr:nth-child(even) td { background: color-mix(in srgb, var(--code-bg) 45%, transparent); }
 
 /* Content components (hooks for themes) */
@@ -244,6 +268,24 @@ th, td { border: 1px solid var(--border); padding: .4rem .7rem; text-align: left
 }
 .content aside.note::before { content: "補充"; }
 .content aside.warning::before { content: "注意"; color: var(--warning); }
+.content aside.practice {
+  margin: 1.6em 0; padding: .7rem 1rem .8rem; border: 1px solid var(--practice);
+  border-left-width: 6px; background: var(--practice-bg); border-radius: var(--radius);
+}
+.content aside.practice::before {
+  content: "Lab 練習"; display: inline-block; margin-bottom: .2rem; padding: .05em .6em;
+  font-size: .8rem; font-weight: 700; letter-spacing: .04em; color: var(--on-practice); background: var(--practice);
+  border-radius: 999px;
+}
+.content aside.next {
+  margin: 1.6em 0; padding: .7rem 1rem .8rem; border: 1px solid var(--border);
+  background: var(--surface); border-radius: var(--radius);
+}
+.content aside.next::before {
+  content: "下一節"; display: inline-block; margin-bottom: .2rem; padding: .05em .6em;
+  font-size: .8rem; font-weight: 700; letter-spacing: .04em; color: var(--muted);
+  border: 1px solid var(--border); border-radius: 999px;
+}
 .content aside > :first-child { margin-top: .2em; }
 .content aside > :last-child { margin-bottom: 0; }
 kbd {

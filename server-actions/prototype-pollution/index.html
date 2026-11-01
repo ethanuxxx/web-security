@@ -5,29 +5,517 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>7.5 Prototype Pollution｜Web 安全</title>
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Crect width='16' height='16' rx='3' fill='%23070c12'/%3E%3Crect x='1.5' y='1.5' width='13' height='13' rx='2.5' fill='none' stroke='%2336e0cc' stroke-width='1.4'/%3E%3Cpath d='M5 8 L11 5 M5 8 L11 11' stroke='%2336e0cc' stroke-width='1.2' fill='none'/%3E%3Ccircle cx='5' cy='8' r='1.6' fill='%2336e0cc'/%3E%3Ccircle cx='11' cy='5' r='1.6' fill='%2336e0cc'/%3E%3Ccircle cx='11' cy='11' r='1.6' fill='%2336e0cc'/%3E%3C/svg%3E">
-<link rel="stylesheet" href="../../assets/style.css?v=a6c60e11a1">
-<link rel="stylesheet" href="../../assets/theme/theme.css?v=a6c60e11a1">
+<link rel="stylesheet" href="../../assets/style.css?v=2cda1ff0b6">
+<link rel="stylesheet" href="../../assets/theme/theme.css?v=2cda1ff0b6">
 <script>(function(){var m=null;try{m=localStorage.getItem("web-security:motion")}catch(e){}if(m!=="on"&&m!=="off"){m="on";try{if(matchMedia("(prefers-reduced-motion: reduce)").matches)m="off"}catch(e){}}document.documentElement.setAttribute("data-motion",m)})()</script>
 </head>
 <body class="page-section sm-body">
 <a class="skip" href="#main">跳到正文</a>
 <header class="sm-top"><a class="sm-brand" href="../../index.html"><svg class="sm-logo" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><rect x="1" y="1" width="14" height="14" rx="3" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M5 8 L11 5 M5 8 L11 11" stroke="currentColor" stroke-width="1.3" fill="none"/><circle cx="5" cy="8" r="1.7" fill="currentColor"/><circle cx="11" cy="5" r="1.7" fill="currentColor"/><circle cx="11" cy="11" r="1.7" fill="currentColor"/></svg><span class="sm-brand-t">web-security</span></a><nav class="sm-path" aria-label="目前位置"><ol><li class="sm-p-root"><a href="../../index.html">web-security</a></li><li class="sm-p-ch split"><span>7<span class="sm-p-title">&nbsp;伺服器把資料交給其他元件之後</span></span></li><li class=""><span aria-current="page">7.5</span></li></ol></nav><a class="sm-toplink" href="../../index.html#map">map</a><a class="sm-toplink" href="../../chapters/index.html">chapters</a><button type="button" class="sm-toplink sm-motion" aria-pressed="true" hidden>動畫：開</button></header>
 <div class="sm-shell">
-<nav class="sm-tree" aria-label="教材瀏覽器"><details class="sm-tree-wrap" open><summary class="sm-tree-sum">EXPLORER／教材目錄</summary><p class="sm-tree-h" aria-hidden="true">EXPLORER</p><details class="sm-partd" open><summary class="sm-part">第一部分：輸入如何穿過網站</summary><details class="sm-folder"><summary><span class="sm-chlink" title="第 1 章 Web 與 HTTP"><span class="num">1</span><span class="sm-fname">Web 與 HTTP</span></span></summary><div class="sm-files"><a class="sm-file" href="../../web-http/web-basics/index.html" title="1.1 Seeing the Web Through the Browser"><span class="num">1.1</span><span class="sm-fname">Seeing the Web Through the Browser</span><span class="sm-st sm-st-ready" aria-hidden="true"></span><span class="sm-sr">（已完成）</span></a><a class="sm-file" href="../../web-http/http-session/index.html" title="1.2 HTTP Requests and Sessions"><span class="num">1.2</span><span class="sm-fname">HTTP Requests and Sessions</span><span class="sm-st sm-st-ready" aria-hidden="true"></span><span class="sm-sr">（已完成）</span></a></div></details><details class="sm-folder"><summary><span class="sm-chlink" title="第 2 章 伺服器如何處理使用者輸入"><span class="num">2</span><span class="sm-fname">伺服器如何處理使用者輸入</span></span></summary><div class="sm-files"><a class="sm-file" href="../../server-input/path-traversal/index.html" title="2.1 Path Traversal"><span class="num">2.1</span><span class="sm-fname">Path Traversal</span><span class="sm-st sm-st-ready" aria-hidden="true"></span><span class="sm-sr">（已完成）</span></a><a class="sm-file" href="../../server-input/file-upload/index.html" title="2.2 File Upload Vulnerabilities"><span class="num">2.2</span><span class="sm-fname">File Upload Vulnerabilities</span><span class="sm-st sm-st-ready" aria-hidden="true"></span><span class="sm-sr">（已完成）</span></a><a class="sm-file" href="../../server-input/sql-injection/index.html" title="2.3 SQL Injection Basics"><span class="num">2.3</span><span class="sm-fname">SQL Injection Basics</span><span class="sm-st sm-st-ready" aria-hidden="true"></span><span class="sm-sr">（已完成）</span></a><a class="sm-file" href="../../server-input/sql-injection-observation/index.html" title="2.4 UNION and Blind SQL Injection"><span class="num">2.4</span><span class="sm-fname">UNION and Blind SQL Injection</span><span class="sm-st sm-st-ready" aria-hidden="true"></span><span class="sm-sr">（已完成）</span></a><a class="sm-file" href="../../server-input/command-injection/index.html" title="2.5 OS Command Injection"><span class="num">2.5</span><span class="sm-fname">OS Command Injection</span><span class="sm-st sm-st-ready" aria-hidden="true"></span><span class="sm-sr">（已完成）</span></a></div></details><details class="sm-folder"><summary><span class="sm-chlink" title="第 3 章 伺服器的輸出如何在瀏覽器中變成程式"><span class="num">3</span><span class="sm-fname">伺服器的輸出如何在瀏覽器中變成程式</span></span></summary><div class="sm-files"><a class="sm-file" href="../../browser-output/xss-basics/index.html" title="3.1 Cross-Site Scripting Basics"><span class="num">3.1</span><span class="sm-fname">Cross-Site Scripting Basics</span><span class="sm-st sm-st-ready" aria-hidden="true"></span><span class="sm-sr">（已完成）</span></a><a class="sm-file" href="../../browser-output/xss-context-dom/index.html" title="3.2 Output Contexts and DOM-Based XSS"><span class="num">3.2</span><span class="sm-fname">Output Contexts and DOM-Based XSS</span><span class="sm-st sm-st-ready" aria-hidden="true"></span><span class="sm-sr">（已完成）</span></a></div></details><details class="sm-folder"><summary><span class="sm-chlink" title="第 4 章 網站如何知道你是誰、允許你做什麼"><span class="num">4</span><span class="sm-fname">網站如何知道你是誰、允許你做什麼</span></span></summary><div class="sm-files"><a class="sm-file" href="../../identity/authentication/index.html" title="4.1 Authentication"><span class="num">4.1</span><span class="sm-fname">Authentication</span><span class="sm-st sm-st-ready" aria-hidden="true"></span><span class="sm-sr">（已完成）</span></a><a class="sm-file" href="../../identity/access-control/index.html" title="4.2 Access Control"><span class="num">4.2</span><span class="sm-fname">Access Control</span><span class="sm-st sm-st-ready" aria-hidden="true"></span><span class="sm-sr">（已完成）</span></a></div></details><details class="sm-folder"><summary><span class="sm-chlink" title="第 5 章 網站之間如何利用瀏覽器的信任"><span class="num">5</span><span class="sm-fname">網站之間如何利用瀏覽器的信任</span></span></summary><div class="sm-files"><a class="sm-file" href="../../cross-site/cross-site-trust/index.html" title="5.1 CSRF, CORS, and Cross-Site Trust"><span class="num">5.1</span><span class="sm-fname">CSRF, CORS, and Cross-Site Trust</span><span class="sm-st sm-st-ready" aria-hidden="true"></span><span class="sm-sr">（已完成）</span></a></div></details><details class="sm-folder"><summary><span class="sm-chlink" title="第 6 章 問題藏在流程與時間裡"><span class="num">6</span><span class="sm-fname">問題藏在流程與時間裡</span></span></summary><div class="sm-files"><a class="sm-file" href="../../logic-timing/business-logic/index.html" title="6.1 Business Logic Vulnerabilities"><span class="num">6.1</span><span class="sm-fname">Business Logic Vulnerabilities</span><span class="sm-st sm-st-ready" aria-hidden="true"></span><span class="sm-sr">（已完成）</span></a><a class="sm-file" href="../../logic-timing/race-conditions/index.html" title="6.2 Race Conditions"><span class="num">6.2</span><span class="sm-fname">Race Conditions</span><span class="sm-st sm-st-ready" aria-hidden="true"></span><span class="sm-sr">（已完成）</span></a></div></details></details><details class="sm-partd" open><summary class="sm-part">第二部分：多元件系統的信任邊界</summary><details class="sm-folder" open><summary><span class="sm-chlink" title="第 7 章 伺服器把資料交給其他元件之後"><span class="num">7</span><span class="sm-fname">伺服器把資料交給其他元件之後</span></span></summary><div class="sm-files"><a class="sm-file is-planned" href="../../server-actions/ssrf/index.html" title="7.1 Server-Side Request Forgery"><span class="num">7.1</span><span class="sm-fname">Server-Side Request Forgery</span><span class="sm-st sm-st-planned" aria-hidden="true"></span><span class="sm-sr">（規劃中）</span></a><a class="sm-file is-planned" href="../../server-actions/xxe/index.html" title="7.2 XML External Entity Injection"><span class="num">7.2</span><span class="sm-fname">XML External Entity Injection</span><span class="sm-st sm-st-planned" aria-hidden="true"></span><span class="sm-sr">（規劃中）</span></a><a class="sm-file is-planned" href="../../server-actions/ssti/index.html" title="7.3 Server-Side Template Injection"><span class="num">7.3</span><span class="sm-fname">Server-Side Template Injection</span><span class="sm-st sm-st-planned" aria-hidden="true"></span><span class="sm-sr">（規劃中）</span></a><a class="sm-file is-planned" href="../../server-actions/deserialization/index.html" title="7.4 Insecure Deserialization"><span class="num">7.4</span><span class="sm-fname">Insecure Deserialization</span><span class="sm-st sm-st-planned" aria-hidden="true"></span><span class="sm-sr">（規劃中）</span></a><a class="sm-file is-planned" href="../../server-actions/prototype-pollution/index.html" aria-current="page" title="7.5 Prototype Pollution"><span class="num">7.5</span><span class="sm-fname">Prototype Pollution</span><span class="sm-st sm-st-planned" aria-hidden="true"></span><span class="sm-sr">（規劃中）</span></a></div></details><details class="sm-folder"><summary><span class="sm-chlink" title="第 8 章 網站變成 API 之後"><span class="num">8</span><span class="sm-fname">網站變成 API 之後</span></span></summary><div class="sm-files"><a class="sm-file is-planned" href="../../apis/api-testing/index.html" title="8.1 API Attack Surface"><span class="num">8.1</span><span class="sm-fname">API Attack Surface</span><span class="sm-st sm-st-planned" aria-hidden="true"></span><span class="sm-sr">（規劃中）</span></a><a class="sm-file is-planned" href="../../apis/graphql-websockets/index.html" title="8.2 GraphQL and WebSockets"><span class="num">8.2</span><span class="sm-fname">GraphQL and WebSockets</span><span class="sm-st sm-st-planned" aria-hidden="true"></span><span class="sm-sr">（規劃中）</span></a></div></details><details class="sm-folder"><summary><span class="sm-chlink" title="第 9 章 身分跨越網站與元件之後"><span class="num">9</span><span class="sm-fname">身分跨越網站與元件之後</span></span></summary><div class="sm-files"><a class="sm-file is-planned" href="../../delegated-identity/jwt/index.html" title="9.1 JSON Web Tokens"><span class="num">9.1</span><span class="sm-fname">JSON Web Tokens</span><span class="sm-st sm-st-planned" aria-hidden="true"></span><span class="sm-sr">（規劃中）</span></a><a class="sm-file is-planned" href="../../delegated-identity/oauth/index.html" title="9.2 OAuth and Third-Party Login"><span class="num">9.2</span><span class="sm-fname">OAuth and Third-Party Login</span><span class="sm-st sm-st-planned" aria-hidden="true"></span><span class="sm-sr">（規劃中）</span></a></div></details><details class="sm-folder"><summary><span class="sm-chlink" title="第 10 章 Proxy、Cache 與後端看到的不一樣"><span class="num">10</span><span class="sm-fname">Proxy、Cache 與後端看到的不一樣</span></span></summary><div class="sm-files"><a class="sm-file is-planned" href="../../proxy-cache/host-cache/index.html" title="10.1 Host Headers and Web Caches"><span class="num">10.1</span><span class="sm-fname">Host Headers and Web Caches</span><span class="sm-st sm-st-planned" aria-hidden="true"></span><span class="sm-sr">（規劃中）</span></a><a class="sm-file is-planned" href="../../proxy-cache/request-smuggling/index.html" title="10.2 HTTP Request Smuggling"><span class="num">10.2</span><span class="sm-fname">HTTP Request Smuggling</span><span class="sm-st sm-st-planned" aria-hidden="true"></span><span class="sm-sr">（規劃中）</span></a></div></details><details class="sm-folder"><summary><span class="sm-chlink" title="第 11 章 把信任模型套到新元件：Web LLM"><span class="num">11</span><span class="sm-fname">把信任模型套到新元件：Web LLM</span></span></summary><div class="sm-files"><a class="sm-file is-planned" href="../../llm/llm-attacks/index.html" title="11.1 Web LLM Attacks"><span class="num">11.1</span><span class="sm-fname">Web LLM Attacks</span><span class="sm-st sm-st-planned" aria-hidden="true"></span><span class="sm-sr">（規劃中）</span></a></div></details></details></details></nav>
+<nav class="sm-tree" aria-label="教材瀏覽器"><details class="sm-tree-wrap" open><summary class="sm-tree-sum">EXPLORER／教材目錄</summary><p class="sm-tree-h" aria-hidden="true">EXPLORER</p><details class="sm-partd" open><summary class="sm-part">第一部分：輸入如何穿過網站</summary><details class="sm-folder"><summary><span class="sm-chlink" title="第 1 章 Web 與 HTTP"><span class="num">1</span><span class="sm-fname">Web 與 HTTP</span></span></summary><div class="sm-files"><a class="sm-file" href="../../web-http/web-basics/index.html" title="1.1 Seeing the Web Through the Browser"><span class="num">1.1</span><span class="sm-fname">Seeing the Web Through the Browser</span><span class="sm-st sm-st-review" title="待確認" aria-hidden="true"></span><span class="sm-sr">（待確認）</span></a><a class="sm-file" href="../../web-http/http-session/index.html" title="1.2 HTTP Requests and Sessions"><span class="num">1.2</span><span class="sm-fname">HTTP Requests and Sessions</span><span class="sm-st sm-st-review" title="待確認" aria-hidden="true"></span><span class="sm-sr">（待確認）</span></a></div></details><details class="sm-folder"><summary><span class="sm-chlink" title="第 2 章 伺服器如何處理使用者輸入"><span class="num">2</span><span class="sm-fname">伺服器如何處理使用者輸入</span></span></summary><div class="sm-files"><a class="sm-file" href="../../server-input/path-traversal/index.html" title="2.1 Path Traversal"><span class="num">2.1</span><span class="sm-fname">Path Traversal</span><span class="sm-st sm-st-review" title="待確認" aria-hidden="true"></span><span class="sm-sr">（待確認）</span></a><a class="sm-file" href="../../server-input/file-upload/index.html" title="2.2 File Upload Vulnerabilities"><span class="num">2.2</span><span class="sm-fname">File Upload Vulnerabilities</span><span class="sm-st sm-st-review" title="待確認" aria-hidden="true"></span><span class="sm-sr">（待確認）</span></a><a class="sm-file" href="../../server-input/sql-injection/index.html" title="2.3 SQL Injection Basics"><span class="num">2.3</span><span class="sm-fname">SQL Injection Basics</span><span class="sm-st sm-st-ready" title="已完成" aria-hidden="true"></span><span class="sm-sr">（已完成）</span></a><a class="sm-file" href="../../server-input/sql-injection-observation/index.html" title="2.4 UNION, Blind, and NoSQL Injection"><span class="num">2.4</span><span class="sm-fname">UNION, Blind, and NoSQL Injection</span><span class="sm-st sm-st-ready" title="已完成" aria-hidden="true"></span><span class="sm-sr">（已完成）</span></a><a class="sm-file" href="../../server-input/command-injection/index.html" title="2.5 OS Command Injection"><span class="num">2.5</span><span class="sm-fname">OS Command Injection</span><span class="sm-st sm-st-ready" title="已完成" aria-hidden="true"></span><span class="sm-sr">（已完成）</span></a><a class="sm-file" href="../../server-input/input-defenses/index.html" title="2.6 Defending Server-Side Input"><span class="num">2.6</span><span class="sm-fname">Defending Server-Side Input</span><span class="sm-st sm-st-review" title="待確認" aria-hidden="true"></span><span class="sm-sr">（待確認）</span></a></div></details><details class="sm-folder"><summary><span class="sm-chlink" title="第 3 章 伺服器的輸出如何在瀏覽器中變成程式"><span class="num">3</span><span class="sm-fname">伺服器的輸出如何在瀏覽器中變成程式</span></span></summary><div class="sm-files"><a class="sm-file" href="../../browser-output/xss-basics/index.html" title="3.1 Cross-Site Scripting Basics"><span class="num">3.1</span><span class="sm-fname">Cross-Site Scripting Basics</span><span class="sm-st sm-st-review" title="待確認" aria-hidden="true"></span><span class="sm-sr">（待確認）</span></a><a class="sm-file" href="../../browser-output/xss-context-dom/index.html" title="3.2 Output Contexts and DOM-Based XSS"><span class="num">3.2</span><span class="sm-fname">Output Contexts and DOM-Based XSS</span><span class="sm-st sm-st-review" title="待確認" aria-hidden="true"></span><span class="sm-sr">（待確認）</span></a></div></details><details class="sm-folder"><summary><span class="sm-chlink" title="第 4 章 網站如何知道你是誰、允許你做什麼"><span class="num">4</span><span class="sm-fname">網站如何知道你是誰、允許你做什麼</span></span></summary><div class="sm-files"><a class="sm-file" href="../../identity/authentication/index.html" title="4.1 Authentication"><span class="num">4.1</span><span class="sm-fname">Authentication</span><span class="sm-st sm-st-review" title="待確認" aria-hidden="true"></span><span class="sm-sr">（待確認）</span></a><a class="sm-file" href="../../identity/access-control/index.html" title="4.2 Access Control"><span class="num">4.2</span><span class="sm-fname">Access Control</span><span class="sm-st sm-st-review" title="待確認" aria-hidden="true"></span><span class="sm-sr">（待確認）</span></a></div></details><details class="sm-folder"><summary><span class="sm-chlink" title="第 5 章 網站之間如何利用瀏覽器的信任"><span class="num">5</span><span class="sm-fname">網站之間如何利用瀏覽器的信任</span></span></summary><div class="sm-files"><a class="sm-file" href="../../cross-site/cross-site-trust/index.html" title="5.1 CSRF, CORS, and Cross-Site Trust"><span class="num">5.1</span><span class="sm-fname">CSRF, CORS, and Cross-Site Trust</span><span class="sm-st sm-st-review" title="待確認" aria-hidden="true"></span><span class="sm-sr">（待確認）</span></a></div></details><details class="sm-folder"><summary><span class="sm-chlink" title="第 6 章 問題藏在流程與時間裡"><span class="num">6</span><span class="sm-fname">問題藏在流程與時間裡</span></span></summary><div class="sm-files"><a class="sm-file" href="../../logic-timing/business-logic/index.html" title="6.1 Business Logic Vulnerabilities"><span class="num">6.1</span><span class="sm-fname">Business Logic Vulnerabilities</span><span class="sm-st sm-st-review" title="待確認" aria-hidden="true"></span><span class="sm-sr">（待確認）</span></a><a class="sm-file" href="../../logic-timing/race-conditions/index.html" title="6.2 Race Conditions"><span class="num">6.2</span><span class="sm-fname">Race Conditions</span><span class="sm-st sm-st-review" title="待確認" aria-hidden="true"></span><span class="sm-sr">（待確認）</span></a></div></details></details><details class="sm-partd" open><summary class="sm-part">第二部分：多元件系統的信任邊界</summary><details class="sm-folder" open><summary><span class="sm-chlink" title="第 7 章 伺服器把資料交給其他元件之後"><span class="num">7</span><span class="sm-fname">伺服器把資料交給其他元件之後</span></span></summary><div class="sm-files"><a class="sm-file" href="../../server-actions/ssrf/index.html" title="7.1 Server-Side Request Forgery"><span class="num">7.1</span><span class="sm-fname">Server-Side Request Forgery</span><span class="sm-st sm-st-review" title="待確認" aria-hidden="true"></span><span class="sm-sr">（待確認）</span></a><a class="sm-file" href="../../server-actions/xxe/index.html" title="7.2 XML External Entity Injection"><span class="num">7.2</span><span class="sm-fname">XML External Entity Injection</span><span class="sm-st sm-st-review" title="待確認" aria-hidden="true"></span><span class="sm-sr">（待確認）</span></a><a class="sm-file" href="../../server-actions/ssti/index.html" title="7.3 Server-Side Template Injection"><span class="num">7.3</span><span class="sm-fname">Server-Side Template Injection</span><span class="sm-st sm-st-review" title="待確認" aria-hidden="true"></span><span class="sm-sr">（待確認）</span></a><a class="sm-file" href="../../server-actions/deserialization/index.html" title="7.4 Insecure Deserialization"><span class="num">7.4</span><span class="sm-fname">Insecure Deserialization</span><span class="sm-st sm-st-review" title="待確認" aria-hidden="true"></span><span class="sm-sr">（待確認）</span></a><a class="sm-file" href="../../server-actions/prototype-pollution/index.html" aria-current="page" title="7.5 Prototype Pollution"><span class="num">7.5</span><span class="sm-fname">Prototype Pollution</span><span class="sm-st sm-st-review" title="待確認" aria-hidden="true"></span><span class="sm-sr">（待確認）</span></a></div></details><details class="sm-folder"><summary><span class="sm-chlink" title="第 8 章 網站變成 API 之後"><span class="num">8</span><span class="sm-fname">網站變成 API 之後</span></span></summary><div class="sm-files"><a class="sm-file is-planned" href="../../apis/api-testing/index.html" title="8.1 API Attack Surface"><span class="num">8.1</span><span class="sm-fname">API Attack Surface</span><span class="sm-st sm-st-planned" title="規劃中" aria-hidden="true"></span><span class="sm-sr">（規劃中）</span></a><a class="sm-file is-planned" href="../../apis/graphql-websockets/index.html" title="8.2 GraphQL and WebSockets"><span class="num">8.2</span><span class="sm-fname">GraphQL and WebSockets</span><span class="sm-st sm-st-planned" title="規劃中" aria-hidden="true"></span><span class="sm-sr">（規劃中）</span></a></div></details><details class="sm-folder"><summary><span class="sm-chlink" title="第 9 章 身分跨越網站與元件之後"><span class="num">9</span><span class="sm-fname">身分跨越網站與元件之後</span></span></summary><div class="sm-files"><a class="sm-file is-planned" href="../../delegated-identity/jwt/index.html" title="9.1 JSON Web Tokens"><span class="num">9.1</span><span class="sm-fname">JSON Web Tokens</span><span class="sm-st sm-st-planned" title="規劃中" aria-hidden="true"></span><span class="sm-sr">（規劃中）</span></a><a class="sm-file is-planned" href="../../delegated-identity/oauth/index.html" title="9.2 OAuth and Third-Party Login"><span class="num">9.2</span><span class="sm-fname">OAuth and Third-Party Login</span><span class="sm-st sm-st-planned" title="規劃中" aria-hidden="true"></span><span class="sm-sr">（規劃中）</span></a></div></details><details class="sm-folder"><summary><span class="sm-chlink" title="第 10 章 Proxy、Cache 與後端看到的不一樣"><span class="num">10</span><span class="sm-fname">Proxy、Cache 與後端看到的不一樣</span></span></summary><div class="sm-files"><a class="sm-file is-planned" href="../../proxy-cache/host-cache/index.html" title="10.1 Host Headers and Web Caches"><span class="num">10.1</span><span class="sm-fname">Host Headers and Web Caches</span><span class="sm-st sm-st-planned" title="規劃中" aria-hidden="true"></span><span class="sm-sr">（規劃中）</span></a><a class="sm-file is-planned" href="../../proxy-cache/request-smuggling/index.html" title="10.2 HTTP Request Smuggling"><span class="num">10.2</span><span class="sm-fname">HTTP Request Smuggling</span><span class="sm-st sm-st-planned" title="規劃中" aria-hidden="true"></span><span class="sm-sr">（規劃中）</span></a></div></details><details class="sm-folder"><summary><span class="sm-chlink" title="第 11 章 把信任模型套到新元件：Web LLM"><span class="num">11</span><span class="sm-fname">把信任模型套到新元件：Web LLM</span></span></summary><div class="sm-files"><a class="sm-file is-planned" href="../../llm/llm-attacks/index.html" title="11.1 Web LLM Attacks"><span class="num">11.1</span><span class="sm-fname">Web LLM Attacks</span><span class="sm-st sm-st-planned" title="規劃中" aria-hidden="true"></span><span class="sm-sr">（規劃中）</span></a></div></details></details><details class="sm-partd sm-apx-group" open><summary class="sm-part">附錄</summary><div class="sm-files"><a class="sm-file" href="../../appendix/shell/index.html" title="附錄 A Shell"><span class="num">A</span><span class="sm-fname">Shell</span><span class="sm-st sm-st-review" title="待確認" aria-hidden="true"></span><span class="sm-sr">（待確認）</span></a><a class="sm-file" href="../../appendix/database/index.html" title="附錄 B Database"><span class="num">B</span><span class="sm-fname">Database</span><span class="sm-st sm-st-review" title="待確認" aria-hidden="true"></span><span class="sm-sr">（待確認）</span></a><a class="sm-file" href="../../appendix/sql/index.html" title="附錄 C SQL"><span class="num">C</span><span class="sm-fname">SQL</span><span class="sm-st sm-st-review" title="待確認" aria-hidden="true"></span><span class="sm-sr">（待確認）</span></a><a class="sm-file" href="../../appendix/json/index.html" title="附錄 D JSON"><span class="num">D</span><span class="sm-fname">JSON</span><span class="sm-st sm-st-ready" title="已完成" aria-hidden="true"></span><span class="sm-sr">（已完成）</span></a></div></details></details></nav>
 <header class="sm-head">
   <p class="sm-eyebrow">server-actions/prototype-pollution</p>
-  <h1><span class="num">7.5</span> Prototype Pollution <span class="badge badge-planned">規劃中</span></h1>
+  <h1><span class="num">7.5</span> Prototype Pollution</h1>
   <p class="question sm-q"><span aria-hidden="true">❯</span> 改動共用 prototype 的屬性，為什麼其他物件的行為也可能跟著變？</p>
 </header>
-<aside class="sm-aside" aria-label="本節輔助"><section class="sm-locator" aria-label="系統地圖定位"><p class="sm-ph">系統地圖</p><a class="sm-mini-link" href="../../index.html#map-server-actions" aria-label="在首頁的系統地圖上看第 7 章的位置"><svg class="sm-map sm-map-mini" viewBox="206 150 794 416" aria-hidden="true" focusable="false" preserveAspectRatio="xMidYMid meet" style="aspect-ratio:794/416"><line class="sm-edge" x1="200" y1="330" x2="290" y2="330"/><line class="sm-edge sm-dash" x1="440" y1="330" x2="530" y2="330"/><line class="sm-edge sm-threat-edge" x1="110" y1="100" x2="110" y2="255"/><line class="sm-edge sm-dash" x1="625" y1="100" x2="625" y2="150"/><line class="sm-edge" x1="625" y1="546" x2="625" y2="570"/><line class="sm-edge" x1="720" y1="325" x2="765" y2="325"/><line class="sm-edge" x1="765" y1="325" x2="765" y2="48"/><line class="sm-edge sm-dash" x1="765" y1="325" x2="765" y2="538"/><line class="sm-edge" x1="765" y1="48" x2="810" y2="48"/><line class="sm-edge" x1="765" y1="118" x2="810" y2="118"/><line class="sm-edge" x1="765" y1="188" x2="810" y2="188"/><line class="sm-edge sm-dash" x1="765" y1="328" x2="810" y2="328"/><line class="sm-edge sm-dash" x1="765" y1="398" x2="810" y2="398"/><line class="sm-edge sm-dash" x1="765" y1="468" x2="810" y2="468"/><line class="sm-edge sm-dash" x1="765" y1="538" x2="810" y2="538"/><g class="sm-n sm-threat off" data-ch="cross-site"><rect class="sm-box" x="20" y="20" width="180" height="80" rx="8"/><text class="sm-mini-t" x="110.0" y="62.0" text-anchor="middle" dominant-baseline="central" font-size="56">5</text></g><g class="sm-n sm-frame off" data-ch="web-http"><rect class="sm-box" x="20" y="255" width="180" height="150" rx="10"/><text class="sm-mini-t" x="50" y="285" text-anchor="middle" dominant-baseline="central" font-size="48">1</text></g><g class="sm-n sm-node off" data-ch="browser-output"><rect class="sm-box" x="36" y="322" width="148" height="64" rx="8"/><text class="sm-mini-t" x="110.0" y="356.0" text-anchor="middle" dominant-baseline="central" font-size="51">3</text></g><g class="sm-n sm-node sm-p2 off" data-ch="proxy-cache"><rect class="sm-box" x="290" y="240" width="150" height="180" rx="8"/><text class="sm-mini-t" x="365.0" y="332.0" text-anchor="middle" dominant-baseline="central" font-size="56">10</text></g><g class="sm-n sm-frame" aria-hidden="true"><rect class="sm-box" x="530" y="150" width="190" height="396" rx="10"/></g><g class="sm-n sm-node off" data-ch="identity"><rect class="sm-box" x="546" y="194" width="158" height="56" rx="8"/><text class="sm-mini-t" x="625.0" y="224.0" text-anchor="middle" dominant-baseline="central" font-size="45">4</text></g><g class="sm-n sm-node sm-p2 off" data-ch="apis"><rect class="sm-box" x="546" y="262" width="158" height="56" rx="8"/><text class="sm-mini-t" x="625.0" y="292.0" text-anchor="middle" dominant-baseline="central" font-size="45">8</text></g><g class="sm-n sm-node sm-p2 off" data-ch="llm"><rect class="sm-box" x="546" y="330" width="158" height="56" rx="8"/><text class="sm-mini-t" x="625.0" y="360.0" text-anchor="middle" dominant-baseline="central" font-size="45">11</text></g><g class="sm-n sm-node off" data-ch="logic-timing"><rect class="sm-box" x="546" y="398" width="158" height="56" rx="8"/><text class="sm-mini-t" x="625.0" y="428.0" text-anchor="middle" dominant-baseline="central" font-size="45">6</text></g><g class="sm-n sm-node sm-p2 on" data-ch="server-actions"><rect class="sm-box" x="546" y="466" width="158" height="56" rx="8"/><text class="sm-mini-t" x="625.0" y="496.0" text-anchor="middle" dominant-baseline="central" font-size="45">7</text></g><g class="sm-n sm-node sm-p2 off" data-ch="delegated-identity"><rect class="sm-box" x="530" y="20" width="190" height="80" rx="8"/><text class="sm-mini-t" x="625.0" y="62.0" text-anchor="middle" dominant-baseline="central" font-size="56">9</text></g><g class="sm-n sm-node off" data-ch="logic-timing"><rect class="sm-box" x="530" y="570" width="190" height="56" rx="8"/><text class="sm-mini-t" x="625.0" y="600.0" text-anchor="middle" dominant-baseline="central" font-size="45">6</text></g><g class="sm-n sm-node off" data-ch="server-input"><rect class="sm-box" x="810" y="20" width="170" height="56" rx="8"/><text class="sm-mini-t" x="895.0" y="50.0" text-anchor="middle" dominant-baseline="central" font-size="45">2</text></g><g class="sm-n sm-node off" data-ch="server-input"><rect class="sm-box" x="810" y="90" width="170" height="56" rx="8"/><text class="sm-mini-t" x="895.0" y="120.0" text-anchor="middle" dominant-baseline="central" font-size="45">2</text></g><g class="sm-n sm-node off" data-ch="server-input"><rect class="sm-box" x="810" y="160" width="170" height="56" rx="8"/><text class="sm-mini-t" x="895.0" y="190.0" text-anchor="middle" dominant-baseline="central" font-size="45">2</text></g><g class="sm-n sm-node sm-p2 on" data-ch="server-actions"><rect class="sm-box" x="810" y="300" width="170" height="56" rx="8"/><text class="sm-mini-t" x="895.0" y="330.0" text-anchor="middle" dominant-baseline="central" font-size="45">7</text></g><g class="sm-n sm-node sm-p2 on" data-ch="server-actions"><rect class="sm-box" x="810" y="370" width="170" height="56" rx="8"/><text class="sm-mini-t" x="895.0" y="400.0" text-anchor="middle" dominant-baseline="central" font-size="45">7</text></g><g class="sm-n sm-node sm-p2 on" data-ch="server-actions"><rect class="sm-box" x="810" y="440" width="170" height="56" rx="8"/><text class="sm-mini-t" x="895.0" y="470.0" text-anchor="middle" dominant-baseline="central" font-size="45">7</text></g><g class="sm-n sm-node sm-p2 on" data-ch="server-actions"><rect class="sm-box" x="810" y="510" width="170" height="56" rx="8"/><text class="sm-mini-t" x="895.0" y="540.0" text-anchor="middle" dominant-baseline="central" font-size="45">7</text></g><g class="sm-n sm-pill off" data-ch="web-http"><rect class="sm-pill-box" x="213" y="306" width="64" height="48" rx="24"/><text class="sm-mini-t" x="245" y="332" text-anchor="middle" dominant-baseline="central" font-size="38">1</text></g><g class="sm-n sm-pill off" data-ch="web-http"><rect class="sm-pill-box" x="453" y="306" width="64" height="48" rx="24"/><text class="sm-mini-t" x="485" y="332" text-anchor="middle" dominant-baseline="central" font-size="38">1</text></g><g class="sm-n sm-pill off" data-ch="cross-site"><rect class="sm-pill-box" x="78" y="153" width="64" height="48" rx="24"/><text class="sm-mini-t" x="110" y="179" text-anchor="middle" dominant-baseline="central" font-size="38">5</text></g><g class="sm-n sm-pill off" data-ch="delegated-identity"><rect class="sm-pill-box" x="593" y="101" width="64" height="48" rx="24"/><text class="sm-mini-t" x="625" y="127" text-anchor="middle" dominant-baseline="central" font-size="38">9</text></g></svg></a><p class="sm-cap">位置：第 7 章　伺服器把資料交給其他元件之後</p><ul class="sm-chips sm-comps" aria-label="本章元件"><li>HTTP client</li><li>Internal services</li><li>XML parser</li><li>Template engine</li><li>Object loader</li></ul><p class="sm-mini-hint">點地圖：到首頁地圖看這一章</p></section></aside>
+<aside class="sm-aside" aria-label="本節輔助"><nav class="sm-outline" aria-label="本節內容"><p class="sm-ph">本節內容</p><ol><li><a href="#js-objects" title="7.5.1 物件、屬性與 prototype"><span class="num">7.5.1</span>物件、屬性與 prototype</a></li><li><a href="#unsafe-merge" title="7.5.2 合併函式把鍵當成路徑"><span class="num">7.5.2</span>合併函式把鍵當成路徑</a></li><li><a href="#worked-example" title="7.5.3 從偏好更新到後台權限"><span class="num">7.5.3</span>從偏好更新到後台權限</a></li><li><a href="#gadget" title="7.5.4 讀到沒設定屬性的 gadget"><span class="num">7.5.4</span>讀到沒設定屬性的 gadget</a></li><li><a href="#client-server" title="7.5.5 前端與伺服器端"><span class="num">7.5.5</span>前端與伺服器端</a></li><li><a href="#conditions" title="7.5.6 什麼情況下成立"><span class="num">7.5.6</span>什麼情況下成立</a></li><li><a href="#recognition" title="7.5.7 辨認合併點與污染"><span class="num">7.5.7</span>辨認合併點與污染</a></li><li><a href="#fix" title="7.5.8 防禦手法"><span class="num">7.5.8</span>防禦手法</a></li><li><a href="#summary" title="7.5.9 小結"><span class="num">7.5.9</span>小結</a></li></ol></nav><section class="sm-locator" aria-label="系統地圖定位"><p class="sm-ph">系統地圖</p><a class="sm-mini-link" href="../../index.html#map-server-actions" aria-label="在首頁的系統地圖上看第 7 章的位置"><svg class="sm-map sm-map-mini" viewBox="206 150 794 416" aria-hidden="true" focusable="false" preserveAspectRatio="xMidYMid meet" style="aspect-ratio:794/416"><line class="sm-edge" x1="200" y1="330" x2="290" y2="330"/><line class="sm-edge sm-dash" x1="440" y1="330" x2="530" y2="330"/><line class="sm-edge sm-threat-edge" x1="110" y1="100" x2="110" y2="255"/><line class="sm-edge sm-dash" x1="625" y1="100" x2="625" y2="150"/><line class="sm-edge" x1="625" y1="546" x2="625" y2="570"/><line class="sm-edge" x1="720" y1="325" x2="765" y2="325"/><line class="sm-edge" x1="765" y1="325" x2="765" y2="48"/><line class="sm-edge sm-dash" x1="765" y1="325" x2="765" y2="538"/><line class="sm-edge" x1="765" y1="48" x2="810" y2="48"/><line class="sm-edge" x1="765" y1="118" x2="810" y2="118"/><line class="sm-edge" x1="765" y1="188" x2="810" y2="188"/><line class="sm-edge sm-dash" x1="765" y1="328" x2="810" y2="328"/><line class="sm-edge sm-dash" x1="765" y1="398" x2="810" y2="398"/><line class="sm-edge sm-dash" x1="765" y1="468" x2="810" y2="468"/><line class="sm-edge sm-dash" x1="765" y1="538" x2="810" y2="538"/><g class="sm-n sm-threat off" data-ch="cross-site"><rect class="sm-box" x="20" y="20" width="180" height="80" rx="8"/><text class="sm-mini-t" x="110.0" y="62.0" text-anchor="middle" dominant-baseline="central" font-size="56">5</text></g><g class="sm-n sm-frame off" data-ch="web-http"><rect class="sm-box" x="20" y="255" width="180" height="150" rx="10"/><text class="sm-mini-t" x="50" y="285" text-anchor="middle" dominant-baseline="central" font-size="48">1</text></g><g class="sm-n sm-node off" data-ch="browser-output"><rect class="sm-box" x="36" y="322" width="148" height="64" rx="8"/><text class="sm-mini-t" x="110.0" y="356.0" text-anchor="middle" dominant-baseline="central" font-size="51">3</text></g><g class="sm-n sm-node sm-p2 off" data-ch="proxy-cache"><rect class="sm-box" x="290" y="240" width="150" height="180" rx="8"/><text class="sm-mini-t" x="365.0" y="332.0" text-anchor="middle" dominant-baseline="central" font-size="56">10</text></g><g class="sm-n sm-frame" aria-hidden="true"><rect class="sm-box" x="530" y="150" width="190" height="396" rx="10"/></g><g class="sm-n sm-node off" data-ch="identity"><rect class="sm-box" x="546" y="194" width="158" height="56" rx="8"/><text class="sm-mini-t" x="625.0" y="224.0" text-anchor="middle" dominant-baseline="central" font-size="45">4</text></g><g class="sm-n sm-node sm-p2 off" data-ch="apis"><rect class="sm-box" x="546" y="262" width="158" height="56" rx="8"/><text class="sm-mini-t" x="625.0" y="292.0" text-anchor="middle" dominant-baseline="central" font-size="45">8</text></g><g class="sm-n sm-node sm-p2 off" data-ch="llm"><rect class="sm-box" x="546" y="330" width="158" height="56" rx="8"/><text class="sm-mini-t" x="625.0" y="360.0" text-anchor="middle" dominant-baseline="central" font-size="45">11</text></g><g class="sm-n sm-node off" data-ch="logic-timing"><rect class="sm-box" x="546" y="398" width="158" height="56" rx="8"/><text class="sm-mini-t" x="625.0" y="428.0" text-anchor="middle" dominant-baseline="central" font-size="45">6</text></g><g class="sm-n sm-node sm-p2 on" data-ch="server-actions"><rect class="sm-box" x="546" y="466" width="158" height="56" rx="8"/><text class="sm-mini-t" x="625.0" y="496.0" text-anchor="middle" dominant-baseline="central" font-size="45">7</text></g><g class="sm-n sm-node sm-p2 off" data-ch="delegated-identity"><rect class="sm-box" x="530" y="20" width="190" height="80" rx="8"/><text class="sm-mini-t" x="625.0" y="62.0" text-anchor="middle" dominant-baseline="central" font-size="56">9</text></g><g class="sm-n sm-node off" data-ch="logic-timing"><rect class="sm-box" x="530" y="570" width="190" height="56" rx="8"/><text class="sm-mini-t" x="625.0" y="600.0" text-anchor="middle" dominant-baseline="central" font-size="45">6</text></g><g class="sm-n sm-node off" data-ch="server-input"><rect class="sm-box" x="810" y="20" width="170" height="56" rx="8"/><text class="sm-mini-t" x="895.0" y="50.0" text-anchor="middle" dominant-baseline="central" font-size="45">2</text></g><g class="sm-n sm-node off" data-ch="server-input"><rect class="sm-box" x="810" y="90" width="170" height="56" rx="8"/><text class="sm-mini-t" x="895.0" y="120.0" text-anchor="middle" dominant-baseline="central" font-size="45">2</text></g><g class="sm-n sm-node off" data-ch="server-input"><rect class="sm-box" x="810" y="160" width="170" height="56" rx="8"/><text class="sm-mini-t" x="895.0" y="190.0" text-anchor="middle" dominant-baseline="central" font-size="45">2</text></g><g class="sm-n sm-node sm-p2 on" data-ch="server-actions"><rect class="sm-box" x="810" y="300" width="170" height="56" rx="8"/><text class="sm-mini-t" x="895.0" y="330.0" text-anchor="middle" dominant-baseline="central" font-size="45">7</text></g><g class="sm-n sm-node sm-p2 on" data-ch="server-actions"><rect class="sm-box" x="810" y="370" width="170" height="56" rx="8"/><text class="sm-mini-t" x="895.0" y="400.0" text-anchor="middle" dominant-baseline="central" font-size="45">7</text></g><g class="sm-n sm-node sm-p2 on" data-ch="server-actions"><rect class="sm-box" x="810" y="440" width="170" height="56" rx="8"/><text class="sm-mini-t" x="895.0" y="470.0" text-anchor="middle" dominant-baseline="central" font-size="45">7</text></g><g class="sm-n sm-node sm-p2 on" data-ch="server-actions"><rect class="sm-box" x="810" y="510" width="170" height="56" rx="8"/><text class="sm-mini-t" x="895.0" y="540.0" text-anchor="middle" dominant-baseline="central" font-size="45">7</text></g><g class="sm-n sm-pill off" data-ch="web-http"><rect class="sm-pill-box" x="213" y="306" width="64" height="48" rx="24"/><text class="sm-mini-t" x="245" y="332" text-anchor="middle" dominant-baseline="central" font-size="38">1</text></g><g class="sm-n sm-pill off" data-ch="web-http"><rect class="sm-pill-box" x="453" y="306" width="64" height="48" rx="24"/><text class="sm-mini-t" x="485" y="332" text-anchor="middle" dominant-baseline="central" font-size="38">1</text></g><g class="sm-n sm-pill off" data-ch="cross-site"><rect class="sm-pill-box" x="78" y="153" width="64" height="48" rx="24"/><text class="sm-mini-t" x="110" y="179" text-anchor="middle" dominant-baseline="central" font-size="38">5</text></g><g class="sm-n sm-pill off" data-ch="delegated-identity"><rect class="sm-pill-box" x="593" y="101" width="64" height="48" rx="24"/><text class="sm-mini-t" x="625" y="127" text-anchor="middle" dominant-baseline="central" font-size="38">9</text></g></svg></a><p class="sm-cap">位置：第 7 章　伺服器把資料交給其他元件之後</p><ul class="sm-chips sm-comps" aria-label="本章元件"><li>HTTP client</li><li>Internal services</li><li>XML parser</li><li>Template engine</li><li>Object loader</li></ul><p class="sm-mini-hint">點地圖：到首頁地圖看這一章</p></section></aside>
 <main id="main" class="sm-doc" tabindex="-1">
-<article class="content sm-article is-placeholder">
-<div class="placeholder"><p>本節尚未撰寫。</p><p>預計回答的問題已列在上方；完成後會在這裡提供完整講解、例子與圖解。</p></div>
+<article class="content sm-article">
+<svg class="icon-sprite" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" style="position:absolute;width:0;height:0;overflow:hidden"><symbol id="icon-app" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="6" width="40" height="36" rx="9" fill="var(--icon-server-soft)"/><path d="M4 17h40"/><circle cx="11" cy="11.5" r="1.8" fill="currentColor" stroke="none"/><circle cx="17.5" cy="11.5" r="1.8" fill="currentColor" stroke="none"/><circle cx="24" cy="30" r="6" fill="var(--icon-server)"/><circle cx="24" cy="30" r="1.8" fill="currentColor" stroke="none"/><path d="M24 21v2M24 37v2M15 30h2M31 30h2" stroke="var(--icon-server)" stroke-width="3"/></symbol><symbol id="icon-check" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="24" cy="24" r="19" fill="var(--icon-ok-soft)"/><path d="M14.5 24.5l7 7L34 17.5" stroke="var(--icon-ok)" stroke-width="4.6"/></symbol><symbol id="icon-database" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 12v24c0 4.5 8 8 17 8s17-3.5 17-8V12z" fill="var(--icon-data-soft)"/><path d="M7 24c0 4.5 8 8 17 8s17-3.5 17-8"/><ellipse cx="24" cy="12" rx="17" ry="7" fill="var(--icon-data)"/></symbol><symbol id="icon-document" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 8a5 5 0 0 1 5-5h15l10 10v27a5 5 0 0 1-5 5H15a5 5 0 0 1-5-5z" fill="var(--icon-file-soft)"/><path d="M30 3v7a3 3 0 0 0 3 3h7" fill="var(--icon-file)"/><path d="M17 25h14M17 32h14M17 38h6" stroke-width="3"/></symbol><symbol id="icon-user" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 43c0-9 7-14 17-14s17 5 17 14z" fill="var(--icon-user-soft)"/><circle cx="24" cy="17" r="12" fill="var(--icon-user-soft)"/><circle cx="19.5" cy="17" r="1.9" fill="currentColor" stroke="none"/><circle cx="28.5" cy="17" r="1.9" fill="currentColor" stroke="none"/><path d="M21 22.5q3.0 2.5 6 0" stroke-width="2.2"/></symbol><symbol id="legend-input" overflow="visible"><rect width="26" height="16" rx="4" fill="var(--accent-soft)" stroke="currentColor" stroke-width="1.4" stroke-dasharray="4 3"/><text x="34" y="13" font-size="12" fill="currentColor">使用者輸入</text></symbol></svg><p><strong>本節模型</strong>：shop.example.com 的帳號偏好設定頁，請求本體是 JSON，應用程式把它合併進使用者的設定</p>
+<figure id="prefs-scene">
+  <svg viewBox="0 0 640 226" role="img" aria-labelledby="prefs-scene-t" style="color:var(--text)">
+    <title id="prefs-scene-t">使用者在設定頁把主題改成深色、語言選繁體中文並按下儲存；瀏覽器送出 PATCH 請求，本體是一份 JSON，記著 theme 與 lang；網站的應用程式用 merge 函式把它合併進這位使用者目前的設定，寫入使用者設定資料，回應告知已儲存。JSON 本體以虛線框和底色標示為使用者可控的部分</title>
+    <defs>
+      <marker id="ps-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+        <path d="M0 0 L10 5 L0 10 z" fill="currentColor"/>
+      </marker>
+    </defs>
+    <g font-size="12" font-weight="700" fill="currentColor" text-anchor="middle">
+      <text x="48" y="18">設定頁</text>
+      <text x="191" y="18">HTTP 請求</text>
+      <text x="347" y="18">網站的應用程式</text>
+      <text x="470" y="18">使用者設定</text>
+      <text x="586" y="18">回應</text>
+    </g>
+    <g stroke="currentColor" stroke-width="1.2" fill="var(--surface)">
+      <rect x="2" y="30" width="92" height="134" rx="8"/>
+      <rect x="109" y="30" width="164" height="134" rx="8"/>
+      <rect x="288" y="30" width="118" height="134" rx="8"/>
+      <rect x="421" y="30" width="98" height="134" rx="8"/>
+      <rect x="534" y="30" width="104" height="134" rx="8"/>
+    </g>
+    <!-- (a) settings page -->
+    <line x1="2" y1="48" x2="94" y2="48" stroke="currentColor" stroke-width="1"/>
+    <text x="5" y="43" font-size="8.5" fill="currentColor" style="font-family:var(--font-mono)">shop.example.com</text>
+    <text x="48" y="66" font-size="11" text-anchor="middle" fill="currentColor">主題：深色</text>
+    <text x="48" y="84" font-size="11" text-anchor="middle" fill="currentColor">語言：繁中</text>
+    <rect x="18" y="94" width="60" height="22" rx="11" fill="none" stroke="currentColor" stroke-width="1.2"/>
+    <text x="48" y="109" font-size="11" text-anchor="middle" fill="currentColor">儲存</text>
+    <use href="#icon-user" x="35" y="130" width="26" height="26" style="color:var(--text)"/>
+    <!-- (b) request -->
+    <text style="font-family:var(--font-mono)" x="117" y="56" font-size="10" fill="currentColor">PATCH /preferences</text>
+    <text x="117" y="72" font-size="10" fill="currentColor">本體是 JSON</text>
+    <rect x="117" y="80" width="148" height="76" rx="4" fill="var(--accent-soft)" stroke="currentColor" stroke-width="1.4" stroke-dasharray="4 3"/>
+    <g font-size="8.5" fill="currentColor" style="font-family:var(--font-mono)">
+      <text style="font-family:var(--font-mono)" x="123" y="96">{</text>
+      <text style="font-family:var(--font-mono)" x="131" y="110">"theme": "dark",</text>
+      <text style="font-family:var(--font-mono)" x="131" y="124">"lang": "zh-TW"</text>
+      <text style="font-family:var(--font-mono)" x="123" y="138">}</text>
+    </g>
+    <!-- (c) application -->
+    <use href="#icon-app" x="331" y="36" width="32" height="32" style="color:var(--text)"/>
+    <text x="347" y="84" font-size="11" font-weight="700" text-anchor="middle" fill="currentColor">merge 函式</text>
+    <text x="347" y="102" font-size="11" text-anchor="middle" fill="currentColor">逐項併進</text>
+    <text x="347" y="140" font-size="11" text-anchor="middle" fill="currentColor">目前的設定</text>
+    <!-- (d) stored settings -->
+    <use href="#icon-database" x="446" y="38" width="46" height="46" style="color:var(--text)"/>
+    <text x="470" y="104" font-size="10" text-anchor="middle" fill="currentColor" style="font-family:var(--font-mono)">theme: dark</text>
+    <text x="470" y="122" font-size="10" text-anchor="middle" fill="currentColor" style="font-family:var(--font-mono)">lang: zh-TW</text>
+    <!-- (e) response -->
+    <line x1="534" y1="48" x2="638" y2="48" stroke="currentColor" stroke-width="1"/>
+    <text x="540" y="43" font-size="8.5" fill="currentColor" style="font-family:var(--font-mono)">shop.example.com</text>
+    <use href="#icon-check" x="570" y="60" width="32" height="32" style="color:var(--text)"/>
+    <text x="586" y="112" font-size="11" text-anchor="middle" fill="currentColor">已儲存</text>
+    <g stroke="currentColor" stroke-width="1.6" fill="none" marker-end="url(#ps-arrow)">
+      <path d="M95 97 H105"/>
+      <path d="M274 97 H284"/>
+      <path d="M407 97 H417"/>
+      <path d="M520 97 H530"/>
+    </g>
+    <g font-size="11" fill="currentColor" text-anchor="middle">
+      <text x="48" y="182">按下儲存</text>
+      <text x="191" y="182">JSON 放在本體</text>
+      <text x="347" y="182">合併進現有設定</text>
+      <text x="470" y="182">寫入使用者設定</text>
+      <text x="586" y="182">回傳已儲存</text>
+    </g>
+    <use href="#legend-input" x="150" y="198"/>
+  </svg>
+  <figcaption><span class="fig-num">圖 7.5.0-1</span> 瀏覽器送出 JSON，應用程式的 merge 函式把它併進使用者的設定</figcaption>
+</figure>
+<p>你在 shop.example.com 的帳號設定頁把主題改成深色、語言選繁體中文，按下「儲存」。瀏覽器送出一個 PATCH 請求，本體是一小份 JSON，裡面只有你改的那幾項。網站的應用程式把它併進你目前的設定，存回去，頁面顯示「已儲存」。</p>
+<p>前面幾節裡，使用者送來的資料交給 parser、模板引擎或還原器，由它們依各自的語法解讀。<a href="../deserialization/index.html">上一節</a>談的是資料被還原成物件的時候會不會連帶觸發行為。這一節的元件是 merge（合併）工具，它把使用者送來的每個鍵（key，物件裡每個屬性的名稱）都當成物件裡的一個位置，逐一處理。使用者決定的不只是值，還有鍵的名字；鍵的名字若碰巧指到一個所有物件共用的地方，寫入的對象就換了。</p>
+
+<h2 id="js-objects"><span class="num">7.5.1</span> 物件、屬性與 prototype</h2>
+<p>JavaScript 的<strong>物件</strong>（object）是一組<strong>屬性</strong>（property），每個屬性有名稱（也稱為鍵）和值。程式用 <code>物件.名稱</code> 讀取屬性，沒有這個屬性就得到 <code>undefined</code>：</p>
+<pre data-lang="javascript"><code><span class="tok-keyword">const</span> user = { name: <span class="tok-string">"demo"</span>, theme: <span class="tok-string">"dark"</span> };
+
+user.<span class="tok-attr">theme</span>   <span class="tok-comment">// "dark"</span>
+user.<span class="tok-attr">lang</span>    <span class="tok-comment">// undefined：user 沒有叫 lang 的屬性</span></code></pre>
+<p>請求本體裡的 JSON 是文字。伺服器用 <code>JSON.parse</code> 把文字轉成這樣的物件，後面的程式才能用屬性的方式讀它。</p>
+<p>每個物件另有一條隱藏的連結，指向另一個物件，稱為它的 <strong>prototype</strong>（原型）。讀取屬性時，JavaScript 先找物件自己的屬性；找不到，就沿著連結到 prototype 去找；prototype 也沒有，再往它的 prototype 找，直到鏈的盡頭回傳 <code>undefined</code>。下面的程式用 <code>Object.create</code> 明確建立這種關係：</p>
+<pre data-lang="javascript"><code><span class="tok-keyword">const</span> defaults = { lang: <span class="tok-string">"zh-TW"</span> };
+<span class="tok-keyword">const</span> user = Object.<span class="tok-func">create</span>(defaults);   <span class="tok-comment">// user 的 prototype 是 defaults</span>
+user.<span class="tok-attr">theme</span> = <span class="tok-string">"dark"</span>;
+
+user.<span class="tok-attr">theme</span>   <span class="tok-comment">// "dark"：user 自己的屬性</span>
+user.<span class="tok-attr">lang</span>    <span class="tok-comment">// "zh-TW"：user 自己沒有，從 prototype 讀到</span></code></pre>
+<figure id="prototype-lookup">
+  <svg viewBox="0 0 640 232" role="img" aria-labelledby="prototype-lookup-t" style="color:var(--text)">
+    <title id="prototype-lookup-t">三個物件串成一條鏈。user 自己的屬性是 theme，值 dark；它的 prototype 是 defaults，自己的屬性是 lang，值 zh-TW；defaults 的 prototype 是 Object.prototype，上面有 toString 等方法。讀取 user.lang 時，先看 user 自己，沒有；往 prototype 到 defaults，找到 zh-TW</title>
+    <defs>
+      <marker id="pl-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+        <path d="M0 0 L10 5 L0 10 z" fill="currentColor"/>
+      </marker>
+    </defs>
+    <g stroke="currentColor" stroke-width="1.2" fill="var(--surface)">
+      <rect x="2" y="12" width="170" height="128" rx="8"/>
+      <rect x="235" y="12" width="170" height="128" rx="8"/>
+      <rect x="468" y="12" width="170" height="128" rx="8"/>
+    </g>
+    <g font-size="12" font-weight="700" fill="currentColor" text-anchor="middle" style="font-family:var(--font-mono)">
+      <text style="font-family:var(--font-mono)" x="87" y="36">user</text>
+      <text style="font-family:var(--font-mono)" x="320" y="36">defaults</text>
+      <text style="font-family:var(--font-mono)" x="553" y="36">Object.prototype</text>
+    </g>
+    <g font-size="11" fill="currentColor" text-anchor="middle">
+      <text x="87" y="62">自己的屬性</text>
+      <text x="320" y="62">自己的屬性</text>
+      <text x="553" y="62">自己的屬性</text>
+    </g>
+    <g font-size="10" fill="currentColor" text-anchor="middle" style="font-family:var(--font-mono)">
+      <text style="font-family:var(--font-mono)" x="87" y="88">theme: "dark"</text>
+      <text style="font-family:var(--font-mono)" x="320" y="88">lang: "zh-TW"</text>
+      <text style="font-family:var(--font-mono)" x="553" y="88">toString</text>
+      <text style="font-family:var(--font-mono)" x="553" y="106">valueOf</text>
+      <text style="font-family:var(--font-mono)" x="553" y="124">...</text>
+    </g>
+    <g stroke="currentColor" stroke-width="1.6" fill="none" marker-end="url(#pl-arrow)">
+      <path d="M174 76 H231"/>
+      <path d="M407 76 H464"/>
+    </g>
+    <g font-size="10" fill="currentColor" text-anchor="middle">
+      <text x="203" y="68">prototype</text>
+      <text x="436" y="68">prototype</text>
+    </g>
+    <g font-size="11" fill="currentColor">
+      <text x="2" y="170">① 讀 user.lang：user 自己的屬性裡沒有 lang，沿 prototype 往上</text>
+      <text x="2" y="192">② defaults 有 lang，回傳 "zh-TW"</text>
+      <text x="2" y="214">③ 讀 user.toString：user 與 defaults 都沒有，在 Object.prototype 找到</text>
+    </g>
+  </svg>
+  <figcaption><span class="fig-num">圖 7.5.1-1</span> 讀取屬性時，先找物件自己，找不到就沿 prototype 一層層往上</figcaption>
+</figure>
+<p>圖中 <code>defaults</code> 自己也有 prototype，就是最右邊的 <code>Object.prototype</code>。用 <code>{ }</code> 或 <code>JSON.parse</code> 建立的一般物件，prototype 都是這同一個內建物件。所以空物件 <code>{}</code> 沒有任何屬性，<code>({}).toString</code> 卻是一個函式，來自它共用的 prototype。</p>
+<p>寫入和讀取不對稱。<code>user.lang = "en"</code> 在 <code>user</code> 自己身上建立屬性，prototype 不動。但若程式拿到的就是 prototype 這個物件，直接改它，所有繼承它的物件（沿 prototype 連結找得到它的物件）讀到的值都跟著變：</p>
+<pre data-lang="javascript"><code><span class="tok-keyword">const</span> proto = Object.<span class="tok-func">getPrototypeOf</span>(user);   <span class="tok-comment">// 就是 defaults</span>
+proto.<span class="tok-attr">lang</span> = <span class="tok-string">"en"</span>;
+
+user.<span class="tok-attr">lang</span>    <span class="tok-comment">// "en"：user 自己沒有 lang，讀到 prototype 上改過的值</span></code></pre>
+<p>這是 prototype 的正常用法。出問題的情況是：改 prototype 的不是程式自己的決定，而是使用者的輸入透過鍵的名字，把寫入引到那裡。一般物件都能讀到一個名為 <code>__proto__</code> 的特殊屬性（定義在 <code>Object.prototype</code> 上，用 <code>Object.create(null)</code> 建立的物件沒有），讀它會得到該物件的 prototype。另一條路徑是先讀物件的 <code>constructor</code> 屬性，再讀它的 <code>prototype</code> 屬性，在許多物件上也到同一個地方；某個函式會不會被這條路徑影響，取決於它的實作。這些名稱在字面上和 <code>theme</code>、<code>lang</code> 一樣是普通的字串鍵。</p>
+<p>使用者的輸入藉這類鍵改動共用的 prototype，稱為 <strong>prototype pollution</strong>（原型污染）：被改的是所有物件共同依賴的那一個物件，它被「污染」，之後每個繼承它的物件讀到的都是被改過的內容。</p>
+
+<h2 id="unsafe-merge"><span class="num">7.5.2</span> 合併函式把鍵當成路徑</h2>
+<p>回到偏好設定。使用者每次只送改動的幾項，應用程式用 merge 把它們併進完整的設定。設定可以有巢狀結構，例如 <code>notify</code> 底下還有 <code>email</code>，所以 merge 對每個鍵分兩種情況：值是字串或數字，就直接寫進目標；值本身又是一個物件，就拿目標裡同名的物件，把這個物件再合併一次。函式在處理中呼叫自己，這種寫法叫遞迴（recursion）。下面是常見的寫法：</p>
+<pre data-lang="javascript"><code><span class="tok-keyword">function</span> <span class="tok-func">merge</span>(target, source) {
+  <span class="tok-keyword">for</span> (<span class="tok-keyword">const</span> key <span class="tok-keyword">in</span> source) {
+    <span class="tok-keyword">if</span> (<span class="tok-keyword">typeof</span> source[key] === <span class="tok-string">"object"</span> &amp;&amp; source[key] !== <span class="tok-keyword">null</span>) {
+      <span class="tok-keyword">if</span> (<span class="tok-keyword">typeof</span> target[key] !== <span class="tok-string">"object"</span>) target[key] = {};
+      <span class="tok-func">merge</span>(target[key], source[key]);
+    } <span class="tok-keyword">else</span> {
+      target[key] = source[key];
+    }
+  }
+  <span class="tok-keyword">return</span> target;
+}</code></pre>
+<p>逐行讀法：<code>for (const key in source)</code> 逐一取出來源的每個鍵；<code>typeof source[key] === "object"</code> 判斷值是不是物件（<code>null</code> 另外排除）；<code>if (typeof target[key] !== "object")</code> 在目標還沒有這個物件時，先放一個空的；<code>merge(target[key], source[key])</code> 是函式呼叫自己；<code>else</code> 底下是普通值，直接寫進目標。</p>
+<p>用一份正常的更新跑一遍。目前的設定與請求本體如下：</p>
+<pre data-lang="javascript"><code><span class="tok-comment">// 目前的設定</span>
+{ theme: <span class="tok-string">"light"</span>, lang: <span class="tok-string">"zh-TW"</span>, notify: { email: <span class="tok-keyword">true</span> } }</code></pre>
+<pre data-lang="json"><code>{
+  <span class="tok-attr">"theme"</span>: <span class="tok-string">"dark"</span>,
+  <span class="tok-attr">"notify"</span>: { <span class="tok-attr">"email"</span>: <span class="tok-keyword">false</span> }
+}</code></pre>
+<ol>
+<li>鍵 <code>theme</code> 的值是字串，直接寫進 <code>target.theme</code>。</li>
+<li>鍵 <code>notify</code> 的值是物件，<code>target.notify</code> 也是物件，於是遞迴：對 <code>target.notify</code> 與來源的 <code>notify</code> 再合併一次，<code>email</code> 變成 <code>false</code>。</li>
+<li>結果是 <code>{ theme: "dark", lang: "zh-TW", notify: { email: false } }</code>，<code>lang</code> 沒被動到。</li>
+</ol>
+<p>函式從頭到尾沒有檢查鍵是什麼，因為它預設鍵就是設定項目的名稱。現在把其中一個鍵換成 7.5.1 說過、會指到 prototype 的名稱。方括號代表被換掉的那段輸入：</p>
+<pre data-lang="json"><code>{
+  <span class="tok-attr">"theme"</span>: <span class="tok-string">"dark"</span>,
+  <span class="tok-attr">"</span><span class="tok-placeholder">[指向原型的鍵]</span><span class="tok-attr">"</span>: { <span class="tok-attr">"</span><span class="tok-placeholder">[新增的屬性]</span><span class="tok-attr">"</span>: <span class="tok-string">"</span><span class="tok-placeholder">[值]</span><span class="tok-string">"</span> }
+}</code></pre>
+<ol>
+<li>鍵 <code>theme</code> 的值是字串，直接寫進 <code>target.theme</code>。</li>
+<li>鍵 <code>[指向原型的鍵]</code> 的值是物件，函式進入第一個分支，檢查 <code>target[key]</code>。這個名稱在一般物件上讀出來的是它的 prototype，也就是共用的 <code>Object.prototype</code>，型別是 object。</li>
+<li>條件 <code>typeof target[key] !== "object"</code> 不成立，所以不建立新的空物件，接著執行 <code>merge(target[key], source[key])</code>：這一次的 <code>target</code> 就是 <code>Object.prototype</code>。</li>
+<li>下一層的鍵 <code>[新增的屬性]</code> 值是普通值，走 <code>else</code>，寫進這次的 <code>target</code>，也就是 <code>Object.prototype</code>。</li>
+<li>結果：<code>theme</code> 照常更新，目前的設定裡沒有任何新項目，共用的 <code>Object.prototype</code> 卻多了一個屬性，所有一般物件都讀得到。</li>
+</ol>
+<p>函式沒有出錯，也沒有任何步驟分得出「叫 <code>notify</code> 的鍵」與「指到 prototype 的鍵」。<code>JSON.parse</code> 不改動 prototype，它讀到這個鍵，只是在解析出的物件上建立一個名稱相同的普通屬性；寫進 prototype 的是 merge，因為它拿這個鍵去 <code>target[key]</code> 查詢，再往查到的物件裡寫。</p>
+<p>鍵變成結構的地方不只 merge。查詢字串剖析器把 <code>preferences[notify][email]=false</code> 還原成巢狀物件；<code>set(obj, "a.b.c", 值)</code> 這類依路徑字串設值的函式，以及深層複製（deep clone，把物件連同每一層複製一份）與 extend（把一個物件的屬性擴充進另一個）工具，也都逐層用鍵處理物件。只要鍵來自使用者，又沒有限制可以走到哪裡，就有相同的問題。</p>
+
+<h2 id="worked-example"><span class="num">7.5.3</span> 從偏好更新到後台權限</h2>
+<p>假設 shop.example.com 的後端是 Node.js（在伺服器上執行 JavaScript 的環境）程式，用常見的 Express 框架，並用上面的 <code>merge</code> 處理偏好更新。<code>app.patch</code> 處理 PATCH 請求，<code>app.get</code> 處理 GET 請求；<code>express.json()</code> 讓 <code>req.body</code> 成為解析好的 JSON 物件。<code>/admin</code> 的處理程式用 <code>req.user.isAdmin</code> 決定要不要顯示後台。<code>req.user</code> 是每次請求從資料庫載入的一般物件，一般使用者的物件上沒有 <code>isAdmin</code> 這個屬性：</p>
+<pre data-lang="javascript"><code>app.<span class="tok-func">use</span>(express.<span class="tok-func">json</span>());
+
+app.<span class="tok-func">patch</span>(<span class="tok-string">"/preferences"</span>, (req, res) =&gt; {
+  <span class="tok-func">merge</span>(req.<span class="tok-attr">user</span>.<span class="tok-attr">settings</span>, req.<span class="tok-attr">body</span>);
+  <span class="tok-func">saveSettings</span>(req.<span class="tok-attr">user</span>);   <span class="tok-comment">// 存回資料庫，細節省略</span>
+  res.<span class="tok-func">send</span>(<span class="tok-string">"saved"</span>);
+});
+
+app.<span class="tok-func">get</span>(<span class="tok-string">"/admin"</span>, (req, res) =&gt; {
+  <span class="tok-keyword">if</span> (req.<span class="tok-attr">user</span>.<span class="tok-attr">isAdmin</span>) {
+    res.<span class="tok-func">send</span>(<span class="tok-func">renderAdminPage</span>());
+  } <span class="tok-keyword">else</span> {
+    res.<span class="tok-func">status</span>(<span class="tok-number">403</span>).<span class="tok-func">send</span>(<span class="tok-string">"Forbidden"</span>);
+  }
+});</code></pre>
+<h3>正常的請求</h3>
+<div class="rr"><div class="rr-frame"><div class="rr-pane rr-req"><div class="rr-ph">Request</div><pre data-lang="http"><code><span class="ln"><span class="tok-method">PATCH</span> <span class="tok-path">/preferences</span> <span class="tok-keyword">HTTP/1.1</span></span><span class="ln"><span class="tok-header">Host</span>: <span class="tok-host">shop.example.com</span></span><span class="ln"><span class="tok-header">Content-Type</span>: application/json</span><span class="ln"><span class="tok-header">Cookie</span>: <span class="tok-attr">session</span>=<span class="tok-placeholder">[你的 Session]</span></span><span class="ln"></span><span class="ln">{ <span class="tok-attr">"theme"</span>: <span class="tok-string">"dark"</span>, <span class="tok-attr">"lang"</span>: <span class="tok-string">"zh-TW"</span> }</span></code></pre></div><div class="rr-pane rr-res"><div class="rr-ph">Response</div><pre data-lang="http"><code><span class="ln"><span class="tok-keyword">HTTP/1.1</span> <span class="tok-status">200</span> OK</span><span class="ln"></span><span class="ln">saved</span></code></pre></div></div></div>
+<p>這時請求 <code>GET /admin</code>，<code>req.user.isAdmin</code> 是 <code>undefined</code>，回應是 <code>403 Forbidden</code>。這個結果是之後比較的基準。</p>
+<h3>哪一步出了問題</h3>
+<p>把本體換成前面那份帶占位符的 JSON，其餘不變。假設 <code>[新增的屬性]</code> 的名稱，正好是後台檢查讀取的 <code>isAdmin</code>，值是 <code>[通過檢查的值]</code>（程式會當成「是」的值）：</p>
+<div class="rr rr-solo"><div class="rr-frame"><div class="rr-pane rr-req"><div class="rr-ph">Request</div><pre data-lang="http"><code><span class="ln"><span class="tok-method">PATCH</span> <span class="tok-path">/preferences</span> <span class="tok-keyword">HTTP/1.1</span></span><span class="ln"><span class="tok-header">Host</span>: <span class="tok-host">shop.example.com</span></span><span class="ln"><span class="tok-header">Content-Type</span>: application/json</span><span class="ln"><span class="tok-header">Cookie</span>: <span class="tok-attr">session</span>=<span class="tok-placeholder">[你的 Session]</span></span><span class="ln"></span><span class="ln">{ <span class="tok-attr">"theme"</span>: <span class="tok-string">"dark"</span>, <span class="tok-attr">"</span><span class="tok-placeholder">[指向原型的鍵]</span><span class="tok-attr">"</span>: { <span class="tok-attr">"</span><span class="tok-placeholder">[新增的屬性]</span><span class="tok-attr">"</span>: <span class="tok-string">"</span><span class="tok-placeholder">[通過檢查的值]</span><span class="tok-string">"</span> } }</span></code></pre></div></div></div>
+<figure id="pollution-flow">
+  <svg viewBox="0 0 640 348" role="img" aria-labelledby="pollution-flow-t" style="color:var(--text)">
+    <title id="pollution-flow-t">上半部：使用者 A 送出 PATCH 請求，本體的 JSON 含指向原型的鍵與新增的屬性；merge 函式逐層檢視，其中一個鍵指到共用的 Object.prototype，新增的屬性被寫進去。下半部：之後使用者 B 的任何請求，程式讀 user.isAdmin，user 自己沒有，向 Object.prototype 查找，取得被寫入的值，依這個值執行。圖上以 ① 至 ⑤ 標出步驟，寫入與查找各有一條標示方向的箭頭，共用物件上只有一個新增的屬性。JSON 裡的鍵與屬性以虛線框和底色標示為使用者可控的部分</title>
+    <defs>
+      <marker id="pf-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+        <path d="M0 0 L10 5 L0 10 z" fill="currentColor"/>
+      </marker>
+    </defs>
+    <g font-size="12" font-weight="700" fill="currentColor">
+      <text x="2" y="18">使用者 A 更新偏好</text>
+      <text x="2" y="186">之後，使用者 B 的任何一次請求</text>
+    </g>
+    <g stroke="currentColor" stroke-width="1.2" fill="var(--surface)">
+      <rect x="2" y="26" width="86" height="120" rx="8"/>
+      <rect x="104" y="26" width="166" height="120" rx="8"/>
+      <rect x="286" y="26" width="170" height="120" rx="8"/>
+      <rect x="494" y="26" width="144" height="280" rx="8"/>
+      <rect x="2" y="196" width="86" height="110" rx="8"/>
+      <rect x="104" y="196" width="166" height="110" rx="8"/>
+      <rect x="286" y="196" width="170" height="110" rx="8"/>
+    </g>
+    <!-- row 1 -->
+    <use href="#icon-user" x="23" y="40" width="44" height="44" style="color:var(--text)"/>
+    <text x="45" y="106" font-size="11" text-anchor="middle" fill="currentColor">使用者 A</text>
+    <text style="font-family:var(--font-mono)" x="112" y="48" font-size="10" fill="currentColor">PATCH /preferences</text>
+    <text x="112" y="64" font-size="10" fill="currentColor">本體（JSON）的鍵</text>
+    <rect x="112" y="74" width="150" height="62" rx="4" fill="var(--accent-soft)" stroke="currentColor" stroke-width="1.4" stroke-dasharray="4 3"/>
+    <text x="187" y="95" font-size="11" font-weight="700" text-anchor="middle" fill="currentColor">[指向原型的鍵]</text>
+    <text x="187" y="118" font-size="11" font-weight="700" text-anchor="middle" fill="currentColor">[新增的屬性]</text>
+    <use href="#icon-app" x="296" y="32" width="28" height="28" style="color:var(--text)"/>
+    <text x="332" y="52" font-size="11" font-weight="700" fill="currentColor">merge 函式</text>
+    <text x="294" y="84" font-size="11" fill="currentColor">② 逐層檢視輸入的鍵</text>
+    <text x="294" y="104" font-size="11" fill="currentColor">③ 有個鍵指到 prototype</text>
+    <text x="308" y="124" font-size="11" fill="currentColor">屬性被寫進去</text>
+    <!-- shared prototype -->
+    <use href="#icon-document" x="549" y="38" width="34" height="34" style="color:var(--text)"/>
+    <text style="font-family:var(--font-mono)" x="566" y="92" font-size="10" text-anchor="middle" fill="currentColor">Object.prototype</text>
+    <text x="566" y="112" font-size="11" text-anchor="middle" fill="currentColor">所有一般物件共用</text>
+    <rect x="502" y="124" width="128" height="138" rx="4" fill="var(--accent-soft)" stroke="currentColor" stroke-width="1.4" stroke-dasharray="4 3"/>
+    <text x="566" y="198" font-size="11" font-weight="700" text-anchor="middle" fill="currentColor">[新增的屬性]</text>
+    <!-- row 2 -->
+    <use href="#icon-user" x="23" y="210" width="44" height="44" style="color:var(--text)"/>
+    <text x="45" y="276" font-size="11" text-anchor="middle" fill="currentColor">使用者 B</text>
+    <text style="font-family:var(--font-mono)" x="112" y="218" font-size="10" fill="currentColor">GET /admin</text>
+    <text x="112" y="238" font-size="11" fill="currentColor">與前面的更新無關</text>
+    <use href="#icon-app" x="296" y="202" width="28" height="28" style="color:var(--text)"/>
+    <text x="332" y="222" font-size="11" font-weight="700" fill="currentColor">權限檢查</text>
+    <text x="294" y="254" font-size="11" fill="currentColor">④ 讀 user.isAdmin</text>
+    <text x="294" y="274" font-size="11" fill="currentColor">自己沒有，向 prototype 找</text>
+    <text x="294" y="294" font-size="11" fill="currentColor">⑤ 讀到值，依它執行</text>
+    <g stroke="currentColor" stroke-width="1.6" fill="none" marker-end="url(#pf-arrow)">
+      <path d="M89 86 H100"/>
+      <path d="M271 86 H282"/>
+      <path d="M457 132 H490"/>
+      <path d="M89 256 H100"/>
+      <path d="M271 256 H282"/>
+      <path d="M457 232 H490"/>
+      <path d="M490 252 H457"/>
+    </g>
+    <g font-size="10" fill="currentColor" text-anchor="middle">
+      <text x="474" y="124">寫入</text>
+      <text x="474" y="224">查找</text>
+      <text x="474" y="270">回傳值</text>
+    </g>
+    <text x="96" y="80" font-size="12" font-weight="700" text-anchor="middle" fill="currentColor">①</text>
+    <use href="#legend-input" x="150" y="322"/>
+  </svg>
+  <figcaption><span class="fig-num">圖 7.5.3-1</span> merge 把屬性寫進共用 prototype，之後別的請求讀到它</figcaption>
+</figure>
+<ol>
+<li>使用者 A 送出請求，本體裡有一個鍵指向 prototype，底下是要新增的屬性。</li>
+<li><code>merge</code> 逐層檢視輸入的鍵，遇到值是物件的鍵就遞迴。</li>
+<li>指向 prototype 的那個鍵，在 <code>target[key]</code> 查出來的是共用的 <code>Object.prototype</code>。函式對它遞迴，新屬性寫進共用物件，不屬於 A 的任何設定。伺服器照常回 <code>200 saved</code>。</li>
+<li>之後使用者 B 請求 <code>GET /admin</code>，程式讀 <code>req.user.isAdmin</code>。B 的物件自己沒有這個屬性，JavaScript 向它的 prototype 查找。</li>
+<li>查到上一步寫入的值，檢查通過，B 看到後台頁面。B 的帳號、Session 與資料庫裡的紀錄都沒有改變。</li>
+</ol>
+<div class="tbl-wrap"><table id="tbl-3-1"><caption><span class="tbl-num">表 7.5.3-1</span></caption><thead><tr><th>條件</th><th>你看到的</th><th>判讀</th></tr></thead><tbody>
+<tr><td>正常的偏好更新之後 <code class="nw">GET /admin</code></td><td>403</td><td>建立基準：<code class="nw">req.user</code> 自己沒有 <code class="nw">isAdmin</code>。</td></tr>
+<tr><td>送出帶占位符的更新</td><td>200 saved，與正常更新相同</td><td>請求被接受。回應看不出屬性有沒有寫進 prototype。</td></tr>
+<tr><td>之後用另一個帳號 <code class="nw">GET /admin</code></td><td>後台頁面</td><td>寫入發生了，而且程式的讀取點正好讀到它；兩件事要分開確認。</td></tr>
+<tr><td>伺服器重新啟動之後</td><td>403</td><td>污染存在記憶體裡的 prototype，重啟後消失，資料庫沒有被改。</td></tr>
+</tbody></table></div>
+<p>污染的範圍是那個 Node.js 行程（process，伺服器上一個正在運行的程式；重啟後它的記憶體清空）。同一個行程處理的每個請求都共用一份 <code>Object.prototype</code>；網站若跑多個行程，只有處理到那次更新的行程受影響，這也是後續請求結果時有時無的原因之一。</p>
+
+<h2 id="gadget"><span class="num">7.5.4</span> 讀到沒設定屬性的 gadget</h2>
+<p>污染只是把一個屬性放到共用的位置，本身不會讓網站做出新的事。屬性要發揮作用，需要另一段程式讀取它：這段程式讀的屬性在物件自己身上沒有設定，所以落到 prototype，讀出污染者放進去的值，再拿這個值去做事。這樣的程式碼稱為 <strong>gadget</strong>（原意是小零件：借用程式裡現成的一段碼，替污染者做事）。前面的例子裡，<code>req.user.isAdmin</code> 那一行就是 gadget，它拿讀到的值做權限判斷。</p>
+<p>前端的 gadget 常長得像這樣。頁面腳本有一個設定物件，<code>banner</code> 是選用項目，平常沒有人設定，這段程式就不會執行：</p>
+<pre data-lang="javascript"><code><span class="tok-keyword">const</span> config = { theme: <span class="tok-string">"light"</span> };
+
+<span class="tok-keyword">if</span> (config.<span class="tok-attr">banner</span>) {
+  document.<span class="tok-func">getElementById</span>(<span class="tok-string">"notice"</span>).<span class="tok-attr">innerHTML</span> = config.<span class="tok-attr">banner</span>;
+}</code></pre>
+<p><code>config</code> 自己沒有 <code>banner</code>，讀取會落到 <code>Object.prototype</code>。prototype 上若已被放進同名屬性，條件成立，值被交給 <code>innerHTML</code>（把字串當 HTML 放進頁面的屬性）。</p>
+<figure id="pollution-chain">
+  <svg viewBox="0 0 640 250" role="img" aria-labelledby="pollution-chain-t" style="color:var(--text)">
+    <title id="pollution-chain-t">五個依序的階段。source：輸入的來源。merge：不安全的合併。prototype：共用物件上多出一個屬性。gadget：讀取沒設定的屬性。sink 或後果：值被使用。前端範例：網址查詢字串經合併，使 config.banner 被讀到並寫進 innerHTML。伺服器端範例：JSON 請求本體經偏好更新的合併，使 user.isAdmin 被讀到，依值放行管理功能</title>
+    <defs>
+      <marker id="pc-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+        <path d="M0 0 L10 5 L0 10 z" fill="currentColor"/>
+      </marker>
+    </defs>
+    <g font-size="12" font-weight="700" fill="currentColor">
+      <text x="2" y="18">前端</text>
+      <text x="2" y="138">伺服器端</text>
+    </g>
+    <g stroke="currentColor" stroke-width="1.2" fill="var(--surface)">
+      <rect x="2" y="26" width="116" height="88" rx="8"/>
+      <rect x="132" y="26" width="116" height="88" rx="8"/>
+      <rect x="262" y="26" width="116" height="88" rx="8"/>
+      <rect x="392" y="26" width="116" height="88" rx="8"/>
+      <rect x="522" y="26" width="116" height="88" rx="8"/>
+      <rect x="2" y="146" width="116" height="88" rx="8"/>
+      <rect x="132" y="146" width="116" height="88" rx="8"/>
+      <rect x="262" y="146" width="116" height="88" rx="8"/>
+      <rect x="392" y="146" width="116" height="88" rx="8"/>
+      <rect x="522" y="146" width="116" height="88" rx="8"/>
+    </g>
+    <g font-size="12" font-weight="700" fill="currentColor" text-anchor="middle">
+      <text x="60" y="48">source</text>
+      <text x="190" y="48">merge</text>
+      <text x="320" y="48">prototype</text>
+      <text x="450" y="48">gadget</text>
+      <text x="580" y="48">sink／後果</text>
+      <text x="60" y="168">source</text>
+      <text x="190" y="168">merge</text>
+      <text x="320" y="168">prototype</text>
+      <text x="450" y="168">gadget</text>
+      <text x="580" y="168">sink／後果</text>
+    </g>
+    <g font-size="11" fill="currentColor" text-anchor="middle">
+      <text x="60" y="72">網址查詢字串</text>
+      <text x="60" y="92">被剖析成物件</text>
+      <text x="190" y="72">不安全的合併</text>
+      <text x="190" y="92">把鍵當成路徑</text>
+      <text x="320" y="72">共用物件上</text>
+      <text x="320" y="92">多出一個屬性</text>
+      <text x="450" y="72">讀取沒設定的</text>
+      <text x="580" y="92">寫進頁面</text>
+      <text x="60" y="192">JSON 請求本體</text>
+      <text x="60" y="212">裡的巢狀鍵</text>
+      <text x="190" y="192">偏好更新時</text>
+      <text x="190" y="212">遞迴合併設定</text>
+      <text x="320" y="192">所有物件共用</text>
+      <text x="320" y="212">多出一個屬性</text>
+      <text x="450" y="192">權限檢查讀</text>
+      <text x="580" y="192">依值放行</text>
+      <text x="580" y="212">管理功能</text>
+    </g>
+    <g font-size="10" fill="currentColor" text-anchor="middle" style="font-family:var(--font-mono)">
+      <text style="font-family:var(--font-mono)" x="450" y="92">config.banner</text>
+      <text style="font-family:var(--font-mono)" x="580" y="72">innerHTML</text>
+      <text style="font-family:var(--font-mono)" x="450" y="212">user.isAdmin</text>
+    </g>
+    <g stroke="currentColor" stroke-width="1.6" fill="none" marker-end="url(#pc-arrow)">
+      <path d="M119 70 H128"/>
+      <path d="M249 70 H258"/>
+      <path d="M379 70 H388"/>
+      <path d="M509 70 H518"/>
+      <path d="M119 190 H128"/>
+      <path d="M249 190 H258"/>
+      <path d="M379 190 H388"/>
+      <path d="M509 190 H518"/>
+    </g>
+  </svg>
+  <figcaption><span class="fig-num">圖 7.5.4-1</span> 輸入經 merge 寫進共用 prototype，被 gadget 讀到，最後走到 sink 或決策點</figcaption>
+</figure>
+<p><a href="../../browser-output/xss-context-dom/index.html#dom-model">3.2 的 source 與 sink</a> 說過，source 是使用者的值進入頁面程式的地方，sink 是值被寫進頁面或交給危險功能的地方，值從 source 直接走到 sink。prototype pollution 在中間多了一段：source 的值先寫進共用物件，離開原來的程式路徑，等另一處的 gadget 讀到，才走到 sink。追查時只看 sink 前面的變數從哪來，會找不到 source，要連同這段合併一起看。</p>
+<p>伺服器端的 gadget 不限於權限旗標。程式把選項物件交給函式庫，函式庫讀取呼叫端沒寫的選項時，也會落到 prototype；選項若決定要執行的命令或模板內容，後果就接到命令注入、模板注入那類問題。</p>
+<p>與<a href="../deserialization/index.html">上一節的還原</a>相比，prototype pollution 不重建任何物件，它改的是所有物件共同依賴的一個物件，影響其他物件事後的讀取。</p>
+
+<h2 id="client-server"><span class="num">7.5.5</span> 前端與伺服器端</h2>
+<p>前端的污染常以網址為來源。頁面腳本把查詢字串或片段剖析成物件（含巢狀鍵），再合併進設定物件；污染發生在受害者開啟那條連結的瀏覽器裡，gadget 可能在頁面自己的程式，也可能在載入的第三方腳本。伺服器端的來源是請求本體或查詢字串，污染發生在伺服器的行程裡。</p>
+<div class="tbl-wrap"><table id="tbl-5-1"><caption><span class="tbl-num">表 7.5.5-1</span></caption><thead><tr><th>項目</th><th>前端（瀏覽器）</th><th>伺服器端（Node.js）</th></tr></thead><tbody>
+<tr><td>輸入來源</td><td>網址的查詢字串、片段，<code class="nw">postMessage</code> 等</td><td>請求本體的 JSON、查詢字串、匯入的設定檔</td></tr>
+<tr><td>污染的範圍</td><td>開啟連結的那個瀏覽器分頁</td><td>整個 Node.js 行程，涵蓋所有使用者的請求</td></tr>
+<tr><td>持續多久</td><td>到頁面重新載入</td><td>到行程重新啟動</td></tr>
+<tr><td>常見的後果</td><td>gadget 把值交給 sink，成為 DOM-based XSS</td><td>權限旗標、設定與選項被改變，依 gadget 而定</td></tr>
+<tr><td>能看到什麼</td><td>用開發者工具直接檢查頁面裡的物件</td><td>只能看回應與行為的差異</td></tr>
+</tbody></table></div>
+<p>伺服器端看不到內部物件，加上污染的範圍是整個行程，測完要重新啟動。</p>
+<p>即使沒有 gadget，寫入與既有方法同名的屬性也可能讓其他程式出錯，伺服器端表現為服務異常。</p>
+
+<h2 id="conditions"><span class="num">7.5.6</span> 什麼情況下成立</h2>
+<ul>
+<li>有一段程式用使用者提供的鍵走訪物件並寫入：遞迴 merge、依路徑設值、深層複製、把 <code>a[b]=c</code> 剖析成巢狀物件的函式庫。</li>
+<li>走訪邏輯沒有擋掉會到達 prototype 的鍵。函式庫通常在某個版本之後修補，所以舊版本才有問題。</li>
+<li>目標是一般物件。用 <code>Object.create(null)</code> 建立的物件沒有 prototype，<code>Map</code> 也不依屬性查找，兩者都不受影響。</li>
+<li>有 gadget。prototype 上多一個屬性，沒有任何程式讀它，就看不出效果。屬性名稱必須和 gadget 讀的名稱一致。</li>
+<li>gadget 讀取時不檢查「是不是物件自己的屬性」。用 <code>Object.hasOwn(obj, "banner")</code> 這類檢查的程式，讀不到繼承來的值。</li>
+</ul>
+
+<h2 id="recognition"><span class="num">7.5.7</span> 辨認合併點與污染</h2>
+<ul>
+<li>輸入端：端點接受有巢狀結構的 JSON，或查詢字串寫成 <code>a[b]=c</code>，後端把它併進一個儲存的設定或個人資料；匯入設定、更新個人檔案、複製物件的功能都是候選。</li>
+<li>程式碼端：搜尋遞迴合併、extend、deep clone、依路徑設值的函式，以及處理這類工作的第三方套件，對照套件版本與安全公告；<code>npm audit</code> 這類工具會列出已知問題。</li>
+<li>污染的證據是不相干的物件上出現你沒有設定過的屬性。送一個無害的新屬性名稱，再檢查另一個全新的物件有沒有它：前端用開發者工具檢視頁面裡的物件，伺服器端則看別的請求的回應有沒有跟著改變。</li>
+<li>伺服器端常沒有任何回饋。更新請求的回應與正常時相同，需要比較其他請求的行為：狀態碼、回應中 JSON 的格式、錯誤訊息有沒有差異。差異能說明有東西被改，不能直接說明改在哪裡。</li>
+<li>確認過的污染要記下屬性名稱與影響的範圍，通報時說明需要重啟才能清除。</li>
+</ul>
+
+<h2 id="fix"><span class="num">7.5.8</span> 防禦手法</h2>
+<h3 id="fix-effective">有效的防禦</h3>
+<h4>合併時只更新已知的項目</h4>
+<p>合併邏輯不必接受任意的鍵。下面的版本只更新目標物件上「自己已經有」的屬性：</p>
+<pre data-lang="javascript"><code><span class="tok-keyword">const</span> isObject = (v) =&gt; <span class="tok-keyword">typeof</span> v === <span class="tok-string">"object"</span> &amp;&amp; v !== <span class="tok-keyword">null</span>;
+
+<span class="tok-comment">// 較安全的做法：只更新 target 自己已有的屬性</span>
+<span class="tok-keyword">function</span> <span class="tok-func">safeMerge</span>(target, source) {
+  <span class="tok-keyword">for</span> (<span class="tok-keyword">const</span> key <span class="tok-keyword">of</span> Object.<span class="tok-func">keys</span>(source)) {
+    <span class="tok-keyword">if</span> (!Object.<span class="tok-func">hasOwn</span>(target, key)) <span class="tok-keyword">continue</span>;
+    <span class="tok-keyword">if</span> (<span class="tok-func">isObject</span>(source[key]) &amp;&amp; <span class="tok-func">isObject</span>(target[key])) {
+      <span class="tok-func">safeMerge</span>(target[key], source[key]);
+    } <span class="tok-keyword">else</span> {
+      target[key] = source[key];
+    }
+  }
+  <span class="tok-keyword">return</span> target;
+}</code></pre>
+<p>擋住它的是 <code>Object.hasOwn(target, key)</code>。指向 prototype 的鍵不是 target 自己的屬性，它回傳 <code>false</code>，整項被略過，遞迴不會走進共用物件。來源物件自己就帶著這個鍵，所以 <code>Object.keys(source)</code> 照樣會列出它，與 <code>for…in</code> 在這裡沒有差別。代價是使用者不能新增項目，只能改既有項目；需要新增時，改用下面的白名單。<code>Object.hasOwn</code> 在 2021 年後的環境（Node.js 16.9 起、近年的瀏覽器）才有；要支援更舊的環境，改用 <code>Object.prototype.hasOwnProperty.call(obj, key)</code>。</p>
+<h4>用白名單驗證請求本體</h4>
+<p>更新偏好只有兩個欄位，可以在合併之前依結構描述（schema）驗證，不認得的鍵直接拒絕：</p>
+<pre data-lang="json"><code>{
+  <span class="tok-attr">"type"</span>: <span class="tok-string">"object"</span>,
+  <span class="tok-attr">"properties"</span>: {
+    <span class="tok-attr">"theme"</span>: { <span class="tok-attr">"enum"</span>: [<span class="tok-string">"light"</span>, <span class="tok-string">"dark"</span>] },
+    <span class="tok-attr">"lang"</span>: { <span class="tok-attr">"type"</span>: <span class="tok-string">"string"</span> }
+  },
+  <span class="tok-attr">"additionalProperties"</span>: <span class="tok-keyword">false</span>
+}</code></pre>
+<p><code>additionalProperties: false</code> 讓清單以外的鍵一律不通過，指向 prototype 的鍵也在其中。這同時限制了值的型別與範圍，比事後挑出幾個危險的鍵可靠。</p>
+<h4>使用者決定鍵名的資料，用不會查 prototype 的容器</h4>
+<p>鍵由使用者決定的資料，例如自訂標籤、欄位對照表，改放在 <code>Map</code>，或用 <code>Object.create(null)</code> 建立的物件：</p>
+<pre data-lang="javascript"><code><span class="tok-keyword">const</span> labels = <span class="tok-keyword">new</span> <span class="tok-func">Map</span>();
+labels.<span class="tok-func">set</span>(key, value);   <span class="tok-comment">// key 只是資料，不會被當成物件的結構</span>
+
+<span class="tok-keyword">const</span> plain = Object.<span class="tok-func">create</span>(<span class="tok-keyword">null</span>);   <span class="tok-comment">// 沒有 prototype，查找到自己為止</span></code></pre>
+<p>沒有 prototype 的物件也沒有 <code>toString</code>、<code>hasOwnProperty</code> 這些繼承來的方法，程式若呼叫它們會出錯；要檢查屬性時用 <code>Object.hasOwn(plain, key)</code>。查詢字串剖析套件通常有避開這個問題的選項，升級並查文件。</p>
+<h4>讓 gadget 不依賴繼承</h4>
+<ul>
+<li>選用設定在程式裡明確給預設值，並用 <code>Object.hasOwn</code> 判斷物件自己有沒有，讀取就不會落到 prototype。</li>
+<li>前端把來自網址的值放進頁面時，寫入點用 <code>textContent</code> 一類不解析 HTML 的方式，即使 gadget 被觸發，值也只是文字（見 <a href="../../browser-output/xss-context-dom/index.html#fix">3.2 的防禦</a>）。</li>
+</ul>
+<h4>縮小萬一失守的損害</h4>
+<ul>
+<li>在程式啟動、載入其他程式碼之前呼叫 <code>Object.freeze(Object.prototype)</code>，凍結後對它新增或改屬性不再生效：一般模式靜默忽略，嚴格模式（strict mode）丟出例外。凍結必須早於任何污染發生。</li>
+<li>凍結有副作用：有些套件在載入時會修改內建 prototype（例如 polyfill，用來補上舊環境缺少的功能），凍結後可能壞掉；用賦值覆寫 <code>toString</code> 這類繼承來的屬性也會被擋。上線前要完整測試。</li>
+<li>凍結只保護被凍結的那個物件，<code>Array.prototype</code>、自己的類別與前面 <code>defaults</code> 這類物件要分別處理。</li>
+<li>Node.js 的 <code>--disable-proto=delete</code> 選項把 7.5.1 說的第一個特殊屬性整個移除，<code>--disable-proto=throw</code> 則讓存取它時丟出例外（<code>ERR_PROTO_ACCESS</code>）。7.5.1 的第二條路徑仍在，所以它不能單獨當作修補。</li>
+<li>更新用到的合併、複製與剖析套件，並讓依賴掃描定期跑；這類套件過去多半被回報過這個問題並修補。</li>
+</ul>
+<h3 id="fix-ineffective">無效的防禦</h3>
+<div class="tbl-wrap"><table id="tbl-8-1"><caption><span class="tbl-num">表 7.5.8-1</span></caption><thead><tr><th>做法</th><th>為什麼不夠</th></tr></thead><tbody>
+<tr><td>只過濾一個鍵名</td><td>到達 prototype 的路徑不只一條（7.5.1 說了兩條），各個函式庫的實作會被哪一條影響也不同，本節的 <code class="nw">merge</code> 就只受第一條影響。用名稱列舉無法涵蓋所有實作，擋掉一個名稱，另一條路徑在別的實作上仍然通。</td></tr>
+<tr><td>只檢查請求最外層的鍵</td><td>merge 會遞迴，指向 prototype 的鍵可以出現在任何一層巢狀物件裡。</td></tr>
+<tr><td>清理值（例如跳脫 HTML），不檢查鍵</td><td>污染靠的是鍵的名稱，寫進去的值清理得再乾淨，結構仍被改了；gadget 讀到的屬性名稱也是來自鍵。</td></tr>
+<tr><td>改用 <code class="nw">JSON.parse</code> 就當作安全</td><td>解析本來就不是寫入 prototype 的地方，合併照舊。</td></tr>
+<tr><td>只在前端表單限制欄位</td><td>使用者可以直接組請求，或構造含巢狀鍵的網址；伺服器與頁面腳本必須處理實際收到的輸入。</td></tr>
+<tr><td>回應不再反映新屬性，不讓人看出污染</td><td>屬性仍在 prototype 裡，gadget 照樣讀它；回應看不到，只表示症狀被藏起來。</td></tr>
+</tbody></table></div>
+
+<h2 id="summary"><span class="num">7.5.9</span> 小結</h2>
+<ul>
+<li>JavaScript 物件讀取屬性時，自己沒有就沿 prototype 往上找；一般物件共用同一個 <code>Object.prototype</code>，改它，所有繼承它的物件讀到的值都變。</li>
+<li>遞迴 merge、依路徑設值、查詢字串剖析這類程式，把使用者的鍵當成物件裡的位置；鍵若指向 prototype，寫入的對象就是共用物件。</li>
+<li>污染需要 gadget 才有後果：有一段程式讀物件自己沒設定的屬性，並把值交給 sink 或用來決策。前端常接到 DOM-based XSS，伺服器端常是權限旗標與選項，污染的範圍是整個行程。</li>
+<li>辨認的證據是不相干的物件出現沒設定過的屬性；伺服器端要靠其他請求的行為差異。</li>
+<li>修補在合併處：只更新已知的自己的屬性、用白名單驗證請求本體、使用者決定鍵名的資料放 <code>Map</code>、更新套件；凍結 prototype 是縱深防禦，過濾單一鍵名與清理值都不是修補。</li>
+</ul>
+<aside class="practice" aria-label="Lab 練習">
+<p>PortSwigger Academy 的對應練習（主題頁 <a href="https://portswigger.net/web-security/prototype-pollution">Prototype pollution</a>）：</p>
+<ul>
+  <li><a href="https://portswigger.net/web-security/prototype-pollution/client-side/lab-prototype-pollution-dom-xss-via-client-side-prototype-pollution">DOM XSS via client-side prototype pollution</a>：對照 3.2 的 source 與 sink，找出中間多出來的那段合併，以及讀取沒設定屬性的 gadget。</li>
+  <li><a href="https://portswigger.net/web-security/prototype-pollution/server-side/lab-privilege-escalation-via-server-side-prototype-pollution">Privilege escalation via server-side prototype pollution</a>：伺服器端的偏好更新與權限旗標，分開確認「污染發生」與「gadget 讀到」兩件事。</li>
+  <li><a href="https://portswigger.net/web-security/prototype-pollution/server-side/lab-detecting-server-side-prototype-pollution-without-polluted-property-reflection">Detecting server-side prototype pollution without polluted property reflection</a>：回應看不到新屬性時，靠哪些行為差異判斷。</li>
+</ul>
+</aside>
+<aside class="next" aria-label="下一節">
+<p>HTTP 請求交給 URL 抓取器、XML parser、模板引擎、還原器，以及這一節的 merge，本章的元件各有一套語法或行為。下一章 <a href="../../apis/api-testing/index.html">API Attack Surface</a> 把視角換到網站的 API：前端頁面背後有一組以 JSON 為主的端點，本節的 <code>PATCH /preferences</code> 就是其中一個。畫面上沒有按鈕的功能也可能有端點，下一章先從找出這些端點、判斷它們接受哪些欄位與方法開始。</p>
+</aside>
+
 </article>
 <nav class="pager" aria-label="上下節"><a class="prev" href="../../server-actions/deserialization/index.html"><small>← prev</small><span class="num">7.4</span> Insecure Deserialization</a><a class="next" href="../../apis/api-testing/index.html"><small>next →</small><span class="num">8.1</span> API Attack Surface</a></nav>
 </main>
 </div>
-<footer class="sm-status"><span class="sm-s-main">26 sections</span><span class="sm-s-list"><span class="sm-s-planned">規劃中 12</span> <span class="sm-s-draft">草稿 0</span> <span class="sm-s-ready">已完成 14</span></span><span class="sm-s-end">系統地圖</span></footer>
-<script src="../../assets/theme/theme.js?v=a6c60e11a1"></script>
+<footer class="sm-status"><span class="sm-s-main">27 sections</span><span class="sm-s-end">系統地圖</span></footer>
+<script src="../../assets/theme/theme.js?v=2cda1ff0b6"></script>
+<script src="../../assets/appendix.js?v=2cda1ff0b6"></script>
 </body>
 </html>
