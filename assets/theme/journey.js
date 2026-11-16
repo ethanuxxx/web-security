@@ -1,7 +1,7 @@
 /* 系統地圖首頁：「一筆 request 的旅程」播放器（桌面 >= 1011px，需要 GSAP + MotionPathPlugin）。
  * 資料來自 journey.json（建置時驗證後內嵌於 #sm-journey-data）；這裡只負責把資料排成一條 GSAP 時間軸。
  * 沒有這支程式或 GSAP 時，首頁的靜態地圖與說明照常運作。沒有鏡頭移動：整張地圖一直完整可見。
- * 動畫開關：<html data-motion="on|off">（theme.js 的頂端列按鈕）。off 時每一步直接跳到它的結束狀態，不做補間。
+ * 動畫一律開啟（使用者 2026-11-14），沒有開關。
  */
 (function () {
   "use strict";
@@ -40,7 +40,6 @@
   var route = null, tl = null, ov = null, layer = null, opened = false, playing = false, finished = false;
   var starts = [], ends = [], total = 0, cur = -1, labels = [], dragging = false;
 
-  function motionOn() { return d.documentElement.getAttribute("data-motion") !== "off"; }
   function el(tag, cls, parent) {
     var e = d.createElementNS(NS, tag);
     if (cls) e.setAttribute("class", cls);
@@ -65,6 +64,61 @@
     var n = 0;
     for (var i = 1; i < pts.length; i++) n += Math.hypot(pts[i][0] - pts[i - 1][0], pts[i][1] - pts[i - 1][1]);
     return n;
+  }
+
+  /* ------------------------------------------------------------------ card art (small pictures instead of sentences) */
+  function esc(x) { return String(x).replace(/&/g, "&amp;").replace(/</g, "&lt;"); }
+  var IC = {
+    cookie: '<svg class="jp-ic" viewBox="0 0 24 24" aria-hidden="true"><circle class="jp-ic-ck" cx="12" cy="12" r="10"/>' +
+      '<circle class="jp-ic-bg" cx="21" cy="4" r="4.5"/><circle class="jp-ic-bg" cx="8" cy="9" r="1.7"/><circle class="jp-ic-bg" cx="13" cy="14" r="1.7"/>' +
+      '<circle class="jp-ic-bg" cx="7" cy="15.5" r="1.4"/><circle class="jp-ic-bg" cx="16" cy="9.5" r="1.3"/></svg>',
+    person: '<svg class="jp-ic" viewBox="0 0 24 24" aria-hidden="true"><circle class="jp-ic-ac" cx="12" cy="8" r="4.5"/>' +
+      '<path class="jp-ic-ac" d="M3 22c0-5 4-8 9-8s9 3 9 8z"/></svg>',
+    check: '<svg class="jp-ic" viewBox="0 0 24 24" aria-hidden="true"><path class="jp-ic-ok" d="M4 12.5l5 5L20 6.5"/></svg>',
+    arrow: '<svg class="jp-ic jp-ic-arrow" viewBox="0 0 24 24" aria-hidden="true"><path class="jp-ic-ln" d="M2 12h17M13 6l6 6-6 6"/></svg>'
+  };
+  // drawers: a 3 x 2 grid of cells; (col, row) marks the cell this step is about
+  function drawers(state) {
+    var out = '<svg class="jp-art-svg" viewBox="0 0 126 60" aria-hidden="true">';
+    for (var r = 0; r < 2; r++) for (var c = 0; c < 3; c++) {
+      var x = 3 + c * 40, y = 3 + r * 29, hit = (c === 1 && r === 0);
+      out += '<rect class="jp-dw' + (hit ? " tgt" : "") + (hit && state === "miss" ? " miss" : "") + '" x="' + x + '" y="' + y + '" width="36" height="25" rx="3"/>';
+      if (!hit || state === "look") out += '<line class="jp-dw-h" x1="' + (x + 13) + '" y1="' + (y + 18) + '" x2="' + (x + 23) + '" y2="' + (y + 18) + '"/>';
+    }
+    if (state === "look") out += '<text class="jp-dw-q" x="63" y="22" text-anchor="middle">?</text>';
+    if (state === "miss") out += '<path class="jp-dw-x" d="M55 8l16 14M71 8L55 22"/>';
+    return out + "</svg>";
+  }
+  function pageIcon(x) {
+    return '<rect class="jp-dw" x="' + x + '" y="6" width="22" height="30" rx="2.5"/>' +
+      '<line class="jp-dw-h" x1="' + (x + 5) + '" y1="14" x2="' + (x + 17) + '" y2="14"/><line class="jp-dw-h" x1="' + (x + 5) + '" y1="20" x2="' + (x + 17) + '" y2="20"/>' +
+      '<line class="jp-dw-h" x1="' + (x + 5) + '" y1="26" x2="' + (x + 13) + '" y2="26"/>';
+  }
+  function storeSvg(state) {
+    var out = '<svg class="jp-art-svg" viewBox="0 0 126 42" aria-hidden="true">' + pageIcon(3);
+    out += '<path class="jp-ic-ln" d="M32 21h' + (state === "no" ? "14" : "24") + '"/>';
+    if (state === "ask") out += '<path class="jp-ic-ln" d="M50 14l8 7-8 7"/>';
+    out += '<rect class="jp-dw tgt' + (state === "no" ? " no" : "") + '" x="68" y="6" width="54" height="30" rx="3"/>';
+    if (state === "ask") out += '<text class="jp-dw-q" x="95" y="28" text-anchor="middle">?</text>';
+    else out += '<circle class="jp-no" cx="52" cy="21" r="7"/><path class="jp-no" d="M47 26l10-10"/>';
+    return out + "</svg>";
+  }
+  function artHTML(o) {
+    switch (o.art) {
+      case "request":
+        return '<div class="jp-env"><div class="jp-env-hd"><span class="jp-chip m">' + esc(o.method) + '</span><span class="jp-path">' + esc(o.path) + '</span></div>' +
+          '<div class="jp-env-bd"><span class="jp-env-ln"><i></i><i></i></span>' + (o.cookie ? '<span class="jp-env-ck">' + IC.cookie + IC.check + '</span>' : "") + '</div></div>';
+      case "session":
+        return '<div class="jp-ses"><span class="jp-ses-a">' + IC.cookie + '<span class="jp-mono">' + esc(o.cookie) + '</span></span>' + IC.arrow +
+          '<span class="jp-ses-a">' + IC.person + '<span class="jp-ses-who"><b>' + esc(o.user) + '</b><span class="jp-mono">' + esc(o.uid) + '</span></span></span></div>';
+      case "cache":
+        return '<div class="jp-art"><span class="jp-chip">' + esc(o.key) + '</span>' + drawers(o.state) +
+          (o.state === "miss" ? '<p class="jp-tag miss">MISS</p>' : "") + '</div>';
+      case "store":
+        return '<div class="jp-art"><span class="jp-chip">' + esc(o.tag) + '</span>' + storeSvg(o.state) +
+          (o.state === "no" ? '<p class="jp-tag ok">不存</p>' : "") + '</div>';
+    }
+    return "";
   }
 
   /* ------------------------------------------------------------------ build the scene */
@@ -141,6 +195,7 @@
         var fl = h("div", "jp-flip", inn);
         [["front", c.front, ""], ["back", c.back, " back tone-" + (c.back.tone || "ok")]].forEach(function (f) {
           var face = h("div", "jp-face" + f[2], fl);
+          if (f[1].art) { face.innerHTML = artHTML(f[1]); return; }
           h("p", "jp-ct", face, f[1].title);
           f[1].lines.forEach(function (t) { h("p", "jp-cl", face, t); });
         });
@@ -156,14 +211,18 @@
           row.forEach(function (t) { h("td", "", tr, t); });
           return tr;
         });
+      } else if (c.kind === "art") {
+        inn.innerHTML = artHTML(c);
       } else if (c.kind === "page") {
-        h("p", "jp-ct", inn, c.title);
-        (c.lines || []).forEach(function (t) { h("p", "jp-cl", inn, t); });
-        var pg = h("div", "jp-page", inn), row = null, cols = null;
+        if (c.title) h("p", "jp-ct", inn, c.title);
+        var win = h("div", "jp-win", inn), tb0 = h("div", "jp-win-bar", win);
+        h("i", "", tb0); h("i", "", tb0); h("i", "", tb0); h("span", "jp-win-url", tb0);
+        var pg = h("div", "jp-page", win), row = null, cols = null;
         o.parts = [];
         c.parts.forEach(function (kind) {
           var e;
           if (kind === "bar") { e = h("div", "jp-pg-bar", pg); }
+          else if (kind === "block") { e = h("div", "jp-pg-blk", pg); h("span", "", e); h("span", "", e); }
           else if (kind === "avatar") {
             row = h("div", "jp-pg-row", pg);
             e = h("div", "jp-pg-av", row);
@@ -185,6 +244,34 @@
 
   /* ------------------------------------------------------------------ the timeline */
   var SPEED = 300; // map units per second along a line
+  // Reading pause after an action that shows text (card, flip, open, rows; grow adds none, its card already did): base + cjk * (CJK chars) + other * (other
+  // non-space chars), capped at max. Tunable in journey.json "read"; these are the defaults. hold = gap between steps.
+  var READ = Object.assign({ base: 1.5, cjk: 0.06, other: 0.03, max: 5, rows: 1.2, hold: 0.9 }, data.read || {});
+  function textCost(strs) {
+    var n = 0, m = 0;
+    strs.forEach(function (x) {
+      String(x).replace(/\s/g, "").split("").forEach(function (ch) { if (/[\u2e80-\u9fff\uff00-\uffef]/.test(ch)) n++; else m++; });
+    });
+    return Math.min(READ.max, READ.base + READ.cjk * n + READ.other * m);
+  }
+  function artStrs(o) { return ["key", "tag", "method", "path", "user", "uid"].map(function (k) { return o[k]; }).filter(Boolean); }
+  function cardStrs(c, face) {
+    if (c.kind === "flip") { var f = c[face || "front"]; return f.art ? artStrs(f) : [f.title].concat(f.lines); }
+    if (c.kind === "art") return artStrs(c);
+    if (c.kind === "table") return [c.title, c.query].concat(c.header, [].concat.apply([], c.rows));
+    return [c.title].concat(c.lines || []);
+  }
+  // seconds the reader needs for the text this action newly shows (0: a transition only)
+  function readTime(r, a) {
+    var c = a.card && r.cards.filter(function (x) { return x.id === a.card; })[0];
+    switch (a.type) {
+      case "card": return textCost(cardStrs(c, "front"));
+      case "flip": return textCost(cardStrs(c, "back"));
+      case "open": return textCost(a.details.map(function (x) { return typeof x === "string" ? x : (x.text || ""); }));
+      case "rows": return READ.rows;
+    }
+    return 0;
+  }
   function build_tl(r, S) {
     var t = gsap.timeline({ paused: true, onUpdate: tick, onComplete: onDone });
     t.timeScale(1 / (data.pace || 1)); // journey.json "pace": 1.3 plays every duration and hold 1.3x longer
@@ -218,11 +305,11 @@
         var dur = schedule(t, S, a, start, si, prevCards);
         if (a.id) t.addLabel("s" + si + "-" + a.id, start);
         lastStart = start;
-        cur_ = Math.max(cur_, start + dur);
+        cur_ = Math.max(cur_, start + dur + readTime(r, a)); // `with` actions overlap: the longer wins, never summed
       });
       ends.push(cur_);
       t.addLabel("e" + si, cur_);
-      cursor = cur_ + 0.7; // a short hold, then the next step begins
+      cursor = cur_ + READ.hold; // a short hold, then the next step begins
     });
     Object.keys(S.pk).forEach(function (id) {
       S.pk[id].sides.sort(function (a, b) { return a.t - b.t; });
@@ -281,8 +368,11 @@
       case "open": {
         dur = a.dur || 0.5;
         P.more.innerHTML = "";
-        a.details.forEach(function (x) { h("span", "", P.more, x); });
-        var hh = a.details.length * 20 + 4;
+        a.details.forEach(function (x) {
+          var chip = h("span", "jp-chip", P.more, typeof x === "string" ? x : (x.text || ""));
+          if (typeof x !== "string" && IC[x.icon]) chip.insertAdjacentHTML("afterbegin", IC[x.icon]);
+        });
+        var hh = 34;
         t.fromTo(P.more, { height: 0 }, { height: hh, duration: dur, ease: "power2.out" }, at);
         t.fromTo(P.g.querySelector(".jp-halo"), { attr: { r: 12 } }, { attr: { r: 18 }, duration: dur }, at);
         P.hh = hh;
@@ -395,47 +485,26 @@
   }
   function onDone() {
     finished = true;
-    clearTimer();
     setPlaying(false);
   }
 
   /* ------------------------------------------------------------------ transport */
-  var timer = 0, scene = null;
-  function clearTimer() { if (timer) { clearInterval(timer); timer = 0; } }
+  var scene = null;
   function seekTime(time) { tl.pause(); tl.time(Math.max(0, Math.min(total, time)), false); finished = tl.time() >= total - 1e-6; }
   function goStep(i) {
     i = Math.max(0, Math.min(route.steps.length - 1, i));
-    clearTimer(); setPlaying(false); finished = false;
+    setPlaying(false); finished = false;
     tl.pause();
-    if (motionOn()) {
-      var dt = Math.abs(ends[i] - tl.time());
-      tl.tweenTo(ends[i], { duration: Math.max(0.35, Math.min(1.6, dt * 0.5)), ease: "power1.inOut", overwrite: true });
-    } else {
-      gsap.killTweensOf(tl);
-      tl.time(ends[i], false);
-    }
+    var dt = Math.abs(ends[i] - tl.time());
+    tl.tweenTo(ends[i], { duration: Math.max(0.35, Math.min(1.6, dt * 0.5)), ease: "power1.inOut", overwrite: true });
   }
   function curStep() { return stepAt(tl.time()); }
   function play() {
     if (finished || isEnd()) { finished = false; tl.time(0, false); }
-    if (motionOn()) {
-      gsap.killTweensOf(tl);
-      tl.play(); setPlaying(true);
-    } else {
-      // no tweening: each step snaps to its end state, a few seconds apart
-      var i = tl.time() < ends[0] - 1e-6 ? 0 : curStep() + 1;
-      if (i >= route.steps.length) i = 0;
-      snap(i); setPlaying(true);
-      clearTimer();
-      timer = setInterval(function () {
-        var n = curStep() + 1;
-        if (n >= route.steps.length) { clearTimer(); finished = true; setPlaying(false); return; }
-        snap(n);
-      }, 4500);
-    }
+    gsap.killTweensOf(tl);
+    tl.play(); setPlaying(true);
   }
-  function snap(i) { gsap.killTweensOf(tl); tl.pause(); tl.time(ends[i], false); }
-  function pause() { clearTimer(); tl.pause(); gsap.killTweensOf(tl); setPlaying(false); }
+  function pause() { tl.pause(); gsap.killTweensOf(tl); setPlaying(false); }
   function toggle() { if (playing) pause(); else play(); }
 
   /* ------------------------------------------------------------------ open / close */
@@ -457,6 +526,7 @@
     tip.setAttribute("aria-live", "off");
     idle.hidden = true; player.hidden = false;
     scene = build(route);
+    fade(true);
     tl = build_tl(route, scene);
     tl.seek(total, true); tl.seek(0, true); // prime every 'from' value, then back to the start
     ticksUI();
@@ -464,12 +534,21 @@
     tick();
     setPlaying(false);
     if (autoplay) { play(); }
-    else if (!motionOn()) { snap(0); }
     playBtn.focus();
+  }
+  // while the journey is open, fade every map component the route never touches (data.used, derived at build time)
+  function fade(on) {
+    var u = data.used || {};
+    [["node", u.nodes], ["edge", u.edges], ["pill", u.pills]].forEach(function (g) {
+      [].forEach.call(svg.querySelectorAll("[data-" + g[0] + "]"), function (e) {
+        var used = (g[1] || []).map(String).indexOf(e.getAttribute("data-" + g[0])) >= 0;
+        e.classList.toggle("jp-unused", on && !used);
+      });
+    });
   }
   function close(refocus) {
     if (!opened) return;
-    clearTimer();
+    fade(false);
     if (tl) { tl.kill(); gsap.killTweensOf(tl); }
     tl = null; playing = false; opened = false; finished = false;
     if (layer && layer.parentNode) layer.parentNode.removeChild(layer);
@@ -490,8 +569,7 @@
     open(false);
     if (!opened) return;
     i = Math.max(0, Math.min(route.steps.length - 1, i));
-    if (motionOn()) { tl.time(starts[i], false); play(); }
-    else { snap(i); setPlaying(false); }
+    tl.time(starts[i], false); play();
   }
   [].forEach.call(root.querySelectorAll(".sm-prev-step"), function (b) {
     b.addEventListener("click", function () { startAt(parseInt(b.getAttribute("data-step"), 10) || 0); });
@@ -501,8 +579,8 @@
   function atEnd(i) { return tl.time() >= ends[i] - 0.05; }
   prevBtn.addEventListener("click", function () {
     var i = curStep();
-    if (i === 0) { clearTimer(); setPlaying(false); finished = false; tl.pause(); gsap.killTweensOf(tl);
-      if (motionOn()) tl.tweenTo(0, { duration: 0.5, ease: "power1.inOut" }); else tl.time(0, false); return; }
+    if (i === 0) { setPlaying(false); finished = false; tl.pause(); gsap.killTweensOf(tl);
+      tl.tweenTo(0, { duration: 0.5, ease: "power1.inOut" }); return; }
     goStep(i - 1);
   });
   nextBtn.addEventListener("click", function () { var i = curStep(); goStep(atEnd(i) ? i + 1 : i); });
@@ -510,11 +588,9 @@
     dragging = true;
     pause();
     var time = range.value / 1000 * total;
-    if (!motionOn()) time = ends[stepAt(time)];
     tl.time(Math.min(total, time), false);
     finished = tl.time() >= total - 1e-6;
     dragging = false;
-    if (!motionOn()) range.value = String(Math.round(tl.time() / total * 1000));
   });
   bar.addEventListener("keydown", function (e) {
     if (!opened) return;
@@ -525,12 +601,6 @@
     else if (k === "Escape") { e.preventDefault(); close(true); }
   });
 
-  // the motion switch changed while a journey is open: stop tweening, show the current step's end state
-  new MutationObserver(function () {
-    if (!opened) return;
-    pause();
-    if (!motionOn()) snap(curStep());
-  }).observe(d.documentElement, { attributes: true, attributeFilter: ["data-motion"] });
   var onMq = function () { if (!DESK.matches) close(false); };
   if (DESK.addEventListener) DESK.addEventListener("change", onMq); else if (DESK.addListener) DESK.addListener(onMq);
 

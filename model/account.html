@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="zh-Hant"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>我的帳號 - 弦川票務</title><link rel="stylesheet" href="style.css"></head>
+<body>
+<header class="site"></header>
+<main>
+<div id="box" hidden>
+<div class="panel who">
+<svg class="avatar" viewBox="0 0 72 72" aria-hidden="true"><circle cx="36" cy="36" r="36" id="avc"/><circle cx="36" cy="28" r="12" fill="#fff"/><path d="M12 62a24 20 0 0 1 48 0z" fill="#fff"/></svg>
+<div><h1 id="name" style="margin:0"></h1><p class="meta" id="mail"></p><p class="meta" id="extra"></p></div>
+<button type="button" id="out" class="ghost" style="margin-left:auto">登出</button>
+</div>
+<div id="pro" hidden>
+<h2>個人資料</h2>
+<form class="panel" id="uf" style="max-width:420px">
+<label for="em">Email</label><input id="em" name="email">
+<label for="pw">密碼</label><input id="pw" name="password" type="password" autocomplete="off">
+<input type="hidden" name="id" id="uid">
+<button type="submit" class="wide">更新資料</button>
+<p class="note" id="msg" role="status"></p>
+<ul class="note" id="rec" hidden style="margin:.2em 0 0;padding-left:1.2em;font-family:monospace"></ul>
+</form>
+<div class="sublinks" id="links"></div>
+</div>
+<h2 id="th">我的票券</h2>
+<div id="tix"></div>
+</div>
+</main>
+<footer class="site"></footer>
+<script src="static/app.js"></script>
+<script src="common.js"></script>
+<script src="data.js"></script>
+<script>
+var params = new URLSearchParams(location.search);
+var viewer = currentUser();
+function byId(v) {
+  for (var n in PEOPLE) if (String(PEOPLE[n].id) === v || PEOPLE[n].guid === v) return n;
+  return null;
+}
+var curN, curMode;
+function show(n, mode) {
+  curN = n; curMode = mode;   // mode: "self"、"other"（完整帳號頁）或 "public"（公開個人檔）
+  var p = PEOPLE[n], box = document.getElementById("box");
+  box.hidden = false;
+  document.title = (mode === "self" ? "我的帳號" : n) + " - 弦川票務";
+  document.getElementById("name").textContent = n;
+  document.getElementById("avc").setAttribute("fill", p.color);
+  document.getElementById("mail").textContent = emailOf(n);
+  var ex = document.getElementById("extra");
+  if (mode === "public") {
+    ex.textContent = "電話 " + p.phone + "｜API key " + p.apikey;
+    document.getElementById("out").hidden = true;
+    document.getElementById("th").hidden = true;
+    return;
+  }
+  ex.textContent = "角色：" + (roleOf(n) === "admin" ? "管理員" : "會員");
+  document.getElementById("out").hidden = n !== viewer;
+  document.getElementById("th").textContent = n === viewer ? "我的票券" : n + " 的票券";
+  document.getElementById("pro").hidden = false;
+  document.getElementById("em").value = emailOf(n);
+  document.getElementById("pw").setAttribute("value", passwordOf(n) || "");
+  document.getElementById("uid").value = p.id;
+  var links = document.getElementById("links"); links.innerHTML = "";
+  function add(href, text) { var a = document.createElement("a"); a.href = href; a.textContent = text; links.appendChild(a); }
+  if (n === viewer) {
+    add("mailbox.html", "站內信箱"); add("account-change-password.html", "變更密碼");
+    if (p.chat) add("static/chat/" + p.chat + ".txt", "客服對話紀錄");
+  }
+  if (cookie("admin") === "true" || (viewer && roleOf(viewer) === "admin")) add("admin-panel.html", "管理後台");
+  var t = document.getElementById("tix");
+  if (p.ticket) {
+    var e = EVENTS[p.ticket];
+    t.innerHTML = '<div class="tk"><span class="ic">' + ICON.ticket + '</span><div><b></b><span class="meta"></span></div><span class="tag" style="margin-left:auto">全票 × 1</span></div>';
+    t.querySelector("b").textContent = e.title; t.querySelector(".meta").textContent = e.date + "｜" + e.venue;
+  } else { t.innerHTML = '<p class="meta">目前沒有票券。</p>'; }
+}
+var userParam = params.get("user"), idParam = params.get("id");
+if (userParam !== null) {
+  var un = userParam.toLowerCase();
+  if (exists(un)) show(un, "public");
+  else { var np = document.createElement("p"); np.textContent = "找不到使用者"; document.querySelector("main").appendChild(np); }
+} else if (!viewer) {
+  location.replace("login.html");
+} else if (idParam !== null) {
+  var target = byId(idParam);
+  if (!target || !exists(target)) { var nf = document.createElement("p"); nf.textContent = "找不到使用者"; document.querySelector("main").appendChild(nf); }
+  else show(target, target === viewer ? "self" : "other");  // 數字編號與 GUID 都不檢查歸屬
+} else {
+  show(viewer, "self");
+}
+document.getElementById("out").onclick = function () {
+  clearSession();
+  location.href = "login.html";
+};
+document.getElementById("uf").addEventListener("submit", function (ev) {
+  ev.preventDefault();
+  var fd = new FormData(ev.target), msg = document.getElementById("msg");
+  var who = byId(String(fd.get("id")));   // 依表單的 id 找帳號，不比對是不是本人
+  if (!who || !exists(who)) { msg.textContent = "找不到使用者"; return; }
+  store.set("email:" + who, String(fd.get("email")));
+  var rid = fd.get("roleid");               // 表單沒有這一欄，但送出了就照寫
+  if (rid === "member" || rid === "admin") store.set("role:" + who, rid);
+  show(curN, curMode);
+  var rec = document.getElementById("rec"); rec.innerHTML = "";   // 更新後列出該帳號的欄位
+  [["id", PEOPLE[who].id], ["email", emailOf(who)], ["roleid", roleOf(who)]].forEach(function (kv) {
+    var li = document.createElement("li"); li.textContent = kv[0] + "=" + kv[1]; rec.appendChild(li);
+  });
+  rec.hidden = false;
+  msg.textContent = (who === viewer ? "" : who + " 的") + "個人資料已更新";
+});
+</script>
+</body></html>

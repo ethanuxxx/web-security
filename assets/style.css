@@ -19,7 +19,7 @@
   --practice: #ff6633;
   --practice-bg: #fff1ea;
   --on-practice: #1f2328;
-  --lamp-ready: #2a9150; --lamp-review: #b07300; --lamp-planned: #7d858f; --lamp-draft: #2f74c0;
+  --lamp-y-hi: #fff3a0; --lamp-y: #ffd93b; --lamp-y-lo: #f0b400; --lamp-y-edge: #6b4f00; --lamp-g-hi: #a6efb8; --lamp-g: #38c46a; --lamp-g-lo: #1f8f48; --lamp-g-edge: #0f4d26; --lamp-track: #4a4d52; --lamp-track-edge: #7d858f; --lamp-empty-hi: #aeb4bb; --lamp-empty-lo: #dfe3e7; --lamp-empty-edge: #6e757e; --lamp-gloss: rgba(255,255,255,.6);
   --heading: #1f2328;
   --note: #1f5fa8;
   --note-bg: #e8f0fa;
@@ -75,7 +75,7 @@
     --practice: #ff6633;
     --practice-bg: #33201a;
     --on-practice: #1f2328;
-    --lamp-ready: #4cc777; --lamp-review: #f0b93a; --lamp-planned: #8b949e; --lamp-draft: #6fb0f2;
+    --lamp-y-hi: #fff3a0; --lamp-y: #ffd93b; --lamp-y-lo: #f0b400; --lamp-y-edge: #6b4f00; --lamp-g-hi: #a6efb8; --lamp-g: #38c46a; --lamp-g-lo: #1f8f48; --lamp-g-edge: #0f4d26; --lamp-track: #4a4d52; --lamp-track-edge: #7d858f; --lamp-empty-hi: #aeb4bb; --lamp-empty-lo: #dfe3e7; --lamp-empty-edge: #6e757e; --lamp-gloss: rgba(255,255,255,.6);
     --heading: #e6e3dc;
     --note: #7fb0eb;
     --note-bg: #1d2a3a;
@@ -110,7 +110,7 @@
   --review: #7cc4ee; --review-bg: #1a3040;
   --ready: #86d49b; --ready-bg: #1e3526;
   --practice: #ff6633; --practice-bg: #33201a; --on-practice: #1f2328;
-  --lamp-ready: #4cc777; --lamp-review: #f0b93a; --lamp-planned: #8b949e; --lamp-draft: #6fb0f2;
+  --lamp-y-hi: #fff3a0; --lamp-y: #ffd93b; --lamp-y-lo: #f0b400; --lamp-y-edge: #6b4f00; --lamp-g-hi: #a6efb8; --lamp-g: #38c46a; --lamp-g-lo: #1f8f48; --lamp-g-edge: #0f4d26; --lamp-track: #4a4d52; --lamp-track-edge: #7d858f; --lamp-empty-hi: #aeb4bb; --lamp-empty-lo: #dfe3e7; --lamp-empty-edge: #6e757e; --lamp-gloss: rgba(255,255,255,.6);
   --heading: #e6e3dc; --note: #7fb0eb; --note-bg: #1d2a3a;
   --warning: #f0a77c; --warning-bg: #3b2a20;
   --topbar-bg: #1c1f23; --topbar-text: #e6e3dc; --icon-accent: #f2b84b; --icon-fill: #4a3d28; color-scheme: dark;
@@ -206,21 +206,34 @@ h4 { font-size: .98rem; margin: 1.4rem 0 .5rem; scroll-margin-top: 4rem; }
 .sec-list li:first-child { border-top: 0; }
 .sec-list .question { font-size: .9rem; }
 
-/* status lamp, no visible text: filled = written (ready green, review amber, draft blue), hollow grey = planned */
+/* status lamp, no visible text: green = ready, yellow = in progress (outline/draft/review/verifying), hollow grey = planned.
+   Yellow statuses also carry a 3-segment .pbar (架構 ┆ 草稿 ┆ 驗證), shown instead of the lamp only in grouping mode. */
 .badge {
   display: inline-flex; align-items: center; vertical-align: middle; margin-left: .3em;
   font-size: .72rem; font-weight: 500; line-height: 1.6; color: var(--muted); white-space: nowrap;
-  --lamp: var(--lamp-planned);
 }
 h1 .badge { font-size: .8rem; }
 .lamp {
-  flex: none; width: .62em; height: .62em; border-radius: 50%;
-  background: var(--lamp); box-shadow: 0 0 0 .2em color-mix(in srgb, var(--lamp) 22%, transparent);
+  flex: none; position: relative; width: .62em; height: .62em; border-radius: 50%;
+  background: linear-gradient(180deg, var(--lamp-g-hi) 0%, var(--lamp-g) 45%, var(--lamp-g-lo) 100%); box-shadow: 0 0 0 1px var(--lamp-g-edge);
 }
-.badge-ready { --lamp: var(--lamp-ready); }
-.badge-review { --lamp: var(--lamp-review); }
-.badge-draft { --lamp: var(--lamp-draft); }
-.badge-planned .lamp { background: transparent; box-shadow: inset 0 0 0 .12em var(--lamp); }
+.lamp::after { content: ""; position: absolute; left: 22%; right: 22%; top: 10%; height: 30%; border-radius: 999px;
+  background: linear-gradient(180deg, var(--lamp-gloss), rgba(255,255,255,0)); }
+.badge-y .lamp { background: linear-gradient(180deg, var(--lamp-y-hi) 0%, var(--lamp-y) 45%, var(--lamp-y-lo) 100%); box-shadow: 0 0 0 1px var(--lamp-y-edge); }
+.badge-planned .lamp { background: linear-gradient(180deg, var(--lamp-empty-hi) 0%, var(--lamp-empty-lo) 100%); box-shadow: 0 0 0 1px var(--lamp-empty-edge), inset 0 1px 2px rgba(0,0,0,.5); }
+.badge-planned .lamp::after { display: none; }
+.pbar { display: none; }
+.pbar { --w: 90px; --h: 7px; --dw: 1px; --dl: 1.5px; --dg: 1px;
+  width: var(--w); height: var(--h); gap: 0; vertical-align: middle; border-radius: 2px; overflow: hidden;
+  background: var(--lamp-track); box-shadow: 0 0 0 1px var(--lamp-y-edge), inset 0 1px 1px rgba(0,0,0,.45); }
+.pbar i { flex: 1 1 0; position: relative; background: none; }
+.pbar i.pb-f { background: linear-gradient(180deg, var(--lamp-y-hi) 0%, var(--lamp-y) 45%, var(--lamp-y-lo) 100%); }
+.pbar i.pb-f::after { content: ""; position: absolute; left: 1px; right: 1px; top: 1px; height: 2px;
+  border-radius: 999px; background: linear-gradient(180deg, var(--lamp-gloss), rgba(255,255,255,0)); }
+.pbar i + i::before { content: ""; position: absolute; left: calc(var(--dw) / -2); top: 0; bottom: 0; width: var(--dw); z-index: 1;
+  background: repeating-linear-gradient(to bottom, rgba(255,240,170,.55) 0 var(--dl), transparent var(--dl) calc(var(--dl) + var(--dg))); }
+.pbar i.pb-f + i.pb-f::before {
+  background: repeating-linear-gradient(to bottom, rgba(110,72,0,.7) 0 var(--dl), transparent var(--dl) calc(var(--dl) + var(--dg))); }
 .lamp-label { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
 
 .notice, .placeholder {
@@ -228,6 +241,11 @@ h1 .badge { font-size: .8rem; }
   padding: .6rem 1rem; border-radius: 0 6px 6px 0; margin: 1.5rem 0;
 }
 .placeholder p { margin: .3rem 0; }
+.plan-preview { border: 2px dashed #c2410c; border-radius: 6px; padding: .6rem 1rem; margin: 1.5rem 0; }
+.plan-preview-title { margin: .2rem 0 .5rem; font-weight: 700; color: #c2410c; }
+.plan-preview dl { margin: 0; }
+.plan-preview dt { font-weight: 600; margin-top: .5rem; }
+.plan-preview dd { margin: .15rem 0 0 1.2rem; }
 .page-toc {
   background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius);
   padding: .6rem 1.2rem; margin: 1.5rem 0; font-size: .92rem;

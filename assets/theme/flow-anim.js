@@ -1,19 +1,13 @@
 /* 流程小動畫：<figure data-flow-anim> 內以 data-step="1"… 標記的步驟群組，捲進可見範圍後依序播放。
-   預設（無 JS、動畫關閉）顯示全部步驟都畫好的靜態圖；JS 啟動後才加上 .is-live 切換成動畫模式。
+   動畫一律開啟；JS 啟動後才加上 .is-live 切換成動畫模式，沒有 JS 時頁面顯示全部步驟都畫好的靜態版面。
    不加任何控制 UI。契約見 site/themes/README.md「流程小動畫」。 */
 (function () {
   "use strict";
-  var d = document, root = d.documentElement;
+  var d = document;
   /* 預設時間（毫秒）；可在 <figure> 以 data-flow-travel / data-flow-gap / data-flow-hold 覆寫 */
   var DEF = { travel: 1800, gap: 1500, hold: 3000 };
   var figs = [].slice.call(d.querySelectorAll("[data-flow-anim]"));
   if (!figs.length || !window.IntersectionObserver) return;
-
-  function motionOn() {
-    var m = root.getAttribute("data-motion");
-    if (m) return m !== "off";
-    try { return !matchMedia("(prefers-reduced-motion: reduce)").matches; } catch (e) { return true; }
-  }
 
   function num(el, name, def) {
     var v = parseFloat(el.getAttribute("data-" + name));
@@ -29,7 +23,6 @@
     });
     this.paths = this.steps.map(function (g) { return g.querySelector("path.flow-path"); });
     this.items = this.steps.map(function (g) { return g.querySelector(".flow-item"); });
-    this.home = this.items.map(function (e) { return e ? e.getAttribute("transform") : null; });
     this.arrive = [].slice.call(fig.querySelectorAll("[data-arrive]"));
     this.travel = num(fig, "flow-travel", DEF.travel);
     this.gap = num(fig, "flow-gap", DEF.gap);
@@ -47,14 +40,11 @@
       self.visible = es[es.length - 1].isIntersecting;
       self.sync();
     }, { threshold: 0.35 }).observe(fig);
-    new MutationObserver(function () { self.sync(); })
-      .observe(root, { attributes: true, attributeFilter: ["data-motion"] });
   }
 
-  Flow.prototype.live = function () { return this.visible && motionOn(); };
+  Flow.prototype.live = function () { return this.visible; };
 
   Flow.prototype.sync = function () {
-    if (!motionOn()) { this.toStatic(); return; }
     if (!this.fig.classList.contains("is-live")) {
       this.fig.classList.add("is-live");
       this.t = 0; this.state = []; this.arrived = [];
@@ -63,16 +53,6 @@
     if (this.visible) {
       if (!this.raf) { this.last = 0; this.raf = requestAnimationFrame(this.tick); }
     } else if (this.raf) { cancelAnimationFrame(this.raf); this.raf = 0; }
-  };
-
-  Flow.prototype.toStatic = function () {
-    if (this.raf) { cancelAnimationFrame(this.raf); this.raf = 0; }
-    this.fig.classList.remove("is-live");
-    var home = this.home;
-    this.items.forEach(function (e, i) { if (e && home[i]) e.setAttribute("transform", home[i]); });
-    this.steps.forEach(function (g) { g.classList.remove("is-now", "is-past"); });
-    this.arrive.forEach(function (e) { e.classList.remove("is-on"); });
-    this.state = []; this.arrived = [];
   };
 
   Flow.prototype.draw = function () {

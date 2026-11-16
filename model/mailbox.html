@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="zh-Hant"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>站內信箱 - 弦川票務</title><link rel="stylesheet" href="style.css"></head>
+<body>
+<header class="site"></header>
+<main>
+<h1>站內信箱</h1>
+<p class="meta" id="to"></p>
+<div id="box"></div>
+</main>
+<footer class="site"></footer>
+<script src="static/app.js"></script>
+<script src="common.js"></script>
+<script>
+var me2 = currentUser();
+if (!me2) { location.replace("login.html"); }
+else {
+  document.getElementById("to").textContent = "收件信箱：" + emailOf(me2);
+  var mails = store.get("mail:" + me2, []), box = document.getElementById("box");
+  if (!mails.length) box.innerHTML = '<p class="meta">沒有信件。</p>';
+  mails.forEach(function (m) {
+    var d = document.createElement("div"); d.className = "mail";
+    d.innerHTML = '<h3></h3><span class="meta"></span><p></p>';
+    d.querySelector("h3").textContent = m.subject; d.querySelector(".meta").textContent = m.time;
+    var p = d.querySelector("p"); p.appendChild(document.createTextNode(m.text));
+    if (m.link) { p.appendChild(document.createElement("br")); var a = document.createElement("a"); a.href = m.link; a.textContent = m.link; p.appendChild(a); }
+    box.appendChild(d);
+  });
+}
+</script>
+</body></html>

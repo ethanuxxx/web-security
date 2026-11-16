@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="zh-Hant"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>活動 - 弦川票務</title><link rel="stylesheet" href="style.css"></head>
+<body>
+<header class="site"></header>
+<main>
+<div id="out"></div>
+</main>
+<footer class="site"></footer>
+<script src="static/app.js"></script>
+<script src="common.js"></script>
+<script src="data.js"></script>
+<script>
+var out = document.getElementById("out");
+var id = new URLSearchParams(location.search).get("eventId");
+var e = Object.prototype.hasOwnProperty.call(EVENTS, id) ? EVENTS[id] : null;
+if (!e) { var p = document.createElement("p"); p.textContent = "找不到活動"; out.appendChild(p); }
+else {
+  document.title = e.title + " - 弦川票務";
+  out.innerHTML = '<div class="detail"><div class="poster">' + posterSVG(e, 640, 400) + '</div><div class="side"><span class="tag"></span><h1 style="margin-top:8px"></h1><p class="meta" id="bl"></p>' +
+    '<dl><dt>日期</dt><dd id="d"></dd><dt>場館</dt><dd id="v"></dd></dl>' +
+    '<table class="price"><thead><tr><th>票種</th><th style="text-align:right">票價</th></tr></thead><tbody><tr><td>全票</td><td id="p1"></td></tr><tr><td>學生票</td><td id="p2"></td></tr></tbody></table>' +
+    '<div id="buy"></div><p class="meta" style="margin:14px 0 0"><a id="cm">活動討論區</a></p></div></div>';
+  document.getElementById("cm").href = "comments.html?eventId=" + id;
+  out.querySelector(".tag").textContent = e.cat; out.querySelector("h1").textContent = e.title;
+  document.getElementById("bl").textContent = e.blurb;
+  document.getElementById("d").textContent = e.date; document.getElementById("v").textContent = e.venue;
+  document.getElementById("p1").textContent = e.price; document.getElementById("p2").textContent = e.student;
+  var buy = document.getElementById("buy");
+  if (currentUser()) {
+    buy.innerHTML = '<p class="meta" id="sale" style="margin:0 0 10px"></p><button type="button" id="b" style="width:100%" disabled>訂票</button>';
+    document.getElementById("sale").textContent = "本場次將於 " + e.sale + " 12:00 開賣";
+  } else {
+    buy.innerHTML = '<a class="btn" id="b" style="width:100%;text-align:center"></a>';
+    var b = document.getElementById("b"); b.textContent = "訂票";
+    b.href = "login.html?next=" + encodeURIComponent("event.html?eventId=" + id);
+  }
+}
+</script>
+</body></html>

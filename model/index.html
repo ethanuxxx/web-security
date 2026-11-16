@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="zh-Hant"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>弦川票務 - 潮見市活動售票</title><link rel="stylesheet" href="style.css"></head>
+<body>
+<header class="site"></header>
+<main>
+<div class="hero" id="hero"></div>
+<form class="search" method="get" action="index.html"><input name="q" type="search" placeholder="搜尋活動或場館" aria-label="搜尋活動"><button type="submit">搜尋</button></form>
+<p id="q-note" class="meta" hidden></p>
+<h2>熱賣活動</h2>
+<ul class="grid" id="list"></ul>
+<p id="empty" hidden>沒有符合的活動。</p>
+<h2>往期活動</h2>
+<ul class="past" id="past"></ul>
+</main>
+<footer class="site"></footer>
+<script src="static/app.js"></script>
+<script src="common.js"></script>
+<script src="data.js"></script>
+<script>
+var q = new URLSearchParams(location.search).get("q") || "";
+document.querySelector("input[name=q]").value = q;
+if (q) { var n = document.getElementById("q-note"); n.hidden = false; n.textContent = "搜尋：" + q; }
+var f = EVENTS[3];
+document.getElementById("hero").innerHTML = '<div class="pic">' + posterSVG(f, 600, 300) + '</div><div class="info"><span class="tag"></span><h1></h1><p class="meta" id="hm"></p><p></p><p><a class="btn" id="hb">立即購票</a></p></div>';
+var hi = document.querySelector("#hero .info");
+hi.querySelector(".tag").textContent = "本月主打"; hi.querySelector("h1").textContent = f.title;
+document.getElementById("hm").textContent = f.date + "｜" + f.venue;
+hi.querySelectorAll("p")[1].textContent = f.blurb;
+document.getElementById("hb").href = currentUser() ? "event.html?eventId=3" : "login.html?next=" + encodeURIComponent("event.html?eventId=3");
+var list = document.getElementById("list"), shown = 0;
+Object.keys(EVENTS).forEach(function (id) {
+  var e = EVENTS[id];
+  if (q && (e.title + e.venue).toLowerCase().indexOf(q.toLowerCase()) < 0) return;
+  shown++;
+  var li = document.createElement("li"); li.className = "card";
+  li.innerHTML = '<div class="pic">' + posterSVG(e, 300, 120) + '</div><span class="date"></span><span class="tag cat"></span><div class="body"><h3><a></a></h3><p class="meta"></p></div>';
+  li.querySelector(".date").textContent = e.day; li.querySelector(".cat").textContent = e.cat;
+  var a = li.querySelector("a"); a.href = "event.html?eventId=" + id; a.textContent = e.title;
+  li.querySelector(".meta").innerHTML = e.venue + "｜" + "<span style=\"white-space:nowrap\">" + e.price + " 起</span>";
+  list.appendChild(li);
+});
+if (!shown) document.getElementById("empty").hidden = false;
+var past = document.getElementById("past");
+PAST.forEach(function (p) {
+  var li = document.createElement("li");
+  li.innerHTML = '<span class="d"></span><span></span><span class="meta" style="margin-left:auto"></span>';
+  var s = li.querySelectorAll("span"); s[0].textContent = p.date; s[1].textContent = p.title; s[2].textContent = p.venue;
+  past.appendChild(li);
+});
+</script>
+</body></html>

@@ -1,0 +1,5 @@
+弦川票務客服對話紀錄 #123
+客服：您好，請問有什麼可以協助？
+alice：我想確認 Jazz in the Park 的票券有沒有寄到信箱。
+客服：已確認，票券已寄到 alice@tickets.example.com，請查收。
+alice：收到了，謝謝。

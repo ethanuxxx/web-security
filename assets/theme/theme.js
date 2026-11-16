@@ -19,23 +19,56 @@
     window.addEventListener("resize", sync);
   }
 
-  // 全站動畫開關：<html data-motion="on|off"> 由 <head> 的小段 script 先設好（預設跟隨 prefers-reduced-motion）；
-  // 這裡讓頂端列按鈕切換並記住選擇。所有 localStorage 存取都包 try/catch，失敗就只在本頁生效。
-  var KEY = "web-security:motion";
-  var mbtn = d.querySelector(".sm-motion");
-  if (mbtn) {
-    var paint = function () {
-      var on = d.documentElement.getAttribute("data-motion") !== "off";
-      mbtn.setAttribute("aria-pressed", on ? "true" : "false");
-      mbtn.textContent = on ? "動畫：開" : "動畫：關";
+  // 章節索引頁：按 L 進入／離開「lecture mode」：同一堂在同一張章卡片內相鄰的幾列用框框起來，
+  // 點框內任一列從該節進入該堂授課。模式記在網址 ?g=1（授課頁 Esc 回來時帶著它），直接開 /chapters/ 是平常模式。
+  var idx = d.querySelector(".sm-idxpage");
+  if (idx) {
+    var hint = idx.querySelector(".sm-gmhint");
+    var cards = [].slice.call(idx.querySelectorAll(".sm-chrow"));
+    var setGm = function (on, keep) {
+      idx.classList.toggle("sm-gm", on);
+      if (hint) hint.hidden = !on;
+      cards.forEach(function (a) {      // 整張章卡片都是同一堂：直接標示卡片外框，不畫內框
+        var lis = [].slice.call(a.querySelectorAll(".sm-seclist li"));
+        var sn = lis[0] && lis[0].getAttribute("data-sn");
+        var whole = !!sn && lis.every(function (l) { return l.getAttribute("data-sn") === sn; });
+        a.classList.toggle("gm-card", on && whole);
+        if (on && whole) { a.setAttribute("data-sc", lis[0].getAttribute("data-sc")); a.setAttribute("title", sn); a.setAttribute("data-sn", sn); }
+        else { a.removeAttribute("data-sc"); a.removeAttribute("title"); a.removeAttribute("data-sn"); }
+        lis.forEach(function (li) {
+          var prev = li.previousElementSibling, next = li.nextElementSibling;
+          var same = function (o) { return o && o.getAttribute("data-sn") === li.getAttribute("data-sn"); };
+          var framed = on && !whole && !!li.getAttribute("data-sn");
+          li.classList.toggle("gm-click", on && !!li.getAttribute("data-sn"));
+          li.classList.toggle("gm-in", framed);
+          li.classList.toggle("gm-first", framed && !same(prev));
+          li.classList.toggle("gm-last", framed && !same(next));
+          if (framed) li.setAttribute("title", li.getAttribute("data-sn")); else li.removeAttribute("title");
+        });
+      });
+      if (keep) return;
+      try {
+        var u = new URL(location.href);
+        if (on) u.searchParams.set("g", "1"); else u.searchParams.delete("g");
+        history.replaceState(history.state, "", u.pathname + u.search + u.hash);
+      } catch (e) { /* ignore */ }
     };
-    mbtn.hidden = false;
-    paint();
-    mbtn.addEventListener("click", function () {
-      var next = d.documentElement.getAttribute("data-motion") === "off" ? "on" : "off";
-      d.documentElement.setAttribute("data-motion", next);
-      try { localStorage.setItem(KEY, next); } catch (e) { /* 無法儲存：只在這一頁生效 */ }
-      paint();
+    var gmOn = function () { return idx.classList.contains("sm-gm"); };
+    setGm(/(^|[?&])g=1(&|$)/.test(location.search), true);
+    d.addEventListener("keydown", function (e) {
+      if (e.ctrlKey || e.metaKey || e.altKey || e.shiftKey) return;
+      var t = e.target, tag = t && t.tagName;
+      if (tag === "INPUT" || tag === "TEXTAREA" || tag === "SELECT" || (t && t.isContentEditable)) return;
+      if (e.key === "l" || e.key === "L") { setGm(!gmOn()); e.preventDefault(); }
+      else if (e.key === "Escape" && gmOn()) setGm(false);
+    });
+    idx.addEventListener("click", function (e) {
+      if (!gmOn()) return;
+      var li = e.target.closest && e.target.closest(".sm-seclist li");
+      if (!li) return;
+      if (!li.classList.contains("gm-click")) { if (e.target.closest("a")) e.preventDefault(); return; }
+      e.preventDefault();
+      location.href = li.getAttribute("data-sp");
     });
   }
 
@@ -89,8 +122,7 @@
         return el.getBoundingClientRect().width > 0 && !el.closest(".sm-tip-p");
       })[0];
       if (target && target.scrollIntoView) {
-        var still = matchMedia("(prefers-reduced-motion: reduce)").matches;
-        target.scrollIntoView({ block: "center", inline: "center", behavior: still ? "auto" : "smooth" });
+        target.scrollIntoView({ block: "center", inline: "center", behavior: "smooth" });
       }
     }
   }

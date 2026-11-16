@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="zh-Hant"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>註冊 - 弦川票務</title><link rel="stylesheet" href="style.css"></head>
+<body>
+<header class="site"></header>
+<main>
+<form class="panel center" id="f">
+<h1>註冊會員</h1>
+<label for="u">使用者名稱</label><input id="u" name="username" autocomplete="username">
+<label for="e">Email</label><input id="e" name="email" type="email" autocomplete="email">
+<label for="p">密碼</label><input id="p" name="password" type="password" autocomplete="new-password">
+<button type="submit" class="wide">註冊</button>
+<p class="note" id="msg" role="status"></p>
+</form>
+</main>
+<footer class="site"></footer>
+<script src="static/app.js"></script>
+<script src="common.js"></script>
+<script>
+document.getElementById("f").addEventListener("submit", function (ev) {
+  ev.preventDefault();
+  var f = ev.target, u = f.username.value.trim().toLowerCase(), msg = document.getElementById("msg");
+  var reg = store.get("registered", []);
+  if (!u) { msg.textContent = "請輸入使用者名稱"; return; }
+  if (has(PEOPLE, u) || reg.indexOf(u) >= 0) { msg.textContent = "使用者名稱已被使用"; return; }
+  reg.push(u); store.set("registered", reg);
+  msg.textContent = "註冊完成";
+});
+</script>
+</body></html>

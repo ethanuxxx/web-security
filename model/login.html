@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="zh-Hant"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>登入 - 弦川票務</title><link rel="stylesheet" href="style.css"></head>
+<body>
+<header class="site"></header>
+<main>
+<form class="panel center" id="f" method="post" action="login.html">
+<h1>登入弦川票務</h1>
+<label for="u">帳號</label><input id="u" name="username" autocomplete="username">
+<label for="p">密碼</label><input id="p" name="password" type="password" autocomplete="current-password">
+<button type="submit" class="wide">登入</button>
+<p class="note" id="msg" role="status"></p>
+<p class="links"><a href="register.html">註冊</a><a href="forgot-password.html">忘記密碼？</a></p>
+</form>
+</main>
+<footer class="site"></footer>
+<script src="static/app.js"></script>
+<script src="common.js"></script>
+<script>
+document.getElementById("f").addEventListener("submit", function (ev) {
+  ev.preventDefault();
+  var u = document.getElementById("u").value.trim().toLowerCase();
+  var pw = document.getElementById("p").value;
+  if (!exists(u) || !Object.prototype.hasOwnProperty.call(ACCOUNTS, u) || passwordOf(u) !== pw) {
+    document.getElementById("msg").textContent = "帳號或密碼錯誤";
+    return;
+  }
+  setSession(u);
+  location.href = safeNext(new URLSearchParams(location.search).get("next"));
+});
+</script>
+</body></html>

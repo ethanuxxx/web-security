@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="zh-Hant"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>驗證碼 - 弦川票務</title><link rel="stylesheet" href="style.css"></head>
+<body>
+<header class="site"></header>
+<main>
+<form class="panel center" id="f">
+<h1>輸入驗證碼</h1>
+<label for="c">驗證碼</label><input id="c" name="code" inputmode="numeric" autocomplete="one-time-code">
+<button type="submit" class="wide">送出</button>
+<p class="note" id="msg" role="status"></p>
+</form>
+</main>
+<footer class="site"></footer>
+<script src="static/app.js"></script>
+<script src="common.js"></script>
+<script>
+var acct = cookie("account");
+if (!acct || !exists(acct) || !has(ACCOUNTS, acct)) { location.replace("login-2fa.html"); }
+else {
+  // 載入頁面時替 Cookie 指定的帳號產生新的 4 位數驗證碼，寄到該帳號的信箱
+  var code = ("000" + Math.floor(Math.random() * 10000)).slice(-4);
+  store.set("code:" + acct, code);
+  sendMail(acct, "登入驗證碼", "您的驗證碼是 " + code + "。");
+  document.getElementById("msg").textContent = "驗證碼已寄到 " + emailOf(acct);
+  document.getElementById("f").addEventListener("submit", function (ev) {
+    ev.preventDefault();
+    var who = cookie("account");
+    if (!who || !has(ACCOUNTS, who) || ev.target.code.value.trim() !== store.get("code:" + who, null)) {
+      document.getElementById("msg").textContent = "驗證碼錯誤";
+      return;
+    }
+    setSession(who);
+    location.href = "account.html";
+  });
+}
+</script>
+</body></html>
